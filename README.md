@@ -8,6 +8,8 @@ WordPress plugin that adds syntax highlighting to the Post/Page HTML editor.
 * New fullscreen mode.
 * Toggle fullscreen mode with F11/Esc hotkeys
 * Restore cursor position after page is reloaded
+* **NEW** Dark Theme - "Solaized"
+* **NEW** Theme selection in User Profile
 
 ## Contributing
 
