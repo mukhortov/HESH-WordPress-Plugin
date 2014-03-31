@@ -15,7 +15,7 @@
  * Plugin Name: HTML Editor Syntax Highlighter
  * Author: Petr Mukhortov
  * Author URI: http://mukhortov.com/
- * Version: 1.4.4
+ * Version: 1.4.6
 */
 
 function heshPlugin() {
@@ -135,6 +135,7 @@ function heshPlugin() {
 			switchEditors.switchto(this);
 			runEditor(target);
 			tab_tmce.onclick = toVisual;
+			//addMedia();
 		}
 	},
 	resizeEditor = function() {
@@ -160,7 +161,9 @@ function heshPlugin() {
 	},
 	toggleFullscreen = function() {
 		fullscreenBox.className = fullscreenBox.className.indexOf(fullscreenClass) === -1 ? fullscreenBox.className +' '+ fullscreenClass : fullscreenBox.className.replace(fullscreenClass, '');
-		this.value = this.value === 'fullscreen' ? 'exit fullscreen' : 'fullscreen';
+		//this.value = this.value == 'fullscreen' ? 'exit fullscreen' : 'fullscreen';
+		var btn = document.getElementById('cm_content_fullscreen');
+		btn.value = btn.value === 'fullscreen' ? 'exit fullscreen' : 'fullscreen';
 		editor.focus();
 	},
 	fullscreen = function() {
@@ -168,19 +171,18 @@ function heshPlugin() {
 		document.getElementById('cm_content_fullscreen').onclick = toggleFullscreen;
 	},
 	addMedia = function() {
-		// Dirty
-		document.getElementById('insert-media-button').onclick = function() {
-			target.value = '';
-			target.className = 'IEtextarea';
-			setTimeout(function(){
-				document.querySelector('.media-button-insert').onclick = function() {
-					setTimeout(function(){
-						editor.replaceSelection(target.value);
-						editor.save();
-					},400);
-				};
-			},400);
-		};
+		// We want to do it only ones
+		if (!window.send_to_editor_wp) {
+			window.send_to_editor_wp = window.send_to_editor;
+			window.send_to_editor = function (media) {
+				if (isOn) {
+					editor.replaceSelection(media);
+					editor.save();
+				} else {
+					window.send_to_editor_wp(media);
+				}
+			}
+		}
 	};
 
 	/* Initialise */
