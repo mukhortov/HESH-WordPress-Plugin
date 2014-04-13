@@ -1,0 +1,59 @@
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/!svn/ver/887896/html-editor-syntax-highlighter/trunk/components/codemirror
+END
+codemirror.js
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/!svn/ver/814639/html-editor-syntax-highlighter/trunk/components/codemirror/codemirror.js
+END
+codemirror.css.less
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/!svn/ver/814639/html-editor-syntax-highlighter/trunk/components/codemirror/codemirror.css.less
+END
+javascript.js
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/!svn/ver/814639/html-editor-syntax-highlighter/trunk/components/codemirror/javascript.js
+END
+css.js
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/!svn/ver/814639/html-editor-syntax-highlighter/trunk/components/codemirror/css.js
+END
+htmlmixed.js
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/!svn/ver/814639/html-editor-syntax-highlighter/trunk/components/codemirror/htmlmixed.js
+END
+matchbrackets.js
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/!svn/ver/814639/html-editor-syntax-highlighter/trunk/components/codemirror/matchbrackets.js
+END
+mbo.css.less
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/!svn/ver/887896/html-editor-syntax-highlighter/trunk/components/codemirror/mbo.css.less
+END
+active-line.js
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/!svn/ver/814639/html-editor-syntax-highlighter/trunk/components/codemirror/active-line.js
+END
+xml.js
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/!svn/ver/814639/html-editor-syntax-highlighter/trunk/components/codemirror/xml.js
+END
