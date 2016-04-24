@@ -4,19 +4,21 @@ module.exports = function(grunt) {
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
 
-	  dist: {
-	    src: [
-	      "components/codemirror/codemirror.js",
-				"components/codemirror/css.js",
-				"components/codemirror/htmlmixed.js",
-				"components/codemirror/javascript.js",
-				"components/codemirror/xml.js",
-				"components/codemirror/active-line.js",
-				"components/codemirror/matchbrackets.js",
-				"components/hesh.dev.js"
-	    ],
-	    dest: 'lib/hesh.js'
-	  }
+		concat: {
+			dist: {
+				src: [
+					"components/codemirror/codemirror.js",
+					"components/codemirror/css.js",
+					"components/codemirror/htmlmixed.js",
+					"components/codemirror/javascript.js",
+					"components/codemirror/xml.js",
+					"components/codemirror/active-line.js",
+					"components/codemirror/matchbrackets.js",
+					"components/hesh.dev.js"
+				],
+				dest: 'lib/hesh.js'
+			}   
+		}
 
 		uglify: {
 			build: {
