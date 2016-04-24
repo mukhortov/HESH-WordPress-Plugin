@@ -1,4 +1,4 @@
-/* Codemirror v3.20 CSS files */
+/* Codemirror v4.1 CSS files */
 @import "codemirror/codemirror.css.less";
 @import "codemirror/mbo.css.less";
 
@@ -8,11 +8,11 @@
  * Plugin Name: HTML Editor Syntax Highlighter
  * Author: Petr Mukhortov
  * Author URI: http://mukhortov.com/
- * Version: 1.4.8
+ * Version: 1.6.9
 */
 
 .CodeMirror {
-	font-family: Menlo Regular,Consolas,Monaco,monospace;
+	font-family: Menlo Regular, Consolas, Monaco, monospace;
 	line-height: 150%;
 	font-size: 12px;
 	height: 500px;
@@ -35,7 +35,8 @@
 #qt_content_more,
 #qt_content_close,
 #qt_content_fullscreen,
-#wp-content-editor-container .wp-editor-area /* Textarea */ {
+#wp-content-editor-container .wp-editor-area, /* Textarea */
+#ed_toolbar input.cm_ed_button#cm_content_p /* hide <p> button when visual editor is enabled */ {
 	display: none !important;
 }
 
@@ -55,23 +56,50 @@
 }
 
 .content-resize-handle {
-	width: 12px;
-	height: 19px;
+	width: 14px;
+	height: 24px;
 	cursor: ns-resize;
-	right: 2px;
+	right: 1px;
 	position: absolute;
+}
+#content-resize-handle {
+	display: table-cell !important;
 }
 .tmce-active .content-resize-handle {
 	display: none;
 }
 
+.has-dfw .quicktags-toolbar {
+	padding-right: 3px !important;
+
+	.button:not(:first-child) {
+		margin-right: 3px;
+	}
+}
+
 #cm_content_fullscreen,
-#cm_select_theme {
+#cm_select_theme,
+#cm_font_size {
 	float: right;
 }
+
+// FF hack
+@-moz-document url-prefix() {
+	#cm_font_size {
+		margin-top: 4px;
+	}
+}
+// webkit hack
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+	#cm_font_size {
+		height: inherit;
+		font-size: 10px;
+	}
+}
+
 .heshFullscreen {
 	z-index: 99999;
-	position: fixed;
+	position: fixed !important;
 	top: 0;
 	left: 0;
 	right: 0;
@@ -79,22 +107,67 @@
 	height: 100%;
 	background: #fff;
 	padding: 2% 2% 0;
-}
-.heshFullscreen .CodeMirror,
-.heshFullscreen #ed_toolbar {
-	border: 1px solid #ccc;
-}
-.heshFullscreen #ed_toolbar {
-	border-bottom: 0;
-	border-radius: 4px 4px 0 0;
-}
-.heshFullscreen .CodeMirror {
-	border-radius: 0 0 4px 4px;
-	height: 85%!important;
+
+	.CodeMirror {
+		border: 1px solid #ccc;
+		border-radius: 0 0 4px 4px;
+		height: 85%!important;
+	}
+	#ed_toolbar {
+		border: 1px solid #ccc;
+		border-bottom: 0;
+		border-radius: 4px 4px 0 0;
+	}
 }
 
 @media only screen and (max-height: 550px), only screen and (max-device-height: 550px) {
 	.heshFullscreen .CodeMirror {
 		height: 75%!important;
+	}
+}
+
+
+// Styles for WP 4+
+.wp-editor-expand {
+	.html-active {
+		#ed_toolbar {
+			z-index: 2;
+		}
+		.CodeMirror {
+			position: relative;
+			z-index: 1;
+			margin-top: 35px !important;
+			height: auto;
+			min-height: 500px;
+		}
+		.heshFullscreen {
+			.quicktags-toolbar {
+				top: 0 !important;
+				position: static !important;
+				width: auto !important;
+			}
+			.CodeMirror {
+				margin-top: 0 !important;
+			}
+		}
+		#qt_content_dfw {
+			display: none;
+		}
+	}
+	.content-resize-handle,
+	#content-resize-handle {
+		display: none !important;
+	}
+}
+
+.postarea:not(.wp-editor-expand) {
+	.CodeMirror {
+		margin-top: 0 !important;
+	}
+}
+
+.visual-editor-is-disabled {
+	#ed_toolbar input.cm_ed_button#cm_content_p {
+		display: inline-block !important;
 	}
 }
