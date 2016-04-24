@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: HTML Editor Syntax Highlighter
+ * Plugin Name: HTML Editor Syntax Highlighter - DEV
  * Plugin URI: http://wordpress.org/extend/plugins/html-editor-syntax-highlighter/
  * Description: Syntax Highlighting in WordPress HTML Editor
  * Text Domain: html-editor-syntax-highlighter

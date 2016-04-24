@@ -1,0 +1,21 @@
+{
+  "name": "HESH-WordPress-Plugin",
+  "version": "1.6.9",
+  "description": "Syntax Highlighting in WordPress HTML Editor",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/arniebradfo/HESH-WordPress-Plugin.git"
+  },
+  "author": "James Bradford",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/arniebradfo/HESH-WordPress-Plugin/issues"
+  },
+  "homepage": "https://github.com/arniebradfo/HESH-WordPress-Plugin",
+  "devDependencies": {
+    "grunt": "^1.0.1",
+    "grunt-contrib-concat": "^1.0.1",
+    "grunt-contrib-uglify": "^1.0.1"
+  }
+}
