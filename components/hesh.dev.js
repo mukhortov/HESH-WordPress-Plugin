@@ -1,14 +1,6 @@
 // Codemirror v4.1 JS files:
 // codemirror.js, css.js, htmlmixed.js, javascript.js, xml.js, active-line.js, matchbrackets.js
 
-// @codekit-prepend "codemirror/codemirror.js";
-// @codekit-prepend "codemirror/css.js";
-// @codekit-prepend "codemirror/htmlmixed.js";
-// @codekit-prepend "codemirror/javascript.js";
-// @codekit-prepend "codemirror/xml.js";
-// @codekit-prepend "codemirror/active-line.js";
-// @codekit-prepend "codemirror/matchbrackets.js";
-
 // Concatenate and minify all the files above with the rest of code and save as hesh.min.js
 
 /*
