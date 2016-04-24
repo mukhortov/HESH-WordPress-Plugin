@@ -12,28 +12,21 @@
  * Stable tag: 1.6.9
  **/
 
-if(preg_match('#' . basename(__FILE__) . '#', $_SERVER['PHP_SELF'])) { die('You are not allowed to call this page directly.'); }
+if(preg_match('#' . basename(__FILE__) . '#', $_SERVER['PHP_SELF'])) { 
+	die('You are not allowed to call this page directly.'); 
+}
 
 define('HESH_LIBS', plugins_url('/lib/',__FILE__));
 
 class wp_html_editor_syntax {
 	public function __construct() {
-		add_action('admin_head', array(&$this,'admin_head'));
-		add_action('admin_footer', array(&$this,'admin_footer'));
+		add_action('admin_enqueue_scripts' , array(&$this,'admin_enqueue_scripts'));
 	}
-	public function admin_head() {
+	public function admin_enqueue_scripts() {
 		if (!$this->is_editor())
 			return;
-		?>
-		<link rel="stylesheet" href="<?php echo HESH_LIBS; ?>hesh.min.css">
-		<?php
-	}
-	public function admin_footer() {
-		if (!$this->is_editor())
-			return;
-		?>
-		<script src="<?php echo HESH_LIBS; ?>hesh.min.js"></script>
-		<?php
+		wp_enqueue_style('heshcss', HESH_LIBS.'hesh.min.css');
+		wp_enqueue_script('heshjs', HESH_LIBS.'hesh.min.js', array(), false, true);
 	}
 	private function is_editor(){
 		if (!strstr($_SERVER['SCRIPT_NAME'], 'post.php') && !strstr($_SERVER['SCRIPT_NAME'], 'post-new.php')) {
