@@ -25,19 +25,29 @@ module.exports = function(grunt) {
 				src: 'lib/hesh.js',
 				dest: 'lib/hesh.min.js'
 			}
-		}
+		},
+
+		less: {
+		  development: {
+		    files: {
+		      'hesh.min.css': 'hesh.dev.less'
+		    }
+		  }
+  	}
 
 	});
 
 	// Load the plugin that provides the "uglify" task.
 	grunt.loadNpmTasks('grunt-contrib-concat');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
+	grunt.loadNpmTasks('grunt-contrib-less');
 
 	// Default task(s).
 	grunt.registerTask(
 		'default', [
 			'concat',
-			'uglify'
+			'uglify',
+			'less'
 		]
 	);
 
