@@ -18,7 +18,7 @@ module.exports = function(grunt) {
 				],
 				dest: 'lib/hesh.js'
 			}   
-		}
+		},
 
 		uglify: {
 			build: {
