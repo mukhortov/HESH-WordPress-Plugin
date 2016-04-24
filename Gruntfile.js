@@ -30,7 +30,7 @@ module.exports = function(grunt) {
 		less: {
 		  development: {
 		    files: {
-		      'hesh.min.css': 'hesh.dev.less'
+		      'lib/hesh.min.css': 'components/hesh.dev.less'
 		    }
 		  }
   	}
