@@ -7,13 +7,17 @@ module.exports = function(grunt) {
 		concat: {
 			js: {
 				src: [
+					// codemirror core
 					'node_modules/codemirror/lib/codemirror.js',
-					'node_modules/codemirror/edit/matchbrackets.js',
-					'node_modules/codemirror/selection/active-line.js',
+					// addons
+					'node_modules/codemirror/addon/edit/matchbrackets.js',
+					'node_modules/codemirror/addon/selection/active-line.js',
+					// modes
 					'node_modules/codemirror/mode/xml/xml.js',
 					'node_modules/codemirror/mode/javascript/javascript.js',
 					'node_modules/codemirror/mode/css/css.js',
 					'node_modules/codemirror/mode/htmlmixed/htmlmixed.js',
+					// and the wp stuff
 					"components/hesh.dev.js"
 				],
 				dest: 'lib/hesh.js'
