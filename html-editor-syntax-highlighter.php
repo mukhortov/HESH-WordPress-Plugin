@@ -26,7 +26,7 @@ class wp_html_editor_syntax {
 		if (!$this->is_editor())
 			return;
 		wp_enqueue_style('heshcss', HESH_LIBS.'hesh.min.css');
-		wp_enqueue_script('heshjs', HESH_LIBS.'hesh.min.js', array(), false, true);
+		wp_enqueue_script('heshjs', HESH_LIBS.'hesh.js', array(), false, true);
 	}
 	private function is_editor(){
 		if (!strstr($_SERVER['SCRIPT_NAME'], 'post.php') && !strstr($_SERVER['SCRIPT_NAME'], 'post-new.php')) {

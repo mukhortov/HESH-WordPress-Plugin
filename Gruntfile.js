@@ -8,12 +8,12 @@ module.exports = function(grunt) {
 			js: {
 				src: [
 					'node_modules/codemirror/lib/codemirror.js',
+					'node_modules/codemirror/edit/matchbrackets.js',
+					'node_modules/codemirror/selection/active-line.js',
+					'node_modules/codemirror/mode/xml/xml.js',
+					'node_modules/codemirror/mode/javascript/javascript.js',
 					'node_modules/codemirror/mode/css/css.js',
 					'node_modules/codemirror/mode/htmlmixed/htmlmixed.js',
-					'node_modules/codemirror/mode/javascript/javascript.js',
-					'node_modules/codemirror/xml/xml.js',
-					'node_modules/codemirror/selection/active-line.js',
-					'node_modules/codemirror/edit/matchbrackets.js',
 					"components/hesh.dev.js"
 				],
 				dest: 'lib/hesh.js'
