@@ -1,5 +1,11 @@
 // Codemirror v4.1 JS files:
-// codemirror.js, css.js, htmlmixed.js, javascript.js, xml.js, active-line.js, matchbrackets.js
+// 'node_modules/codemirror/lib/codemirror.js',
+// 'node_modules/codemirror/mode/css/css.js',
+// 'node_modules/codemirror/mode/htmlmixed/htmlmixed.js',
+// 'node_modules/codemirror/mode/javascript/javascript.js',
+// 'node_modules/codemirror/xml/xml.js',
+// 'node_modules/codemirror/selection/active-line.js',
+// 'node_modules/codemirror/edit/matchbrackets.js',
 
 // Concatenate and minify all the files above with the rest of code and save as hesh.min.js
 

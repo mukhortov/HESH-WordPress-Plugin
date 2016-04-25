@@ -1,10 +1,14 @@
 /* Codemirror v4.1 CSS files */
-@import "codemirror/codemirror.css.less";
-@import "codemirror/mbo.css.less";
+// this doesn't currently work - Sass won't merge regular .css files
+
+// @import "../node_modules/codemirror/lib/codemirror";
+// @import "../node_modules/codemirror/theme/mbo";
+@import "../lib/codemirror";
+
 
 /* Concatenate and minify the file above with the rest of css and save as hesh.min.css */
 
-/*
+/*!
  * Plugin Name: HTML Editor Syntax Highlighter
  * Author: Petr Mukhortov
  * Author URI: http://mukhortov.com/
