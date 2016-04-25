@@ -9,7 +9,7 @@
  * Version: 1.6.9
  * Requires at least: 3.3
  * Tested up to: 4.3.1
- * Stable tag: 1.6.9
+ * Stable tag: 1.6.10
  **/
 
 if(preg_match('#' . basename(__FILE__) . '#', $_SERVER['PHP_SELF'])) { 
