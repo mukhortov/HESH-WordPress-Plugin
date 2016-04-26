@@ -1,15 +1,17 @@
 <?php
 /**
- * Plugin Name: HTML Editor Syntax Highlighter - DEV
- * Plugin URI: http://wordpress.org/extend/plugins/html-editor-syntax-highlighter/
- * Description: Syntax Highlighting in WordPress HTML Editor
- * Text Domain: html-editor-syntax-highlighter
- * Author: Petr Mukhortov
- * Author URI: http://mukhortov.com/
- * Version: 1.6.9
- * Requires at least: 3.3
- * Tested up to: 4.3.1
- * Stable tag: 1.6.10
+ * Plugin Name:        HTML Editor Syntax Highlighter - DEV
+ * Plugin URI:         http://wordpress.org/extend/plugins/html-editor-syntax-highlighter/
+ * Description:        Syntax Highlighting in WordPress HTML Editor
+ * Text Domain:        html-editor-syntax-highlighter
+ * Author:             Petr Mukhortov
+ * Author URI:         http://mukhortov.com/
+ * Version:            1.6.10
+ * Requires at least:  3.3
+ * Tested up to:       4.3.1
+ * Stable tag:         1.6.10
+   GitHub Plugin URI:  https://github.com/arniebradfo/HESH-WordPress-Plugin
+   GitHub Branch:      master
  **/
 
 if(preg_match('#' . basename(__FILE__) . '#', $_SERVER['PHP_SELF'])) { 
