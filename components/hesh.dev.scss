@@ -34,7 +34,8 @@
 #qt_content_close,
 #qt_content_fullscreen,
 #wp-content-editor-container .wp-editor-area, /* Textarea */
-#ed_toolbar input.cm_ed_button#cm_content_p /* hide <p> button when visual editor is enabled */ {
+#ed_toolbar input.cm_ed_button#cm_content_p /* hide <p> button when visual editor is enabled */ 
+{
 	display: none !important;
 }
 
@@ -134,7 +135,7 @@
 		.CodeMirror {
 			position: relative;
 			z-index: 1;
-			margin-top: 35px !important;
+			margin-top: 35px ;
 			height: auto;
 			min-height: 500px;
 		}

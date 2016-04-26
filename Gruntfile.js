@@ -18,6 +18,7 @@ module.exports = function(grunt) {
 					'node_modules/codemirror/mode/css/css.js',
 					'node_modules/codemirror/mode/htmlmixed/htmlmixed.js',
 					// and the wp stuff
+					"lib/CodeMirrorThemes.js",
 					"components/hesh.dev.js"
 				],
 				dest: 'lib/hesh.js'
@@ -25,7 +26,7 @@ module.exports = function(grunt) {
 			css: {
 				src: [
 					'node_modules/codemirror/lib/codemirror.css',
-					'node_modules/codemirror/theme/mbo.css'
+					'node_modules/codemirror/theme/**/*.css'
 				],
 				dest: 'lib/codemirror.scss'
 			}   
@@ -49,6 +50,33 @@ module.exports = function(grunt) {
 		      // syntax is - 'destination':'source',
 		    }
 		  }
+		},
+
+	    filenamesToJson : {
+	    	options : {
+	    		fullPath : false, // true if full path should be included, default is false
+	    		extensions : false // true if file extension should be included, default is false 
+	    	},
+	        files : 'node_modules/codemirror/theme/**/*.css', // any valid glob
+	        destination : 'lib/CodeMirrorThemes.json' // path to write json to
+	    },
+
+		json: {
+		    CodeMirrorThemes: {
+		        options: {
+		            namespace: 'CodeMirrorThemes',
+		            pretty: true,
+		            processName: function(filename) {
+		                return filename;
+		            },
+					// processContent: function(content) {
+					// 	content.myVar = 'myVal';
+					// 	return content;
+					// }
+		        },
+		        src: ['lib/CodeMirrorThemes.json'],
+		        dest: 'lib/CodeMirrorThemes.js'
+		    }
 		}
 
 	});
@@ -57,14 +85,21 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-concat');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-contrib-sass');
+	grunt.loadNpmTasks('grunt-filenames-to-json');
+	grunt.loadNpmTasks('grunt-json');
+
 
 	// Default task(s).
 	grunt.registerTask(
 		'default', [
+			'filenamesToJson',
+			'json',
 			'concat',
 			'uglify',
 			'sass'
 		]
 	);
+
+
 
 };

@@ -76,7 +76,6 @@ function heshPlugin() {
 		//Save changes to the textarea on the fly
 		editor.on("change", function() {
 			editor.save();
-
 			clearTimeout(ontypeSaveTimer);	
 			ontypeSaveTimer = setTimeout(updateTextareaHeight, 3000);
 		});
@@ -105,20 +104,21 @@ function heshPlugin() {
 	},
 
 	updateTabBarPaddings = function() {
-		document.querySelector('.CodeMirror').style.marginTop = toolbar.clientHeight + 'px';
+		var CodeM = document.querySelector('.CodeMirror');
+		CodeM.style.marginTop = toolbar.clientHeight + 'px';
 	},
 
 	windowResizeTimer,
 
 	windowResized = function() {
 		clearTimeout(windowResizeTimer);
-		windowResizeTimer = setTimeout(updateTabBarPaddings, 250);		
+		windowResizeTimer = setTimeout(updateTabBarPaddings, 250);
 	},
 
 	ontypeSaveTimer,
 
 	updateTextareaHeight = function() {
-		if (document.querySelector('.CodeMirror') != null) {
+		if (document.querySelector('.CodeMirror') !== null) {
 			document.querySelector('textarea.wp-editor-area').style.height = document.querySelector('.CodeMirror').clientHeight + 'px';
 		}
 	},
@@ -230,6 +230,7 @@ function heshPlugin() {
 		var btn = document.getElementById('cm_content_fullscreen');
 		btn.value = btn.value === 'fullscreen' ? 'exit fullscreen' : 'fullscreen';
 		editor.focus();
+		updateTabBarPaddings();
 	},
 
 	fullscreen = function() {
@@ -238,15 +239,18 @@ function heshPlugin() {
 	},
 
 	themeSwitcher = function() {
-		var colour = function () {
-			return theme === 'mbo' ? 'light' : 'dark';
-		};
-		toolbar.insertAdjacentHTML('afterbegin', '<input type="button" id="cm_select_theme" class="ed_button button" title="Change editor colour scheme" value="' + colour() + '">');
-		document.getElementById("cm_select_theme").onclick = function() {
-			theme = theme === 'mbo' ? 'default' : 'mbo';
+		console.log(CodeMirrorThemes.CodeMirrorThemes);
+		var themeSelect = '<select id="cm_select_theme" class="button" title="Change editor colour scheme">';
+		for (var key in CodeMirrorThemes.CodeMirrorThemes) {
+			var csstheme = CodeMirrorThemes.CodeMirrorThemes[key];
+			themeSelect += '<option value="'+csstheme+'">'+csstheme+'</option>';
+		}
+		themeSelect += '</select>';
+		toolbar.insertAdjacentHTML('afterbegin', themeSelect );
+		document.getElementById("cm_select_theme").onchange = function() {
+			theme = this.value;
 			editor.setOption('theme', theme);
 			document.cookie = 'hesh_plugin_theme='+theme;
-			this.value = colour();
 		};
 	},
 
@@ -256,7 +260,7 @@ function heshPlugin() {
 		if (heshStyle) {
 			heshStyle.innerHTML = style;
 		} else {
-			document.getElementsByTagName('head')[0].insertAdjacentHTML('beforeend', '<style id="hesh-style">' + style + '</style>')
+			document.getElementsByTagName('head')[0].insertAdjacentHTML('beforeend', '<style id="hesh-style">' + style + '</style>');
 		}
 	},
 
@@ -289,7 +293,7 @@ function heshPlugin() {
 	},
 
 	addMedia = function() {
-		// We want to do it only ones
+		// We want to do it only oncs
 		if (!window.send_to_editor_wp) {
 			window.send_to_editor_wp = send_to_editor;
 			send_to_editor = function (media) {
