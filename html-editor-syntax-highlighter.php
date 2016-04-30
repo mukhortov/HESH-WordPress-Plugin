@@ -10,12 +10,12 @@
  * Requires at least:  3.3
  * Tested up to:       4.3.1
  * Stable tag:         1.6.10
-   GitHub Plugin URI:  https://github.com/arniebradfo/HESH-WordPress-Plugin
-   GitHub Branch:      master
+ * GitHub Plugin URI:  https://github.com/arniebradfo/HESH-WordPress-Plugin
+ * GitHub Branch:      master
  **/
 
-if(preg_match('#' . basename(__FILE__) . '#', $_SERVER['PHP_SELF'])) { 
-	die('You are not allowed to call this page directly.'); 
+if(preg_match('#' . basename(__FILE__) . '#', $_SERVER['PHP_SELF'])) {
+	die('You are not allowed to call this page directly.');
 }
 
 define('HESH_LIBS', plugins_url('/lib/',__FILE__));

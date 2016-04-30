@@ -1,8 +1,11 @@
 module.exports = function(grunt) {
 
+	var cssGulp = 'node_modules/codemirror/theme/**/*.css';
+	
 	// Project configuration.
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
+
 
 		concat: {
 			js: {
@@ -29,7 +32,7 @@ module.exports = function(grunt) {
 					'node_modules/codemirror/theme/**/*.css'
 				],
 				dest: 'lib/codemirror.scss'
-			}   
+			}
 		},
 
 		uglify: {
@@ -55,7 +58,7 @@ module.exports = function(grunt) {
 	    filenamesToJson : {
 	    	options : {
 	    		fullPath : false, // true if full path should be included, default is false
-	    		extensions : false // true if file extension should be included, default is false 
+	    		extensions : false // true if file extension should be included, default is false
 	    	},
 	        files : 'node_modules/codemirror/theme/**/*.css', // any valid glob
 	        destination : 'lib/CodeMirrorThemes.json' // path to write json to
