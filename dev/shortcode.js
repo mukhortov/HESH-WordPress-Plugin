@@ -285,12 +285,8 @@
 				}
 			},
 
-			electricInput: /<\/[\s\w:]+>$/,
-			blockCommentStart: '<!--',
-			blockCommentEnd: '-->',
-
-			configuration: 'shortcode',
-			helperType: 'shortcode',
+			// configuration: 'shortcode',
+			// helperType: 'shortcode',
 
 			skipAttribute: function (state) {
 				if (state.state === attrValueState) state.state = attrState;

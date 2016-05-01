@@ -27,17 +27,6 @@
 	// 	]
 	// };
 
-	// function maybeBackup (stream, pat, style) {
-	// 	var cur = stream.current();
-	// 	var close = cur.search(pat);
-	// 	if (close > -1) {
-	// 		stream.backUp(cur.length - close);
-	// 	} else if (cur.match(/<\/?$/)) {
-	// 		stream.backUp(cur.length);
-	// 		if (!stream.match(pat, false)) stream.match(cur);
-	// 	}
-	// 	return style;
-	// }
 
 	// var attrRegexpCache = {};
 	// function getAttrRegexp (attr) {
@@ -71,6 +60,18 @@
 	// 	}
 	// }
 
+	function maybeBackup (stream, pat, style) {
+		var cur = stream.current();
+		var close = cur.search(pat);
+		if (close > -1) {
+			stream.backUp(cur.length - close);
+		} else if (cur.match(/<\/?$/)) {
+			stream.backUp(cur.length);
+			if (!stream.match(pat, false)) stream.match(cur);
+		}
+		return style;
+	}
+
 	CodeMirror.defineMode('wordpresspost', function (config, parserConfig) {
 		var htmlmixedMode = CodeMirror.getMode(config, {
 			name: 'htmlmixed',
@@ -97,7 +98,43 @@
 
 		function wordpresspost (stream, state) {
 			var style = htmlmixedMode.token(stream, state.htmlState); // html stream returns the style e.g. tag, attribute, whatever
-			// var tag = /\btag\b/.test(style); // if html style is tag, it sets the tag var
+			var text = style === null; // if html style is tag, it sets the tag var
+			// console.log('current: ' + stream.current());
+			// console.log('style: ' + style);
+			if (text && /\[/.test(stream.current())) {
+				// console.log('shortcode');
+				var cur = stream.current();
+				var open = cur.search(/\[/);
+				if (open > -1) {
+					stream.backUp(cur.length - open);
+				}
+				state.token = function (stream, state) { // reset the stream function
+					var style = state.localMode.token(stream, state.localState);
+					console.log(stream.current());
+					console.log(style);
+					if (state.startHTMLafter === 2) { // divert the stream if we hit the end tag
+						state.startHTMLafter = null;
+						state.token = wordpresspost; // set the token back to the regular html string
+						state.localState = state.localMode = null;
+						stream.backUp(stream.current().length);
+						return null;
+					} else if (style === 'tag bracket' || style === 'tag bracket error') {
+						state.startHTMLafter++;
+						if (state.startHTMLafter === 2) {
+							var cur = stream.current();
+							var close = cur.search(/\]/);
+							if (close > -1) {
+								stream.backUp(cur.length - close - 1);
+							}
+						}
+					}
+					return style;
+					// return maybeBackup(stream, /\]/, state.localMode.token(stream, state.localState)); // stream the js or css
+				};
+				state.startHTMLafter = 0;
+				state.localMode = shortcodeMode;
+				state.localState = CodeMirror.startState(shortcodeMode, htmlmixedMode.indent(state.htmlState, ''));
+			}
 			// var tagName;
 			// if (tag && !/[<>\s\/]/.test(stream.current()) && // if the current stream is a tag and...
 			// (tagName = state.htmlState.tagName && state.htmlState.tagName.toLowerCase()) && // var set and lowercased
@@ -141,9 +178,9 @@
 
 			copyState: function (state) {
 				var local;
-				// if (state.localState) {
-				// 	local = CodeMirror.copyState(state.localMode, state.localState);
-				// }
+				if (state.localState) {
+					local = CodeMirror.copyState(state.localMode, state.localState);
+				}
 				return {
 					token: state.token,
 					inTag: state.inTag,
@@ -158,23 +195,19 @@
 			},
 
 			indent: function (state, textAfter) {
-				// if (!state.localMode || /^\s*<\//.test(textAfter)) {
+				if (!state.localMode || /^\s*<\//.test(textAfter)) {
 					return htmlmixedMode.indent(state.htmlState, textAfter);
-				// } else if (state.localMode.indent) {
-					// return state.localMode.indent(state.localState, textAfter);
-				// } else {
-					// return CodeMirror.Pass;
-				// }
+				} else if (state.localMode.indent) {
+					return state.localMode.indent(state.localState, textAfter);
+				} else {
+					return CodeMirror.Pass;
+				}
 			},
 
 			innerMode: function (state) {
-				// return {
-				// 	state: state.localState || state.htmlState,
-				// 	mode: state.localMode || htmlmixedMode
-				// };
 				return {
-					state: state.htmlState,
-					mode: htmlmixedMode
+					state: state.localState || state.htmlState,
+					mode: state.localMode || htmlmixedMode
 				};
 			}
 		};
