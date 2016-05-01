@@ -35,7 +35,7 @@
 		var publishButton = document.getElementById('save-post') != null ? document.getElementById('save-post') : document.getElementById('publish');
 
 		var options = {
-			mode: 'text/html',
+			mode: 'wordpresspost',
 			tabMode: 'indent',
 			theme: 'material',
 			lineNumbers: true,
