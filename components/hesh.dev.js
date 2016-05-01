@@ -18,61 +18,59 @@
 
 function heshPlugin () {
 
-	var editor = null,
-		isOn = 0,
-		buttonsAdded = 0,
-		target = document.getElementById('content'),
-		postID = document.getElementById('post_ID') !== null ? document.getElementById('post_ID').value : 0,
-		tab_html = document.getElementById('content-html'),
-		tab_tmce = document.getElementById('content-tmce'),
-		theme = document.cookie.indexOf('hesh_plugin_theme=mbo') !== -1 ? 'mbo' : 'default',
-		visualEditor = document.cookie.indexOf('editor%3Dtinymce') !== -1,
-		visualEditorEnabled = document.getElementById('content-tmce') !== null,
-		toolbar = document.getElementById('ed_toolbar'),
-		fullscreenBox = document.getElementById('wp-content-editor-container'),
-		fullscreenClass = 'heshFullscreen',
-		publishButton = document.getElementById('publish'),
+	var editor = null;
+	var isOn = 0;
+	var buttonsAdded = 0;
+	var target = document.getElementById('content');
+	var postID = document.getElementById('post_ID') !== null ? document.getElementById('post_ID').value : 0;
+	var tab_html = document.getElementById('content-html');
+	var tab_tmce = document.getElementById('content-tmce');
+	var theme = document.cookie.indexOf('hesh_plugin_theme=mbo') !== -1 ? 'mbo' : 'default';
+	var visualEditor = document.cookie.indexOf('editor%3Dtinymce') !== -1;
+	var visualEditorEnabled = document.getElementById('content-tmce') !== null;
+	var toolbar = document.getElementById('ed_toolbar');
+	var fullscreenBox = document.getElementById('wp-content-editor-container');
+	var fullscreenClass = 'heshFullscreen';
+	var publishButton = document.getElementById('publish');
 
-		options = {
-			mode: 'text/html',
-			tabMode: 'indent',
-			theme: theme,
-			lineNumbers: true,
-			matchBrackets: true,
-			indentUnit: 4,
-			indentWithTabs: true,
-			enterMode: 'keep',
-			lineWrapping: true,
-			autofocus: true,
-			styleActiveLine: true,
-			electricChars: false,
-			extraKeys: {
-				'F11': function () {
-					toggleFullscreen();
-				},
-				'Esc': function () {
-					toggleFullscreen();
-				},
-				'Ctrl-S': function () {
-					publishButton.click();
-				},
-				'Cmd-S': function () {
-					publishButton.click();
-				}
+	var options = {
+		mode: 'text/html',
+		tabMode: 'indent',
+		theme: theme,
+		lineNumbers: true,
+		matchBrackets: true,
+		indentUnit: 4,
+		indentWithTabs: true,
+		enterMode: 'keep',
+		lineWrapping: true,
+		autofocus: true,
+		styleActiveLine: true,
+		electricChars: false,
+		extraKeys: {
+			'F11': function () {
+				toggleFullscreen();
+			},
+			'Esc': function () {
+				toggleFullscreen();
+			},
+			'Ctrl-S': function () {
+				publishButton.click();
+			},
+			'Cmd-S': function () {
+				publishButton.click();
 			}
-		},
-
-	getCookie = function (name) {
-		var value = '; ' + document.cookie,
-			parts = value.split('; ' + name + '=');
-		if (parts.length === 2) {
-			return parts.pop().split(';').shift();
 		}
-	},
+	};
 
-	fontSize = getCookie('hesh_plugin_font_size') || '12',
+	var getCookie = function (name) {
+		var value = '; ' + document.cookie;
+		var parts = value.split('; ' + name + '=');
+		if (parts.length === 2) return parts.pop().split(';').shift();
+	};
 
-	runEditor = function () {
+	var fontSize = getCookie('hesh_plugin_font_size') || '12';
+
+	var runEditor = function () {
 		addButtons();
 		editor = CodeMirror.fromTextArea(target, options);
 
@@ -104,48 +102,48 @@ function heshPlugin () {
 
 		// Fix for floating tabbar in full-height mode
 		window.setTimeout(updateTextareaHeight, 3000);
-	},
+	};
 
-	updateTabBarPaddings = function () {
+	var updateTabBarPaddings = function () {
 		var CodeM = document.querySelector('.CodeMirror');
 		CodeM.style.marginTop = toolbar.clientHeight + 'px';
-	},
+	};
 
-	windowResizeTimer,
+	var windowResizeTimer;
 
-	windowResized = function () {
+	var windowResized = function () {
 		clearTimeout(windowResizeTimer);
 		windowResizeTimer = setTimeout(updateTabBarPaddings, 250);
-	},
+	};
 
-	ontypeSaveTimer,
+	var ontypeSaveTimer;
 
-	updateTextareaHeight = function () {
+	var updateTextareaHeight = function () {
 		if (document.querySelector('.CodeMirror') !== null) {
 			document.querySelector('textarea.wp-editor-area').style.height = document.querySelector('.CodeMirror').clientHeight + 'px';
 		}
-	},
+	};
 
-	addButtons = function () {
+	var addButtons = function () {
 		if (!buttonsAdded) {
 			var toolbarVars = {
-				more:		['<!--more-->', ''],
-				comment:	['<!-- ', ' -->'],
-				code:		['<code>', '</code>'],
-				li:			['<li>', '</li>'],
-				ol:			['<ol>', '</ol>'],
-				ul:			['<ul>',  '</ul>'],
-				img:		['<img src="$" alt="', '">','Enter the URL of the image'],
-				ins:		['<ins>', '</ins>'],
-				del:		['<del>', '</del>'],
-				link:		['<a href="$">', '</a>','Enter the destination URL'],
+				more: ['<!--more-->', ''],
+				comment: ['<!-- ', ' -->'],
+				code: ['<code>', '</code>'],
+				li: ['<li>', '</li>'],
+				ol: ['<ol>', '</ol>'],
+				ul: ['<ul>', '</ul>'],
+				img: ['<img src="$" alt="', '">', 'Enter the URL of the image'],
+				ins: ['<ins>', '</ins>'],
+				del: ['<del>', '</del>'],
+				link: ['<a href="$">', '</a>', 'Enter the destination URL'],
 				blockquote:	['\r<blockquote>', '</blockquote>\r'],
-				h3:			['<h3>', '</h3>'],
-				h2:			['<h2>', '</h2>'],
-				h1:			['<h1>', '</h1>'],
-				p:			['<p>', '</p>'],
-				i:			['<em>', '</em>'],
-				b:			['<strong>', '</strong>']
+				h3: ['<h3>', '</h3>'],
+				h2: ['<h2>', '</h2>'],
+				h1: ['<h1>', '</h1>'],
+				p: ['<p>', '</p>'],
+				i: ['<em>', '</em>'],
+				b: ['<strong>', '</strong>']
 			};
 			for (var key in toolbarVars) {
 				var t = toolbarVars[key];
@@ -158,14 +156,14 @@ function heshPlugin () {
 			fullscreen();
 			buttonsAdded = 1;
 		}
-	},
+	};
 
-	buttonClick = function () {
-		var selStart = editor.getCursor('start'),
-			start = this.getAttribute('data-start'),
-			end = this.getAttribute('data-end'),
-			cmPrompt = this.getAttribute('data-prompt') || null,
-			selText = editor.getSelection();
+	var buttonClick = function () {
+		var selStart = editor.getCursor('start');
+		var start = this.getAttribute('data-start');
+		var end = this.getAttribute('data-end');
+		var cmPrompt = this.getAttribute('data-prompt') || null;
+		var selText = editor.getSelection();
 		if (this.id === 'cm_content_link' && wpLink) { // Native WP link popup window
 			wpLink.open();
 			document.getElementById('wp-link-submit').onclick = function () {
@@ -178,39 +176,39 @@ function heshPlugin () {
 				editor.focus();
 			};
 		} else {
-			if (cmPrompt) start = start.replace('$', prompt(cmPrompt, ''));
+			if (cmPrompt) start = start.replace('$', window.prompt(cmPrompt, ''));
 			editor.replaceSelection(start + selText + end);
 			// editor.setSelection(selStart, editor.getCursor('end'));
 			editor.setCursor(selStart.line, selStart.ch + start.length);
 			editor.focus();
 		}
-	},
+	};
 
-	toVisual = function () {
+	var toVisual = function () {
 		if (isOn) {
-			if (!!switchEditors.switchto) switchEditors.switchto(this);
+			if (switchEditors.switchto) switchEditors.switchto(this);
 			editor.toTextArea();
 			tab_html.onclick = toHTML;
 			isOn = 0;
 			window.removeEventListener('resize', windowResized);
 		}
-	},
+	};
 
-	toHTML = function () {
+	var toHTML = function () {
 		if (!isOn) {
-			if (!!switchEditors.switchto) switchEditors.switchto(this);
+			if (switchEditors.switchto) switchEditors.switchto(this);
 			window.setTimeout(runEditor, 300);
 			tab_tmce.onclick = toVisual;
 			// addMedia();
 		}
-	},
+	};
 
-	resizeEditor = function() {
-		var target = document.querySelector('.CodeMirror'),
-			handle = document.createElement('div'),
-			hwrap = document.getElementById('wp-content-wrap'),
-			offsetTop = target.getBoundingClientRect().top,
-			move = function (e) {
+	var resizeEditor = function () {
+		var target = document.querySelector('.CodeMirror');
+		var handle = document.createElement('div');
+		var hwrap = document.getElementById('wp-content-wrap');
+		var offsetTop = target.getBoundingClientRect().top;
+		var move = function (e) {
 				e = e || window.event; // IE fix
 				var height = (e.pageY || e.clientY + document.body.scrollTop + document.documentElement.scrollTop) - offsetTop;
 				target.style.height = (height > 10 ? height : 10) + 'px';
@@ -225,27 +223,26 @@ function heshPlugin () {
 			document.onmousemove = null;
 			// editor.focus();
 		};
-	},
+	};
 
-	toggleFullscreen = function () {
+	var toggleFullscreen = function () {
 		fullscreenBox.className = fullscreenBox.className.indexOf(fullscreenClass) === -1 ? fullscreenBox.className + ' ' + fullscreenClass : fullscreenBox.className.replace(fullscreenClass, '');
 		// this.value = this.value == 'fullscreen' ? 'exit fullscreen' : 'fullscreen';
 		var btn = document.getElementById('cm_content_fullscreen');
 		btn.value = btn.value === 'fullscreen' ? 'exit fullscreen' : 'fullscreen';
 		editor.focus();
 		updateTabBarPaddings();
-	},
+	};
 
-	fullscreen = function () {
+	var fullscreen = function () {
 		toolbar.insertAdjacentHTML('afterbegin', '<input type="button" id="cm_content_fullscreen" class="ed_button button" title="Toggle fullscreen mode" value="fullscreen">');
 		document.getElementById('cm_content_fullscreen').onclick = toggleFullscreen;
-	},
+	};
 
-	themeSwitcher = function () {
-		console.log(CodeMirrorThemes.CodeMirrorThemes);
+	var themeSwitcher = function () {
 		var themeSelect = '<select id="cm_select_theme" class="button" title="Change editor colour scheme">';
-		for (var key in CodeMirrorThemes.CodeMirrorThemes) {
-			var csstheme = CodeMirrorThemes.CodeMirrorThemes[key];
+		for (var key in CodeMirrorCSS.Themes) {
+			var csstheme = CodeMirrorCSS.Themes[key];
 			themeSelect += '<option value="' + csstheme + '">' + csstheme + '</option>';
 		}
 		themeSelect += '</select>';
@@ -255,19 +252,19 @@ function heshPlugin () {
 			editor.setOption('theme', theme);
 			document.cookie = 'hesh_plugin_theme=' + theme;
 		};
-	},
+	};
 
-	changeFontSize = function () {
-		var heshStyle = document.getElementById('hesh-style'),
-			style = '.CodeMirror {font-size: ' + fontSize + 'px !important;}';
+	var changeFontSize = function () {
+		var heshStyle = document.getElementById('hesh-style');
+		var style = '.CodeMirror {font-size: ' + fontSize + 'px !important;}';
 		if (heshStyle) {
 			heshStyle.innerHTML = style;
 		} else {
 			document.getElementsByTagName('head')[0].insertAdjacentHTML('beforeend', '<style id="hesh-style">' + style + '</style>');
 		}
-	},
+	};
 
-	fontSizeSwitcher = function () {
+	var fontSizeSwitcher = function () {
 		toolbar.insertAdjacentHTML('afterbegin',
 		'<select id="cm_font_size" class="button">' +
 			'<option value="10">10</option>' +
@@ -293,13 +290,12 @@ function heshPlugin () {
 
 			document.cookie = 'hesh_plugin_font_size=' + fontSize;
 		};
-	},
+	};
 
-	addMedia = function () {
+	var addMedia = function () {
 		// We want to do it only oncs
 		if (!window.send_to_editor_wp) {
-			window.send_to_editor_wp = send_to_editor;
-			send_to_editor = function (media) {
+			var send_to_editor = function (media) {
 				if (isOn && wpActiveEditor === 'content') {
 					editor.replaceSelection(media);
 					editor.save();
@@ -307,6 +303,7 @@ function heshPlugin () {
 					window.send_to_editor_wp(media);
 				}
 			};
+			window.send_to_editor_wp = send_to_editor;
 		}
 	};
 
@@ -322,4 +319,5 @@ function heshPlugin () {
 		}
 	}
 }
+
 window.onload = heshPlugin; // TODO: change this guy
