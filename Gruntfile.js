@@ -20,9 +20,9 @@ module.exports = function (grunt) {
 					'node_modules/codemirror/mode/css/css.js',
 					'node_modules/codemirror/mode/htmlmixed/htmlmixed.js',
 					// and the wp stuff
-					'lib/CodeMirrorCSS.js',
-					// 'components/simplemode.js',
-					'components/hesh.dev.js'
+					'.temp/CodeMirrorCSS.js',
+					// 'dev/simplemode.js',
+					'dev/hesh.dev.js'
 				],
 				dest: 'lib/hesh.js'
 			},
@@ -31,7 +31,7 @@ module.exports = function (grunt) {
 					'node_modules/codemirror/lib/codemirror.css',
 					cssGulp
 				],
-				dest: 'lib/codemirror.scss'
+				dest: '.temp/codemirror.scss'
 			}
 		},
 
@@ -45,12 +45,10 @@ module.exports = function (grunt) {
 		sass: {
 		dist: {
 			options: {
-				// cssmin will minify later
 				style: 'expanded' // nested, compact, compressed, expanded
 			},
 			files: {
-				'lib/hesh.min.css': 'components/hesh.dev.scss'
-				// syntax is - 'destination':'source',
+				'lib/hesh.min.css': 'dev/hesh.dev.scss' // syntax is - 'destination':'source'
 			}
 		}
 		},
@@ -61,7 +59,7 @@ module.exports = function (grunt) {
 				extensions: false // true if file extension should be included, default is false
 			},
 			files: cssGulp, // any valid glob
-			destination: 'lib/Themes.json' // path to write json to
+			destination: '.temp/Themes.json' // path to write json to
 		},
 
 		json: {
@@ -77,8 +75,8 @@ module.exports = function (grunt) {
 					// 	return content;
 					// }
 				},
-				src: ['lib/Themes.json'],
-				dest: 'lib/CodeMirrorCSS.js'
+				src: ['.temp/Themes.json'],
+				dest: '.temp/CodeMirrorCSS.js'
 			}
 		}
 
