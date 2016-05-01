@@ -32,7 +32,7 @@
 		var toolbar = document.getElementById('ed_toolbar');
 		var fullscreenBox = document.getElementById('wp-content-editor-container');
 		var fullscreenClass = 'heshFullscreen';
-		var publishButton = document.getElementById('publish');
+		var publishButton = document.getElementById('save-post') != null ? document.getElementById('save-post') : document.getElementById('publish');
 
 		var options = {
 			mode: 'text/html',
