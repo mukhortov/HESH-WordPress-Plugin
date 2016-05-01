@@ -1,34 +1,35 @@
 {
-    "name": "HESH-WordPress-Plugin",
-    "version": "1.6.10",
-    "description": "Syntax Highlighting in WordPress HTML Editor",
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/arniebradfo/HESH-WordPress-Plugin.git"
-    },
-    "author": "James Bradford",
-    "license": "MIT",
-    "bugs": {
-        "url": "https://github.com/arniebradfo/HESH-WordPress-Plugin/issues"
-    },
-    "homepage": "https://github.com/arniebradfo/HESH-WordPress-Plugin",
-    "devDependencies": {
-        "codemirror": "^5.14.2",
-        "grunt": "^1.0.1",
-        "grunt-contrib-concat": "^1.0.1",
-        "grunt-contrib-less": "^1.3.0",
-        "grunt-contrib-sass": "^1.0.0",
-        "grunt-contrib-uglify": "^1.0.1",
-        "grunt-filenames-to-json": "^0.1.2",
-        "grunt-json": "^0.2.0"
-    },
-    "happiness": {
-        "globals": [
-            "CodeMirror",
-            "CodeMirrorCSS",
-            "wpLink",
-            "wpActiveEditor",
-            "switchEditors"
-        ]
-    }
+  "name": "HESH-WordPress-Plugin",
+  "version": "1.6.10",
+  "description": "Syntax Highlighting in WordPress HTML Editor",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/arniebradfo/HESH-WordPress-Plugin.git"
+  },
+  "author": "James Bradford",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/arniebradfo/HESH-WordPress-Plugin/issues"
+  },
+  "homepage": "https://github.com/arniebradfo/HESH-WordPress-Plugin",
+  "devDependencies": {
+    "codemirror": "^5.14.2",
+    "grunt": "^1.0.1",
+    "grunt-contrib-concat": "^1.0.1",
+    "grunt-contrib-less": "^1.3.0",
+    "grunt-contrib-sass": "^1.0.0",
+    "grunt-contrib-uglify": "^1.0.1",
+    "grunt-contrib-watch": "^1.0.0",
+    "grunt-filenames-to-json": "^0.1.2",
+    "grunt-json": "^0.2.0"
+  },
+  "happiness": {
+    "globals": [
+      "CodeMirror",
+      "CodeMirrorCSS",
+      "wpLink",
+      "wpActiveEditor",
+      "switchEditors"
+    ]
+  }
 }

@@ -84,6 +84,23 @@ module.exports = function (grunt) {
 				src: ['.temp/Themes.json'],
 				dest: '.temp/CodeMirrorCSS.js'
 			}
+		},
+
+		watch: {
+			js: {
+				files: ['dev/*.js'],
+				tasks: ['filenamesToJson', 'json', 'concat:js', 'uglify'],
+				options: {
+					spawn: false
+				}
+			},
+			css: {
+				files: ['dev/*.scss'],
+				tasks: ['concat:css', 'sass'],
+				options: {
+					spawn: false
+				}
+			}
 		}
 
 	});
@@ -93,6 +110,7 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks('grunt-contrib-sass');
 	grunt.loadNpmTasks('grunt-filenames-to-json');
 	grunt.loadNpmTasks('grunt-json');
+	grunt.loadNpmTasks('grunt-contrib-watch');
 
 	grunt.registerTask(
 		'default', [
