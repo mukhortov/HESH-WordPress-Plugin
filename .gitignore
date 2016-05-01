@@ -1,5 +1,5 @@
 node_modules
-*.css.map
+*.map
 codemirror.scss
 .sass-cache
 .DS_Store

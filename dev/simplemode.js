@@ -2,6 +2,8 @@
  * JavaScript:
  */
 
+ // requires the codemirror/addon/mode/simple.js addon
+
 CodeMirror.defineSimpleMode('simplemode', {
   // The start state contains the rules that are intially used
   start: [

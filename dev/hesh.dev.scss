@@ -82,6 +82,10 @@
 	float: right;
 }
 
+#cm_select_theme{
+	max-width: 80px;
+}
+
 // FF hack
 @-moz-document url-prefix() {
 	#cm_font_size {

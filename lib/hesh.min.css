@@ -5835,6 +5835,10 @@ THE SOFTWARE.
   float: right;
 }
 
+#cm_select_theme {
+  max-width: 80px;
+}
+
 @-moz-document url-prefix() {
   #cm_font_size {
     margin-top: 4px;
