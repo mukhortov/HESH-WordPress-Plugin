@@ -45,9 +45,9 @@
 			var style = htmlmixedMode.token(stream, state.htmlmixedState);
 			// console.log('tagName: ' + state.htmlmixedState.htmlState.tagName);
 			// console.log('current: ' + stream.current());
+			// console.log(style);
 			var inText = state.htmlmixedState.htmlState.tagName === null;
-			// if not in js css
-			if (inText && /\[/.test(stream.current())) {
+			if (inText && /\[/.test(stream.current()) && !state.htmlmixedState.localState && style === null) {
 				// console.log('test: ' + /\[/.test(stream.current()));
 				var cur = stream.current();
 				var open = cur.search(/\[/);
