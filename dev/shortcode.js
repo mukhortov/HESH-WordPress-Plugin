@@ -140,6 +140,7 @@
 					popContext(state);
 				}
 				if ((state.context && state.context.tagName === tagName) || config.matchClosing === false) {
+					state.tagName = stream.current();
 					setStyle = 'tag';
 					return closeState;
 				} else {
@@ -157,6 +158,7 @@
 				setStyle = 'error';
 				return closeState;
 			}
+			state.tagName = null;
 			popContext(state);
 			return baseState;
 		}

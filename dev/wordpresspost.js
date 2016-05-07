@@ -13,6 +13,7 @@
 	'use strict';
 
 	CodeMirror.defineMode('wordpresspost', function (config, parserConfig) {
+
 		var htmlmixedMode = CodeMirror.getMode(config, {
 			name: 'htmlmixed',
 			multilineTagIndentFactor: parserConfig.multilineTagIndentFactor,
@@ -25,38 +26,40 @@
 			multilineTagIndentPastTag: parserConfig.multilineTagIndentPastTag
 		});
 
-		function wordpresspost (stream, state) {
-			var style = htmlmixedMode.token(stream, state.htmlState);
-			var text = style === null;
-			if (text && /\[/.test(stream.current())) {
+		function shortcodeToken (stream, state) {
+			state.isInShortcode = true;
+			var style = shortcodeMode.token(stream, state.shortcodeState);
+			// console.log('tagName: ' + state.shortcodeState.tagName);
+			// console.log('current: ' + stream.current());
+			var inText = state.shortcodeState.tagName === null;
+			// if (inText) console.log('style: ' + style);
+			if (inText && !/^\[/.test(stream.current())) {
+				// console.log('test2: ' + !/^\[/.test(stream.current()));
+				state.token = htmlmixedToken;
+			}
+			return style;
+		}
+
+		function htmlmixedToken (stream, state) {
+			state.isInShortcode = false;
+			var style = htmlmixedMode.token(stream, state.htmlmixedState);
+			// console.log('tagName: ' + state.htmlmixedState.htmlState.tagName);
+			// console.log('current: ' + stream.current());
+			var inText = state.htmlmixedState.htmlState.tagName === null;
+			// if not in js css
+			if (inText && /\[/.test(stream.current())) {
+				// console.log('test: ' + /\[/.test(stream.current()));
 				var cur = stream.current();
 				var open = cur.search(/\[/);
-				if (open > -1) {
-					stream.backUp(cur.length - open);
+				// console.log('open :' + open);
+				stream.backUp(cur.length - open);
+				// console.log('current: ' + stream.current());
+				// console.log('state.shortcodeState: ' + state.shortcodeState);
+				if (state.shortcodeState == null) {
+					// console.log('state.shortcodeState was null/undefined');
+					state.shortcodeState = CodeMirror.startState(shortcodeMode, htmlmixedMode.indent(state.htmlmixedState, ''));
 				}
-				state.token = function (stream, state) {
-					var style = state.localMode.token(stream, state.localState);
-					if (state.startHTMLafter === 2) {
-						state.startHTMLafter = null;
-						state.token = wordpresspost;
-						state.localState = state.localMode = null;
-						stream.backUp(stream.current().length);
-						return null;
-					} else if (style === 'tag bracket' || style === 'tag bracket error') {
-						state.startHTMLafter++;
-						if (state.startHTMLafter === 2) {
-							var cur = stream.current();
-							var close = cur.search(/\]/);
-							if (close > -1) {
-								stream.backUp(cur.length - close - 1);
-							}
-						}
-					}
-					return style;
-				};
-				state.startHTMLafter = 0;
-				state.localMode = shortcodeMode;
-				state.localState = CodeMirror.startState(shortcodeMode, htmlmixedMode.indent(state.htmlState, ''));
+				state.token = shortcodeToken;
 			}
 			return style;
 		}
@@ -65,25 +68,22 @@
 			startState: function () {
 				var state = htmlmixedMode.startState();
 				return {
-					token: wordpresspost,
-					inTag: null,
-					localMode: null,
-					localState: null,
-					htmlState: state
+					token: htmlmixedToken,
+					isInShortcode: false,
+					shortcodeState: null,
+					htmlmixedState: state
 				};
 			},
 
 			copyState: function (state) {
-				var local;
-				if (state.localState) {
-					local = CodeMirror.copyState(state.localMode, state.localState);
+				var shortcodeStateProx;
+				if (state.shortcodeState) {
+					shortcodeStateProx = CodeMirror.copyState(shortcodeMode, state.shortcodeState);
 				}
 				return {
 					token: state.token,
-					inTag: state.inTag,
-					localMode: state.localMode,
-					localState: local,
-					htmlState: CodeMirror.copyState(htmlmixedMode, state.htmlState)
+					shortcodeState: shortcodeStateProx,
+					htmlmixedState: CodeMirror.copyState(htmlmixedMode, state.htmlmixedState)
 				};
 			},
 
@@ -92,20 +92,23 @@
 			},
 
 			indent: function (state, textAfter) {
-				if (!state.localMode || /^\s*<\//.test(textAfter)) {
-					return htmlmixedMode.indent(state.htmlState, textAfter);
-				} else if (state.localMode.indent) {
-					return state.localMode.indent(state.localState, textAfter);
-				} else {
-					return CodeMirror.Pass;
-				}
+				if (state.isInShortcode) return htmlmixedMode.indent(state.htmlmixedState, textAfter);
+				else if (!state.isInShortcode) return shortcodeMode.indent(state.shortcodeState, textAfter);
+				else return CodeMirror.Pass;
 			},
 
 			innerMode: function (state) {
-				return {
-					state: state.localState || state.htmlState,
-					mode: state.localMode || htmlmixedMode
-				};
+				if (state.isInShortcode) {
+					return {
+						state: state.shortcodeState,
+						mode: shortcodeMode
+					};
+				} else {
+					return {
+						state: state.htmlmixedState,
+						mode: htmlmixedMode
+					};
+				}
 			}
 		};
 	}, 'htmlmixed', 'shortcode');
