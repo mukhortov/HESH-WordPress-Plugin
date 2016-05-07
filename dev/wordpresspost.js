@@ -29,12 +29,8 @@
 		function shortcodeToken (stream, state) {
 			state.isInShortcode = true;
 			var style = shortcodeMode.token(stream, state.shortcodeState);
-			// console.log('tagName: ' + state.shortcodeState.tagName);
-			// console.log('current: ' + stream.current());
 			var inText = state.shortcodeState.tagName === null;
-			// if (inText) console.log('style: ' + style);
 			if (inText && !/^\[/.test(stream.current())) {
-				// console.log('test2: ' + !/^\[/.test(stream.current()));
 				state.token = htmlmixedToken;
 			}
 			return style;
@@ -43,20 +39,12 @@
 		function htmlmixedToken (stream, state) {
 			state.isInShortcode = false;
 			var style = htmlmixedMode.token(stream, state.htmlmixedState);
-			// console.log('tagName: ' + state.htmlmixedState.htmlState.tagName);
-			// console.log('current: ' + stream.current());
-			// console.log(style);
 			var inText = state.htmlmixedState.htmlState.tagName === null;
 			if (inText && /\[/.test(stream.current()) && !state.htmlmixedState.localState && style === null) {
-				// console.log('test: ' + /\[/.test(stream.current()));
 				var cur = stream.current();
 				var open = cur.search(/\[/);
-				// console.log('open :' + open);
 				stream.backUp(cur.length - open);
-				// console.log('current: ' + stream.current());
-				// console.log('state.shortcodeState: ' + state.shortcodeState);
-				if (state.shortcodeState == null) {
-					// console.log('state.shortcodeState was null/undefined');
+				if (state.shortcodeState == null) { // ===null or ===undefined
 					state.shortcodeState = CodeMirror.startState(shortcodeMode, htmlmixedMode.indent(state.htmlmixedState, ''));
 				}
 				state.token = shortcodeToken;
