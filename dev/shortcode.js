@@ -85,6 +85,8 @@
 		}
 
 		function Context (state, tagName, startOfLine) {
+			this.tagHistory = [tagName];
+			if (state.context) this.tagHistory = this.tagHistory.concat(state.context.tagHistory);
 			this.prev = state.context;
 			this.tagName = tagName;
 			this.indent = state.indented;
@@ -135,12 +137,18 @@
 
 		function closeTagNameState (type, stream, state) {
 			if (type === 'word') {
+				// console.log(state.context);
 				var tagName = stream.current();
+				state.tagName = tagName; // need this for wordpresspost.js
 				if (state.context && state.context.tagName !== tagName && config.implicitlyClosed.hasOwnProperty(state.context.tagName)) {
 					popContext(state);
 				}
 				if ((state.context && state.context.tagName === tagName) || config.matchClosing === false) {
-					state.tagName = stream.current();
+					setStyle = 'tag';
+					return closeState;
+				} else if (state.context && state.context.tagHistory.indexOf(tagName) > 0) {
+					var level = state.context.tagHistory.indexOf(tagName);
+					for (var i = 0; i < level; i++) popContext(state);
 					setStyle = 'tag';
 					return closeState;
 				} else {
@@ -158,7 +166,7 @@
 				setStyle = 'error';
 				return closeState;
 			}
-			state.tagName = null;
+			state.tagName = null; // need this for wordpresspost.js
 			popContext(state);
 			return baseState;
 		}
@@ -254,8 +262,8 @@
 						return state.tagStart + indentUnit * (config.multilineTagIndentFactor || 1);
 					}
 				}
-				if (config.alignCDATA && /<!\[CDATA\[/.test(textAfter)) return 0;
-				var tagAfter = textAfter && /^<(\/)?([\w_:\.-]*)/.exec(textAfter);
+				// if (config.alignCDATA && /<!\[CDATA\[/.test(textAfter)) return 0;
+				var tagAfter = textAfter && /^\[(\/)?([\w_:\.-]*)/.exec(textAfter);
 				if (tagAfter && tagAfter[1]) { // Closing tag spotted
 					while (context) {
 						if (context.tagName === tagAfter[2]) {
