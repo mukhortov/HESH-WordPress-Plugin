@@ -13,10 +13,6 @@
 	'use strict';
 
 	var shortcodeConfig = {
-		// autoSelfClosers: {},
-		// implicitlyClosed: {},
-		// contextGrabbers: {},
-		// doNotIndent: {},
 		allowUnquoted: true,
 		allowMissing: true,
 		caseFold: true
@@ -49,7 +45,8 @@
 			var ch = stream.next();
 			if (ch === ']' || (ch === '/' && stream.eat(']'))) {
 				state.tokenize = inText;
-				type = ch === ']' ? 'endTag' : 'selfcloseTag';
+				// type = ch === ']' ? 'endTag' : 'selfcloseTag';
+				type = 'endTag';
 				return 'tag bracket';
 			} else if (ch === '=') {
 				type = 'equals';
@@ -91,27 +88,11 @@
 			this.tagName = tagName;
 			this.indent = state.indented;
 			this.startOfLine = startOfLine;
-			// if (config.doNotIndent.hasOwnProperty(tagName) || (state.context && state.context.noIndent)) this.noIndent = true;
 		}
 
 		function popContext (state) {
 			if (state.context) state.context = state.context.prev;
 		}
-
-		// function maybePopContext (state, nextTagName) {
-		// 	var parentTagName;
-		// 	while (true) {
-		// 		if (!state.context) {
-		// 			return;
-		// 		}
-		// 		parentTagName = state.context.tagName;
-		// 		if (!config.contextGrabbers.hasOwnProperty(parentTagName) ||
-		// 				!config.contextGrabbers[parentTagName].hasOwnProperty(nextTagName)) {
-		// 			return;
-		// 		}
-		// 		popContext(state);
-		// 	}
-		// }
 
 		function baseState (type, stream, state) {
 			if (type === 'openTag') {
@@ -139,9 +120,6 @@
 			if (type === 'word') {
 				var tagName = stream.current();
 				state.tagName = tagName; // need this for wordpresspost.js
-				// if (state.context && state.context.tagName !== tagName && config.implicitlyClosed.hasOwnProperty(state.context.tagName)) {
-				// 	popContext(state);
-				// }
 				if ((state.context && state.context.tagName === tagName) || config.matchClosing === false) {
 					setStyle = 'tag';
 					return closeState;
@@ -178,17 +156,15 @@
 			if (type === 'word') {
 				setStyle = 'attribute';
 				return attrEqState;
-			} else if (type === 'endTag' || type === 'selfcloseTag') {
+			// } else if (type === 'endTag' || type === 'selfcloseTag') {
+			} else if (type === 'endTag') {
 				var tagName = state.tagName;
 				var tagStart = state.tagStart;
 				state.tagName = state.tagStart = null;
-				// if (type === 'selfcloseTag' || config.autoSelfClosers.hasOwnProperty(tagName)) {
-				if (type === 'selfcloseTag') {
-					// maybePopContext(state, tagName);
-				} else {
-					// maybePopContext(state, tagName);
+				// if (type === 'selfcloseTag') {
+				// } else {
 					state.context = new Context(state, tagName, tagStart === state.indented);
-				}
+				// }
 				return baseState;
 			}
 			setStyle = 'error';
@@ -250,7 +226,6 @@
 						return state.indented + indentUnit;
 					}
 				}
-				// if (context && context.noIndent) return CodeMirror.Pass;
 				if (state.tokenize !== inTag && state.tokenize !== inText) {
 					return fullLine ? fullLine.match(/^(\s*)/)[0].length : 0;
 				}
@@ -262,28 +237,16 @@
 						return state.tagStart + indentUnit * (config.multilineTagIndentFactor || 1);
 					}
 				}
-				// if (config.alignCDATA && /<!\[CDATA\[/.test(textAfter)) return 0;
 				var tagAfter = textAfter && /^\[(\/)?([\w_:\.-]*)/.exec(textAfter);
 				if (tagAfter && tagAfter[1]) { // Closing tag spotted
 					while (context) {
 						if (context.tagName === tagAfter[2]) {
 							context = context.prev;
 							break;
-						// } else if (config.implicitlyClosed.hasOwnProperty(context.tagName)) {
-						// 	context = context.prev;
 						} else {
 							break;
 						}
 					}
-				// } else if (tagAfter) { // Opening tag spotted
-				// 	while (context) {
-				// 		// var grabbers = config.contextGrabbers[context.tagName];
-				// 		// if (grabbers && grabbers.hasOwnProperty(tagAfter[2])) {
-				// 		// 	context = context.prev;
-				// 		// } else {
-				// 			break;
-				// 		// }
-				// 	}
 				}
 				while (context && context.prev && !context.startOfLine) {
 					context = context.prev;
@@ -294,9 +257,6 @@
 					return state.baseIndent || 0;
 				}
 			},
-
-			// configuration: 'shortcode',
-			// helperType: 'shortcode',
 
 			skipAttribute: function (state) {
 				if (state.state === attrValueState) state.state = attrState;
