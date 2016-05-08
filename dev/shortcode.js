@@ -13,10 +13,10 @@
 	'use strict';
 
 	var shortcodeConfig = {
-		autoSelfClosers: {},
-		implicitlyClosed: {},
-		contextGrabbers: {},
-		doNotIndent: {},
+		// autoSelfClosers: {},
+		// implicitlyClosed: {},
+		// contextGrabbers: {},
+		// doNotIndent: {},
 		allowUnquoted: true,
 		allowMissing: true,
 		caseFold: true
@@ -91,27 +91,27 @@
 			this.tagName = tagName;
 			this.indent = state.indented;
 			this.startOfLine = startOfLine;
-			if (config.doNotIndent.hasOwnProperty(tagName) || (state.context && state.context.noIndent)) this.noIndent = true;
+			// if (config.doNotIndent.hasOwnProperty(tagName) || (state.context && state.context.noIndent)) this.noIndent = true;
 		}
 
 		function popContext (state) {
 			if (state.context) state.context = state.context.prev;
 		}
 
-		function maybePopContext (state, nextTagName) {
-			var parentTagName;
-			while (true) {
-				if (!state.context) {
-					return;
-				}
-				parentTagName = state.context.tagName;
-				if (!config.contextGrabbers.hasOwnProperty(parentTagName) ||
-						!config.contextGrabbers[parentTagName].hasOwnProperty(nextTagName)) {
-					return;
-				}
-				popContext(state);
-			}
-		}
+		// function maybePopContext (state, nextTagName) {
+		// 	var parentTagName;
+		// 	while (true) {
+		// 		if (!state.context) {
+		// 			return;
+		// 		}
+		// 		parentTagName = state.context.tagName;
+		// 		if (!config.contextGrabbers.hasOwnProperty(parentTagName) ||
+		// 				!config.contextGrabbers[parentTagName].hasOwnProperty(nextTagName)) {
+		// 			return;
+		// 		}
+		// 		popContext(state);
+		// 	}
+		// }
 
 		function baseState (type, stream, state) {
 			if (type === 'openTag') {
@@ -137,12 +137,11 @@
 
 		function closeTagNameState (type, stream, state) {
 			if (type === 'word') {
-				// console.log(state.context);
 				var tagName = stream.current();
 				state.tagName = tagName; // need this for wordpresspost.js
-				if (state.context && state.context.tagName !== tagName && config.implicitlyClosed.hasOwnProperty(state.context.tagName)) {
-					popContext(state);
-				}
+				// if (state.context && state.context.tagName !== tagName && config.implicitlyClosed.hasOwnProperty(state.context.tagName)) {
+				// 	popContext(state);
+				// }
 				if ((state.context && state.context.tagName === tagName) || config.matchClosing === false) {
 					setStyle = 'tag';
 					return closeState;
@@ -183,10 +182,11 @@
 				var tagName = state.tagName;
 				var tagStart = state.tagStart;
 				state.tagName = state.tagStart = null;
-				if (type === 'selfcloseTag' || config.autoSelfClosers.hasOwnProperty(tagName)) {
-					maybePopContext(state, tagName);
+				// if (type === 'selfcloseTag' || config.autoSelfClosers.hasOwnProperty(tagName)) {
+				if (type === 'selfcloseTag') {
+					// maybePopContext(state, tagName);
 				} else {
-					maybePopContext(state, tagName);
+					// maybePopContext(state, tagName);
 					state.context = new Context(state, tagName, tagStart === state.indented);
 				}
 				return baseState;
@@ -250,7 +250,7 @@
 						return state.indented + indentUnit;
 					}
 				}
-				if (context && context.noIndent) return CodeMirror.Pass;
+				// if (context && context.noIndent) return CodeMirror.Pass;
 				if (state.tokenize !== inTag && state.tokenize !== inText) {
 					return fullLine ? fullLine.match(/^(\s*)/)[0].length : 0;
 				}
@@ -269,21 +269,21 @@
 						if (context.tagName === tagAfter[2]) {
 							context = context.prev;
 							break;
-						} else if (config.implicitlyClosed.hasOwnProperty(context.tagName)) {
-							context = context.prev;
+						// } else if (config.implicitlyClosed.hasOwnProperty(context.tagName)) {
+						// 	context = context.prev;
 						} else {
 							break;
 						}
 					}
-				} else if (tagAfter) { // Opening tag spotted
-					while (context) {
-						var grabbers = config.contextGrabbers[context.tagName];
-						if (grabbers && grabbers.hasOwnProperty(tagAfter[2])) {
-							context = context.prev;
-						} else {
-							break;
-						}
-					}
+				// } else if (tagAfter) { // Opening tag spotted
+				// 	while (context) {
+				// 		// var grabbers = config.contextGrabbers[context.tagName];
+				// 		// if (grabbers && grabbers.hasOwnProperty(tagAfter[2])) {
+				// 		// 	context = context.prev;
+				// 		// } else {
+				// 			break;
+				// 		// }
+				// 	}
 				}
 				while (context && context.prev && !context.startOfLine) {
 					context = context.prev;
