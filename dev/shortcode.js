@@ -1,5 +1,15 @@
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
 // Distributed under an MIT license: http://codemirror.net/LICENSE
+// shortcode spec: https://codex.wordpress.org/Shortcode_API
+// TODO: escaped shortcodes: [[shortcode]content[/shortcode]]
+// TODO: no square brackets in attribute values
+// TODO: shorcode name my not contain []<>&/'" space,linefeed,tab non-printingcharacters:(\x00 - \x20)
+// TODO: attribute names my only contain:
+//       * Upper-case and lower-case letters: A-Z a-z
+//       * Digits: 0-9
+//       * Underscore: _
+//       * Hyphen: - (Not allowed before version 4.3.0)
+// TODO: define optional allowed list of shortcodes - if wordpress allows printing all registered shortcodes
 
 (function (mod) {
 	if (typeof exports === 'object' && typeof module === 'object') { // CommonJS
@@ -45,7 +55,6 @@
 			var ch = stream.next();
 			if (ch === ']' || (ch === '/' && stream.eat(']'))) {
 				state.tokenize = inText;
-				// type = ch === ']' ? 'endTag' : 'selfcloseTag';
 				type = 'endTag';
 				return 'tag bracket';
 			} else if (ch === '=') {
@@ -156,15 +165,11 @@
 			if (type === 'word') {
 				setStyle = 'attribute';
 				return attrEqState;
-			// } else if (type === 'endTag' || type === 'selfcloseTag') {
 			} else if (type === 'endTag') {
 				var tagName = state.tagName;
 				var tagStart = state.tagStart;
 				state.tagName = state.tagStart = null;
-				// if (type === 'selfcloseTag') {
-				// } else {
-					state.context = new Context(state, tagName, tagStart === state.indented);
-				// }
+				state.context = new Context(state, tagName, tagStart === state.indented);
 				return baseState;
 			}
 			setStyle = 'error';

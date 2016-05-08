@@ -1,5 +1,6 @@
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
 // Distributed under an MIT license: http://codemirror.net/LICENSE
+// TODO: add support for <!--more--> as meta: https://codex.wordpress.org/Customizing_the_Read_More
 
 (function (mod) {
 	if (typeof exports === 'object' && typeof module === 'object') { // CommonJS
