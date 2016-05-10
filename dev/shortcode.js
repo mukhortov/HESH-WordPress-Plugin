@@ -76,7 +76,6 @@
 		function inTag (stream, state) {
 			var ch = stream.next();
 			if (ch === ']' || (ch === '/' && stream.eat(']'))) {
-				console.log(stream.peek());
 				state.tokenize = inText;
 				type = 'endTag';
 				return 'tag bracket';

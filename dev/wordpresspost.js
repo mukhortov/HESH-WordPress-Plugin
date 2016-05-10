@@ -31,8 +31,14 @@
 			state.isInShortcode = true;
 			var style = shortcodeMode.token(stream, state.shortcodeState);
 			var inText = state.shortcodeState.tokenize.isInText;
-			if (inText && !/^\[/.test(stream.current())) {
+			var inEscape = state.shortcodeState.tokenize.isInEscape;
+			if (inText) {
 				state.token = htmlmixedToken;
+			} else if (inEscape && /\]/.test(stream.current())) {
+				var cur = stream.current();
+				var open = cur.search(/\]/);
+				stream.backUp(cur.length - open - 1);
+				if (stream.peek() !== ']') state.token = htmlmixedToken;
 			}
 			return style;
 		}
