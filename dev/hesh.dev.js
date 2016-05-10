@@ -17,7 +17,7 @@
  * Version: 1.6.9
 */
 
-(function (CodeMirror, CodeMirrorCSS, wpLink, wpActiveEditor, switchEditors) {
+// (function (CodeMirror, CodeMirrorCSS, wpLink, wpActiveEditor, switchEditors) {
 
 	function heshPlugin () {
 
@@ -329,4 +329,4 @@
 		window.attachEvent('onload', heshPlugin);
 	}
 
-})(CodeMirror, CodeMirrorCSS, wpLink, wpActiveEditor, switchEditors);
+// })(CodeMirror, CodeMirrorCSS, wpLink, wpActiveEditor, switchEditors);
