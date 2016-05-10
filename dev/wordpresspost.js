@@ -30,7 +30,7 @@
 		function shortcodeToken (stream, state) {
 			state.isInShortcode = true;
 			var style = shortcodeMode.token(stream, state.shortcodeState);
-			var inText = state.shortcodeState.tagName === null;
+			var inText = state.shortcodeState.tokenize.isInText;
 			if (inText && !/^\[/.test(stream.current())) {
 				state.token = htmlmixedToken;
 			}
@@ -40,7 +40,7 @@
 		function htmlmixedToken (stream, state) {
 			state.isInShortcode = false;
 			var style = htmlmixedMode.token(stream, state.htmlmixedState);
-			var inText = state.htmlmixedState.htmlState.tagName === null;
+			var inText = state.htmlmixedState.htmlState.tokenize.isInText;
 			if (inText && /\[/.test(stream.current()) && !state.htmlmixedState.localState && style === null) {
 				var cur = stream.current();
 				var open = cur.search(/\[/);

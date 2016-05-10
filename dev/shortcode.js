@@ -4,12 +4,14 @@
 // TODO: escaped shortcodes: [[shortcode]content[/shortcode]]
 // TODO: no square brackets in attribute values
 // TODO: shorcode name my not contain []<>&/'" space,linefeed,tab non-printingcharacters:(\x00 - \x20)
+// TODO: don't count brackets followed by a space
 // TODO: attribute names my only contain:
 //       * Upper-case and lower-case letters: A-Z a-z
 //       * Digits: 0-9
 //       * Underscore: _
 //       * Hyphen: - (Not allowed before version 4.3.0)
 // TODO: define optional allowed list of shortcodes - if wordpress allows printing all registered shortcodes
+//       link: http://wordpress.stackexchange.com/questions/45755/organizing-shortcodes-how-to-display-all-of-them-and-their-attributes
 
 (function (mod) {
 	if (typeof exports === 'object' && typeof module === 'object') { // CommonJS
@@ -41,6 +43,12 @@
 		function inText (stream, state) {
 			var ch = stream.next();
 			if (ch === '[') {
+				if (stream.peek() === '[') {
+					// stream.eat('[');
+					state.tokenize = inEscape;
+					return 'comment';
+				}
+				if (/\s/.test(stream.peek())) return null;
 				type = stream.eat('/') ? 'closeTag' : 'openTag';
 				state.tokenize = inTag;
 				return 'tag bracket';
@@ -51,9 +59,24 @@
 		}
 		inText.isInText = true;
 
+		function inEscape (stream, state) {
+			var inEscapeFinal = function (stream, state) {
+				stream.next();
+				state.tokenize = inText;
+				return 'comment';
+			};
+			inEscapeFinal.isInEscape = true;
+			var ch = stream.next();
+			if (ch === ']' && stream.peek() === ']') state.tokenize = inEscapeFinal;
+			stream.eatWhile(/[^\]]/);
+			return null;
+		}
+		inEscape.isInEscape = true;
+
 		function inTag (stream, state) {
 			var ch = stream.next();
 			if (ch === ']' || (ch === '/' && stream.eat(']'))) {
+				console.log(stream.peek());
 				state.tokenize = inText;
 				type = 'endTag';
 				return 'tag bracket';
@@ -202,7 +225,7 @@
 					indented: baseIndent || 0,
 					tagName: null,
 					tagStart: null,
-					context: null
+					context: null,
 				};
 				if (baseIndent != null) state.baseIndent = baseIndent;
 				return state;
