@@ -323,11 +323,11 @@
 		}
 	}
 
-	// TODO: todo add async compliance here
-	if (window.addEventListener) {
-		window.addEventListener('load', heshPlugin, false);
-	} else if (window.attachEvent) {
-		window.attachEvent('onload', heshPlugin);
+	if (document.readyState !== 'complete') {
+		if (window.addEventListener) window.addEventListener('load', heshPlugin, false);
+		else if (window.attachEvent) window.attachEvent('onload', heshPlugin);
+	} else {
+		heshPlugin();
 	}
 
 })(document, window, window.CodeMirror, CodeMirrorCSS, window.wpLink, window.wpActiveEditor, window.switchEditors);
