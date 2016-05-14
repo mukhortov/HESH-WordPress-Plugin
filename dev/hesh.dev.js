@@ -17,7 +17,7 @@
  * Version: 1.6.9
 */
 
-// (function (CodeMirror, CodeMirrorCSS, wpLink, wpActiveEditor, switchEditors) {
+(function (document, window, CodeMirror, CodeMirrorCSS, wpLink, wpActiveEditor, switchEditors) {
 
 	function heshPlugin () {
 
@@ -323,10 +323,11 @@
 		}
 	}
 
+	// TODO: todo add async compliance here
 	if (window.addEventListener) {
 		window.addEventListener('load', heshPlugin, false);
 	} else if (window.attachEvent) {
 		window.attachEvent('onload', heshPlugin);
 	}
 
-// })(CodeMirror, CodeMirrorCSS, wpLink, wpActiveEditor, switchEditors);
+})(document, window, window.CodeMirror, window.CodeMirrorCSS, window.wpLink, window.wpActiveEditor, window.switchEditors);

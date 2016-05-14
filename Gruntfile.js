@@ -1,4 +1,6 @@
 module.exports = function (grunt) {
+	// TODO: Split CodeMirror into its ownfile
+	// TODO: pull codepen css
 
 	var cssGulp = 'node_modules/codemirror/theme/**/*.css';
 

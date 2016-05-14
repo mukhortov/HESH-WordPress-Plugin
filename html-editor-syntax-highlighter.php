@@ -14,31 +14,52 @@
  * GitHub Branch:      master
  **/
 
-if(preg_match('#' . basename(__FILE__) . '#', $_SERVER['PHP_SELF'])) {
+if (preg_match('#' . basename(__FILE__) . '#', $_SERVER['PHP_SELF'])) {
 	die('You are not allowed to call this page directly.');
 }
 
 define('HESH_LIBS', plugins_url('/lib/',__FILE__));
 
 class wp_html_editor_syntax {
-	public function __construct() {
-		add_action('admin_enqueue_scripts' , array(&$this,'admin_enqueue_scripts'));
+
+	public function __construct () {
+		if (!$this->is_editor()) return;
+		add_action('admin_enqueue_scripts', array(&$this, 'admin_enqueue_scripts'));
+		add_action('after_wp_tiny_mce', array(&$this, 'custom_after_wp_tiny_mce'));
 	}
-	public function admin_enqueue_scripts() {
-		if (!$this->is_editor())
-			return;
+
+	/**
+	 * Enqueues scripts for
+	 * hesh.js cannot be loaded here becasue it is dependent on TinyMCE
+	 */
+	public function admin_enqueue_scripts () {
+		// TODO: Split CodeMirror into its ownfile and enqueue it seperately
 		wp_enqueue_style('heshcss', HESH_LIBS.'hesh.min.css');
-		wp_enqueue_script('heshjs', HESH_LIBS.'hesh.js', array(), false, true);
+		// wp_enqueue_script('heshjs', HESH_LIBS.'hesh.js', array('tiny_mce'), false, true); // tiny_mce dependency doesn't work?!
 	}
-	private function is_editor(){
-		if (!strstr($_SERVER['SCRIPT_NAME'], 'post.php') && !strstr($_SERVER['SCRIPT_NAME'], 'post-new.php')) {
+
+	/**
+	 * Adds scripts dependent on TinyMCE
+	 * @link http://wordpress.stackexchange.com/questions/76195/enqueue-script-after-tinymce-initialized
+	 */
+	public function custom_after_wp_tiny_mce () {
+		print('<script type="text/javascript" src="'.HESH_LIBS.'hesh.js"></script>');
+	}
+
+	/**
+	 * returns whether or not the current page is a post editing admin page
+	 */
+	private function is_editor () {
+		if (!strstr($_SERVER['SCRIPT_NAME'], 'post.php') &&
+			!strstr($_SERVER['SCRIPT_NAME'], 'post-new.php'))
 			return false;
-		}
 		return true;
 	}
+
 }
 
 if (is_admin()) {
 	$hesh = new wp_html_editor_syntax();
 }
+
 ?>
