@@ -148,7 +148,6 @@
 		function closeTagNameState (type, stream, state) {
 			if (type === 'word') {
 				var tagName = stream.current();
-				state.tagName = tagName; // need this for wordpresspost.js
 				if ((state.context && state.context.tagName === tagName) || config.matchClosing === false) {
 					setStyle = 'tag';
 					return closeState;
@@ -172,7 +171,6 @@
 				setStyle = 'error';
 				return closeState;
 			}
-			state.tagName = null; // need this for wordpresspost.js
 			popContext(state);
 			return baseState;
 		}
