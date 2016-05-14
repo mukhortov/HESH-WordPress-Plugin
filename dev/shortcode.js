@@ -219,7 +219,7 @@
 					indented: baseIndent || 0,
 					tagName: null,
 					tagStart: null,
-					context: null,
+					context: null
 				};
 				if (baseIndent != null) state.baseIndent = baseIndent;
 				return state;

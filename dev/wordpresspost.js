@@ -55,8 +55,23 @@
 					state.shortcodeState = CodeMirror.startState(shortcodeMode, htmlmixedMode.indent(state.htmlmixedState, ''));
 				}
 				state.token = shortcodeToken;
+			} else if (inText && /<!\-\-more|<!\-\-noteaser\-\->/.test(stream.current()) && !state.htmlmixedState.localState && style === 'comment') {
+				stream.backUp(stream.current().length);
+				state.token = moreToken;
 			}
 			return style;
+		}
+
+		function moreToken (stream, state) {
+			if (stream.match('<!--more')) {
+				return 'meta';
+			} else if (stream.match('-->') || stream.match('<!--noteaser-->')) {
+				state.token = htmlmixedToken;
+				return 'meta';
+			} else {
+				stream.eatWhile(/[^\-/]/);
+				return 'string';
+			}
 		}
 
 		return {
