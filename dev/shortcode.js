@@ -1,8 +1,6 @@
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
 // Distributed under an MIT license: http://codemirror.net/LICENSE
 // shortcode spec: https://codex.wordpress.org/Shortcode_API
-// TODO: define optional allowed list of shortcodes - if wordpress allows printing all registered shortcodes
-//       link: http://wordpress.stackexchange.com/questions/45755/organizing-shortcodes-how-to-display-all-of-them-and-their-attributes
 
 (function (mod) {
 	if (typeof exports === 'object' && typeof module === 'object') { // CommonJS
@@ -132,7 +130,7 @@
 		function tagNameState (type, stream, state) {
 			if (type === 'word') {
 				var cur = stream.current();
-				if (/[\[\]<>&\/\'\"]/.test(cur)) {
+				if (/[\[\]\/\'\"<>&]/.test(cur)) {
 					setStyle = 'error';
 				} else {
 					state.tagName = stream.current();
