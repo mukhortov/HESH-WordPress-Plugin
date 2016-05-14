@@ -29,7 +29,8 @@
       "CodeMirrorCSS",
       "wpLink",
       "wpActiveEditor",
-      "switchEditors"
+      "switchEditors",
+	  "define"
     ]
   }
 }

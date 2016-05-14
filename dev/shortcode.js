@@ -97,17 +97,15 @@
 		}
 
 		function inAttribute (quote) {
-			var quoteRegEx = new RegExp(quote);
-			var quoteBracketsRegEx = new RegExp('[^\\[\\]\\\'\\\"]');
 			var closure = function (stream, state) {
 				var ch = stream.next();
 				if (ch === quote) {
 					state.tokenize = inTag;
 					return 'string';
 				} else if (/[\[\]]/.test(ch)) {
-					return 'error';
+					return 'string error';
 				} else {
-					stream.eatWhile(quoteBracketsRegEx);
+					stream.eatWhile(/[^\[\]\'\"]/);
 					return 'string';
 				}
 			};
