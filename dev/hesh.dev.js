@@ -18,6 +18,7 @@
 */
 
 (function (document, window, CodeMirror, CodeMirrorCSS, wpLink, wpActiveEditor, switchEditors) {
+	'use strict';
 
 	function heshPlugin () {
 
