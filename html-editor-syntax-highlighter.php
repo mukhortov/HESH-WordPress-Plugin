@@ -25,7 +25,7 @@ class wp_html_editor_syntax {
 	public function __construct () {
 		if (!$this->is_editor()) return;
 		add_action('admin_enqueue_scripts', array(&$this, 'admin_enqueue_scripts'));
-		add_action('after_wp_tiny_mce', array(&$this, 'custom_after_wp_tiny_mce'));
+		// add_action('after_wp_tiny_mce', array(&$this, 'custom_after_wp_tiny_mce'));
 	}
 
 	/**
@@ -35,7 +35,7 @@ class wp_html_editor_syntax {
 	public function admin_enqueue_scripts () {
 		// TODO: Split CodeMirror into its ownfile and enqueue it seperately
 		wp_enqueue_style('heshcss', HESH_LIBS.'hesh.min.css');
-		// wp_enqueue_script('heshjs', HESH_LIBS.'hesh.js', array('tiny_mce'), false, true); // tiny_mce dependency doesn't work?!
+		wp_enqueue_script('heshjs', HESH_LIBS.'hesh.js', array('editor'), false, true); // tiny_mce dependency doesn't work?!
 	}
 
 	/**
