@@ -1,13 +1,12 @@
-
-@import "../.temp/codemirror";
-/* Concatenate and minify the file above with the rest of css and save as hesh.min.css */
-
 /*!
  * Plugin Name:  HTML Editor Syntax Highlighter
  * Author:       Peter Mukhortov
  * Author URI:   http://mukhortov.com/
  * Version:      1.6.10
 */
+
+@import "../.temp/codemirror";
+/* Concatenate and minify the file above with the rest of css and save as hesh.min.css */
 
 .CodeMirror {
 	font-family: Menlo Regular, Consolas, Monaco, monospace;
@@ -40,13 +39,25 @@
 }
 
 .quicktags-toolbar input#cm_content_fullscreen,
-#ed_toolbar input.cm_ed_button {
+#ed_toolbar input.cm_ed_button
+{
 	display: inline-block !important;
 }
+
 .CodeMirror-matchingbracket {
-	background-color: #fff490;
+	position: relative;
 	color: inherit !important;
-	box-shadow: 0px 0px 5px #fff490;
+	text-decoration: none !important;
+	&:after{
+		content: '';
+		position: absolute;
+		right:  0;
+		bottom: -2px;
+		left:   0;
+		height: 1px;
+		background-color: #fff490;
+		background-color: currentColor;
+	}
 }
 
 .cm-s-mbo .CodeMirror-matchingbracket {
@@ -128,7 +139,6 @@
 		height: 75%!important;
 	}
 }
-
 
 // Styles for WP 4+
 .wp-editor-expand {
