@@ -1,13 +1,6 @@
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
 // Distributed under an MIT license: http://codemirror.net/LICENSE
 // shortcode spec: https://codex.wordpress.org/Shortcode_API
-// TODO: no square brackets in attribute values
-// TODO: shorcode name my not contain []<>&/'" space,linefeed,tab non-printingcharacters:(\x00 - \x20)
-// TODO: attribute names may only contain:
-//       * Upper-case and lower-case letters: A-Z a-z
-//       * Digits: 0-9
-//       * Underscore: _
-//       * Hyphen: - (Not allowed before version 4.3.0)
 // TODO: define optional allowed list of shortcodes - if wordpress allows printing all registered shortcodes
 //       link: http://wordpress.stackexchange.com/questions/45755/organizing-shortcodes-how-to-display-all-of-them-and-their-attributes
 
@@ -42,7 +35,6 @@
 			var ch = stream.next();
 			if (ch === '[') {
 				if (stream.peek() === '[') {
-					// stream.eat('[');
 					state.tokenize = inEscape;
 					return 'comment';
 				}
@@ -139,8 +131,13 @@
 
 		function tagNameState (type, stream, state) {
 			if (type === 'word') {
-				state.tagName = stream.current();
-				setStyle = 'tag';
+				var cur = stream.current();
+				if (/[\[\]<>&\/\'\"]/.test(cur)) {
+					setStyle = 'error';
+				} else {
+					state.tagName = stream.current();
+					setStyle = 'tag';
+				}
 				return attrState;
 			} else {
 				setStyle = 'error';
@@ -186,7 +183,8 @@
 
 		function attrState (type, _stream, state) {
 			if (type === 'word') {
-				setStyle = 'attribute';
+				if (!/^[a-z0-9_\-]+$/i.test(_stream.current())) setStyle = 'error';
+				else setStyle = 'attribute';
 				return attrEqState;
 			} else if (type === 'endTag') {
 				var tagName = state.tagName;
