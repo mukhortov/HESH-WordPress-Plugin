@@ -330,4 +330,4 @@
 		window.attachEvent('onload', heshPlugin);
 	}
 
-})(document, window, window.CodeMirror, window.CodeMirrorCSS, window.wpLink, window.wpActiveEditor, window.switchEditors);
+})(document, window, window.CodeMirror, CodeMirrorCSS, window.wpLink, window.wpActiveEditor, window.switchEditors);
