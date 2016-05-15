@@ -94,13 +94,18 @@
 }
 
 #cm_select_theme{
-	max-width: 80px;
+	max-width: 7em;
+	// text-overflow: ellipsis; // dang!
 }
 
 // FF hack
 @-moz-document url-prefix() {
-	#cm_font_size {
-		margin-top: 4px;
+	#cm_font_size, #cm_select_theme {
+		-moz-appearance:none;
+		text-indent: 0.01px;
+		&:active{
+			transform: unset; // fixes dropdown
+		}
 	}
 }
 // webkit hack

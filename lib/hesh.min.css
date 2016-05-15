@@ -5846,12 +5846,16 @@ THE SOFTWARE.
 }
 
 #cm_select_theme {
-  max-width: 80px;
+  max-width: 7em;
 }
 
 @-moz-document url-prefix() {
-  #cm_font_size {
-    margin-top: 4px;
+  #cm_font_size, #cm_select_theme {
+    -moz-appearance: none;
+    text-indent: 0.01px;
+  }
+  #cm_font_size:active, #cm_select_theme:active {
+    transform: unset;
   }
 }
 @media screen and (-webkit-min-device-pixel-ratio: 0) {

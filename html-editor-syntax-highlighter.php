@@ -1,17 +1,25 @@
 <?php
 /**
+ *
+ * @since              1.0.0
+ * @package            HESH_plugin
+ *
  * Plugin Name:        HTML Editor Syntax Highlighter - DEV
  * Plugin URI:         http://wordpress.org/extend/plugins/html-editor-syntax-highlighter/
- * Description:        Syntax Highlighting in WordPress HTML Editor
+ * Description:        Adds syntax highlighting in the WordPress post HTML/text editor using Codemirror.js
  * Text Domain:        html-editor-syntax-highlighter
  * Author:             Petr Mukhortov
  * Author URI:         http://mukhortov.com/
+ * Author:             James Bradford
+ * Author URI:         http://arniebradfo.com/
+ * License:            GPL-2.0+
+ * License URI:        http://www.gnu.org/licenses/gpl-2.0.txt
+ * GitHub Branch:      master
+ * GitHub Plugin URI:  https://github.com/arniebradfo/HESH-WordPress-Plugin
  * Version:            1.6.10
  * Requires at least:  3.3
  * Tested up to:       4.3.1
  * Stable tag:         1.6.10
- * GitHub Plugin URI:  https://github.com/arniebradfo/HESH-WordPress-Plugin
- * GitHub Branch:      master
  **/
 
 if (preg_match('#' . basename(__FILE__) . '#', $_SERVER['PHP_SELF'])) {
