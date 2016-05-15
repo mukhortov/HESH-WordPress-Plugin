@@ -1,6 +1,6 @@
 {
   "name": "HESH-WordPress-Plugin",
-  "version": "1.7.0.1",
+  "version": "1.7.0",
   "description": "Syntax Highlighting in WordPress HTML Editor",
   "repository": {
     "type": "git",
@@ -20,6 +20,7 @@
     "grunt-contrib-sass": "^1.0.0",
     "grunt-contrib-uglify": "^1.0.1",
     "grunt-contrib-watch": "^1.0.0",
+    "grunt-dev-update": "^2.0.0",
     "grunt-filenames-to-json": "^0.1.2",
     "grunt-json": "^0.2.0"
   },
@@ -30,7 +31,7 @@
       "wpLink",
       "wpActiveEditor",
       "switchEditors",
-	  "define"
+      "define"
     ]
   }
 }

@@ -2,7 +2,7 @@ module.exports = function (grunt) {
 	// TODO: Split CodeMirror into its ownfile
 	// TODO: pull codepen css
 
-	var cssGulp = 'node_modules/codemirror/theme/**/*.css';
+	var cssGlob = 'node_modules/codemirror/theme/**/*.css';
 
 	// Project configuration.
 	grunt.initConfig({
@@ -37,7 +37,7 @@ module.exports = function (grunt) {
 			css: {
 				src: [
 					'node_modules/codemirror/lib/codemirror.css',
-					cssGulp
+					cssGlob
 				],
 				dest: '.temp/codemirror.scss'
 			}
@@ -55,8 +55,8 @@ module.exports = function (grunt) {
 			options: {
 				style: 'expanded' // nested, compact, compressed, expanded
 			},
-			files: {
-				'lib/hesh.min.css': 'dev/hesh.dev.scss' // syntax is - 'destination':'source'
+			files: { // syntax is - 'destination':'source'
+				'lib/hesh.min.css': 'dev/hesh.dev.scss'
 			}
 		}
 		},
@@ -66,7 +66,7 @@ module.exports = function (grunt) {
 				fullPath: false, // true if full path should be included, default is false
 				extensions: false // true if file extension should be included, default is false
 			},
-			files: cssGulp, // any valid glob
+			files: cssGlob, // any valid glob
 			destination: '.temp/Themes.json' // path to write json to
 		},
 
@@ -78,10 +78,6 @@ module.exports = function (grunt) {
 					processName: function (filename) {
 						return filename;
 					}
-					// processContent: function(content) {
-					// 	content.myVar = 'myVal';
-					// 	return content;
-					// }
 				},
 				src: ['.temp/Themes.json'],
 				dest: '.temp/CodeMirrorCSS.js'
@@ -103,6 +99,14 @@ module.exports = function (grunt) {
 					spawn: false
 				}
 			}
+		},
+
+		devUpdate: {
+			main: {
+				options: {
+					updateType: 'prompt'
+				}
+			}
 		}
 
 	});
@@ -113,6 +117,7 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks('grunt-filenames-to-json');
 	grunt.loadNpmTasks('grunt-json');
 	grunt.loadNpmTasks('grunt-contrib-watch');
+	grunt.loadNpmTasks('grunt-dev-update');
 
 	grunt.registerTask(
 		'default', [
