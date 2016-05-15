@@ -5859,8 +5859,9 @@ THE SOFTWARE.
   }
 }
 @media screen and (-webkit-min-device-pixel-ratio: 0) {
-  #cm_font_size {
+  #cm_font_size, #cm_select_theme {
     height: inherit;
+    width: auto;
     font-size: 10px;
   }
 }
