@@ -1,6 +1,14 @@
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
 // Distributed under an MIT license: http://codemirror.net/LICENSE
-// shortcode spec: https://codex.wordpress.org/Shortcode_API
+/**
+ * @name         CodeMirror Shortcode Mode
+ * @description  WordPress shortcode syntax highlighting for CodeMirror
+ * @author       James Bradford
+ * @link         http://arniebradfo.com
+ * @license      MIT
+ *
+ * derived from the CodeMirror xml mode
+**/
 
 (function (mod) {
 	if (typeof exports === 'object' && typeof module === 'object') { // CommonJS
@@ -18,6 +26,10 @@
 		allowMissing: true,
 		caseFold: true
 	};
+
+	/**
+	 * @link https://codex.wordpress.org/Shortcode_API
+	**/
 
 	CodeMirror.defineMode('shortcode', function (editorConf, config_) {
 		var indentUnit = editorConf.indentUnit;

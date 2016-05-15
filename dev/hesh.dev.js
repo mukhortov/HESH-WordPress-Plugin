@@ -1,20 +1,11 @@
-// Codemirror v4.1 JS files:
-// 'node_modules/codemirror/lib/codemirror.js',
-// 'node_modules/codemirror/mode/css/css.js',
-// 'node_modules/codemirror/mode/htmlmixed/htmlmixed.js',
-// 'node_modules/codemirror/mode/javascript/javascript.js',
-// 'node_modules/codemirror/xml/xml.js',
-// 'node_modules/codemirror/selection/active-line.js',
-// 'node_modules/codemirror/edit/matchbrackets.js',
-
-// Concatenate and minify all the files above with the rest of code and save as hesh.min.js
-// TODO: switcheditors is not defined on Win10-chrome
-
-/*
- * Plugin Name: HTML Editor Syntax Highlighter
- * Author: Petr Mukhortov
- * Author URI: http://mukhortov.com/
- * Version: 1.6.9
+/**
+ * @name     HTML Editor Syntax Highlighter
+ * @author   Petr Mukhortov
+ * @link     http://mukhortov.com/
+ * @since    1.7.0.1
+ *
+ * TODO: switcheditors is not defined on Win10-chrome
+ * TODO: test ie & edge
 */
 
 (function (document, window, CodeMirror, CodeMirrorCSS, wpLink, wpActiveEditor, switchEditors) {

@@ -1,16 +1,16 @@
 === HTML Editor Syntax Highlighter ===
-Contributors: nixdns
+Contributors: nixdns, James Bradford
 Donate link: https://www.paypal.me/mukhortov/5
-Tags: html editor, syntax highlighter, plugin editor, syntax, highlighting, syntax highlighting, text editor, editor, text editor syntax, editor, editor syntax
+Tags: editor, html editor, text editor, post editor, syntax, highlighting, highlighter, syntax highlighting, syntax highlighter, codemirror, code, code highlighter, code coloring
 Requires at least: 3.3
-Tested up to: 4.3.1
-Stable tag: 1.6.9
+Tested up to: 4.5.2
+Stable tag: 1.7.0.1
 
 Add syntax highlighting to the HTML editor.
 
 == Description ==
 
- Add syntax highlighting to the Post/Page HTML editor.
+Add syntax highlighting to the Post/Page HTML editor.
 
 = Features =
 
@@ -58,11 +58,11 @@ If you like the plugin, please [donate](https://www.paypal.me/mukhortov/5) and l
 = 1.6.0 =
 * You can change font size in the editor
 * Fixed issue with restoring cursor position
-* Updated CodeMirror library 
+* Updated CodeMirror library
 * Some minor improvements
 
 = 1.5.0 =
-* Updated CodeMirror library 
+* Updated CodeMirror library
 * Some minor improvements
 
 = 1.4.8 =
@@ -98,11 +98,11 @@ If you like the plugin, please [donate](https://www.paypal.me/mukhortov/5) and l
 = 1.4.0 =
 * New fullscreen mode
 * Remembers tab state
-* Editor resize handler 
+* Editor resize handler
 * Code refactoring and minification for better loading performance
 
 = 1.3.2 =
-* Updated CodeMirror library 
+* Updated CodeMirror library
 * Increased loading performance
 * Match brackets
 

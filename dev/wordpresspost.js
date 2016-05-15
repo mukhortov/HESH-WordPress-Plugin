@@ -1,6 +1,14 @@
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
 // Distributed under an MIT license: http://codemirror.net/LICENSE
-// TODO: add support for <!--more--> as meta: https://codex.wordpress.org/Customizing_the_Read_More
+/**
+ * @name         CodeMirror WordPress Post Editor Mode
+ * @description  Combines htmlmixed with the WordPress' shortcode syntax for use in the WordPress post text editor
+ * @author       James Bradford
+ * @link         http://arniebradfo.com
+ * @license      MIT
+ *
+ * derived from the CodeMirror htmlmixed mode
+**/
 
 (function (mod) {
 	if (typeof exports === 'object' && typeof module === 'object') { // CommonJS
