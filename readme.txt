@@ -4,7 +4,7 @@ Donate link: https://www.paypal.me/mukhortov/5
 Tags: editor, html editor, text editor, post editor, syntax, highlighting, highlighter, syntax highlighting, syntax highlighter, codemirror, code, code highlighter, code coloring
 Requires at least: 3.3
 Tested up to: 4.5.2
-Stable tag: 1.7.0.1
+Stable tag: 1.7.0
 
 Add syntax highlighting to the HTML editor.
 

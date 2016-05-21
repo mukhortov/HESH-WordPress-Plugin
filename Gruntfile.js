@@ -9,14 +9,8 @@ module.exports = function (grunt) {
 		pkg: grunt.file.readJSON('package.json'),
 
 		concat: {
-			// codemirror: {
-			//
-			// },
 			js: {
 				src: [
-					// codemirror core
-					// 'node_modules/codemirror/lib/codemirror.js',
-
 					// addons
 					'node_modules/codemirror/addon/edit/matchbrackets.js',
 					'node_modules/codemirror/addon/selection/active-line.js',
@@ -65,23 +59,15 @@ module.exports = function (grunt) {
 					'lib/codemirror.min.css': '.temp/codemirror.scss'
 				}
 			}
-			// codemirror: {
-			// 	options: {
-			// 		style: 'compressed'
-			// 	},
-			// 	files: {
-			// 		'lib/codemirror.scss': '.temp/codemirror.scss'
-			// 	}
-			// }
 		},
 
 		filenamesToJson: {
 			options: {
-				fullPath: false, // true if full path should be included, default is false
-				extensions: false // true if file extension should be included, default is false
+				fullPath: false,
+				extensions: false
 			},
-			files: cssGlob, // any valid glob
-			destination: '.temp/Themes.json' // path to write json to
+			files: cssGlob,
+			destination: '.temp/Themes.json'
 		},
 
 		json: {

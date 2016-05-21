@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * @since              1.7.0.1
+ * @since              1.7.0
  * @package            HESH_plugin
  *
  * Plugin Name:        HTML Editor Syntax Highlighter - DEV
@@ -16,10 +16,10 @@
  * License URI:        http://www.gnu.org/licenses/gpl-2.0.txt
  * GitHub Branch:      master
  * GitHub Plugin URI:  https://github.com/arniebradfo/HESH-WordPress-Plugin
- * Version:            1.7.0.1
+ * Version:            1.7.0
  * Requires at least:  3.3
- * Tested up to:       4.3.1
- * Stable tag:         1.7.0.1
+ * Tested up to:       4.5.2
+ * Stable tag:         1.7.0
  **/
 
 if (preg_match('#' . basename(__FILE__) . '#', $_SERVER['PHP_SELF'])) {
@@ -33,14 +33,9 @@ class wp_html_editor_syntax {
 	public function __construct () {
 		if (!$this->is_editor()) return;
 		add_action('admin_enqueue_scripts', array(&$this, 'admin_enqueue_scripts'));
-		// add_action('after_wp_tiny_mce', array(&$this, 'custom_after_wp_tiny_mce'));
 	}
 
-	/**
-	 * Enqueues scripts for
-	 * hesh.js cannot be loaded here becasue it is dependent on TinyMCE
-	 * TODO: Split CodeMirror into its ownfile and enqueue it seperately
-	 */
+	// Enqueues scripts and styles for hesh.js
 	public function admin_enqueue_scripts () {
 		wp_enqueue_style('codemirror', HESH_LIBS.'codemirror.min.css');
 		wp_enqueue_style('heshcss', HESH_LIBS.'hesh.min.css');
@@ -50,17 +45,7 @@ class wp_html_editor_syntax {
 		wp_enqueue_script('heshjs');
 	}
 
-	/**
-	 * Adds scripts dependent on TinyMCE
-	 * @link http://wordpress.stackexchange.com/questions/76195/enqueue-script-after-tinymce-initialized
-	 */
-	public function custom_after_wp_tiny_mce () {
-		print('<script type="text/javascript" src="'.HESH_LIBS.'hesh.js"></script>');
-	}
-
-	/**
-	 * returns whether or not the current page is a post editing admin page
-	 */
+	// returns whether or not the current page is a post editing admin page
 	private function is_editor () {
 		if (!strstr($_SERVER['SCRIPT_NAME'], 'post.php') &&
 			!strstr($_SERVER['SCRIPT_NAME'], 'post-new.php'))
