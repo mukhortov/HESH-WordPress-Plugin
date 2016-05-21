@@ -9,15 +9,17 @@ module.exports = function (grunt) {
 		pkg: grunt.file.readJSON('package.json'),
 
 		concat: {
+			// codemirror: {
+			//
+			// },
 			js: {
 				src: [
 					// codemirror core
-					'node_modules/codemirror/lib/codemirror.js',
+					// 'node_modules/codemirror/lib/codemirror.js',
 
 					// addons
 					'node_modules/codemirror/addon/edit/matchbrackets.js',
 					'node_modules/codemirror/addon/selection/active-line.js',
-					// 'node_modules/codemirror/addon/mode/simple.js',
 
 					// modes
 					'node_modules/codemirror/mode/xml/xml.js',
@@ -29,10 +31,9 @@ module.exports = function (grunt) {
 
 					// and the wp stuff
 					'.temp/CodeMirrorCSS.js',
-					// 'dev/simplemode.js',
 					'dev/hesh.dev.js'
 				],
-				dest: 'lib/hesh.js'
+				dest: '.temp/hesh.js'
 			},
 			css: {
 				src: [
@@ -44,21 +45,34 @@ module.exports = function (grunt) {
 		},
 
 		uglify: {
-			build: {
-				src: 'lib/hesh.js',
+			hesh: {
+				src: '.temp/hesh.js',
 				dest: 'lib/hesh.min.js'
+			},
+			codemirror: {
+				src: 'node_modules/codemirror/lib/codemirror.js',
+				dest: 'lib/codemirror.min.js'
 			}
 		},
 
 		sass: {
-		dist: {
-			options: {
-				style: 'expanded' // nested, compact, compressed, expanded
-			},
-			files: { // syntax is - 'destination':'source'
-				'lib/hesh.min.css': 'dev/hesh.dev.scss'
+			dist: {
+				options: {
+					style: 'compressed' // nested, compact, compressed, expanded
+				},
+				files: { // 'destination':'source'
+					'lib/hesh.min.css': 'dev/hesh.dev.scss',
+					'lib/codemirror.min.css': '.temp/codemirror.scss'
+				}
 			}
-		}
+			// codemirror: {
+			// 	options: {
+			// 		style: 'compressed'
+			// 	},
+			// 	files: {
+			// 		'lib/codemirror.scss': '.temp/codemirror.scss'
+			// 	}
+			// }
 		},
 
 		filenamesToJson: {

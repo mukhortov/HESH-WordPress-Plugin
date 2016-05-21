@@ -5,8 +5,7 @@
  * Version:      1.7.0.1
 */
 
-@import "../.temp/codemirror";
-/* Concatenate and minify the file above with the rest of css and save as hesh.min.css */
+// @import "../.temp/codemirror";
 
 .CodeMirror {
 	font-family: Menlo Regular, Consolas, Monaco, monospace;
@@ -108,13 +107,19 @@
 		}
 	}
 }
-// webkit hack
-@media screen and (-webkit-min-device-pixel-ratio: 0) {
-	#cm_font_size, #cm_select_theme {
-		height: inherit;
-		font-size: 10px;
+@media screen and (max-width: 782px) {
+	select#cm_font_size, select#cm_select_theme {
+		font-size: 14px;
+		height: auto;
 	}
 }
+// webkit hack
+// @media screen and (-webkit-min-device-pixel-ratio: 0) {
+// 	#cm_font_size, #cm_select_theme {
+// 		height: inherit;
+// 		font-size: 10px;
+// 	}
+// }
 
 .heshFullscreen {
 	z-index: 99999;

@@ -33,17 +33,21 @@ class wp_html_editor_syntax {
 	public function __construct () {
 		if (!$this->is_editor()) return;
 		add_action('admin_enqueue_scripts', array(&$this, 'admin_enqueue_scripts'));
-		add_action('after_wp_tiny_mce', array(&$this, 'custom_after_wp_tiny_mce'));
+		// add_action('after_wp_tiny_mce', array(&$this, 'custom_after_wp_tiny_mce'));
 	}
 
 	/**
 	 * Enqueues scripts for
 	 * hesh.js cannot be loaded here becasue it is dependent on TinyMCE
+	 * TODO: Split CodeMirror into its ownfile and enqueue it seperately
 	 */
 	public function admin_enqueue_scripts () {
-		// TODO: Split CodeMirror into its ownfile and enqueue it seperately
+		wp_enqueue_style('codemirror', HESH_LIBS.'codemirror.min.css');
 		wp_enqueue_style('heshcss', HESH_LIBS.'hesh.min.css');
-		// wp_enqueue_script('heshjs', HESH_LIBS.'hesh.js', array('editor'), false, true); // tiny_mce dependency doesn't work?!
+		wp_register_script('codemirror', HESH_LIBS.'codemirror.min.js', false, false, true);
+		wp_enqueue_script('codemirror');
+		wp_register_script('heshjs', HESH_LIBS.'hesh.min.js', array('codemirror'), false, true); // 'tiny_mce' dependency doesn't work?!
+		wp_enqueue_script('heshjs');
 	}
 
 	/**
