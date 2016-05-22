@@ -2,10 +2,9 @@
  * @name     HTML Editor Syntax Highlighter
  * @author   Petr Mukhortov
  * @link     http://mukhortov.com/
+ * @author   James Bradford
+ * @link     http://arniebradfo.com/
  * @since    1.7.0
- *
- * TODO: switcheditors is not defined on Win10-chrome
- * TODO: test ie & edge
 */
 
 (function (document, window, CodeMirror, CodeMirrorCSS, wpLink, wpActiveEditor, switchEditors) {

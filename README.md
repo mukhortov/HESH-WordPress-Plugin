@@ -23,15 +23,20 @@ Please report any issues or suggestions.
 ##Changelog
 
 ###1.7.0
-* Ctrl-S saving will now select "Save Draft" if the post has not been published yet
+* Ctrl-S / Cmd-S saving will now select "Save Draft" if the post has not been published yet
 * Switched to an [npm](https://www.npmjs.com/) and [grunt.js](http://gruntjs.com/) based build so new versions of CodeMirror can be applied easier
+* Updated CodeMirror to its latest version
 * Fixed FireFox bug: `<select>` dropdown would not display
 * Fixed bug: toolbar covering text at small screen widths
+* Updated Css for wp 4.5
 * Added all available CodeMirror themes
-* Added syntax highlighting for WordPress shortcodes - _NEW_ CodeMirror mode: `shortcode.js`
-* Added syntax highlighting for `<!--more-->` tags and their variants  - _NEW_ CodeMirror mode: `wordpresspost.js`
-* Now calling `hesh.js` in an anonymous wrapper so it pollute the global namespace
-* refactored php to enqueue javascript scripts in a wordpress friendly way
+* Added syntax highlighting:
+	- for WordPress shortcodes
+	- for `<!--more-->` tags and their variants
+	- _NEW_ CodeMirror modes: `shortcode.js` & `wordpresspost.js`
+* Now calling `hesh.js` in an anonymous wrapper so it won't pollute the global namespace
+* Now initializing `hesh.js` in an async compliant way
+* Refactored php to enqueue javascript in the WordPress friendly way
 * Tested with WordPress 4.5.2
 * Tested in all modern desktop browsers
 

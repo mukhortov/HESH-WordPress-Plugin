@@ -1,6 +1,5 @@
 module.exports = function (grunt) {
-	// TODO: Split CodeMirror into its ownfile
-	// TODO: pull codepen css
+	// TODO: pull codepen.io css
 
 	var cssGlob = 'node_modules/codemirror/theme/**/*.css';
 
@@ -14,7 +13,6 @@ module.exports = function (grunt) {
 					// addons
 					'node_modules/codemirror/addon/edit/matchbrackets.js',
 					'node_modules/codemirror/addon/selection/active-line.js',
-
 					// modes
 					'node_modules/codemirror/mode/xml/xml.js',
 					'node_modules/codemirror/mode/javascript/javascript.js',
@@ -22,7 +20,6 @@ module.exports = function (grunt) {
 					'node_modules/codemirror/mode/htmlmixed/htmlmixed.js',
 					'dev/wordpresspost.js',
 					'dev/shortcode.js',
-
 					// and the wp stuff
 					'.temp/CodeMirrorCSS.js',
 					'dev/hesh.dev.js'
