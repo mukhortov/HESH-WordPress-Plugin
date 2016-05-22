@@ -146,3 +146,4 @@ Initial release.
 * themes that match the current WordPess admin theme
 * support for adding content from the "Add Media" button
 * use WordPess native buttons for adding html tags
+* read [bugs](https://wordpress.org/support/plugin/html-editor-syntax-highlighter) and add more TODOs
