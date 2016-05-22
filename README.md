@@ -26,8 +26,9 @@ Please report any issues or suggestions.
 * Ctrl-S / Cmd-S saving will now select "Save Draft" if the post has not been published yet
 * Switched to an [npm](https://www.npmjs.com/) and [grunt.js](http://gruntjs.com/) based build so new versions of CodeMirror can be applied easier
 * Updated CodeMirror to its latest version
-* Fixed FireFox bug: `<select>` dropdown would not display
-* Fixed bug: toolbar covering text at small screen widths
+* Fixed FireFox bug: `<select>` dropdown would not display due to `::active` state `transform` property
+* Fixed bug: toolbar covering text at small screen width
+* Fixed bug: `switchEditors is undefined`
 * Updated Css for wp 4.5
 * Added all available CodeMirror themes
 * Added syntax highlighting:
