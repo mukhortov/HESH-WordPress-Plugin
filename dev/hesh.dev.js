@@ -65,8 +65,8 @@
 		options.theme = getCookie('hesh_plugin_theme') || 'material';
 
 		var runEditor = function () {
-			addButtons();
 			editor = CodeMirror.fromTextArea(target, options);
+			addButtons();
 
 			// Save changes to the textarea on the fly
 			editor.on('change', function () {
@@ -248,13 +248,8 @@
 		};
 
 		var changeFontSize = function () {
-			var heshStyle = document.getElementById('hesh-style');
-			var style = '.CodeMirror {font-size: ' + fontSize + 'px !important;}';
-			if (heshStyle) {
-				heshStyle.innerHTML = style;
-			} else {
-				document.getElementsByTagName('head')[0].insertAdjacentHTML('beforeend', '<style id="hesh-style">' + style + '</style>');
-			}
+			document.getElementsByClassName('CodeMirror')[0].style.fontSize = fontSize + 'px';
+			editor.refresh();
 		};
 
 		var fontSizeSwitcher = function () {
@@ -276,10 +271,6 @@
 			selector.onchange = function () {
 				fontSize = this.value;
 				changeFontSize();
-				// Dirty Fix // fix for what?
-				// editor.toTextArea();
-				// runEditor();
-				// editor.focus();
 				document.cookie = 'hesh_plugin_font_size=' + fontSize;
 			};
 		};
@@ -318,5 +309,4 @@
 	} else {
 		heshPlugin();
 	}
-
 })(document, window, window.CodeMirror, CodeMirrorCSS, window.wpLink, window.wpActiveEditor, window.switchEditors);
