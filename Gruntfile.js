@@ -31,7 +31,7 @@ module.exports = function (grunt) {
 					'node_modules/codemirror/lib/codemirror.css',
 					cssGlob
 				],
-				dest: '.temp/codemirror.scss'
+				dest: '.temp/codemirror.css'
 			}
 		},
 
@@ -46,14 +46,19 @@ module.exports = function (grunt) {
 			}
 		},
 
-		sass: {
+		less: {
 			dist: {
-				options: {
-					style: 'compressed' // nested, compact, compressed, expanded
-				},
-				files: { // 'destination':'source'
-					'lib/hesh.min.css': 'dev/hesh.dev.scss',
-					'lib/codemirror.min.css': '.temp/codemirror.scss'
+				files: {
+					'.temp/hesh.css': 'dev/hesh.dev.less'
+				}
+			}
+		},
+
+		cssmin: {
+			css: {
+				files: {
+					'lib/hesh.min.css': '.temp/hesh.css',
+					'lib/codemirror.min.css': '.temp/codemirror.css'
 				}
 			}
 		},
@@ -90,8 +95,8 @@ module.exports = function (grunt) {
 				}
 			},
 			css: {
-				files: ['dev/*.scss'],
-				tasks: ['concat:css', 'sass'],
+				files: ['dev/*.less'],
+				tasks: ['concat:css', 'less'],
 				options: {
 					spawn: false
 				}
@@ -110,7 +115,8 @@ module.exports = function (grunt) {
 
 	grunt.loadNpmTasks('grunt-contrib-concat');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
-	grunt.loadNpmTasks('grunt-contrib-sass');
+	grunt.loadNpmTasks('grunt-contrib-less');
+	grunt.loadNpmTasks('grunt-contrib-cssmin');
 	grunt.loadNpmTasks('grunt-filenames-to-json');
 	grunt.loadNpmTasks('grunt-json');
 	grunt.loadNpmTasks('grunt-contrib-watch');
@@ -122,7 +128,8 @@ module.exports = function (grunt) {
 			'json',
 			'concat',
 			'uglify',
-			'sass'
+			'less',
+			'cssmin'
 		]
 	);
 
