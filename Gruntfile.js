@@ -96,7 +96,7 @@ module.exports = function (grunt) {
 			},
 			css: {
 				files: ['dev/*.less'],
-				tasks: ['concat:css', 'less'],
+				tasks: ['concat:css', 'less', 'cssmin'],
 				options: {
 					spawn: false
 				}
