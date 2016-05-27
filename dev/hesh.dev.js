@@ -11,7 +11,6 @@
 	'use strict';
 
 	function heshPlugin () {
-
 		var editor = null;
 		var isOn = 0;
 		var buttonsAdded = 0;
@@ -202,11 +201,11 @@
 			var hwrap = document.getElementById('wp-content-wrap');
 			var offsetTop = target.getBoundingClientRect().top;
 			var move = function (e) {
-					e = e || window.event; // IE fix
-					var height = (e.pageY || e.clientY + document.body.scrollTop + document.documentElement.scrollTop) - offsetTop;
-					target.style.height = (height > 10 ? height : 10) + 'px';
-					window.getSelection().removeAllRanges(); // disable selection on resize
-				};
+				e = e || window.event; // IE fix
+				var height = (e.pageY || e.clientY + document.body.scrollTop + document.documentElement.scrollTop) - offsetTop;
+				target.style.height = (height > 10 ? height : 10) + 'px';
+				window.getSelection().removeAllRanges(); // disable selection on resize
+			};
 			handle.className = 'content-resize-handle';
 			hwrap.appendChild(handle);
 			handle.onmousedown = function () {
@@ -277,11 +276,10 @@
 			selector.onchange = function () {
 				fontSize = this.value;
 				changeFontSize();
-				// Dirty Fix
-				editor.toTextArea();
-				runEditor();
-				editor.focus();
-
+				// Dirty Fix // fix for what?
+				// editor.toTextArea();
+				// runEditor();
+				// editor.focus();
 				document.cookie = 'hesh_plugin_font_size=' + fontSize;
 			};
 		};

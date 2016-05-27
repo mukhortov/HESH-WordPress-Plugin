@@ -39,7 +39,7 @@ Please report any issues or suggestions.
 * Now initializing `hesh.js` in an async compliant way
 * Refactored php to enqueue javascript in the WordPress friendly way
 * Tested with WordPress 4.5.2
-* Tested in all modern desktop browsers
+* Tested in all modern desktop browsers on OSX and Windows 10
 
 ###1.6.9
 * Fixed issues with switching editor modes in WP 4.3

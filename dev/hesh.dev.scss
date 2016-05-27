@@ -160,7 +160,7 @@
 			position: relative;
 			z-index: 1;
 			margin-top: 35px ;
-			height: auto;
+			// height: auto; // causes CodeMirror scroll not to fill the entire height
 			min-height: 500px;
 		}
 		.heshFullscreen {
