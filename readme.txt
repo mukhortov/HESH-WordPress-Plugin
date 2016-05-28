@@ -30,7 +30,7 @@ If you like the plugin, please [donate](https://www.paypal.me/mukhortov/5) and l
 
 == Changelog ==
 
-=1.7.0=
+= 1.7.0 =
 * Ctrl-S / Cmd-S saving will now select "Save Draft" if the post has not been published yet
 * Switched to an [npm](https://www.npmjs.com/) and [grunt.js](http://gruntjs.com/) based build so new versions of CodeMirror can be applied easier
 * Updated CodeMirror to its latest version
