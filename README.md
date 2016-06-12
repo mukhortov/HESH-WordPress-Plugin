@@ -144,6 +144,7 @@ Initial release.
 
 
 ##TODOs:
+* [spellcheck](https://wordpress.org/support/topic/trying-to-enable-spell-check-inside-the-editor?replies=5)
 * add image previews
 * more options
 	- indenting: size and tabs/spaces
