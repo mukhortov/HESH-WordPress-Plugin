@@ -24,7 +24,7 @@ module.exports = function (grunt) {
 					'.temp/CodeMirrorCSS.js',
 					'dev/hesh.dev.js'
 				],
-				dest: 'lib/hesh.js'
+				dest: '.temp/hesh.js'
 			},
 			css: {
 				src: [
@@ -37,7 +37,7 @@ module.exports = function (grunt) {
 
 		uglify: {
 			hesh: {
-				src: 'lib/hesh.js',
+				src: '.temp/hesh.js',
 				dest: 'lib/hesh.min.js'
 			},
 			codemirror: {

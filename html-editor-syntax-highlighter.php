@@ -41,7 +41,7 @@ class wp_html_editor_syntax {
 		wp_enqueue_style('heshcss', HESH_LIBS.'hesh.min.css', false, self::version());
 		wp_register_script('codemirror', HESH_LIBS.'codemirror.min.js', false, self::version(), true);
 		wp_enqueue_script('codemirror');
-		wp_register_script('heshjs', HESH_LIBS.'hesh.js', array('codemirror'), self::version(), true); // 'tiny_mce' dependency doesn't work?!
+		wp_register_script('heshjs', HESH_LIBS.'hesh.min.js', array('codemirror'), self::version(), true); // 'tiny_mce' dependency doesn't work?!
 		wp_enqueue_script('heshjs');
 	}
 
