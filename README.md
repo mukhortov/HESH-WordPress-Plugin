@@ -22,6 +22,11 @@ Please report any issues or suggestions.
 
 ##Changelog
 
+###1.7.1
+* fixed bug: return key would create two new lines and ignore indent
+* fixed bug: wp native "Add Media" button was not working
+* added version string to .css and .js resources for cache-busting purposes
+
 ###1.7.0
 * Ctrl-S / Cmd-S saving will now select "Save Draft" if the post has not been published yet
 * Switched to an [npm](https://www.npmjs.com/) and [grunt.js](http://gruntjs.com/) based build so new versions of CodeMirror can be applied easier
@@ -139,6 +144,7 @@ Initial release.
 
 
 ##TODOs:
+* [spellcheck](https://wordpress.org/support/topic/trying-to-enable-spell-check-inside-the-editor?replies=5)
 * add image previews
 * more options
 	- indenting: size and tabs/spaces

@@ -4,16 +4,16 @@
  * @link     http://mukhortov.com/
  * @author   James Bradford
  * @link     http://arniebradfo.com/
- * @since    1.7.0
+ * @since    1.7.1
 */
 
-(function (document, window, CodeMirror, CodeMirrorCSS, wpLink, wpActiveEditor, switchEditors) {
+(function (document, window, CodeMirror, CodeMirrorCSS, wpLink, switchEditors) {
 	'use strict';
 
 	function heshPlugin () {
 		var editor = null;
-		var isOn = 0;
-		var buttonsAdded = 0;
+		var isOn = false;
+		var buttonsAdded = false;
 		var target = document.getElementById('content');
 		var postID = document.getElementById('post_ID') != null ? document.getElementById('post_ID').value : 0;
 		var tab_html = document.getElementById('content-html');
@@ -88,8 +88,8 @@
 			}
 
 			resizeEditor();
-			addMedia();
-			isOn = 1;
+			remapAddMedia();
+			isOn = true;
 
 			updateTabBarPaddings();
 			window.addEventListener('resize', windowResized);
@@ -146,7 +146,7 @@
 				themeSwitcher();
 				fontSizeSwitcher();
 				fullscreen();
-				buttonsAdded = 1;
+				buttonsAdded = true;
 			}
 		};
 
@@ -181,7 +181,7 @@
 				if (switchEditors.switchto) switchEditors.switchto(this);
 				editor.toTextArea();
 				tab_html.onclick = toHTML;
-				isOn = 0;
+				isOn = false;
 				window.removeEventListener('resize', windowResized);
 			}
 		};
@@ -191,7 +191,6 @@
 				if (switchEditors.switchto) switchEditors.switchto(this);
 				window.setTimeout(runEditor, 300);
 				tab_tmce.onclick = toVisual;
-				// addMedia();
 			}
 		};
 
@@ -275,19 +274,17 @@
 			};
 		};
 
-		var addMedia = function () {
-			// We want to do it only oncs
-			if (!window.send_to_editor_wp) {
-				var send_to_editor = function (media) {
-					if (isOn && wpActiveEditor === 'content') {
-						editor.replaceSelection(media);
-						editor.save();
-					} else {
-						window.send_to_editor_wp(media);
-					}
-				};
-				window.send_to_editor_wp = send_to_editor;
-			}
+		var remapAddMedia = function () {
+			window.send_to_editor_wp = window.send_to_editor; // remap wp native func
+			var send_to_editor = function (html) {
+				if (isOn && window.wpActiveEditor === 'content') {
+					editor.replaceSelection(html);
+					editor.save();
+				} else {
+					window.send_to_editor_wp(html);
+				}
+			};
+			window.send_to_editor = send_to_editor;
 		};
 
 		// Initialise //
@@ -309,4 +306,4 @@
 	} else {
 		heshPlugin();
 	}
-})(document, window, window.CodeMirror, CodeMirrorCSS, window.wpLink, window.wpActiveEditor, window.switchEditors);
+})(document, window, window.CodeMirror, CodeMirrorCSS, window.wpLink, window.switchEditors);

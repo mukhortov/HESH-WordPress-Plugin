@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * @since              1.7.0
+ * @since              1.7.1
  * @package            HESH_plugin
  *
  * Plugin Name:        HTML Editor Syntax Highlighter
@@ -16,41 +16,40 @@
  * License URI:        http://www.gnu.org/licenses/gpl-2.0.txt
  * GitHub Branch:      master
  * GitHub Plugin URI:  https://github.com/mukhortov/HESH-WordPress-Plugin
- * Version:            1.7.0
- * Requires at least:  3.3
+ * Version:            1.7.1
+ * Requires at least:  4.0.11
  * Tested up to:       4.5.2
- * Stable tag:         1.7.0
+ * Stable tag:         1.7.1
  **/
 
-if (preg_match('#' . basename(__FILE__) . '#', $_SERVER['PHP_SELF'])) {
+if ( preg_match( '#' . basename(__FILE__) . '#', $_SERVER['PHP_SELF'] ) ) {
 	die('You are not allowed to call this page directly.');
 }
 
-define('HESH_LIBS', plugins_url('/lib/',__FILE__));
+define( 'HESH_LIBS', plugins_url( '/lib/', __FILE__ ) );
 
 class wp_html_editor_syntax {
 
 	public function __construct () {
-		if (!$this->is_editor()) return;
-		add_action('admin_enqueue_scripts', array(&$this, 'admin_enqueue_scripts'));
+		add_action( 'admin_enqueue_scripts', array(&$this, 'admin_enqueue_scripts' ) );
 	}
 
 	// Enqueues scripts and styles for hesh.js
 	public function admin_enqueue_scripts () {
-		wp_enqueue_style('codemirror', HESH_LIBS.'codemirror.min.css');
-		wp_enqueue_style('heshcss', HESH_LIBS.'hesh.min.css');
-		wp_register_script('codemirror', HESH_LIBS.'codemirror.min.js', false, false, true);
-		wp_enqueue_script('codemirror');
-		wp_register_script('heshjs', HESH_LIBS.'hesh.min.js', array('codemirror'), false, true); // 'tiny_mce' dependency doesn't work?!
-		wp_enqueue_script('heshjs');
-	}
 
-	// returns whether or not the current page is a post editing admin page
-	private function is_editor () {
-		if (!strstr($_SERVER['SCRIPT_NAME'], 'post.php') &&
-			!strstr($_SERVER['SCRIPT_NAME'], 'post-new.php'))
-			return false;
-		return true;
+		if ( !post_type_supports( get_post_type(), 'editor' ) ) return;
+		$ver = get_plugin_data( __FILE__ )['Version'];
+
+		wp_enqueue_style( 'codemirror', HESH_LIBS.'codemirror.min.css', false, $ver );
+
+		wp_enqueue_style( 'heshcss', HESH_LIBS.'hesh.min.css', false, $ver );
+
+		wp_register_script( 'codemirror', HESH_LIBS.'codemirror.min.js', false, $ver, true );
+		wp_enqueue_script( 'codemirror' );
+
+		wp_register_script( 'heshjs', HESH_LIBS.'hesh.min.js', array('codemirror'), $ver, true );
+		wp_enqueue_script( 'heshjs' );
+
 	}
 
 }
