@@ -1,10 +1,12 @@
 === HTML Editor Syntax Highlighter ===
-Contributors: nixdns, James Bradford
+Contributors: nixdns, arniebradfo, collinprice
 Donate link: https://www.paypal.me/mukhortov/5
 Tags: editor, html editor, text editor, post editor, syntax, highlighting, highlighter, syntax highlighting, syntax highlighter, codemirror, code, code highlighter, code coloring
-Requires at least: 3.3
+Requires at least: 4.0.11
 Tested up to: 4.5.2
 Stable tag: 1.7.1
+License: GPL-2.0
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 Add syntax highlighting to the HTML editor.
 
@@ -15,13 +17,15 @@ Add syntax highlighting to the Post/Page HTML editor.
 = Features =
 
 * Syntax highlighting in the Post/Page HTML editor
+* _NEW:_ Syntax highlighting for WordPress shortcodes
 * Save your posts and pages pressing Ctrl+S (Cmd+S on Mac)
 * Restore cursor position after page is reloaded
-* Light and Dark editor colour themes
-* New fullscreen mode.
-* Toggle fullscreen mode with F11/Esc hotkeys
+* _NEW:_ Huge Selection of themes
+* Fullscreen mode: toggle with F11/Esc hotkeys
 
 If you like the plugin, please [donate](https://www.paypal.me/mukhortov/5) and leave a review :)
+
+If you would like to contribute to this plugin, view the [github repo](https://github.com/mukhortov/HESH-WordPress-Plugin).
 
 == Installation ==
 
