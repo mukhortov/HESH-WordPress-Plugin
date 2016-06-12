@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * @since              1.7.0
+ * @since              1.7.1
  * @package            HESH_plugin
  *
  * Plugin Name:        HTML Editor Syntax Highlighter - DEV
@@ -16,10 +16,10 @@
  * License URI:        http://www.gnu.org/licenses/gpl-2.0.txt
  * GitHub Branch:      master
  * GitHub Plugin URI:  https://github.com/arniebradfo/HESH-WordPress-Plugin
- * Version:            1.7.0
+ * Version:            1.7.1
  * Requires at least:  3.3
  * Tested up to:       4.5.2
- * Stable tag:         1.7.0
+ * Stable tag:         1.7.1
  **/
 
 if (preg_match('#' . basename(__FILE__) . '#', $_SERVER['PHP_SELF'])) {

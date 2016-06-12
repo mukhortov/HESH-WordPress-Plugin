@@ -4,7 +4,7 @@ Donate link: https://www.paypal.me/mukhortov/5
 Tags: editor, html editor, text editor, post editor, syntax, highlighting, highlighter, syntax highlighting, syntax highlighter, codemirror, code, code highlighter, code coloring
 Requires at least: 3.3
 Tested up to: 4.5.2
-Stable tag: 1.7.0
+Stable tag: 1.7.1
 
 Add syntax highlighting to the HTML editor.
 
@@ -29,6 +29,11 @@ If you like the plugin, please [donate](https://www.paypal.me/mukhortov/5) and l
 2. Activate the plugin on the 'Plugins' page
 
 == Changelog ==
+
+= 1.7.1 =
+* fixed bug: return key would create two new lines and ignore indent
+* fixed bug: wp native "Add Media" button was not working
+* added version string to .css and .js resources for cache-busting purposes
 
 = 1.7.0 =
 * Ctrl-S / Cmd-S saving will now select "Save Draft" if the post has not been published yet

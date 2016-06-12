@@ -4,7 +4,7 @@
  * @link     http://mukhortov.com/
  * @author   James Bradford
  * @link     http://arniebradfo.com/
- * @since    1.7.0
+ * @since    1.7.1
 */
 
 (function (document, window, CodeMirror, CodeMirrorCSS, wpLink, switchEditors) {
