@@ -144,7 +144,10 @@ Initial release.
 
 
 ##TODOs:
-* [spellcheck](https://wordpress.org/support/topic/trying-to-enable-spell-check-inside-the-editor?replies=5)
+* [don't reformat on editor switch](https://wordpress.org/support/topic/loses-schemaorg-data)
+	- incorporate the process of that other plugin
+	- give a checkbox option to turn it on and off
+* [spellcheck](https://wordpress.org/support/topic/trying-to-enable-spell-check-inside-the-editor)
 * add image previews
 * more options
 	- indenting: size and tabs/spaces
