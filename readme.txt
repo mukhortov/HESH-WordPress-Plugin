@@ -35,8 +35,9 @@ If you would like to contribute to this plugin, view the [github repo](https://g
 == Changelog ==
 
 = 1.7.2 =
-* fixed bug: code mirror not initializing properly when new user tries to edit post for the first time.
+* fixed bug: code mirror not initializing properly when new user tries to edit post for the first time
 * fixed bug: CodeMirror no longer trying to load on "All Post" and "All Pages"
+* fixed bug: Font and theme were reset to default when switching to the visual editor and back
 
 = 1.7.1 =
 * fixed bug: return key would create two new lines and ignore indent
