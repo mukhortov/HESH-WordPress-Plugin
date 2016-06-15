@@ -1,5 +1,5 @@
 === HTML Editor Syntax Highlighter ===
-Contributors: nixdns, arniebradfo, collinprice
+Contributors: nixdns, arniebradfo, rraub, collinprice,
 Donate link: https://www.paypal.me/mukhortov/5
 Tags: editor, html editor, text editor, post editor, syntax, highlighting, highlighter, syntax highlighting, syntax highlighter, codemirror, code, code highlighter, code coloring
 Requires at least: 4.0.11
@@ -8,11 +8,11 @@ Stable tag: 1.7.1
 License: GPL-2.0
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Add syntax highlighting to the HTML editor.
+Add syntax highlighting to the HTML editor using Codemirror.js
 
 == Description ==
 
-Add syntax highlighting to the Post/Page HTML editor.
+Add syntax highlighting in the WordPress Post & Page HTML/text editor using Codemirror.js
 
 = Features =
 
