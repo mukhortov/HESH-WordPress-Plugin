@@ -37,7 +37,11 @@ class wp_html_editor_syntax {
 	// Enqueues scripts and styles for hesh.js
 	public function admin_enqueue_scripts () {
 
-		if ( !post_type_supports( get_post_type(), 'editor' ) ) return;
+		// if ( !post_type_supports( get_post_type(), 'editor' ) ) return;
+		var_dump(get_post_type());
+		if (!strstr($_SERVER['SCRIPT_NAME'], 'post.php') &&
+			!strstr($_SERVER['SCRIPT_NAME'], 'post-new.php')) return;
+
 		$ver = get_plugin_data( __FILE__ )['Version'];
 
 		wp_enqueue_style( 'codemirror', HESH_LIBS.'codemirror.min.css', false, $ver );

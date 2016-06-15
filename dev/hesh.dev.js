@@ -18,7 +18,6 @@
 		var postID = document.getElementById('post_ID') != null ? document.getElementById('post_ID').value : 0;
 		var tab_html = document.getElementById('content-html');
 		var tab_tmce = document.getElementById('content-tmce');
-		// var visualEditorActive = document.cookie.indexOf('editor%3Dhtml') === -1;
 		var visualEditorActive = document.getElementById('wp-content-wrap').className.indexOf('tmce-active') > -1;
 		var visualEditorEnabled = document.getElementById('content-tmce') != null;
 		var toolbar = document.getElementById('ed_toolbar');
