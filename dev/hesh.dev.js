@@ -89,6 +89,8 @@
 
 			resizeEditor();
 			remapAddMedia();
+			changeFontSize();
+			editor.setOption('theme', options.theme);
 			isOn = true;
 
 			updateTabBarPaddings();
@@ -240,9 +242,9 @@
 			themeSelect += '</select>';
 			toolbar.insertAdjacentHTML('afterbegin', themeSelect);
 			document.getElementById('cm_select_theme').onchange = function () {
-				var theme = this.value;
-				editor.setOption('theme', theme);
-				document.cookie = 'hesh_plugin_theme=' + theme;
+				options.theme = this.value;
+				editor.setOption('theme', options.theme);
+				document.cookie = 'hesh_plugin_theme=' + options.theme;
 			};
 		};
 
