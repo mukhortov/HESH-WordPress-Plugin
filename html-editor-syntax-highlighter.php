@@ -40,7 +40,8 @@ class wp_html_editor_syntax {
 		if (!strstr($_SERVER['SCRIPT_NAME'], 'post.php') &&
 			!strstr($_SERVER['SCRIPT_NAME'], 'post-new.php')) return;
 
-		$ver = get_plugin_data( __FILE__ )['Version'];
+		$plugData = get_plugin_data( __FILE__ ); // need this temporary var to support versions of php < 5.4
+		$ver = $plugData['Version'];
 
 		wp_enqueue_style( 'codemirror', HESH_LIBS.'codemirror.min.css', false, $ver );
 
