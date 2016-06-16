@@ -149,7 +149,6 @@ Initial release.
 
 
 ##TODOs:
-* [add non-minified js and css?](https://wordpress.org/support/topic/add-non-minfied-javascript-and-css-files)
 * [don't reformat on editor switch](https://wordpress.org/support/topic/loses-schemaorg-data)
 	- incorporate the process of that other plugin
 	- give a checkbox option to turn it on and off
