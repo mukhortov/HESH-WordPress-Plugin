@@ -5,3 +5,10 @@ codemirror.scss
 .DS_Store
 .temp
 resources
+
+# stuff in the dev branch left out of master
+dev
+lib-expanded
+Gruntfile.js
+package.json
+# README.md
