@@ -24,24 +24,28 @@ module.exports = function (grunt) {
 					'.temp/CodeMirrorCSS.js',
 					'dev/hesh.dev.js'
 				],
-				dest: '.temp/hesh.js'
+				dest: 'dev-lib/hesh.js'
 			},
 			css: {
 				src: [
 					'node_modules/codemirror/lib/codemirror.css',
 					cssGlob
 				],
-				dest: '.temp/codemirror.css'
+				dest: 'dev-lib/codemirror.css'
+			},
+			codemirror: {
+				src: 'node_modules/codemirror/lib/codemirror.js',
+				dest: 'dev-lib/codemirror.js'
 			}
 		},
 
 		uglify: {
 			hesh: {
-				src: '.temp/hesh.js',
+				src: 'dev-lib/hesh.js',
 				dest: 'lib/hesh.min.js'
 			},
 			codemirror: {
-				src: 'node_modules/codemirror/lib/codemirror.js',
+				src: 'dev-lib/codemirror.js',
 				dest: 'lib/codemirror.min.js'
 			}
 		},
@@ -49,7 +53,7 @@ module.exports = function (grunt) {
 		less: {
 			dist: {
 				files: {
-					'.temp/hesh.css': 'dev/hesh.dev.less'
+					'dev-lib/hesh.css': 'dev/hesh.dev.less'
 				}
 			}
 		},
@@ -57,8 +61,8 @@ module.exports = function (grunt) {
 		cssmin: {
 			css: {
 				files: {
-					'lib/hesh.min.css': '.temp/hesh.css',
-					'lib/codemirror.min.css': '.temp/codemirror.css'
+					'lib/hesh.min.css': 'dev-lib/hesh.css',
+					'lib/codemirror.min.css': 'dev-lib/codemirror.css'
 				}
 			}
 		},
