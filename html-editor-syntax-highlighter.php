@@ -57,7 +57,7 @@ class wp_html_editor_syntax {
 
 }
 
-if (is_admin()) {
+if ( is_admin() ) {
 	$hesh = new wp_html_editor_syntax();
 }
 

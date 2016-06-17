@@ -1,7 +1,7 @@
 === HTML Editor Syntax Highlighter ===
-Contributors: nixdns, arniebradfo, rraub, collinprice,
+Contributors: nixdns, arniebradfo, rraub, collinprice
 Donate link: https://www.paypal.me/mukhortov/5
-Tags: editor, html editor, text editor, post editor, syntax, highlighting, highlighter, syntax highlighting, syntax highlighter, codemirror, code, code highlighter, code coloring
+Tags: editor, html editor, text editor, post editor, syntax, highlighting, highlighter, syntax highlighting, syntax highlighter, codemirror, codemirror.js, code, code highlighter, code coloring
 Requires at least: 4.0.11
 Tested up to: 4.5.2
 Stable tag: 1.7.1
@@ -35,8 +35,9 @@ If you would like to contribute to this plugin, view the [github repo](https://g
 == Changelog ==
 
 = 1.7.2 =
-* fixed bug: code mirror not initializing properly when new user tries to edit post for the first time
-* fixed bug: CodeMirror no longer trying to load on "All Post" and "All Pages"
+* fixed bug: pre v5.4 php was causing an error - `func_that_returns_array()['index']` syntax is [not allowed](http://php.net/manual/en/language.types.array.php#example-105)
+* fixed bug: CodeMirror not initializing properly when new user tries to edit post for the first time
+* fixed bug: CodeMirror no longer trying to load on "All Posts" and "All Pages"
 * fixed bug: Font and theme were reset to default when switching to the visual editor and back
 
 = 1.7.1 =
