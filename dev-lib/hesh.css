@@ -145,10 +145,6 @@
 .wp-editor-expand .html-active #qt_content_dfw {
   display: none;
 }
-.wp-editor-expand .content-resize-handle,
-.wp-editor-expand #content-resize-handle {
-  display: none !important;
-}
 .postarea:not(.wp-editor-expand) .CodeMirror {
   margin-top: 0 !important;
 }
