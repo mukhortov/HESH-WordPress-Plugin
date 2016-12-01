@@ -50,7 +50,7 @@ class wp_html_editor_syntax {
 		wp_register_script( 'codemirror', HESH_LIBS.'codemirror.min.js', false, $ver, true );
 		wp_enqueue_script( 'codemirror' );
 
-		wp_register_script( 'heshjs', HESH_LIBS.'hesh.min.js', array('codemirror'), $ver, true );
+		wp_register_script( 'heshjs', HESH_LIBS.'hesh.min.js', array('codemirror', 'editor'), $ver, true );
 		wp_enqueue_script( 'heshjs' );
 
 	}
