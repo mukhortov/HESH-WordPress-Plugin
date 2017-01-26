@@ -7,7 +7,14 @@
  * @since    1.7.2
 */
 
-(function (document, window, CodeMirror, CodeMirrorCSS, wpLink, switchEditors) {
+(function (
+	document,
+	window,
+	CodeMirror,
+	// CodeMirrorCSS,
+	wpLink,
+	switchEditors
+) {
 	'use strict';
 
 	function heshPlugin () {
@@ -40,10 +47,10 @@
 			electricChars: false,
 			extraKeys: {
 				'F11': function () {
-					toggleFullscreen();
+					// toggleFullscreen();
 				},
 				'Esc': function () {
-					toggleFullscreen();
+					// toggleFullscreen();
 				},
 				'Ctrl-S': function () {
 					publishButton.click();
@@ -89,7 +96,7 @@
 
 			resizeEditor();
 			remapAddMedia();
-			changeFontSize();
+			// changeFontSize();
 			editor.setOption('theme', options.theme);
 			isOn = true;
 
@@ -145,9 +152,9 @@
 					toolbar.insertAdjacentHTML('afterbegin', '<input type="button" id="cm_content_' + key + '" data-start=\'' + t[0] + '\' data-end=\'' + t[1] + '\' ' + t3 + ' class="ed_button button cm_ed_button" value="' + key + '">');
 					document.getElementById('cm_content_' + key).onclick = buttonClick;
 				}
-				themeSwitcher();
-				fontSizeSwitcher();
-				fullscreen();
+				// themeSwitcher();
+				// fontSizeSwitcher();
+				// fullscreen();
 				buttonsAdded = true;
 			}
 		};
@@ -218,63 +225,63 @@
 			};
 		};
 
-		var toggleFullscreen = function () {
-			fullscreenBox.className = fullscreenBox.className.indexOf(fullscreenClass) === -1 ? fullscreenBox.className + ' ' + fullscreenClass : fullscreenBox.className.replace(fullscreenClass, '');
-			// this.value = this.value == 'fullscreen' ? 'exit fullscreen' : 'fullscreen';
-			var btn = document.getElementById('cm_content_fullscreen');
-			btn.value = btn.value === 'fullscreen' ? 'exit fullscreen' : 'fullscreen';
-			editor.focus();
-			updateTabBarPaddings();
-		};
+		// var toggleFullscreen = function () {
+		// 	fullscreenBox.className = fullscreenBox.className.indexOf(fullscreenClass) === -1 ? fullscreenBox.className + ' ' + fullscreenClass : fullscreenBox.className.replace(fullscreenClass, '');
+		// 	// this.value = this.value == 'fullscreen' ? 'exit fullscreen' : 'fullscreen';
+		// 	var btn = document.getElementById('cm_content_fullscreen');
+		// 	btn.value = btn.value === 'fullscreen' ? 'exit fullscreen' : 'fullscreen';
+		// 	editor.focus();
+		// 	updateTabBarPaddings();
+		// };
 
-		var fullscreen = function () {
-			toolbar.insertAdjacentHTML('afterbegin', '<input type="button" id="cm_content_fullscreen" class="ed_button button" title="Toggle fullscreen mode" value="fullscreen">');
-			document.getElementById('cm_content_fullscreen').onclick = toggleFullscreen;
-		};
+		// var fullscreen = function () {
+		// 	toolbar.insertAdjacentHTML('afterbegin', '<input type="button" id="cm_content_fullscreen" class="ed_button button" title="Toggle fullscreen mode" value="fullscreen">');
+		// 	document.getElementById('cm_content_fullscreen').onclick = toggleFullscreen;
+		// };
 
-		var themeSwitcher = function () {
-			var themeSelect = '<select id="cm_select_theme" class="button" title="Change editor colour scheme">';
-			for (var key in CodeMirrorCSS.Themes) {
-				var csstheme = CodeMirrorCSS.Themes[key];
-				var selected = csstheme === options.theme ? ' selected ' : '';
-				themeSelect += '<option value="' + csstheme + '"' + selected + '>' + csstheme + '</option>';
-			}
-			themeSelect += '</select>';
-			toolbar.insertAdjacentHTML('afterbegin', themeSelect);
-			document.getElementById('cm_select_theme').onchange = function () {
-				options.theme = this.value;
-				editor.setOption('theme', options.theme);
-				document.cookie = 'hesh_plugin_theme=' + options.theme;
-			};
-		};
+		// var themeSwitcher = function () {
+		// 	var themeSelect = '<select id="cm_select_theme" class="button" title="Change editor colour scheme">';
+		// 	for (var key in CodeMirrorCSS.Themes) {
+		// 		var csstheme = CodeMirrorCSS.Themes[key];
+		// 		var selected = csstheme === options.theme ? ' selected ' : '';
+		// 		themeSelect += '<option value="' + csstheme + '"' + selected + '>' + csstheme + '</option>';
+		// 	}
+		// 	themeSelect += '</select>';
+		// 	toolbar.insertAdjacentHTML('afterbegin', themeSelect);
+		// 	document.getElementById('cm_select_theme').onchange = function () {
+		// 		options.theme = this.value;
+		// 		editor.setOption('theme', options.theme);
+		// 		document.cookie = 'hesh_plugin_theme=' + options.theme;
+		// 	};
+		// };
 
-		var changeFontSize = function () {
-			document.getElementsByClassName('CodeMirror')[0].style.fontSize = fontSize + 'px';
-			editor.refresh();
-		};
+		// var changeFontSize = function () {
+		// 	document.getElementsByClassName('CodeMirror')[0].style.fontSize = fontSize + 'px';
+		// 	editor.refresh();
+		// };
 
-		var fontSizeSwitcher = function () {
-			toolbar.insertAdjacentHTML('afterbegin',
-			'<select id="cm_font_size" class="button">' +
-				'<option value="10">10</option>' +
-				'<option value="11">11</option>' +
-				'<option value="12">12</option>' +
-				'<option value="13">13</option>' +
-				'<option value="14">14</option>' +
-				'<option value="16">16</option>' +
-				'<option value="18">18</option>' +
-				'<option value="20">20</option>' +
-				'<option value="22">22</option>' +
-			'</select>');
-			var selector = document.getElementById('cm_font_size');
-			changeFontSize();
-			selector.value = fontSize;
-			selector.onchange = function () {
-				fontSize = this.value;
-				changeFontSize();
-				document.cookie = 'hesh_plugin_font_size=' + fontSize;
-			};
-		};
+		// var fontSizeSwitcher = function () {
+		// 	toolbar.insertAdjacentHTML('afterbegin',
+		// 	'<select id="cm_font_size" class="button">' +
+		// 		'<option value="10">10</option>' +
+		// 		'<option value="11">11</option>' +
+		// 		'<option value="12">12</option>' +
+		// 		'<option value="13">13</option>' +
+		// 		'<option value="14">14</option>' +
+		// 		'<option value="16">16</option>' +
+		// 		'<option value="18">18</option>' +
+		// 		'<option value="20">20</option>' +
+		// 		'<option value="22">22</option>' +
+		// 	'</select>');
+		// 	var selector = document.getElementById('cm_font_size');
+		// 	changeFontSize();
+		// 	selector.value = fontSize;
+		// 	selector.onchange = function () {
+		// 		fontSize = this.value;
+		// 		changeFontSize();
+		// 		document.cookie = 'hesh_plugin_font_size=' + fontSize;
+		// 	};
+		// };
 
 		var remapAddMedia = function () {
 			window.send_to_editor_wp = window.send_to_editor; // remap wp native func
@@ -308,4 +315,11 @@
 	} else {
 		heshPlugin();
 	}
-})(document, window, window.CodeMirror, CodeMirrorCSS, window.wpLink, window.switchEditors);
+})(
+	document, 
+	window, 
+	window.CodeMirror, 
+	// CodeMirrorCSS, 
+	window.wpLink, 
+	window.switchEditors
+);
