@@ -1,10 +1,14 @@
 #TODOs
-- create options menu
-- re-add window fullscreen
-- build module loader
-  - in php
+- design options menu
+- dev options menu - just theme and fontsize
+  - add options that switch on the fly
+  - and save to user profile
 - save user options
   - in php
+- build module loader
+  - in php
+  - on the fly in js
+- re-add window fullscreen
 
 
 #HTML Editor Syntax Highlighter
@@ -27,6 +31,7 @@ If you are not a developer, please use the [HTML Editor Syntax Highlighter plugi
 ## Contributing
 
 Please report any issues or suggestions.
+- settings icon by Oksana Latysheva from [the noun project](https://thenounproject.com/)
 
 
 ##Changelog

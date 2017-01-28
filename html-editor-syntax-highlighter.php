@@ -58,6 +58,19 @@ class wp_html_editor_syntax {
 
 	}
 
+	// AJAX forms
+	// https://teamtreehouse.com/community/submitting-a-form-in-wordpress-using-ajax
+	// http://wordpress.stackexchange.com/questions/60758/how-to-handle-form-submission
+
+	// user settings
+	// https://developer.wordpress.org/plugins/users/working-with-user-metadata/
+	// https://codex.wordpress.org/Function_Reference/update_user_meta
+
+
+	public function setup_options() {
+		# code...
+	}
+
 }
 
 if ( is_admin() ) {

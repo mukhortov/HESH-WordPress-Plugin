@@ -31,6 +31,7 @@
 		var fullscreenClass = 'heshFullscreen';
 		var publishButton = document.getElementById('save-post') != null ? document.getElementById('save-post') : document.getElementById('publish');
 
+
 		var options = {
 			mode: 'wordpresspost',
 			tabMode: 'indent',
@@ -60,9 +61,11 @@
 			}
 		};
 
+
 		var matchTextAreaHeight = function () {
 			editor.getWrapperElement().style.height = editor.getTextArea().style.height
 		}
+
 
 		var runEditor = function () {
 			editor = CodeMirror.fromTextArea(target, options);
@@ -100,6 +103,7 @@
 			}
 		};
 
+
 		var toHTML = function () {
 			if (!isOn) {
 				if (switchEditors.switchto) switchEditors.switchto(this);
@@ -107,6 +111,7 @@
 				tab_tmce.onclick = toVisual;
 			}
 		};
+
 
 		// Initialise //
 		if (visualEditorEnabled && visualEditorActive) {
