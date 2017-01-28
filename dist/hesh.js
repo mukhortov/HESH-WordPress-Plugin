@@ -64,19 +64,8 @@
 			editor.getWrapperElement().style.height = editor.getTextArea().style.height
 		}
 
-		var getCookie = function (name) {
-			var value = '; ' + document.cookie;
-			var parts = value.split('; ' + name + '=');
-			if (parts.length === 2) return parts.pop().split(';').shift();
-		};
-
-		var fontSize = getCookie('hesh_plugin_font_size') || '12';
-
-		options.theme = getCookie('hesh_plugin_theme') || 'material';
-
 		var runEditor = function () {
 			editor = CodeMirror.fromTextArea(target, options);
-			// editor.style.height = editor.getTextArea().style.height
 
 			// Save changes to the textarea on the fly
 			editor.on('change', function () {
@@ -90,9 +79,14 @@
 				}
 			}, 50);
 
-			resizeEditor();
+			document.getElementById('content-resize-handle').addEventListener('mousedown', function () {
+				document.addEventListener('mousemove', matchTextAreaHeight);
+			});
+			document.addEventListener('mouseup', function () {
+				document.removeEventListener('mousemove', matchTextAreaHeight);
+			});
+
 			matchTextAreaHeight();
-			editor.setOption('theme', 'material');
 			isOn = true;
 		};
 
@@ -112,27 +106,6 @@
 				window.setTimeout(runEditor, 0);
 				tab_tmce.onclick = toVisual;
 			}
-		};
-
-		var resizeEditor = function () {
-			// var target = document.querySelector('.CodeMirror');
-			var handle = document.getElementById('content-resize-handle');
-			// var offsetTop = target.getBoundingClientRect().top;
-			// var move = function (e) {
-				// console.log(editor)
-				// editor.getWrapperElement().style.height = editor.getTextArea().style.height
-				// TODO: fix this
-				// e = e || window.event; // IE fix
-				// var height = (e.pageY || e.clientY + document.body.scrollTop + document.documentElement.scrollTop) - offsetTop;
-				// target.style.height = height + 'px';
-				// window.getSelection().removeAllRanges(); // disable selection on resize
-			// };
-			handle.addEventListener('mousedown', function () {
-				document.addEventListener('mousemove', matchTextAreaHeight);
-			});
-			document.addEventListener('mouseup', function () {
-				document.removeEventListener('mousemove', matchTextAreaHeight);
-			});
 		};
 
 		// Initialise //
