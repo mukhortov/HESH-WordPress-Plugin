@@ -1,7 +1,6 @@
 #TODOs
-- fix window resize
 - create options menu
-- re-add window resizing
+- re-add window fullscreen
 - build module loader
   - in php
 - save user options
@@ -174,3 +173,56 @@ Initial release.
 * support for adding content from the "Add Media" button
 * use WordPess native buttons for adding html tags
 * read [bugs](https://wordpress.org/support/plugin/html-editor-syntax-highlighter) and add more TODOs
+
+##Sample Text for testing
+`
+<div>
+	[shortcode attribute="value" standAloneAttribute bool=true int=42 ]
+		[oneliner noquotes=stringvaluewithnospaces]
+		[self-closing-syntax html='<label class="name">Label</label>' /]
+		shortcode content 
+		<a href="#">nested html</a>
+		[[escapedshortcode]]
+		[ [brackets that-dont-count]]
+	[/shortcode]
+</div>
+
+<!--more WordPress More Tag Text --><!--noteaser-->
+<!--HTML comment--><!--[shortcode]-->
+
+ERRORS!
+[/matchlessEndTag]<div class="right after error"></div>
+[shortcode no_square_brackets='aa[<div here="whatever" adn=" ></div>]aaa']
+[no/special|characters\in*shortcode^names or.attribute`names=error /]
+
+&amp; &#xaA1; &#9; &error
+<?php 
+	// this is meta highlighting
+	[shortcode] 
+	<div class="something"></div>
+	$var = 'value'; 
+?>
+
+<div style=" width:200px; height:400px; ">styled div</div>
+<style>
+	/* css comment */
+	#identifier, .class{
+		width:200px;
+		height:400px;
+	}
+	/* square brackets in css block */
+	element[attribute="value"]{ color:red; }
+</style>
+
+<input onclick=" document.getElementById('identifier').style.width = 200px; "/>
+<script>
+	// javascript comment
+	var obj = {
+		key: value,
+		keytwo: valuetwo,
+		array: ['valueone', 'valuetwo'] // square brackets in javascript block
+	};
+	document.getElementById('identifier').style.width = 200px;
+	var string = '</script' + '>'; // writing this straght out will break the mix
+</script>
+`

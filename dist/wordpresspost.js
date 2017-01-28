@@ -60,7 +60,7 @@
 				var open = cur.search(/\[/);
 				stream.backUp(cur.length - open);
 				if (state.shortcodeState == null) { // ===null or ===undefined
-					state.shortcodeState = CodeMirror.startState(shortcodeMode, htmlmixedMode.indent(state.htmlmixedState, ''));
+					state.shortcodeState = shortcodeMode.startState(htmlmixedMode.indent(state.htmlmixedState, ''));
 				}
 				state.token = shortcodeToken;
 			} else if (inText && /<!\-\-more|<!\-\-noteaser\-\->/.test(stream.current()) && !state.htmlmixedState.localState && style === 'comment') {
