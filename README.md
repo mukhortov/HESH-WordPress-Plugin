@@ -1,3 +1,13 @@
+#TODOs
+- fix window resize
+- create options menu
+- re-add window resizing
+- build module loader
+  - in php
+- save user options
+  - in php
+
+
 #HTML Editor Syntax Highlighter
 
 WordPress plugin that adds syntax highlighting in the WordPress Post & Page HTML/text editor using Codemirror.js

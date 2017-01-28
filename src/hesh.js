@@ -17,7 +17,7 @@
 	'use strict';
 
 	function heshPlugin () {
-		var editor = null;
+		var editor;
 		var isOn = false;
 		var buttonsAdded = false;
 		var target = document.getElementById('content');
@@ -60,6 +60,10 @@
 			}
 		};
 
+		var matchTextAreaHeight = function () {
+			editor.getWrapperElement().style.height = editor.getTextArea().style.height
+		}
+
 		var getCookie = function (name) {
 			var value = '; ' + document.cookie;
 			var parts = value.split('; ' + name + '=');
@@ -72,6 +76,7 @@
 
 		var runEditor = function () {
 			editor = CodeMirror.fromTextArea(target, options);
+			// editor.style.height = editor.getTextArea().style.height
 
 			// Save changes to the textarea on the fly
 			editor.on('change', function () {
@@ -86,6 +91,7 @@
 			}, 50);
 
 			resizeEditor();
+			matchTextAreaHeight();
 			editor.setOption('theme', 'material');
 			isOn = true;
 		};
@@ -103,27 +109,29 @@
 		var toHTML = function () {
 			if (!isOn) {
 				if (switchEditors.switchto) switchEditors.switchto(this);
-				window.setTimeout(runEditor, 300);
+				window.setTimeout(runEditor, 0);
 				tab_tmce.onclick = toVisual;
 			}
 		};
 
 		var resizeEditor = function () {
-			var target = document.querySelector('.CodeMirror');
+			// var target = document.querySelector('.CodeMirror');
 			var handle = document.getElementById('content-resize-handle');
-			var offsetTop = target.getBoundingClientRect().top;
-			var move = function (e) {
+			// var offsetTop = target.getBoundingClientRect().top;
+			// var move = function (e) {
+				// console.log(editor)
+				// editor.getWrapperElement().style.height = editor.getTextArea().style.height
 				// TODO: fix this
-				e = e || window.event; // IE fix
-				var height = (e.pageY || e.clientY + document.body.scrollTop + document.documentElement.scrollTop) - offsetTop;
-				target.style.height = height + 'px';
-				window.getSelection().removeAllRanges(); // disable selection on resize
-			};
+				// e = e || window.event; // IE fix
+				// var height = (e.pageY || e.clientY + document.body.scrollTop + document.documentElement.scrollTop) - offsetTop;
+				// target.style.height = height + 'px';
+				// window.getSelection().removeAllRanges(); // disable selection on resize
+			// };
 			handle.addEventListener('mousedown', function () {
-				document.addEventListener('mousemove', move);
+				document.addEventListener('mousemove', matchTextAreaHeight);
 			});
 			document.addEventListener('mouseup', function () {
-				document.removeEventListener('mousemove', move);
+				document.removeEventListener('mousemove', matchTextAreaHeight);
 			});
 		};
 
