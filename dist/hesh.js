@@ -74,32 +74,16 @@
 			editor = CodeMirror.fromTextArea(target, options);
 
 			// Save changes to the textarea on the fly
-			// var ontypeSaveTimer;
 			editor.on('change', function () {
-				// console.log(editor);
-				// editor.getTextArea().value
-
-				// editor.doc.setValue(editor.getTextArea().value);
-				console.log(editor.doc.getValue().length);
-				console.log(editor.getTextArea().value.length);
 				editor.save();
-				console.log(editor.getTextArea().value.length);
-				// clearTimeout(ontypeSaveTimer);
-				// ontypeSaveTimer = setTimeout(updateTextareaHeight, 3000);
 			});
 
+			// Check if any edits were made to the textarea.value
 			window.setInterval(function() {
 				if (editor.doc.getValue().length !== editor.getTextArea().value.length) {
 					editor.doc.setValue(editor.getTextArea().value);
-					console.log('mismatch');
 				}
 			}, 50);
-
-			// console.log(editor.getTextArea());
-			// editor.getTextArea().addEventListener('change', function (e) {
-			// 	console.log(e);
-			// 	console.log('here');
-			// });
 
 			resizeEditor();
 			editor.setOption('theme', 'material');

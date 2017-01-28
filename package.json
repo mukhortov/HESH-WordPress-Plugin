@@ -15,6 +15,7 @@
   "devDependencies": {
     "codemirror": "^5.23.0",
     "gulp": "^3.9.1",
-    "gulp-less": "^3.3.0"
+    "gulp-less": "^3.3.0",
+    "gulp-livereload": "^3.8.1"
   }
 }
