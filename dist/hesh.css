@@ -2,17 +2,184 @@
  * Plugin Name:  HTML Editor Syntax Highlighter
  * Author:       Peter Mukhortov
  * Author URI:   http://mukhortov.com/
- * Version:      1.7.2
+ * Author:             James Bradford
+ * Author URI:         http://arniebradfo.com/
+ * Version:      2.0.0
 */
 .CodeMirror {
+  font: inherit;
+}
+.CodeMirror-scroll {
   font-family: Menlo Regular, Consolas, Monaco, monospace;
   line-height: 150%;
-  font-size: 12px;
+  position: relative;
 }
-.content-resize-handle {
-  width: 14px;
-  height: 24px;
-  cursor: ns-resize;
-  right: 1px;
+.CodeMirror-settings {
+  color: #444;
+  height: 0;
+  width: 0;
+}
+.CodeMirror-settings__toggle {
+  border-radius: 3px;
+  z-index: 9;
+  box-sizing: border-box;
   position: absolute;
+  top: 6px;
+  right: 6px;
+  display: block;
+  cursor: pointer;
+}
+@media screen and (min-width: 782px) {
+  .CodeMirror-settings__toggle {
+    height: 35px;
+  }
+}
+@media screen and (max-width: 781px) {
+  .CodeMirror-settings__toggle {
+    height: 44px;
+  }
+}
+@media screen and (min-width: 782px) {
+  .CodeMirror-settings__toggle {
+    width: 35px;
+  }
+}
+@media screen and (max-width: 781px) {
+  .CodeMirror-settings__toggle {
+    width: 44px;
+  }
+}
+.CodeMirror-settings__toggle:before {
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  z-index: -1;
+  content: '';
+  background-color: white;
+  transition: 250ms ease;
+  transition-property: transform opacity;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+.CodeMirror-settings__wrapper {
+  z-index: 9;
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  bottom: 6px;
+  left: 6px;
+  border-radius: 3px;
+  background-color: rgba(255, 255, 255, 0.93);
+  border-color: #ddd;
+  transform-origin: top right;
+  transition: 250ms ease;
+  transition-property: transform opacity;
+}
+.CodeMirror-settings__docked {
+  background-color: rgba(255, 255, 255, 0.93);
+  box-sizing: border-box;
+  z-index: 2;
+  position: absolute;
+  right: 0;
+  left: 0;
+  width: 100%;
+}
+@media screen and (min-width: 782px) {
+  .CodeMirror-settings__docked {
+    height: 35px;
+  }
+}
+@media screen and (max-width: 781px) {
+  .CodeMirror-settings__docked {
+    height: 44px;
+  }
+}
+.CodeMirror-settings__header {
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  top: 0;
+  border-bottom: 1px solid #ddd;
+}
+.CodeMirror-settings__title {
+  display: inline-block;
+}
+.CodeMirror-settings__footer {
+  border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 3px;
+  bottom: 0;
+  border-top: 1px solid #ddd;
+  padding: 0 12px;
+}
+.CodeMirror-settings__foot-content {
+  margin: 0;
+  height: 100%;
+  vertical-align: middle;
+}
+@media screen and (min-width: 782px) {
+  .CodeMirror-settings__foot-content {
+    line-height: 35px;
+  }
+}
+@media screen and (max-width: 781px) {
+  .CodeMirror-settings__foot-content {
+    line-height: 44px;
+  }
+}
+.CodeMirror-settings__feedback {
+  float: left;
+}
+.CodeMirror-settings__credits {
+  float: right;
+}
+.CodeMirror-settings__form {
+  position: absolute;
+  right: 0;
+  left: 0;
+  box-sizing: border-box;
+  padding: 1px 12px;
+  overflow-y: auto;
+  margin: 0;
+}
+@media screen and (min-width: 782px) {
+  .CodeMirror-settings__form {
+    top: 35px;
+  }
+}
+@media screen and (max-width: 781px) {
+  .CodeMirror-settings__form {
+    top: 44px;
+  }
+}
+@media screen and (min-width: 782px) {
+  .CodeMirror-settings__form {
+    bottom: 35px;
+  }
+}
+@media screen and (max-width: 781px) {
+  .CodeMirror-settings__form {
+    bottom: 44px;
+  }
+}
+.CodeMirror-settings.open .CodeMirror-settings__wrapper {
+  opacity: 1;
+  transform: scale(1);
+}
+.CodeMirror-settings.open .CodeMirror-settings__toggle:before {
+  opacity: 0;
+}
+.CodeMirror-settings.closed .CodeMirror-settings__wrapper {
+  opacity: 0;
+  transform: scale(0);
+}
+.CodeMirror-settings.closed .CodeMirror-settings__toggle {
+  transition: opacity 250ms ease;
+  opacity: .5;
+}
+.CodeMirror-settings.closed .CodeMirror-settings__toggle:hover {
+  opacity: 1;
+}
+.CodeMirror-settings.closed .CodeMirror-settings__toggle:before {
+  opacity: 1;
 }

@@ -2,195 +2,174 @@
  * Plugin Name:  HTML Editor Syntax Highlighter
  * Author:       Peter Mukhortov
  * Author URI:   http://mukhortov.com/
- * Version:      1.7.2
+ * Author:             James Bradford
+ * Author URI:         http://arniebradfo.com/
+ * Version:      2.0.0
 */
 
-// @import "../.temp/codemirror";
 
 .CodeMirror {
-	font-family: Menlo Regular, Consolas, Monaco, monospace;
-	line-height: 150%;
-	font-size: 12px;
-	// height: 500px;
+	font: inherit;
+	&-scroll{
+		font-family: Menlo Regular, Consolas, Monaco, monospace;
+		line-height: 150%;
+		// font-size: 12px;
+		// height: 500px;
+		position: relative;
+	}
+	&-settings{
+
+
+		@mobile-media:  ~'screen and (max-width: 781px)';
+		@desktop-media: ~'screen and (min-width: 782px)';
+		@docked-mobile-height:44px;
+		@docked-desktop-height:35px;
+		.media(@property; @mobile:@docked-mobile-height; @desktop:@docked-desktop-height;){
+			@media @desktop-media{ @{property}: @desktop; }
+			@media @mobile-media{ @{property}: @mobile; }
+		}
+
+		@margin: 6px;
+		@padding: 12px;
+		@border-radius: 3px;
+		@border-color: #ddd;
+		@background-color: fade(white, 93%);
+
+		color: #444;
+		// display: block;
+		height: 0;
+		width: 0;
+
+
+		&__toggle{
+			border-radius: @border-radius;
+			z-index: 9;
+			box-sizing: border-box;
+			position: absolute;
+			top:    @margin;
+			right:  @margin;
+			display: block;
+			cursor: pointer;
+			.media(height, @docked-mobile-height, @docked-desktop-height);
+			.media(width, @docked-mobile-height, @docked-desktop-height);
+
+			&:before{
+				border: 1px solid @border-color;
+				border-radius: @border-radius;
+				z-index: -1;
+				content:'';
+				background-color: white;  
+				transition: 250ms ease;
+				transition-property: transform opacity;
+				position: absolute;
+				top:    0;
+				right:  0;
+				bottom: 0;
+				left:   0;
+			}
+
+		}
+		&__wrapper{
+			z-index: 9;
+			position: absolute;
+			top:    @margin;
+			right:  @margin;
+			bottom: @margin;
+			left:   @margin;
+			border-radius: @border-radius;
+			background-color: @background-color;  
+			border-color: @border-color;
+			transform-origin: top right;
+			transition: 250ms ease;
+			transition-property: transform opacity;
+			
+		}
+
+
+		&__docked{
+			background-color: @background-color;  
+			box-sizing: border-box;
+			z-index: 2;
+			position: absolute;
+			right:0;
+			left:0;
+			width: 100%;
+			.media(height, @docked-mobile-height, @docked-desktop-height);
+		}
+		&__header{
+			border-top-left-radius: @border-radius;
+			border-top-right-radius: @border-radius;
+			top:0;
+			border-bottom: 1px solid @border-color;
+		}
+		&__title{
+			display: inline-block;
+		}
+		&__footer{
+			border-bottom-left-radius: @border-radius;
+			border-bottom-right-radius: @border-radius;
+			bottom:0;
+			border-top: 1px solid @border-color;
+			padding: 0 @padding;
+		}
+		&__foot-content{
+			margin: 0;
+			height: 100%;
+			vertical-align: middle;
+			.media(line-height)
+		}
+		&__feedback{
+			float:left;
+		}
+		&__credits{
+			float:right;
+		}
+
+
+		&__form{
+			position: absolute;
+			.media(top, @docked-mobile-height, @docked-desktop-height);
+			.media(bottom, @docked-mobile-height, @docked-desktop-height);
+			right:  0;
+			left:   0;
+			box-sizing: border-box;
+			padding: 1px @padding;
+			overflow-y: auto;
+			margin: 0;
+		}
+
+		&.open{
+			.CodeMirror-settings{
+				&__wrapper{
+					opacity: 1;
+					transform: scale(1);
+				}
+				&__toggle{
+
+					&:before{
+						opacity: 0;
+					}
+				}
+			}
+		}
+		&.closed{
+			.CodeMirror-settings{
+				&__wrapper{
+					opacity: 0;
+					transform: scale(0);
+				}
+				&__toggle{
+					transition: opacity 250ms ease;
+					opacity: .5;
+					&:hover{
+						opacity: 1;
+					}
+					&:before{
+						opacity: 1;
+					}
+				}
+			}
+		}
+	}
 }
 
-// .wp-fullscreen-both,
-// #wp-fullscreen-modes, /* fullscreen controls */
-// .heshFullscreen #content_wp_fullscreen, /* fullscreen button in view mode */
-// #qt_content_strong, /* WP edit buttons */
-// #qt_content_em,
-// #qt_content_link,
-// #qt_content_block,
-// #qt_content_del,
-// #qt_content_ins,
-// #qt_content_img,
-// #qt_content_ul,
-// #qt_content_ol,
-// #qt_content_li,
-// #qt_content_code,
-// #qt_content_more,
-// #qt_content_close,
-// #qt_content_fullscreen,
-// #wp-content-editor-container .wp-editor-area, /* Textarea */
-// #ed_toolbar input.cm_ed_button#cm_content_p /* hide <p> button when visual editor is enabled */
-// {
-// 	// display: none !important;
-// }
-
-// .quicktags-toolbar input#cm_content_fullscreen,
-// #ed_toolbar input.cm_ed_button
-// {
-// 	// display: inline-block !important;
-// }
-
-// .CodeMirror-matchingbracket {
-// 	position: relative;
-// 	color: inherit !important;
-// 	text-decoration: none !important;
-// 	&:after{
-// 		content: '';
-// 		position: absolute;
-// 		right:  0;
-// 		bottom: -2px;
-// 		left:   0;
-// 		height: 1px;
-// 		background-color: #fff490;
-// 		background-color: currentColor;
-// 	}
-// }
-
-// .cm-s-mbo .CodeMirror-matchingbracket {
-// 	color: #000 !important;
-// 	text-decoration: none;
-// }
-
-.content-resize-handle {
-	width: 14px;
-	height: 24px;
-	cursor: ns-resize;
-	right: 1px;
-	position: absolute;
-}
-// #content-resize-handle {
-// 	display: table-cell !important;
-// }
-// .tmce-active .content-resize-handle {
-// 	// display: none;
-// }
-
-// .has-dfw .quicktags-toolbar {
-// 	padding-right: 3px !important;
-
-// 	.button:not(:first-child) {
-// 		margin-right: 3px;
-// 	}
-// }
-
-// #cm_content_fullscreen,
-// #cm_select_theme,
-// #cm_font_size {
-// 	float: right;
-// }
-
-// #cm_select_theme{
-// 	max-width: 7em;
-// 	// text-overflow: ellipsis; // dang!
-// }
-
-// // FF hack
-// @-moz-document url-prefix() {
-// 	#cm_font_size, #cm_select_theme {
-// 		-moz-appearance:none;
-// 		text-indent: 0.01px;
-// 		&:active{
-// 			transform: unset; // fixes dropdown
-// 		}
-// 	}
-// }
-// @media screen and (max-width: 782px) {
-// 	select#cm_font_size, select#cm_select_theme {
-// 		font-size: 14px;
-// 		height: auto;
-// 	}
-// }
-// // webkit hack
-// // @media screen and (-webkit-min-device-pixel-ratio: 0) {
-// // 	#cm_font_size, #cm_select_theme {
-// // 		height: inherit;
-// // 		font-size: 10px;
-// // 	}
-// // }
-
-// .heshFullscreen {
-// 	z-index: 99999;
-// 	position: fixed !important;
-// 	top: 0;
-// 	left: 0;
-// 	right: 0;
-// 	bottom: 0;
-// 	height: 100%;
-// 	background: #fff;
-// 	padding: 2% 2% 0;
-
-// 	.CodeMirror {
-// 		border: 1px solid #ccc;
-// 		border-radius: 0 0 4px 4px;
-// 		height: 85%!important;
-// 	}
-// 	#ed_toolbar {
-// 		border: 1px solid #ccc;
-// 		border-bottom: 0;
-// 		border-radius: 4px 4px 0 0;
-// 	}
-// }
-
-// @media only screen and (max-height: 550px), only screen and (max-device-height: 550px) {
-// 	.heshFullscreen .CodeMirror {
-// 		height: 75%!important;
-// 	}
-// }
-
-// // Styles for WP 4+
-// .wp-editor-expand {
-// 	.html-active {
-// 		#ed_toolbar {
-// 			z-index: 2;
-// 		}
-// 		.CodeMirror {
-// 			position: relative;
-// 			z-index: 1;
-// 			margin-top: 35px ;
-// 			// height: auto; // causes CodeMirror scroll not to fill the entire height
-// 			min-height: 500px;
-// 		}
-// 		.heshFullscreen {
-// 			.quicktags-toolbar {
-// 				top: 0 !important;
-// 				position: static !important;
-// 				width: auto !important;
-// 			}
-// 			.CodeMirror {
-// 				margin-top: 0 !important;
-// 			}
-// 		}
-// 		#qt_content_dfw {
-// 			display: none;
-// 		}
-// 	}
-// 	.content-resize-handle,
-// 	#content-resize-handle {
-// 		display: none !important;
-// 	}
-// }
-
-// .postarea:not(.wp-editor-expand) {
-// 	.CodeMirror {
-// 		margin-top: 0 !important;
-// 	}
-// }
-
-// .visual-editor-is-disabled {
-// 	#ed_toolbar input.cm_ed_button#cm_content_p {
-// 		display: inline-block !important;
-// 	}
-// }
