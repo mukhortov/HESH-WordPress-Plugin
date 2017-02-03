@@ -2,6 +2,34 @@ var gulp = require('gulp');
 var livereload = require('gulp-livereload');
 // TODO: add plumber
 
+
+// var filenamesToJson = require('gulp-filenames-to-json');
+// gulp.task('css-json', function () {
+//     return gulp.src('./node_modules/codemirror/theme/*.css')
+//         .pipe(filenamesToJson())
+//         .pipe(gulp.dest('./css.json'));
+// });
+
+
+var toJson = require('gulp-to-json');
+gulp.task('css-json', function () {
+    gulp.src('./node_modules/codemirror/theme/*.css')
+        .pipe(toJson({
+            filename: 'dist/css.json',
+            relative: true,
+            strip: /.css/
+        }))
+        .pipe(gulp.dest('./trash'));
+    del('trash/**');
+});
+
+var del = require('del');
+gulp.task('clean', function () {
+    del('trash/**');
+});
+
+
+
 var less = require('gulp-less');
 gulp.task('less', function () {
     return gulp.src('./src/*.less')
@@ -10,6 +38,7 @@ gulp.task('less', function () {
         .pipe(livereload());
 
 });
+
 
 var codemirrorPath = './node_modules/codemirror/'
 gulp.task('copy:codemirror', function () {
@@ -40,5 +69,5 @@ gulp.task('watch', function () {
 });
 
 
-gulp.task('build', ['less', 'copy:codemirror']);
+gulp.task('build', ['less', 'copy:codemirror', 'css-json', 'clean']);
 gulp.task('default', ['build', 'watch']);
