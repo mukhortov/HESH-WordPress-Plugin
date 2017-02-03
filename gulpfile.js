@@ -3,14 +3,6 @@ var livereload = require('gulp-livereload');
 // TODO: add plumber
 
 
-// var filenamesToJson = require('gulp-filenames-to-json');
-// gulp.task('css-json', function () {
-//     return gulp.src('./node_modules/codemirror/theme/*.css')
-//         .pipe(filenamesToJson())
-//         .pipe(gulp.dest('./css.json'));
-// });
-
-
 var toJson = require('gulp-to-json');
 gulp.task('css-json', function () {
     gulp.src('./node_modules/codemirror/theme/*.css')
@@ -23,11 +15,11 @@ gulp.task('css-json', function () {
     del('trash/**');
 });
 
+
 var del = require('del');
 gulp.task('clean', function () {
     del('trash/**');
 });
-
 
 
 var less = require('gulp-less');
