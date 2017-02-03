@@ -86,8 +86,18 @@ class wp_html_editor_syntax {
 		# add user meta
 	}
 	
-	private function output_select_element($OptsArray){
-		# code...
+	private function output_select_element($OptsArray) {
+		extract($OptsArray);
+		?>
+			<tr>
+				<th scope="row"><label for="timezone_string"><?php echo $title; ?></label></th>
+					<td>
+					<select id="theme" name="theme" aria-describedby="timezone-description" value="material">
+						<option value="material">Material</option>
+					</select>
+				</td>
+			</tr>
+		<?php
 	}
 
 	private function output_input_element($OptsArray){
@@ -97,7 +107,7 @@ class wp_html_editor_syntax {
 	public function hesh_print_form() {
 		// ob_start();
 		?>
-			<div class="CodeMirror-settings closed" id="CodeMirror-settings" style="display:none;">
+			<div class="CodeMirror-settings open" id="CodeMirror-settings" style="display:none;">
 				<div class="CodeMirror-settings__wrapper">
 					<header class="CodeMirror-settings__header CodeMirror-settings__docked">
 						<h2 class="CodeMirror-settings__title">Code Editor Settings</h2>
@@ -109,15 +119,28 @@ class wp_html_editor_syntax {
 						>
 						<?php wp_nonce_field('hesh_nonce_id','security-code-here');?>
 						<input name="action" value="hesh_nonce_id" type="hidden">
-
 						<table class="form-table"><tbody>
+							<tr><td class="CodeMirror-settings__heading"><h1>
+								User Prefrences
+							</h1></td></tr>
+							<tr>
+								<th scope="row"><label for="timezone_string">Timezone</label></th>
+									<td>
+									<select id="theme" name="theme" aria-describedby="timezone-description" value="material">
+										<option value="material">Material</option>
+									</select>
+								</td>
+							</tr>
+							<tr><td class="CodeMirror-settings__heading"><h1>
+								Addons
+							</h1></td></tr>
 							<tr>
 								<th scope="row"><label for="blogdescription">Tagline</label></th>
 								<td><input name="blogdescription" type="text" id="blogdescription" aria-describedby="tagline-description" value="Just another WordPress site" class="regular-text">
 								<p class="description" id="tagline-description">In a few words, explain what this site is about.</p></td>
 							</tr>
 						</tbody></table>
-					</form>
+						</form>
 					<footer class="CodeMirror-settings__footer CodeMirror-settings__docked">
 						<p class="CodeMirror-settings__foot-content CodeMirror-settings__feedback">
 							<small>
@@ -137,7 +160,7 @@ class wp_html_editor_syntax {
 						</p>
 					</footer>
 				</div>
-				<div class="CodeMirror-settings__toggle">X</div>
+				<div class="CodeMirror-settings__toggle"></div>
 			</div>
 		<?php 
 		// return ob_get_clean();

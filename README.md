@@ -1,5 +1,5 @@
 #TODOs
-- design options menu
+- was just: adding theme and font options
 - dev options menu - just theme and fontsize
   - add options that switch on the fly
   - and save to user profile

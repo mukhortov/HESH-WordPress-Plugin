@@ -53,6 +53,15 @@
 			.media(height, @docked-mobile-height, @docked-desktop-height);
 			.media(width, @docked-mobile-height, @docked-desktop-height);
 
+			&:after{
+				content:'\f111';
+				font-family: dashicons;
+				.media(font-size, 28px, 20px);
+				.media(margin, 8px, 7px);
+				line-height: 1em;
+				display: inline-block;
+			}
+
 			&:before{
 				border: 1px solid @border-color;
 				border-radius: @border-radius;
@@ -137,15 +146,20 @@
 			overflow-y: auto;
 			margin: 0;
 		}
+		td&__heading{ //td& for specificity
+			padding: 0;
+		}
 
 		&.open{
 			.CodeMirror-settings{
 				&__wrapper{
 					opacity: 1;
-					transform: scale(1);
+					transform: scale3d(1,1,1);
 				}
 				&__toggle{
-
+					&:after{
+						content:'\f158';
+					}
 					&:before{
 						opacity: 0;
 					}
@@ -156,7 +170,7 @@
 			.CodeMirror-settings{
 				&__wrapper{
 					opacity: 0;
-					transform: scale(0);
+					transform: scale3d(0,0,0);
 				}
 				&__toggle{
 					transition: opacity 250ms ease;

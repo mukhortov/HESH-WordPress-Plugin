@@ -49,6 +49,32 @@
     width: 44px;
   }
 }
+.CodeMirror-settings__toggle:after {
+  content: '\f111';
+  font-family: dashicons;
+  line-height: 1em;
+  display: inline-block;
+}
+@media screen and (min-width: 782px) {
+  .CodeMirror-settings__toggle:after {
+    font-size: 20px;
+  }
+}
+@media screen and (max-width: 781px) {
+  .CodeMirror-settings__toggle:after {
+    font-size: 28px;
+  }
+}
+@media screen and (min-width: 782px) {
+  .CodeMirror-settings__toggle:after {
+    margin: 7px;
+  }
+}
+@media screen and (max-width: 781px) {
+  .CodeMirror-settings__toggle:after {
+    margin: 8px;
+  }
+}
 .CodeMirror-settings__toggle:before {
   border: 1px solid #ddd;
   border-radius: 3px;
@@ -162,16 +188,22 @@
     bottom: 44px;
   }
 }
+td.CodeMirror-settings__heading {
+  padding: 0;
+}
 .CodeMirror-settings.open .CodeMirror-settings__wrapper {
   opacity: 1;
-  transform: scale(1);
+  transform: scale3d(1, 1, 1);
+}
+.CodeMirror-settings.open .CodeMirror-settings__toggle:after {
+  content: '\f158';
 }
 .CodeMirror-settings.open .CodeMirror-settings__toggle:before {
   opacity: 0;
 }
 .CodeMirror-settings.closed .CodeMirror-settings__wrapper {
   opacity: 0;
-  transform: scale(0);
+  transform: scale3d(0, 0, 0);
 }
 .CodeMirror-settings.closed .CodeMirror-settings__toggle {
   transition: opacity 250ms ease;

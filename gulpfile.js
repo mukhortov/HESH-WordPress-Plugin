@@ -1,5 +1,6 @@
 var gulp = require('gulp');
 var livereload = require('gulp-livereload');
+// TODO: add plumber
 
 var less = require('gulp-less');
 gulp.task('less', function () {
@@ -32,7 +33,10 @@ gulp.task('copy:codemirror', function () {
 
 gulp.task('watch', function () {
     livereload.listen();
-    gulp.watch('src/**/*', ['build']);
+    gulp.watch([
+        './src/**/*',
+        './*.php'
+    ], ['build']);
 });
 
 
