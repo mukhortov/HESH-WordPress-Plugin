@@ -7,18 +7,18 @@ var toJson = require('gulp-to-json');
 gulp.task('css-json', function () {
     gulp.src('./node_modules/codemirror/theme/*.css')
         .pipe(toJson({
-            filename: 'dist/css.json',
+            filename: 'css.json',
             relative: true,
             strip: /.css/
         }))
-        .pipe(gulp.dest('./trash'));
-    del('trash/**');
+        .pipe(gulp.dest('./.trash'));
+    // del('trash/**');
 });
 
 
 var del = require('del');
 gulp.task('clean', function () {
-    del('trash/**');
+    del('./.trash/**');
 });
 
 

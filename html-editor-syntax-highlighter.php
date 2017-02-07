@@ -86,22 +86,53 @@ class wp_html_editor_syntax {
 		# add user meta
 	}
 	
-	private function output_select_element($OptsArray) {
-		extract($OptsArray);
+	private function output_select_element($config) {
+		// http://stackoverflow.com/questions/18881693/how-to-import-external-json-and-display-in-php
+		extract($config);
+		// $options: array()
+		// $title: string
+		// $id: string
+		// $selected: string
+		// $description: string
 		?>
 			<tr>
-				<th scope="row"><label for="timezone_string"><?php echo $title; ?></label></th>
-					<td>
-					<select id="theme" name="theme" aria-describedby="timezone-description" value="material">
-						<option value="material">Material</option>
+				<th scope="row">
+					<label for="<?php echo $id; ?>"><?php echo $title; ?></label>
+				</th>
+				<td>
+					<select 
+						id="<?php echo $id; ?>" 
+						name="<?php echo $id; ?>" 
+						<?php if (isset($description)) echo "aria-describedby=\"$id-description\"" ?>
+						>
+						<?php foreach ($options as $option): ?>
+							<option value="<?php echo $option; ?>"
+								<?php if (isset($selected) && $selected == $option) echo "selected" ?>
+								>
+								<?php echo ucfirst($option); ?>
+							</option>
+						<?php endforeach; ?>
 					</select>
+					<?php if (isset($description)): ?>
+						<p class="description" 
+							id="<?php echo $id; ?>-description"
+							>
+							<?php echo $description; ?>
+						</p>
+					<?php endif; ?>
 				</td>
 			</tr>
 		<?php
 	}
 
+
 	private function output_input_element($OptsArray){
 		# code...
+	}
+	
+
+	private function theme_options() {
+    	return json_decode(file_get_contents(dirname(__FILE__) . '/css.json'), TRUE);
 	}
 	
 	public function hesh_print_form() {
@@ -123,14 +154,15 @@ class wp_html_editor_syntax {
 							<tr><td class="CodeMirror-settings__heading"><h1>
 								User Prefrences
 							</h1></td></tr>
-							<tr>
-								<th scope="row"><label for="timezone_string">Timezone</label></th>
-									<td>
-									<select id="theme" name="theme" aria-describedby="timezone-description" value="material">
-										<option value="material">Material</option>
-									</select>
-								</td>
-							</tr>
+							<?php
+								$this->output_select_element(array(
+									"id" => "theme",
+									"title" => "Theme",
+									"description" => "choose a theme",
+									"options" => $this->theme_options(),
+									"selected" => "material"
+								));
+							?>
 							<tr><td class="CodeMirror-settings__heading"><h1>
 								Addons
 							</h1></td></tr>
@@ -169,7 +201,7 @@ class wp_html_editor_syntax {
 }
 
 if ( is_admin() ) {
-$hesh = new wp_html_editor_syntax();
+	$hesh = new wp_html_editor_syntax();
 }
 
 ?>

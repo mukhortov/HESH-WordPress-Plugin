@@ -4,5 +4,6 @@ codemirror.scss
 .sass-cache
 .DS_Store
 .temp
+.trash
 resources
 _old
