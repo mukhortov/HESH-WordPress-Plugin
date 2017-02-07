@@ -33,7 +33,7 @@ class wp_html_editor_syntax {
 	
 	public function __construct () {
 		add_action( 'admin_enqueue_scripts', array(&$this, 'admin_enqueue_scripts' ) );
-		add_action( 'wp_ajax_hesh_options_form', 'hesh_options_process');
+		add_action( 'wp_ajax_hesh_options_form', array(&$this, 'hesh_options_process'));
 		add_action( 'admin_footer', array(&$this, 'hesh_print_form') );
 	}
 	
@@ -57,14 +57,16 @@ class wp_html_editor_syntax {
 		wp_enqueue_script( 'htmlmixed_cm', HESH_LIBS.'htmlmixed.js', array('codemirror', 'css_cm', 'javascript_cm', 'xml_cm'), $ver, true );
 		wp_enqueue_script( 'shortcode_cm', HESH_LIBS.'shortcode.js', array('codemirror'), $ver, true );
 		wp_enqueue_script( 'wordpresspost_cm', HESH_LIBS.'wordpresspost.js', array('codemirror', 'htmlmixed_cm', 'shortcode_cm'), $ver, true );
-		wp_enqueue_script( 'heshjs', HESH_LIBS.'hesh.js', array('codemirror'), $ver, true );
+		
+		wp_enqueue_script( 'jquery');
+		wp_enqueue_script( 'heshjs', HESH_LIBS.'hesh.js', array('codemirror', 'jquery'), $ver, true );
 		
 		update_user_meta( get_current_user_id(), 'hesh_theme', 'material');
 		$metaTheme = get_user_meta( get_current_user_id(), 'hesh_theme' );
 
 		wp_localize_script( 
 			'heshjs', // i think... // the handle for the js // the_unique_name_for_your_js
-			'heshJS', // theUniqueNameForYourJSObject
+			'heshOptions', // theUniqueNameForYourJSObject
 			array(
 				'ajaxUrl' => admin_url( 'admin-ajax.php' ), // url for php file that process ajax request to WP
 				'nonce' => wp_create_nonce( 'hesh_nonce_id' ), // this is a unique token to prevent form hijacking
@@ -80,6 +82,7 @@ class wp_html_editor_syntax {
 	
 	
 	public function hesh_options_form_process() {
+		fjdslafjadkls; // cause an error so we know it works
 		// 	process user settings
 		// 	https://developer.wordpress.org/plugins/users/working-with-user-metadata/
 		// 	https://codex.wordpress.org/Function_Reference/update_user_meta
@@ -148,6 +151,7 @@ class wp_html_editor_syntax {
 						action="<?php echo admin_url('admin-ajax.php');?>" 
 						method="post" 
 						class="form CodeMirror-settings__form" 
+						id="CodeMirror-settings__form"
 						>
 						<?php wp_nonce_field('hesh_nonce_id','security-code-here');?>
 						<input name="action" value="hesh_nonce_id" type="hidden">

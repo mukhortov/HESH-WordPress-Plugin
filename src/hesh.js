@@ -7,13 +7,14 @@
  * @since    1.7.2
 */
 
-console.log(heshJS); // from wordpress php
+// console.log(heshOptions); // from wordpress php
 
 (function (
 	document,
 	window,
 	CodeMirror,
-	switchEditors
+	switchEditors,
+	$
 ) {
 	'use strict';
 
@@ -25,7 +26,7 @@ console.log(heshJS); // from wordpress php
 	var tab_tmce = document.getElementById('content-tmce');
 	var visualEditorActive = document.getElementById('wp-content-wrap').className.indexOf('tmce-active') > -1;
 	var visualEditorEnabled = document.getElementById('content-tmce') != null;
-	var publishButton =  document.getElementById('save-post') || document.getElementById('publish');
+	var publishButton = document.getElementById('save-post') || document.getElementById('publish');
 
 
 	var options = {
@@ -79,17 +80,19 @@ console.log(heshJS); // from wordpress php
 		editor.getWrapperElement().appendChild(settingsPanel);
 		settingsPanel.style.display = 'block';
 		settingsPanel.querySelector('.CodeMirror-settings__toggle').addEventListener('click', toggleSettings);
-		settingsPanel.querySelector('#theme').addEventListener('change', updateTheme)
+
+		// attach all the inputs to live update
+		settingsPanel.querySelector('#theme').addEventListener('change', updateTheme);
 	}
 	function toggleSettings(event) {
-			// TODO: review browser support for toggle
-			settingsPanel.classList.toggle('open');
-			settingsPanel.classList.toggle('closed');
+		// TODO: review browser support for toggle
+		settingsPanel.classList.toggle('open');
+		settingsPanel.classList.toggle('closed');
 	}
 
 	function updateTheme(event) {
-		console.log(event)
 		editor.setOption('theme', event.target.value);
+		submitForm();
 	}
 
 	function startEditor() {
@@ -101,7 +104,7 @@ console.log(heshJS); // from wordpress php
 		});
 
 		// Check if any edits were made to the textarea.value
-		window.setInterval(function() {
+		window.setInterval(function () {
 			if (editor.doc.getValue().length !== editor.getTextArea().value.length) {
 				editor.doc.setValue(editor.getTextArea().value);
 			}
@@ -130,7 +133,48 @@ console.log(heshJS); // from wordpress php
 		attachResize();
 		attachSettings();
 		isActive = true;
-	};
+	}
+
+	function submitForm() {
+		// var options = { 
+		// 	url: heshOptions.ajaxUrl,  // this is part of the JS object you pass in from wp_localize_scripts.
+		// 	type: 'post',        // 'get' or 'post', override for form's 'method' attribute 
+		// 	// dataType:  json ,       // 'xml', 'script', or 'json' (expected server response type) 
+		// 	dataType: 'json',
+		// 	success : function(responseText, statusText, xhr, $form) {
+		// 		console.log('submitted success');
+		// 	},
+		// 	// use beforeSubmit to add your nonce to the form data before submitting.
+		// 	beforeSubmit : function(arr, $form, options){
+		// 		arr.push({
+		// 			"name" : "nonce", 
+		// 			"value" : heshOptions.nonce 
+		// 		});
+		// 		arr.push({
+		// 			"name" : "action", 
+		// 			"value" : "hesh_options_form" 
+		// 		});
+		// 	}
+
+		// }; 
+
+		var data = {
+			'action': 'hesh_options_form',
+			'whatever': 1234
+		};
+		// TODO: drop jQuery dependency
+		$.post(heshOptions.ajaxUrl, data, function (response) {
+			console.log('submitted success');
+		});
+
+		// console.log($('#CodeMirror-settings__form').ajaxForm());
+		// you should probably use an id more unique than "form"
+		// $('#CodeMirror-settings__form').ajaxForm(options);
+		// var formData = $('#CodeMirror-settings__form').serialize();
+		// console.log(formData);
+
+
+	}
 
 	function initialise() {
 		if (visualEditorEnabled && visualEditorActive) {
@@ -149,8 +193,9 @@ console.log(heshJS); // from wordpress php
 		initialise();
 	}
 })(
-	document, 
-	window, 
-	window.CodeMirror, 
-	window.switchEditors
-);
+	document,
+	window,
+	window.CodeMirror,
+	window.switchEditors,
+	window.jQuery
+	);
