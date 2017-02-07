@@ -106,7 +106,8 @@ class wp_html_editor_syntax {
 						<?php if (isset($description)) echo "aria-describedby=\"$id-description\"" ?>
 						>
 						<?php foreach ($options as $option): ?>
-							<option value="<?php echo $option; ?>"
+							<option 
+								value="<?php echo $option; ?>"
 								<?php if (isset($selected) && $selected == $option) echo "selected" ?>
 								>
 								<?php echo ucfirst($option); ?>

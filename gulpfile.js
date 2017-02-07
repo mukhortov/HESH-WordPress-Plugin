@@ -25,10 +25,11 @@ gulp.task('clean', function () {
 var less = require('gulp-less');
 gulp.task('less', function () {
     return gulp.src('./src/*.less')
-        .pipe(less())
+        .pipe(less({
+            plugins: [ require('less-plugin-glob') ]
+        }))
         .pipe(gulp.dest('./dist'))
         .pipe(livereload());
-
 });
 
 
@@ -61,5 +62,6 @@ gulp.task('watch', function () {
 });
 
 
-gulp.task('build', ['less', 'copy:codemirror', 'css-json', 'clean']);
+gulp.task('copy:themes', ['css-json', 'clean']);
+gulp.task('build', ['less', 'copy:codemirror']);
 gulp.task('default', ['build', 'watch']);

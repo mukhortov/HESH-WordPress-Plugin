@@ -79,11 +79,17 @@ console.log(heshJS); // from wordpress php
 		editor.getWrapperElement().appendChild(settingsPanel);
 		settingsPanel.style.display = 'block';
 		settingsPanel.querySelector('.CodeMirror-settings__toggle').addEventListener('click', toggleSettings);
+		settingsPanel.querySelector('#theme').addEventListener('change', updateTheme)
 	}
 	function toggleSettings(event) {
 			// TODO: review browser support for toggle
 			settingsPanel.classList.toggle('open');
 			settingsPanel.classList.toggle('closed');
+	}
+
+	function updateTheme(event) {
+		console.log(event)
+		editor.setOption('theme', event.target.value);
 	}
 
 	function startEditor() {
