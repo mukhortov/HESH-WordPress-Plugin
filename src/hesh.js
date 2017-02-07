@@ -136,44 +136,12 @@
 	}
 
 	function submitForm() {
-		// var options = { 
-		// 	url: heshOptions.ajaxUrl,  // this is part of the JS object you pass in from wp_localize_scripts.
-		// 	type: 'post',        // 'get' or 'post', override for form's 'method' attribute 
-		// 	// dataType:  json ,       // 'xml', 'script', or 'json' (expected server response type) 
-		// 	dataType: 'json',
-		// 	success : function(responseText, statusText, xhr, $form) {
-		// 		console.log('submitted success');
-		// 	},
-		// 	// use beforeSubmit to add your nonce to the form data before submitting.
-		// 	beforeSubmit : function(arr, $form, options){
-		// 		arr.push({
-		// 			"name" : "nonce", 
-		// 			"value" : heshOptions.nonce 
-		// 		});
-		// 		arr.push({
-		// 			"name" : "action", 
-		// 			"value" : "hesh_options_form" 
-		// 		});
-		// 	}
-
-		// }; 
-
-		var data = {
-			'action': 'hesh_options_form',
-			'whatever': 1234
-		};
+		var formData = $('#CodeMirror-settings__form').serializeArray();
+		console.log(formData);
 		// TODO: drop jQuery dependency
 		$.post(heshOptions.ajaxUrl, data, function (response) {
 			console.log('submitted success');
 		});
-
-		// console.log($('#CodeMirror-settings__form').ajaxForm());
-		// you should probably use an id more unique than "form"
-		// $('#CodeMirror-settings__form').ajaxForm(options);
-		// var formData = $('#CodeMirror-settings__form').serialize();
-		// console.log(formData);
-
-
 	}
 
 	function initialise() {
