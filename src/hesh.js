@@ -7,7 +7,7 @@
  * @since    1.7.2
 */
 
-// console.log(heshOptions); // from wordpress php
+console.log(heshOptions); // from wordpress php
 
 (function (
 	document,
@@ -136,10 +136,9 @@
 	}
 
 	function submitForm() {
-		var formData = $('#CodeMirror-settings__form').serializeArray();
-		console.log(formData);
+		var formArray = $('#CodeMirror-settings__form').serializeArray();
 		// TODO: drop jQuery dependency
-		$.post(heshOptions.ajaxUrl, data, function (response) {
+		$.post(heshOptions.ajaxUrl, formArray, function (response) {
 			console.log('submitted success');
 		});
 	}

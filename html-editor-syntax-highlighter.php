@@ -33,7 +33,7 @@ class wp_html_editor_syntax {
 	
 	public function __construct () {
 		add_action( 'admin_enqueue_scripts', array(&$this, 'admin_enqueue_scripts' ) );
-		add_action( 'wp_ajax_hesh_options_form', array(&$this, 'hesh_options_process'));
+		add_action( 'wp_ajax_hesh_options_form', array(&$this, 'hesh_options_form_process'));
 		add_action( 'admin_footer', array(&$this, 'hesh_print_form') );
 	}
 	
@@ -64,13 +64,13 @@ class wp_html_editor_syntax {
 		update_user_meta( get_current_user_id(), 'hesh_theme', 'material');
 		$metaTheme = get_user_meta( get_current_user_id(), 'hesh_theme' );
 
-		wp_localize_script( 
+		wp_localize_script(
 			'heshjs', // i think... // the handle for the js // the_unique_name_for_your_js
 			'heshOptions', // theUniqueNameForYourJSObject
 			array(
 				'ajaxUrl' => admin_url( 'admin-ajax.php' ), // url for php file that process ajax request to WP
-				'nonce' => wp_create_nonce( 'hesh_nonce_id' ), // this is a unique token to prevent form hijacking
-				'metavalues' => $metaTheme // I will add the user options here
+				'nonce' => wp_create_nonce( 'hesh_options_form' ), // this is a unique token to prevent form hijacking
+				'theme' => $metaTheme // I will add the user options here
 			)
 		);
 		
@@ -80,9 +80,18 @@ class wp_html_editor_syntax {
 	// 	https://teamtreehouse.com/community/submitting-a-form-in-wordpress-using-ajax
 	// 	http://wordpress.stackexchange.com/questions/60758/how-to-handle-form-submission
 	
+    private function write_log ( $log )  {
+        if ( true === WP_DEBUG ) {
+            if ( is_array( $log ) || is_object( $log ) ) {
+                error_log( print_r( $log, true ) );
+            } else {
+                error_log( $log );
+            }
+        }
+    }
 	
 	public function hesh_options_form_process() {
-		fjdslafjadkls; // cause an error so we know it works
+		error_log( print_r( $_POST, true ) );
 		// 	process user settings
 		// 	https://developer.wordpress.org/plugins/users/working-with-user-metadata/
 		// 	https://codex.wordpress.org/Function_Reference/update_user_meta
@@ -147,14 +156,15 @@ class wp_html_editor_syntax {
 					<header class="CodeMirror-settings__header CodeMirror-settings__docked">
 						<h2 class="CodeMirror-settings__title">Code Editor Settings</h2>
 					</header>
+					<?php echo dirname(__FILE__);?>
 					<form
 						action="<?php echo admin_url('admin-ajax.php');?>" 
 						method="post" 
 						class="form CodeMirror-settings__form" 
 						id="CodeMirror-settings__form"
 						>
-						<?php wp_nonce_field('hesh_nonce_id','security-code-here');?>
-						<input name="action" value="hesh_nonce_id" type="hidden">
+						<?php wp_nonce_field('hesh_options_form','security-code-here');?>
+						<input name="action" value="hesh_options_form" type="hidden">
 						<table class="form-table"><tbody>
 							<tr><td class="CodeMirror-settings__heading"><h1>
 								User Prefrences
