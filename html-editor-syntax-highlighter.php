@@ -30,8 +30,24 @@ if ( preg_match( '#' . basename(__FILE__) . '#', $_SERVER['PHP_SELF'] ) ) {
 define( 'HESH_LIBS', plugins_url( '/dist/', __FILE__ ) );
 
 class wp_html_editor_syntax {
+
+	// private $prefix = 'hesh_';
+
+	private $userPrefrences;
+	public function set_options() {
+		$this->userPrefrences = [
+			'theme' => [
+				'title' => 'Theme',
+				'description' => 'choose a theme',
+				'type' => 'select',
+				'options' => json_decode(file_get_contents(dirname(__FILE__) . '/css.json'), true),
+				'current' => get_user_meta( get_current_user_id(), 'hesh_theme' , true),
+			],
+		];
+	}
 	
 	public function __construct () {
+		add_action( 'admin_init', array(&$this, 'set_options') );
 		add_action( 'admin_enqueue_scripts', array(&$this, 'admin_enqueue_scripts' ) );
 		add_action( 'wp_ajax_hesh_options_form', array(&$this, 'hesh_options_form_process'));
 		add_action( 'admin_footer', array(&$this, 'hesh_print_form') );
@@ -60,9 +76,6 @@ class wp_html_editor_syntax {
 		
 		wp_enqueue_script( 'jquery');
 		wp_enqueue_script( 'heshjs', HESH_LIBS.'hesh.js', array('codemirror', 'jquery'), $ver, true );
-		
-		update_user_meta( get_current_user_id(), 'hesh_theme', 'material');
-		$metaTheme = get_user_meta( get_current_user_id(), 'hesh_theme' );
 
 		wp_localize_script(
 			'heshjs', // i think... // the handle for the js // the_unique_name_for_your_js
@@ -70,7 +83,7 @@ class wp_html_editor_syntax {
 			array(
 				'ajaxUrl' => admin_url( 'admin-ajax.php' ), // url for php file that process ajax request to WP
 				'nonce' => wp_create_nonce( 'hesh_options_form' ), // this is a unique token to prevent form hijacking
-				'theme' => $metaTheme // I will add the user options here
+				'theme' => get_user_meta( get_current_user_id(), 'hesh_theme' , true) // I will add the user options here
 			)
 		);
 		
@@ -80,31 +93,35 @@ class wp_html_editor_syntax {
 	// 	https://teamtreehouse.com/community/submitting-a-form-in-wordpress-using-ajax
 	// 	http://wordpress.stackexchange.com/questions/60758/how-to-handle-form-submission
 	
-    private function write_log ( $log )  {
-        if ( true === WP_DEBUG ) {
-            if ( is_array( $log ) || is_object( $log ) ) {
-                error_log( print_r( $log, true ) );
-            } else {
-                error_log( $log );
-            }
-        }
-    }
-	
 	public function hesh_options_form_process() {
-		error_log( print_r( $_POST, true ) );
+		if (empty($_POST) || !wp_verify_nonce($_POST['secret-code'], 'hesh_options_form')) {
+			error_log('You targeted the right function, but sorry, your nonce did not verify.');
+			wp_die();
+		} else {
+			// do your function here
+			$this->update_hesh_options();
+		}
+
 		// 	process user settings
 		// 	https://developer.wordpress.org/plugins/users/working-with-user-metadata/
 		// 	https://codex.wordpress.org/Function_Reference/update_user_meta
 		# add user meta
 	}
+
+	private function update_hesh_options() {
+		error_log( print_r( $_POST, true ) );
+		error_log( print_r( $_POST['theme'], true ) );
+		update_user_meta( get_current_user_id(), 'hesh_theme', $_POST['theme']);
+	}
 	
-	private function output_select_element($config) {
+	private function output_select_element($id, $config) {
 		// http://stackoverflow.com/questions/18881693/how-to-import-external-json-and-display-in-php
+		// var_dump($config);
 		extract($config);
 		// $options: array()
 		// $title: string
 		// $id: string
-		// $selected: string
+		// $current: string
 		// $description: string
 		?>
 			<tr>
@@ -114,13 +131,13 @@ class wp_html_editor_syntax {
 				<td>
 					<select 
 						id="<?php echo $id; ?>" 
-						name="<?php echo $id; ?>" 
+						name="<?php echo $id; ?>"
 						<?php if (isset($description)) echo "aria-describedby=\"$id-description\"" ?>
 						>
 						<?php foreach ($options as $option): ?>
 							<option 
 								value="<?php echo $option; ?>"
-								<?php if (isset($selected) && $selected == $option) echo "selected" ?>
+								<?php if (isset($current) && $current == $option) echo "selected" ?>
 								>
 								<?php echo ucfirst($option); ?>
 							</option>
@@ -142,12 +159,7 @@ class wp_html_editor_syntax {
 	private function output_input_element($OptsArray){
 		# code...
 	}
-	
-
-	private function theme_options() {
-    	return json_decode(file_get_contents(dirname(__FILE__) . '/css.json'), TRUE);
-	}
-	
+		
 	public function hesh_print_form() {
 		// ob_start();
 		?>
@@ -156,27 +168,22 @@ class wp_html_editor_syntax {
 					<header class="CodeMirror-settings__header CodeMirror-settings__docked">
 						<h2 class="CodeMirror-settings__title">Code Editor Settings</h2>
 					</header>
-					<?php echo dirname(__FILE__);?>
 					<form
 						action="<?php echo admin_url('admin-ajax.php');?>" 
 						method="post" 
 						class="form CodeMirror-settings__form" 
 						id="CodeMirror-settings__form"
 						>
-						<?php wp_nonce_field('hesh_options_form','security-code-here');?>
+						<?php wp_nonce_field('hesh_options_form','secret-code');?>
 						<input name="action" value="hesh_options_form" type="hidden">
 						<table class="form-table"><tbody>
 							<tr><td class="CodeMirror-settings__heading"><h1>
 								User Prefrences
 							</h1></td></tr>
 							<?php
-								$this->output_select_element(array(
-									"id" => "theme",
-									"title" => "Theme",
-									"description" => "choose a theme",
-									"options" => $this->theme_options(),
-									"selected" => "material"
-								));
+								foreach ($this->userPrefrences as $id => $value) {
+									$this->output_select_element($id,$value);
+								}
 							?>
 							<tr><td class="CodeMirror-settings__heading"><h1>
 								Addons

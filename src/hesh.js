@@ -32,7 +32,7 @@ console.log(heshOptions); // from wordpress php
 	var options = {
 		mode: 'wordpresspost',
 		tabMode: 'indent',
-		theme: 'material',
+		theme: heshOptions.theme || 'material',
 		lineNumbers: true,
 		matchBrackets: true,
 		indentUnit: 4,
