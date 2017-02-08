@@ -32,10 +32,11 @@ console.log(heshOptions); // from wordpress php
 	var options = {
 		mode: 'wordpresspost',
 		tabMode: 'indent',
-		theme: heshOptions.theme || 'material',
+		theme: heshOptions.theme,
 		lineNumbers: true,
 		matchBrackets: true,
-		indentUnit: 4,
+		indentUnit: 1,
+		tabSize: +heshOptions.tabSize,
 		indentWithTabs: true,
 		enterMode: 'keep',
 		lineWrapping: true,
@@ -58,6 +59,28 @@ console.log(heshOptions); // from wordpress php
 		}
 	};
 
+	function attachSettings() {
+		editor.getWrapperElement().appendChild(settingsPanel);
+		settingsPanel.style.display = 'block';
+		settingsPanel.querySelector('.CodeMirror-settings__toggle').addEventListener('click', toggleSettings);
+
+		// attach all the inputs to live update
+		settingsPanel.querySelectorAll('.CodeMirror-settings__option').forEach(function(option){
+			option.addEventListener('change', updateOption);
+		})
+	}
+	
+	function toggleSettings(event) {
+		// TODO: review browser support for toggle
+		settingsPanel.classList.toggle('open');
+		settingsPanel.classList.toggle('closed');
+	}
+	function updateOption(event) {
+		var value = +event.target.value;
+		value = isNaN(value) ? event.target.value : value ;
+		editor.setOption(event.target.id, value);
+		submitForm();
+	}
 
 	function attachResize() {
 		function matchTextAreaHeight() {
@@ -73,26 +96,6 @@ console.log(heshOptions); // from wordpress php
 
 		matchTextAreaHeight();
 
-	}
-
-
-	function attachSettings() {
-		editor.getWrapperElement().appendChild(settingsPanel);
-		settingsPanel.style.display = 'block';
-		settingsPanel.querySelector('.CodeMirror-settings__toggle').addEventListener('click', toggleSettings);
-
-		// attach all the inputs to live update
-		settingsPanel.querySelector('#theme').addEventListener('change', updateTheme);
-	}
-	function toggleSettings(event) {
-		// TODO: review browser support for toggle
-		settingsPanel.classList.toggle('open');
-		settingsPanel.classList.toggle('closed');
-	}
-
-	function updateTheme(event) {
-		editor.setOption('theme', event.target.value);
-		submitForm();
 	}
 
 	function startEditor() {

@@ -31,7 +31,7 @@ define( 'HESH_LIBS', plugins_url( '/dist/', __FILE__ ) );
 
 class wp_html_editor_syntax {
 
-	// private $prefix = 'hesh_';
+	private $prefix = 'hesh_';
 
 	private $userPrefrences;
 	public function set_options() {
@@ -41,7 +41,15 @@ class wp_html_editor_syntax {
 				'description' => 'choose a theme',
 				'type' => 'select',
 				'options' => json_decode(file_get_contents(dirname(__FILE__) . '/css.json'), true),
-				'current' => get_user_meta( get_current_user_id(), 'hesh_theme' , true),
+				'current' => get_user_meta( get_current_user_id(), $this->prefix.'theme' , true),
+				'default' => 'material',
+			],
+			'tabSize' => [
+				'title' => 'Indent Size',
+				'type' => 'select',
+				'options' => [1,2,3,4,5,6],
+				'current' => get_user_meta( get_current_user_id(), $this->prefix.'tabSize' , true),
+				'default' => 4,
 			],
 		];
 	}
@@ -77,14 +85,18 @@ class wp_html_editor_syntax {
 		wp_enqueue_script( 'jquery');
 		wp_enqueue_script( 'heshjs', HESH_LIBS.'hesh.js', array('codemirror', 'jquery'), $ver, true );
 
+		$heshOptions = [
+			'ajaxUrl' => admin_url( 'admin-ajax.php' ), // url for php file that process ajax request to WP
+			'nonce' => wp_create_nonce( 'hesh_options_form' ), // this is a unique token to prevent form hijacking
+		];
+		foreach ($this->userPrefrences as $id => $value) {
+			$heshOptions[$id] = isset($value['current']) ? $value['current'] : $value['default'];
+		}
+
 		wp_localize_script(
 			'heshjs', // i think... // the handle for the js // the_unique_name_for_your_js
 			'heshOptions', // theUniqueNameForYourJSObject
-			array(
-				'ajaxUrl' => admin_url( 'admin-ajax.php' ), // url for php file that process ajax request to WP
-				'nonce' => wp_create_nonce( 'hesh_options_form' ), // this is a unique token to prevent form hijacking
-				'theme' => get_user_meta( get_current_user_id(), 'hesh_theme' , true) // I will add the user options here
-			)
+			$heshOptions
 		);
 		
 	}
@@ -99,7 +111,9 @@ class wp_html_editor_syntax {
 			wp_die();
 		} else {
 			// do your function here
-			$this->update_hesh_options();
+			foreach ($this->userPrefrences as $id => $value) {
+				update_user_meta( get_current_user_id(), $this->prefix.$id, $_POST[$id]);
+			}
 		}
 
 		// 	process user settings
@@ -108,10 +122,12 @@ class wp_html_editor_syntax {
 		# add user meta
 	}
 
-	private function update_hesh_options() {
-		error_log( print_r( $_POST, true ) );
-		error_log( print_r( $_POST['theme'], true ) );
-		update_user_meta( get_current_user_id(), 'hesh_theme', $_POST['theme']);
+	private function output_option($id, $config) {
+		switch ($config['type']){
+			case 'select':
+				$this->output_select_element($id, $config);
+				break;
+		}
 	}
 	
 	private function output_select_element($id, $config) {
@@ -132,12 +148,16 @@ class wp_html_editor_syntax {
 					<select 
 						id="<?php echo $id; ?>" 
 						name="<?php echo $id; ?>"
+						class="CodeMirror-settings__option"
 						<?php if (isset($description)) echo "aria-describedby=\"$id-description\"" ?>
 						>
 						<?php foreach ($options as $option): ?>
 							<option 
 								value="<?php echo $option; ?>"
-								<?php if (isset($current) && $current == $option) echo "selected" ?>
+								<?php 
+									if (isset($current) && $current == $option) echo "selected";
+									elseif (!isset($current) && $default == $option) echo "selected"; //TODO: test this
+								?>
 								>
 								<?php echo ucfirst($option); ?>
 							</option>
@@ -182,16 +202,14 @@ class wp_html_editor_syntax {
 							</h1></td></tr>
 							<?php
 								foreach ($this->userPrefrences as $id => $value) {
-									$this->output_select_element($id,$value);
+									$this->output_option($id,$value);
 								}
 							?>
 							<tr><td class="CodeMirror-settings__heading"><h1>
 								Addons
 							</h1></td></tr>
 							<tr>
-								<th scope="row"><label for="blogdescription">Tagline</label></th>
-								<td><input name="blogdescription" type="text" id="blogdescription" aria-describedby="tagline-description" value="Just another WordPress site" class="regular-text">
-								<p class="description" id="tagline-description">In a few words, explain what this site is about.</p></td>
+								<th scope="row"><label>Coming Soon...</label></th>
 							</tr>
 						</tbody></table>
 						</form>
