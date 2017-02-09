@@ -160,7 +160,11 @@ class wp_html_editor_syntax {
 		} else {
 			// do your function here
 			foreach ($this->userPrefrences as $id => $value) {
-				update_user_meta( get_current_user_id(), $this->prefix.$id, $_POST[$id]);
+				$setting = $_POST[$id];
+				if ($setting === 'true') $setting = true;
+				if ($setting === 'false') $setting = false;
+				if (is_numeric($setting)) $setting = floatval($setting);
+				update_user_meta( get_current_user_id(), $this->prefix.$id, $setting);
 			}
 		}
 
@@ -186,22 +190,32 @@ class wp_html_editor_syntax {
 		?>
 			<tr>
 				<th scope="row">
-					Membership
+					<?php echo $title; ?>
 				</th>
 				<td>
 					<fieldset>
 						<legend class="screen-reader-text">
-							<span>Membership</span>
+							<span><?php echo $title; ?></span>
 						</legend>
-						<label for="users_can_register">
+						<label for="<?php echo $id; ?>">
+							<input type="hidden" value="false"  name="<?php echo $id; ?>" />
 							<input 
 								name="<?php echo $id; ?>" 
 								id="<?php echo $id; ?>" 
-								type="checkbox" 
-								value="1" 
+								type="checkbox"
+								value="true"
+								<?php if (isset($description)) echo "aria-describedby=\"$id-description\"" ?>
+								<?php if ((isset($current) && $current) || (!isset($current) && $default)) echo "checked"; ?>
 								/>
-							Anyone can register
+							<?php echo $text; ?>
 						</label>
+						<?php if (isset($description)): ?>
+							<p class="description" 
+								id="<?php echo $id; ?>-description"
+								>
+								<?php echo $description; ?>
+							</p>
+						<?php endif; ?>
 					</fieldset>
 				</td>
 			</tr>
@@ -210,13 +224,7 @@ class wp_html_editor_syntax {
 	
 	private function output_select($id, $config) {
 		// http://stackoverflow.com/questions/18881693/how-to-import-external-json-and-display-in-php
-		// var_dump($config);
 		extract($config);
-		// $options: array()
-		// $title: string
-		// $id: string
-		// $current: string
-		// $description: string
 		?>
 			<tr>
 				<th scope="row">
@@ -251,11 +259,6 @@ class wp_html_editor_syntax {
 				</td>
 			</tr>
 		<?php
-	}
-
-
-	private function output_input_element($OptsArray){
-		# code...
 	}
 		
 	public function hesh_print_form() {
