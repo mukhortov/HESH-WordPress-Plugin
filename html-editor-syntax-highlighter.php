@@ -126,13 +126,13 @@ class wp_html_editor_syntax {
 				'current' => get_user_meta( get_current_user_id(), $this->prefix.'lineHeight' , true),
 				'default' => 1.25,
 			],
-			'keyMap'=> [
-				'title' => 'Key Mapping',
-				'type' => 'select',
-				'options' => ['none', 'emacs', 'sublime', 'vim'],
-				'current' => get_user_meta( get_current_user_id(), $this->prefix.'keyMap' , true),
-				'default' => 'none',
-			],
+			// 'keyMap'=> [
+			// 	'title' => 'Key Mapping',
+			// 	'type' => 'select',
+			// 	'options' => ['none', 'emacs', 'sublime', 'vim'],
+			// 	'current' => get_user_meta( get_current_user_id(), $this->prefix.'keyMap' , true),
+			// 	'default' => 'none',
+			// ],
 		];
 		$this->addOns = [
 			'styleActiveLine'=> [],
@@ -204,6 +204,7 @@ class wp_html_editor_syntax {
 								id="<?php echo $id; ?>" 
 								type="checkbox"
 								value="true"
+								class="CodeMirror-settings__option"
 								<?php if (isset($description)) echo "aria-describedby=\"$id-description\"" ?>
 								<?php if ((isset($current) && $current) || (!isset($current) && $default)) echo "checked"; ?>
 								/>

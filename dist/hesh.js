@@ -33,13 +33,13 @@ console.log(heshOptions); // from wordpress php
 		mode: 'wordpresspost',
 		tabMode: 'indent',
 		theme: heshOptions.theme,
-		lineNumbers: true,
+		lineNumbers: !!heshOptions.lineNumbers,
 		matchBrackets: true,
 		indentUnit: 1,
 		tabSize: +heshOptions.tabSize,
 		indentWithTabs: true,
 		enterMode: 'keep',
-		lineWrapping: true,
+		lineWrapping: !!heshOptions.lineWrapping,
 		autofocus: true,
 		styleActiveLine: true,
 		electricChars: false,
@@ -65,9 +65,13 @@ console.log(heshOptions); // from wordpress php
 		settingsPanel.querySelector('.CodeMirror-settings__toggle').addEventListener('click', toggleSettings);
 
 		// attach all the inputs to live update
-		settingsPanel.querySelectorAll('.CodeMirror-settings__option').forEach(function(option){
-			option.addEventListener('change', updateOption);
+		settingsPanel.querySelectorAll('.CodeMirror-settings__option').forEach(function(option) {
+			option.addEventListener('change', submitForm);
 		})
+		settingsPanel.querySelector('#theme').addEventListener('change', updateOption)
+		settingsPanel.querySelector('#tabSize').addEventListener('change', updateOption)
+		settingsPanel.querySelector('#lineWrapping').addEventListener('change', updateOption)
+		settingsPanel.querySelector('#lineNumbers').addEventListener('change', updateOption)
 	}
 	
 	function toggleSettings(event) {
@@ -78,8 +82,8 @@ console.log(heshOptions); // from wordpress php
 	function updateOption(event) {
 		var value = +event.target.value;
 		value = isNaN(value) ? event.target.value : value ;
+		if (event.target.checked != null) value = event.target.checked;
 		editor.setOption(event.target.id, value);
-		submitForm();
 	}
 
 	function attachResize() {
@@ -141,7 +145,7 @@ console.log(heshOptions); // from wordpress php
 	function submitForm() {
 		var formArray = $('#CodeMirror-settings__form').serializeArray();
 		// TODO: drop jQuery dependency
-		console.log(formArray);
+		// console.log(formArray);
 		$.post(heshOptions.ajaxUrl, formArray, function (response) {
 			console.log('submitted success');
 		});
