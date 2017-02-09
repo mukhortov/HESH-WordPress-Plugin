@@ -1,7 +1,8 @@
 {
     "vsicons.presets.angular": false,
     "files.exclude": {
-        "node_modules/": true,
-        "mockups/": true
+        // "node_modules/": true,
+        "mockups/": true,
+        // "dist/": true
     }
 }

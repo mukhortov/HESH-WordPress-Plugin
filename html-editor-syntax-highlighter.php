@@ -30,29 +30,6 @@ if ( preg_match( '#' . basename(__FILE__) . '#', $_SERVER['PHP_SELF'] ) ) {
 define( 'HESH_LIBS', plugins_url( '/dist/', __FILE__ ) );
 
 class wp_html_editor_syntax {
-
-	private $prefix = 'hesh_';
-
-	private $userPrefrences;
-	public function set_options() {
-		$this->userPrefrences = [
-			'theme' => [
-				'title' => 'Theme',
-				'description' => 'choose a theme',
-				'type' => 'select',
-				'options' => json_decode(file_get_contents(dirname(__FILE__) . '/css.json'), true),
-				'current' => get_user_meta( get_current_user_id(), $this->prefix.'theme' , true),
-				'default' => 'material',
-			],
-			'tabSize' => [
-				'title' => 'Indent Size',
-				'type' => 'select',
-				'options' => [1,2,3,4,5,6],
-				'current' => get_user_meta( get_current_user_id(), $this->prefix.'tabSize' , true),
-				'default' => 4,
-			],
-		];
-	}
 	
 	public function __construct () {
 		add_action( 'admin_init', array(&$this, 'set_options') );
@@ -100,6 +77,103 @@ class wp_html_editor_syntax {
 		);
 		
 	}
+
+	private $prefix = 'hesh_';
+	private $themeFieldset;
+	private $textFieldset;
+	private $editorFieldset;
+	private $userPrefrencesFieldsets;
+	private $addOns;
+	public function set_options() {
+		$this->themeFieldset = [
+			'theme' => [
+				'title' => 'Theme',
+				// 'description' => 'choose a theme',
+				'type' => 'select',
+				'options' => json_decode(file_get_contents(dirname(__FILE__) . '/css.json'), true),
+				'current' => get_user_meta( get_current_user_id(), $this->prefix.'theme' , true),
+				'default' => 'material',
+			]
+		];
+
+		$this->textFieldset = [
+			'tabSize' => [
+				'title' => 'Indent Size',
+				'type' => 'select',
+				'options' => range(1,6),
+				'current' => get_user_meta( get_current_user_id(), $this->prefix.'tabSize' , true),
+				'default' => 4,
+			],
+			'fontSize'=> [
+				'title' => 'Font Size',
+				'type' => 'select',
+				'options' => range(8,20),
+				'current' => get_user_meta( get_current_user_id(), $this->prefix.'fontSize' , true),
+				'default' => 14,
+			],
+			'lineHeight'=> [
+				'title' => 'Line Height',
+				'type' => 'select',
+				'options' => range(1,2,0.25),
+				'current' => get_user_meta( get_current_user_id(), $this->prefix.'lineHeight' , true),
+				'default' => 1.25,
+			],
+			'keyMap'=> [
+				'title' => 'Key Mapping',
+				'type' => 'select',
+				'options' => ['none', 'emacs', 'sublime', 'vim'],
+				'current' => get_user_meta( get_current_user_id(), $this->prefix.'keyMap' , true),
+				'default' => 'none',
+			],
+		];
+
+		$this->editorFieldset = [
+			'lineWrapping'=> [
+				'title' => 'Text Wrapping',
+				'type' => 'checkbox',
+				'text' => 'Wrap lines',
+				'current' => get_user_meta( get_current_user_id(), $this->prefix.'lineWrapping' , true),
+				'default' => true,
+			],
+			'lineNumbers'=> [
+				'title' => 'Numbering',
+				'type' => 'checkbox',
+				'text' => 'Show line numbers',
+				'current' => get_user_meta( get_current_user_id(), $this->prefix.'lineNumbers' , true),
+				'default' => true,
+			],
+		];
+
+		$this->userPrefrencesFieldsets = [
+			[
+				'title' => 'Theme',
+				'fieldset' => $this->themeFieldset
+			],
+			[
+				'title' => 'Text',
+				'fieldset' => $this->textFieldset
+			],
+			[
+				'title' => 'Editor',
+				'fieldset' => $this->editorFieldset
+			],
+		];
+
+		
+		$this->addOns = [
+			'styleActiveLine'=> [],
+			'matchBrackets'=> [],
+			'search'=> [], // and replace
+			'highlightSelectionMatches'=> [],
+			'styleSelectedText'=> [], // ?
+			'autoCloseBrackets'=> [],
+			'autoCloseTags'=> [],
+			'comment'=> [], // continueComments?
+			'foldCode'=> [], // ?
+		];
+	}
+
+	
 	
 	// 	AJAX forms
 	// 	https://teamtreehouse.com/community/submitting-a-form-in-wordpress-using-ajax
@@ -122,15 +196,49 @@ class wp_html_editor_syntax {
 		# add user meta
 	}
 
-	private function output_option($id, $config) {
+	private function output_fieldset($title, $fieldset) {
+
+	}
+
+	private function output_field($id, $config) {
 		switch ($config['type']){
 			case 'select':
-				$this->output_select_element($id, $config);
+				$this->output_select($id, $config);
+				break;
+			case 'checkbox':
+				$this->output_checkbox($id, $config);
 				break;
 		}
 	}
+
+	private function output_checkbox($id, $config) {
+		extract($config);
+		?>
+			<tr>
+				<th scope="row">
+					Membership
+				</th>
+				<td>
+					<fieldset>
+						<legend class="screen-reader-text">
+							<span>Membership</span>
+						</legend>
+						<label for="users_can_register">
+							<input 
+								name="<?php echo $id; ?>" 
+								id="<?php echo $id; ?>" 
+								type="checkbox" 
+								value="1" 
+								/>
+							Anyone can register
+						</label>
+					</fieldset>
+				</td>
+			</tr>
+		<?php
+	}
 	
-	private function output_select_element($id, $config) {
+	private function output_select($id, $config) {
 		// http://stackoverflow.com/questions/18881693/how-to-import-external-json-and-display-in-php
 		// var_dump($config);
 		extract($config);
@@ -174,7 +282,6 @@ class wp_html_editor_syntax {
 			</tr>
 		<?php
 	}
-
 
 	private function output_input_element($OptsArray){
 		# code...
