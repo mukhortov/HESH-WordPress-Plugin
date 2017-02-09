@@ -117,14 +117,14 @@ class wp_html_editor_syntax {
 				'type' => 'select',
 				'options' => range(8,20),
 				'current' => get_user_meta( get_current_user_id(), $this->prefix.'fontSize' , true),
-				'default' => 14,
+				'default' => 13,
 			],
 			'lineHeight'=> [
 				'title' => 'Line Height',
 				'type' => 'select',
 				'options' => range(1,2,0.25),
 				'current' => get_user_meta( get_current_user_id(), $this->prefix.'lineHeight' , true),
-				'default' => 1.25,
+				'default' => 1.5,
 			],
 			// 'keyMap'=> [
 			// 	'title' => 'Key Mapping',

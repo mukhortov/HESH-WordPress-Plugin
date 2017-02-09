@@ -19,6 +19,7 @@ console.log(heshOptions); // from wordpress php
 	'use strict';
 
 	var editor;
+	var scrollPanel;
 	var settingsPanel = document.getElementById('CodeMirror-settings');
 	var isActive = false;
 	var target = document.getElementById('content');
@@ -27,7 +28,8 @@ console.log(heshOptions); // from wordpress php
 	var visualEditorActive = document.getElementById('wp-content-wrap').className.indexOf('tmce-active') > -1;
 	var visualEditorEnabled = document.getElementById('content-tmce') != null;
 	var publishButton = document.getElementById('save-post') || document.getElementById('publish');
-
+	var fontSize = +heshOptions.fontSize;
+	var lineHeight = +heshOptions.lineHeight;
 
 	var options = {
 		mode: 'wordpresspost',
@@ -72,6 +74,9 @@ console.log(heshOptions); // from wordpress php
 		settingsPanel.querySelector('#tabSize').addEventListener('change', updateOption)
 		settingsPanel.querySelector('#lineWrapping').addEventListener('change', updateOption)
 		settingsPanel.querySelector('#lineNumbers').addEventListener('change', updateOption)
+
+		settingsPanel.querySelector('#fontSize').addEventListener('change', updateFontSize)
+		settingsPanel.querySelector('#lineHeight').addEventListener('change', updateLineHeight)
 	}
 	
 	function toggleSettings(event) {
@@ -85,6 +90,23 @@ console.log(heshOptions); // from wordpress php
 		if (event.target.checked != null) value = event.target.checked;
 		editor.setOption(event.target.id, value);
 	}
+
+	function setFontSizeAndLineHeight() {
+		scrollPanel.style.fontSize = fontSize + 'px';
+		scrollPanel.style.lineHeight = lineHeight + 'em';
+		editor.refresh();
+	}
+	function updateFontSize(event) {
+		fontSize = event.target.value;
+		scrollPanel.style.fontSize = fontSize + 'px';
+		editor.refresh();
+	}
+	function updateLineHeight(event) {
+		lineHeight = event.target.value;
+		scrollPanel.style.lineHeight = lineHeight + 'em';
+		editor.refresh();
+	}
+
 
 	function attachResize() {
 		function matchTextAreaHeight() {
@@ -104,6 +126,7 @@ console.log(heshOptions); // from wordpress php
 
 	function startEditor() {
 		editor = CodeMirror.fromTextArea(target, options);
+		scrollPanel = editor.getWrapperElement().querySelector('.CodeMirror-code');
 
 		// Save changes to the textarea on the fly
 		editor.on('change', function () {
@@ -139,6 +162,7 @@ console.log(heshOptions); // from wordpress php
 		startEditor();
 		attachResize();
 		attachSettings();
+		setFontSizeAndLineHeight();
 		isActive = true;
 	}
 
