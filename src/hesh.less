@@ -111,7 +111,7 @@
 			border-top-left-radius: @border-radius;
 			border-top-right-radius: @border-radius;
 			top:0;
-			border-bottom: 1px solid @border-color;
+			border: 1px solid @border-color;
 		}
 		&__title{
 			display: inline-block;
@@ -120,7 +120,7 @@
 			border-bottom-left-radius: @border-radius;
 			border-bottom-right-radius: @border-radius;
 			bottom:0;
-			border-top: 1px solid @border-color;
+			border: 1px solid @border-color;
 			padding: 0 @padding;
 		}
 		&__foot-content{
@@ -147,6 +147,8 @@
 			padding: 1px @padding;
 			overflow-y: auto;
 			margin: 0;
+			border-left: 1px solid @border-color;
+			border-right: 1px solid @border-color;
 		}
 		td&__heading{ //td& for specificity
 			padding: 0;

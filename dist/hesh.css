@@ -4673,7 +4673,7 @@ THE SOFTWARE.
   border-top-left-radius: 3px;
   border-top-right-radius: 3px;
   top: 0;
-  border-bottom: 1px solid #ddd;
+  border: 1px solid #ddd;
 }
 .CodeMirror-settings__title {
   display: inline-block;
@@ -4682,7 +4682,7 @@ THE SOFTWARE.
   border-bottom-left-radius: 3px;
   border-bottom-right-radius: 3px;
   bottom: 0;
-  border-top: 1px solid #ddd;
+  border: 1px solid #ddd;
   padding: 0 12px;
 }
 .CodeMirror-settings__foot-content {
@@ -4714,6 +4714,8 @@ THE SOFTWARE.
   padding: 1px 12px;
   overflow-y: auto;
   margin: 0;
+  border-left: 1px solid #ddd;
+  border-right: 1px solid #ddd;
 }
 @media screen and (min-width: 782px) {
   .CodeMirror-settings__form {
