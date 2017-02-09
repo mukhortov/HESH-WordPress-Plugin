@@ -79,13 +79,10 @@ class wp_html_editor_syntax {
 	}
 
 	private $prefix = 'hesh_';
-	private $themeFieldset;
-	private $textFieldset;
-	private $editorFieldset;
-	private $userPrefrencesFieldsets;
+	private $userPrefrences;
 	private $addOns;
 	public function set_options() {
-		$this->themeFieldset = [
+		$this->userPrefrences = [
 			'theme' => [
 				'title' => 'Theme',
 				// 'description' => 'choose a theme',
@@ -93,16 +90,27 @@ class wp_html_editor_syntax {
 				'options' => json_decode(file_get_contents(dirname(__FILE__) . '/css.json'), true),
 				'current' => get_user_meta( get_current_user_id(), $this->prefix.'theme' , true),
 				'default' => 'material',
-			]
-		];
-
-		$this->textFieldset = [
+			],
 			'tabSize' => [
 				'title' => 'Indent Size',
 				'type' => 'select',
 				'options' => range(1,6),
 				'current' => get_user_meta( get_current_user_id(), $this->prefix.'tabSize' , true),
 				'default' => 4,
+			],
+			'lineWrapping'=> [
+				'title' => 'Text Wrapping',
+				'type' => 'checkbox',
+				'text' => 'Wrap lines',
+				'current' => get_user_meta( get_current_user_id(), $this->prefix.'lineWrapping' , true),
+				'default' => true,
+			],
+			'lineNumbers'=> [
+				'title' => 'Numbering',
+				'type' => 'checkbox',
+				'text' => 'Show line numbers',
+				'current' => get_user_meta( get_current_user_id(), $this->prefix.'lineNumbers' , true),
+				'default' => true,
 			],
 			'fontSize'=> [
 				'title' => 'Font Size',
@@ -126,40 +134,6 @@ class wp_html_editor_syntax {
 				'default' => 'none',
 			],
 		];
-
-		$this->editorFieldset = [
-			'lineWrapping'=> [
-				'title' => 'Text Wrapping',
-				'type' => 'checkbox',
-				'text' => 'Wrap lines',
-				'current' => get_user_meta( get_current_user_id(), $this->prefix.'lineWrapping' , true),
-				'default' => true,
-			],
-			'lineNumbers'=> [
-				'title' => 'Numbering',
-				'type' => 'checkbox',
-				'text' => 'Show line numbers',
-				'current' => get_user_meta( get_current_user_id(), $this->prefix.'lineNumbers' , true),
-				'default' => true,
-			],
-		];
-
-		$this->userPrefrencesFieldsets = [
-			[
-				'title' => 'Theme',
-				'fieldset' => $this->themeFieldset
-			],
-			[
-				'title' => 'Text',
-				'fieldset' => $this->textFieldset
-			],
-			[
-				'title' => 'Editor',
-				'fieldset' => $this->editorFieldset
-			],
-		];
-
-		
 		$this->addOns = [
 			'styleActiveLine'=> [],
 			'matchBrackets'=> [],
@@ -196,11 +170,7 @@ class wp_html_editor_syntax {
 		# add user meta
 	}
 
-	private function output_fieldset($title, $fieldset) {
-
-	}
-
-	private function output_field($id, $config) {
+	private function output_option($id, $config) {
 		switch ($config['type']){
 			case 'select':
 				$this->output_select($id, $config);
@@ -282,6 +252,7 @@ class wp_html_editor_syntax {
 			</tr>
 		<?php
 	}
+
 
 	private function output_input_element($OptsArray){
 		# code...
