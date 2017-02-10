@@ -126,19 +126,21 @@ console.log(heshOptions); // from wordpress php
 
 	function startEditor() {
 
+		// change the mode if on the theme/plugin editor page
 		if (themeOrPluginEditorPage){
 			var fileType = document.querySelector('.fileedit-sub h2 span').innerHTML
 				.match(/\.[^\)\.]*\)[^\)]*$/ig)[0]
 				.match(/[a-z]*/ig)[1];
-			console.log(fileType);
 			options.mode = fileType;
 		}
 
+		// start up codemirror
 		editor = CodeMirror.fromTextArea(target, options);
 		scrollPanel = editor.getWrapperElement().querySelector('.CodeMirror-code');
 
 		// Save changes to the textarea on the fly
 		editor.on('change', function () {
+			// console.log(editor.getTextArea().value)
 			editor.save();
 		});
 
