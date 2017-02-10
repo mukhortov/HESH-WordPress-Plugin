@@ -125,6 +125,15 @@ console.log(heshOptions); // from wordpress php
 	}
 
 	function startEditor() {
+
+		if (themeOrPluginEditorPage){
+			var fileType = document.querySelector('.fileedit-sub h2 span').innerHTML
+				.match(/\.[^\)\.]*\)[^\)]*$/ig)[0]
+				.match(/[a-z]*/ig)[1];
+			console.log(fileType);
+			options.mode = fileType;
+		}
+
 		editor = CodeMirror.fromTextArea(target, options);
 		scrollPanel = editor.getWrapperElement().querySelector('.CodeMirror-code');
 
