@@ -41,7 +41,11 @@ class wp_html_editor_syntax {
 	// Enqueues scripts and styles for hesh.js
 	public function admin_enqueue_scripts () {
 		
-		if (!strstr($_SERVER['SCRIPT_NAME'], 'post.php') && !strstr($_SERVER['SCRIPT_NAME'], 'post-new.php')) return;
+		if (
+			!strstr($_SERVER['SCRIPT_NAME'], 'post.php') && 
+			!strstr($_SERVER['SCRIPT_NAME'], 'post-new.php') &&
+			!strstr($_SERVER['SCRIPT_NAME'], 'editor.php')
+		) return;
 		
 		$plugData = get_plugin_data( __FILE__ );
 		// need this temporary var to support versions of php < 5.4

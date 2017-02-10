@@ -21,11 +21,12 @@ console.log(heshOptions); // from wordpress php
 	var editor;
 	var scrollPanel;
 	var settingsPanel = document.getElementById('CodeMirror-settings');
+	var themeOrPluginEditorPage = document.getElementById('newcontent') != null;
 	var isActive = false;
-	var target = document.getElementById('content');
+	var target = document.getElementById('content') || document.getElementById('newcontent');
 	var tab_html = document.getElementById('content-html');
 	var tab_tmce = document.getElementById('content-tmce');
-	var visualEditorActive = document.getElementById('wp-content-wrap').className.indexOf('tmce-active') > -1;
+	var visualEditorActive = document.getElementsByClassName('tmce-active')[0] != null;
 	var visualEditorEnabled = document.getElementById('content-tmce') != null;
 	var publishButton = document.getElementById('save-post') || document.getElementById('publish');
 	var fontSize = +heshOptions.fontSize;
@@ -112,7 +113,6 @@ console.log(heshOptions); // from wordpress php
 		function matchTextAreaHeight() {
 			editor.getWrapperElement().style.height = editor.getTextArea().style.height
 		}
-
 		document.getElementById('content-resize-handle').addEventListener('mousedown', function () {
 			document.addEventListener('mousemove', matchTextAreaHeight);
 		});
@@ -160,7 +160,7 @@ console.log(heshOptions); // from wordpress php
 
 	function runEditor() {
 		startEditor();
-		attachResize();
+		if (!themeOrPluginEditorPage) attachResize();
 		attachSettings();
 		setFontSizeAndLineHeight();
 		isActive = true;
@@ -176,7 +176,9 @@ console.log(heshOptions); // from wordpress php
 	}
 
 	function initialise() {
-		if (visualEditorEnabled && visualEditorActive) {
+		if (themeOrPluginEditorPage){
+			runEditor();
+		} else if (visualEditorEnabled && visualEditorActive) {
 			tab_html.onclick = toHTML;
 		} else {
 			runEditor();

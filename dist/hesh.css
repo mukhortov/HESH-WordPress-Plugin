@@ -4556,6 +4556,10 @@ THE SOFTWARE.
 .CodeMirror {
   font: inherit;
 }
+#template .CodeMirror,
+#template .CodeMirror div {
+  margin-right: initial;
+}
 .CodeMirror-scroll {
   font-family: Menlo Regular, Consolas, Monaco, monospace;
   line-height: 150%;

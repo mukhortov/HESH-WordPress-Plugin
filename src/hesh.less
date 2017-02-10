@@ -11,6 +11,13 @@
 @import (less) 'node_modules/codemirror/theme/*.css';
 
 .CodeMirror {
+
+	// to beat the stupid, lazy:
+	// #template div { margin-right:190px; }
+	#template &, #template & div{
+		margin-right: initial;
+	}
+
 	font: inherit;
 	&-scroll{
 		font-family: Menlo Regular, Consolas, Monaco, monospace;
