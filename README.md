@@ -1,14 +1,12 @@
 #TODOs
-- was just: adding theme and font options
-- dev options menu - just theme and fontsize
-  - add options that switch on the fly
-  - and save to user profile
-- save user options
-  - in php
-- build module loader
+- re-add window fullscreen
+- add content resizer
+- fix button code placement bug
+- build dist branch
+
+- build module loader?
   - in php
   - on the fly in js
-- re-add window fullscreen
 
 
 #HTML Editor Syntax Highlighter
