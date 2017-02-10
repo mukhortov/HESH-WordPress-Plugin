@@ -42,6 +42,8 @@ gulp.task('copy:codemirror', function () {
         codemirrorPath + 'mode/javascript/javascript.js',
         codemirrorPath + 'mode/css/css.js',
         codemirrorPath + 'mode/htmlmixed/htmlmixed.js',
+        codemirrorPath + 'mode/clike/clike.js',
+        codemirrorPath + 'mode/php/php.js',
         './src/shortcode.js',
         './src/wordpresspost.js',
         // wp stuff

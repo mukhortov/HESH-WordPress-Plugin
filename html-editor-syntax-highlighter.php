@@ -56,10 +56,12 @@ class wp_html_editor_syntax {
 		wp_enqueue_style( 'heshcss', HESH_LIBS.'hesh.css', false, $ver );
 		
 		wp_enqueue_script( 'codemirror', HESH_LIBS.'codemirror.js', false, $ver, true );
-		wp_enqueue_script( 'xml_cm', HESH_LIBS.'xml.js', false, $ver, true );
-		wp_enqueue_script( 'javascript_cm', HESH_LIBS.'javascript.js', false, $ver, true );
-		wp_enqueue_script( 'css_cm', HESH_LIBS.'css.js', false, $ver, true );
+		wp_enqueue_script( 'xml_cm', HESH_LIBS.'xml.js', array('codemirror'), $ver, true );
+		wp_enqueue_script( 'javascript_cm', HESH_LIBS.'javascript.js', array('codemirror'), $ver, true );
+		wp_enqueue_script( 'css_cm', HESH_LIBS.'css.js', array('codemirror'), $ver, true );
 		wp_enqueue_script( 'htmlmixed_cm', HESH_LIBS.'htmlmixed.js', array('codemirror', 'css_cm', 'javascript_cm', 'xml_cm'), $ver, true );
+		wp_enqueue_script( 'clike_cm', HESH_LIBS.'clike.js', array('codemirror'), $ver, true );
+		wp_enqueue_script( 'php_cm', HESH_LIBS.'php.js', array('codemirror', 'clike_cm', 'htmlmixed_cm'), $ver, true );
 		wp_enqueue_script( 'shortcode_cm', HESH_LIBS.'shortcode.js', array('codemirror'), $ver, true );
 		wp_enqueue_script( 'wordpresspost_cm', HESH_LIBS.'wordpresspost.js', array('codemirror', 'htmlmixed_cm', 'shortcode_cm'), $ver, true );
 		
