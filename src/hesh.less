@@ -12,12 +12,6 @@
 
 .CodeMirror {
 
-	// to beat the stupid, lazy:
-	// #template div { margin-right:190px; }
-	#template &, #template & div{
-		margin-right: initial;
-	}
-
 	font: inherit;
 	&-scroll{
 		font-family: Menlo Regular, Consolas, Monaco, monospace;
@@ -26,17 +20,19 @@
 		// height: 500px;
 		position: relative;
 	}
+
+	@mobile-media:  ~'screen and (max-width: 781px)';
+	@desktop-media: ~'screen and (min-width: 782px)';
+	@docked-mobile-height:44px;
+	@docked-desktop-height:35px;
+	.media(@property; @mobile:@docked-mobile-height; @desktop:@docked-desktop-height;){
+		@media @desktop-media{ @{property}: @desktop; }
+		@media @mobile-media{ @{property}: @mobile; }
+	}
+
 	&-settings{
 
 
-		@mobile-media:  ~'screen and (max-width: 781px)';
-		@desktop-media: ~'screen and (min-width: 782px)';
-		@docked-mobile-height:44px;
-		@docked-desktop-height:35px;
-		.media(@property; @mobile:@docked-mobile-height; @desktop:@docked-desktop-height;){
-			@media @desktop-media{ @{property}: @desktop; }
-			@media @mobile-media{ @{property}: @mobile; }
-		}
 
 		@margin: 6px;
 		@padding: 12px;
@@ -196,5 +192,19 @@
 			}
 		}
 	}
+
+	// THEME AND PLUGIN EDITOR PAGES
+
+	// to beat the stupid, lazy:
+	// #template div { margin-right: 190px; }
+	#template & div{
+		margin-right: initial;
+	}
+	#template &{
+		.media(margin-right, initial, 20px);
+		// margin-right: 20px;
+	}
+
+
 }
 

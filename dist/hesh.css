@@ -4556,10 +4556,6 @@ THE SOFTWARE.
 .CodeMirror {
   font: inherit;
 }
-#template .CodeMirror,
-#template .CodeMirror div {
-  margin-right: initial;
-}
 .CodeMirror-scroll {
   font-family: Menlo Regular, Consolas, Monaco, monospace;
   line-height: 150%;
@@ -4767,4 +4763,17 @@ td.CodeMirror-settings__heading {
 }
 .CodeMirror-settings.closed .CodeMirror-settings__toggle:before {
   opacity: 1;
+}
+#template .CodeMirror div {
+  margin-right: initial;
+}
+@media screen and (min-width: 782px) {
+  #template .CodeMirror {
+    margin-right: 20px;
+  }
+}
+@media screen and (max-width: 781px) {
+  #template .CodeMirror {
+    margin-right: initial;
+  }
 }
