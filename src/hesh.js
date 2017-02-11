@@ -119,9 +119,7 @@
 		document.addEventListener('mouseup', function () {
 			document.removeEventListener('mousemove', matchTextAreaHeight);
 		});
-
 		matchTextAreaHeight();
-
 	}
 
 	function startEditor() {
@@ -138,69 +136,52 @@
 		editor = CodeMirror.fromTextArea(target, options);
 		scrollPanel = editor.getWrapperElement().querySelector('.CodeMirror-code');
 
-		// Save changes to the textarea on the fly
+		// matain cursor/selection pairity between codemirror and the textarea
 		editor.on('cursorActivity', function (instance) {
 			var cursorPosition = instance.doc.getCursor()
-			// console.log(cursorPosition)
 			var position = 0;
-			// var cmLines = instance.getWrapperElement().getElementsByClassName('CodeMirror-line')
-			// for (var i = 0; i < cmLines.length; i++) {
-			// 	var cmLine = cmLines[i];
-				
-			// 	if (i > (cursorPosition.line - 1)) break;
-			// 	console.log(cmLine.textContent == '')
-			// 	position += cmLine.textContent.length;
-			// }
 			var i = 0
 			instance.doc.eachLine(function(line){
-				// console.log(line)
 				if (i > (cursorPosition.line - 1)) return;
 				position += line.text.length + 1; 
 				i++;
 			})
-
 			position += cursorPosition.ch;
-			// console.log(position)
-			// console.log(editor.getTextArea().selectionStart)
 			instance.getTextArea().selectionStart = instance.getTextArea().selectionEnd = position
-			// console.log(editor.getTextArea().selectionStart)
 		});
 
+		// Save save all changes to the textarea.value
 		editor.on('change', function (instance, changeObj) {
 			instance.save();
 		});
 
-		// Check if any edits were made to the textarea.value
+		// Check if any edits were made to the textarea.value at 20Hz
 		window.setInterval(function () {
 			var editorLength = editor.doc.getValue().length;
 			var textAreaLength = editor.getTextArea().value.length
-			if (editorLength !== textAreaLength) {
+			if (editorLength !== textAreaLength) { // if there were changes...
+
+				// save the cursor state
 				var cursorPosition = editor.doc.getCursor()
-				// console.log(cursorPosition);
-				// console.log(editor.getTextArea().selectionStart);
+
+				// update codemirror with the new textarea.value
 				editor.doc.setValue(editor.getTextArea().value);
 				editor.focus();
 
+				// reset the cursors new state - there may be new lines added
 				var line = cursorPosition.line;
 				var maxCh = editor.getLineHandle(line).text.length + 1;
 				var ch = cursorPosition.ch + (textAreaLength - editorLength);
-
-				// console.log(maxCh, ch);
 				while (maxCh < (ch + 1)) {
 					line++;
 					ch -= maxCh;
 					maxCh = editor.getLineHandle(line).text.length + 1;
-					// console.log(maxCh, ch);
 				}
-				
 				editor.doc.setCursor({
 					line: line,
 					ch: ch
 				});
-				// console.log(textAreaLength - editorLength);
 
-				// console.log(editor.getTextArea().selectionStart);
-				// console.log(editor.doc.getCursor());
 			}
 		}, 50);
 	}
@@ -233,7 +214,7 @@
 	function submitForm() {
 		var formArray = $('#CodeMirror-settings__form').serializeArray();
 		// TODO: drop jQuery dependency
-		// console.log(formArray);
+		// console.log(formArray); // for debug
 		$.post(heshOptions.ajaxUrl, formArray, function (response) {
 			console.log('submitted success');
 		});
@@ -263,4 +244,4 @@
 	window.CodeMirror,
 	window.switchEditors,
 	window.jQuery
-	);
+);
