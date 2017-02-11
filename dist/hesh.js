@@ -141,7 +141,7 @@ console.log(heshOptions); // from wordpress php
 		// Save changes to the textarea on the fly
 		editor.on('cursorActivity', function (instance) {
 			var cursorPosition = instance.doc.getCursor()
-			// console.log(cursorPosition)
+			console.log(cursorPosition)
 			var position = 0;
 			var cmLines = instance.getWrapperElement().getElementsByClassName('CodeMirror-line')
 			for (var i = 0; i < cmLines.length; i++) {
@@ -163,9 +163,18 @@ console.log(heshOptions); // from wordpress php
 		// Check if any edits were made to the textarea.value
 		window.setInterval(function () {
 			if (editor.doc.getValue().length !== editor.getTextArea().value.length) {
-				console.log(editor.getTextArea().selectionStart)
+				var cursorPosition = editor.doc.getCursor()
+				console.log(cursorPosition);
+				// console.log(editor.getTextArea().selectionStart);
 				editor.doc.setValue(editor.getTextArea().value);
-				console.log(editor.getTextArea().selectionStart)
+				editor.focus();
+				editor.doc.setCursor({
+					line: cursorPosition.line,
+					ch: cursorPosition.ch
+				});
+
+				// console.log(editor.getTextArea().selectionStart);
+				console.log(editor.doc.getCursor());
 			}
 		}, 50);
 	}
