@@ -271,7 +271,7 @@ class wp_html_editor_syntax {
 	public function hesh_print_form() {
 		// ob_start();
 		?>
-			<div class="CodeMirror-settings open" id="CodeMirror-settings" style="display:none;">
+			<div class="CodeMirror-settings closed" id="CodeMirror-settings" style="display:none;">
 				<div class="CodeMirror-settings__wrapper">
 					<header class="CodeMirror-settings__header CodeMirror-settings__docked">
 						<h2 class="CodeMirror-settings__title">Code Editor Settings</h2>

@@ -139,15 +139,33 @@ console.log(heshOptions); // from wordpress php
 		scrollPanel = editor.getWrapperElement().querySelector('.CodeMirror-code');
 
 		// Save changes to the textarea on the fly
-		editor.on('change', function () {
-			// console.log(editor.getTextArea().value)
-			editor.save();
+		editor.on('cursorActivity', function (instance) {
+			var cursorPosition = instance.doc.getCursor()
+			// console.log(cursorPosition)
+			var position = 0;
+			var cmLines = instance.getWrapperElement().getElementsByClassName('CodeMirror-line')
+			for (var i = 0; i < cmLines.length; i++) {
+				var cmLine = cmLines[i];
+				if (i > (cursorPosition.line - 1)) break;
+				position += cmLine.textContent.length;
+			}
+			position += cursorPosition.ch;
+			// console.log(position)
+			// console.log(editor.getTextArea().selectionStart)
+			instance.getTextArea().selectionStart = instance.getTextArea().selectionEnd = position
+			// console.log(editor.getTextArea().selectionStart)
+		});
+
+		editor.on('change', function (instance, changeObj) {
+			instance.save();
 		});
 
 		// Check if any edits were made to the textarea.value
 		window.setInterval(function () {
 			if (editor.doc.getValue().length !== editor.getTextArea().value.length) {
+				console.log(editor.getTextArea().selectionStart)
 				editor.doc.setValue(editor.getTextArea().value);
+				console.log(editor.getTextArea().selectionStart)
 			}
 		}, 50);
 	}
