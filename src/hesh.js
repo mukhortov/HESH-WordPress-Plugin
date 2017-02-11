@@ -7,7 +7,7 @@
  * @since    1.7.2
 */
 
-console.log(heshOptions); // from wordpress php
+// console.log(heshOptions); // from wordpress php
 
 (function (
 	document,
@@ -141,14 +141,24 @@ console.log(heshOptions); // from wordpress php
 		// Save changes to the textarea on the fly
 		editor.on('cursorActivity', function (instance) {
 			var cursorPosition = instance.doc.getCursor()
-			console.log(cursorPosition)
+			// console.log(cursorPosition)
 			var position = 0;
-			var cmLines = instance.getWrapperElement().getElementsByClassName('CodeMirror-line')
-			for (var i = 0; i < cmLines.length; i++) {
-				var cmLine = cmLines[i];
-				if (i > (cursorPosition.line - 1)) break;
-				position += cmLine.textContent.length;
-			}
+			// var cmLines = instance.getWrapperElement().getElementsByClassName('CodeMirror-line')
+			// for (var i = 0; i < cmLines.length; i++) {
+			// 	var cmLine = cmLines[i];
+				
+			// 	if (i > (cursorPosition.line - 1)) break;
+			// 	console.log(cmLine.textContent == '')
+			// 	position += cmLine.textContent.length;
+			// }
+			var i = 0
+			instance.doc.eachLine(function(line){
+				// console.log(line)
+				if (i > (cursorPosition.line - 1)) return;
+				position += line.text.length + 1; 
+				i++;
+			})
+
 			position += cursorPosition.ch;
 			// console.log(position)
 			// console.log(editor.getTextArea().selectionStart)
@@ -162,19 +172,35 @@ console.log(heshOptions); // from wordpress php
 
 		// Check if any edits were made to the textarea.value
 		window.setInterval(function () {
-			if (editor.doc.getValue().length !== editor.getTextArea().value.length) {
+			var editorLength = editor.doc.getValue().length;
+			var textAreaLength = editor.getTextArea().value.length
+			if (editorLength !== textAreaLength) {
 				var cursorPosition = editor.doc.getCursor()
-				console.log(cursorPosition);
+				// console.log(cursorPosition);
 				// console.log(editor.getTextArea().selectionStart);
 				editor.doc.setValue(editor.getTextArea().value);
 				editor.focus();
+
+				var line = cursorPosition.line;
+				var maxCh = editor.getLineHandle(line).text.length + 1;
+				var ch = cursorPosition.ch + (textAreaLength - editorLength);
+
+				// console.log(maxCh, ch);
+				while (maxCh < (ch + 1)) {
+					line++;
+					ch -= maxCh;
+					maxCh = editor.getLineHandle(line).text.length + 1;
+					// console.log(maxCh, ch);
+				}
+				
 				editor.doc.setCursor({
-					line: cursorPosition.line,
-					ch: cursorPosition.ch
+					line: line,
+					ch: ch
 				});
+				// console.log(textAreaLength - editorLength);
 
 				// console.log(editor.getTextArea().selectionStart);
-				console.log(editor.doc.getCursor());
+				// console.log(editor.doc.getCursor());
 			}
 		}, 50);
 	}
