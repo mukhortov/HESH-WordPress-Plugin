@@ -21,13 +21,13 @@
 	var editor;
 	var scrollPanel;
 	var settingsPanel = document.getElementById('CodeMirror-settings');
-	var themeOrPluginEditorPage = document.getElementById('newcontent') != null;
+	var isThemeOrPluginEditorPage = document.getElementById('newcontent') != null;
 	var isActive = false;
 	var target = document.getElementById('content') || document.getElementById('newcontent');
 	var tab_html = document.getElementById('content-html');
 	var tab_tmce = document.getElementById('content-tmce');
-	var visualEditorActive = document.getElementsByClassName('tmce-active')[0] != null;
-	var visualEditorEnabled = document.getElementById('content-tmce') != null;
+	var isVisualEditorActive = document.getElementsByClassName('tmce-active')[0] != null;
+	var isVisualEditorEnabled = document.getElementById('content-tmce') != null;
 	var publishButton = document.getElementById('save-post') || document.getElementById('publish');
 	var fontSize = +heshOptions.fontSize;
 	var lineHeight = +heshOptions.lineHeight;
@@ -109,7 +109,34 @@
 	}
 
 
-	function attachResize() {
+	function attachResizeThemeOrPlugin() {
+		var editorHeight = 500;
+		var minEditorHieght = 200;
+		editor.getWrapperElement().style.height = editorHeight + 'px';
+		var resizeHandle = document.createElement('div');
+		resizeHandle.className = 'hesh-content-resize-handle';
+		resizeHandle.id = 'content-resize-handle';
+		editor.getWrapperElement().appendChild(resizeHandle);
+		var isDragging = false;
+		var yStartPosition;
+		var newHeight;
+		function changeCodemirrorHeight(event) {
+			newHeight = editorHeight + (event.pageY - yStartPosition);
+			editor.getWrapperElement().style.height = Math.max(minEditorHieght, newHeight) + 'px';
+		}
+		document.getElementById('content-resize-handle').addEventListener('mousedown', function (event) {
+			yStartPosition = event.pageY;
+			isDragging = true;
+			document.addEventListener('mousemove', changeCodemirrorHeight);
+			event.preventDefault();
+		});
+		document.addEventListener('mouseup', function () {
+			isDragging = false;
+			editorHeight = Math.max(minEditorHieght, newHeight);
+			document.removeEventListener('mousemove', changeCodemirrorHeight);
+		});
+	}
+	function attachResizePostOrPage() {
 		function matchTextAreaHeight() {
 			editor.getWrapperElement().style.height = editor.getTextArea().style.height
 		}
@@ -125,7 +152,7 @@
 	function startEditor() {
 
 		// change the mode if on the theme/plugin editor page
-		if (themeOrPluginEditorPage){
+		if (isThemeOrPluginEditorPage){
 			var fileNameElement = document.querySelector('.fileedit-sub .alignleft');
 			console.log(fileNameElement.textContent);
 			var fileType = fileNameElement.textContent
@@ -207,7 +234,8 @@
 
 	function runEditor() {
 		startEditor();
-		if (!themeOrPluginEditorPage) attachResize();
+		if (isThemeOrPluginEditorPage) attachResizeThemeOrPlugin();
+		else attachResizePostOrPage();
 		attachSettings();
 		setFontSizeAndLineHeight();
 		isActive = true;
@@ -223,13 +251,13 @@
 	}
 
 	function initialise() {
-		if (themeOrPluginEditorPage){
+		if (isThemeOrPluginEditorPage){
 			runEditor();
-		} else if (visualEditorEnabled && visualEditorActive) {
+		} else if (isVisualEditorEnabled && isVisualEditorActive) {
 			tab_html.onclick = toHTML;
 		} else {
 			runEditor();
-			if (visualEditorEnabled) tab_tmce.onclick = toVisual;
+			if (isVisualEditorEnabled) tab_tmce.onclick = toVisual;
 			else document.body.className += ' visual-editor-is-disabled';
 		}
 	}

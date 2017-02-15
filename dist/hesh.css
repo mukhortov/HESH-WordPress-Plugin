@@ -4777,3 +4777,12 @@ td.CodeMirror-settings__heading {
     margin-right: initial;
   }
 }
+.hesh-content-resize-handle {
+  width: 12px;
+  height: 12px;
+  z-index: 99;
+  margin: 1px !important;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+}

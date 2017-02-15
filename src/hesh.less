@@ -204,7 +204,21 @@
 		.media(margin-right, initial, 20px);
 		// margin-right: 20px;
 	}
+}
 
+.hesh-content-resize-handle{
+	@size: 12px;
+	// background: url(images/resize.gif) right bottom no-repeat;
+	// // background-color: white;
+    width:  @size;
+    height: @size;
+	z-index: 99;
+	margin: 1px !important;
+    // cursor: row-resize;
 
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	// border: (@size/2) solid white;
 }
 
