@@ -66,7 +66,7 @@ class wp_html_editor_syntax {
 		wp_enqueue_script( 'wordpresspost_cm', HESH_LIBS.'wordpresspost.js', array('codemirror', 'htmlmixed_cm', 'shortcode_cm'), $ver, true );
 		
 		wp_enqueue_script( 'jquery');
-		wp_enqueue_script( 'heshjs', HESH_LIBS.'hesh.js', array('codemirror', 'jquery'), $ver, true );
+		wp_enqueue_script( 'heshjs', HESH_LIBS.'hesh.js', array('codemirror', 'jquery', 'editor'), $ver, true );
 
 		$heshOptions = [
 			'ajaxUrl' => admin_url( 'admin-ajax.php' ), // url for php file that process ajax request to WP

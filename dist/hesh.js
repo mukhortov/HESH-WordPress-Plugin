@@ -126,8 +126,10 @@
 
 		// change the mode if on the theme/plugin editor page
 		if (themeOrPluginEditorPage){
-			var fileType = document.querySelector('.fileedit-sub h2 span').innerHTML
-				.match(/\.[^\)\.]*\)[^\)]*$/ig)[0]
+			var fileNameElement = document.querySelector('.fileedit-sub .alignleft');
+			console.log(fileNameElement.textContent);
+			var fileType = fileNameElement.textContent
+				.match(/\.[a-z\d]{2,}/ig)[0]
 				.match(/[a-z]*/ig)[1];
 			options.mode = fileType;
 		}
