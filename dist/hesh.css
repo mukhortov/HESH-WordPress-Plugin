@@ -4764,9 +4764,6 @@ td.CodeMirror-settings__heading {
 .CodeMirror-settings.closed .CodeMirror-settings__toggle:before {
   opacity: 1;
 }
-#template .CodeMirror div {
-  margin-right: initial;
-}
 @media screen and (min-width: 782px) {
   #template .CodeMirror {
     margin-right: 20px;
@@ -4776,6 +4773,12 @@ td.CodeMirror-settings__heading {
   #template .CodeMirror {
     margin-right: initial;
   }
+}
+#template .CodeMirror div {
+  margin-right: initial;
+}
+#template .CodeMirror p {
+  width: auto;
 }
 .hesh-content-resize-handle {
   width: 12px;

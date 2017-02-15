@@ -119,7 +119,7 @@
 		editor.getWrapperElement().appendChild(resizeHandle);
 		var isDragging = false;
 		var yStartPosition;
-		var newHeight;
+		var newHeight = editorHeight;
 		function changeCodemirrorHeight(event) {
 			newHeight = editorHeight + (event.pageY - yStartPosition);
 			editor.getWrapperElement().style.height = Math.max(minEditorHieght, newHeight) + 'px';
@@ -136,6 +136,8 @@
 			document.removeEventListener('mousemove', changeCodemirrorHeight);
 		});
 	}
+
+
 	function attachResizePostOrPage() {
 		function matchTextAreaHeight() {
 			editor.getWrapperElement().style.height = editor.getTextArea().style.height
@@ -154,11 +156,12 @@
 		// change the mode if on the theme/plugin editor page
 		if (isThemeOrPluginEditorPage){
 			var fileNameElement = document.querySelector('.fileedit-sub .alignleft');
-			console.log(fileNameElement.textContent);
 			var fileType = fileNameElement.textContent
 				.match(/\.[a-z\d]{2,}/ig)[0]
 				.match(/[a-z]*/ig)[1];
 			options.mode = fileType;
+			
+			settingsPanel.querySelector('.CodeMirror-settings__wrapper').id = 'poststuff';
 		}
 
 		// start up codemirror

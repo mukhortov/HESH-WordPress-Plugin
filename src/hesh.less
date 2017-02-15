@@ -197,13 +197,23 @@
 
 	// to beat the stupid, lazy:
 	// #template div { margin-right: 190px; }
-	#template & div{
-		margin-right: initial;
-	}
-	#template &{
+	#template & {
 		.media(margin-right, initial, 20px);
-		// margin-right: 20px;
+		div{
+			margin-right: initial;
+		}
+		p{
+		width: auto;
+		}
+
 	}
+
+	// #template &{
+	// 	// margin-right: 20px;
+	// }
+	// #template p {
+	// 	width: auto;
+	// }
 }
 
 .hesh-content-resize-handle{
