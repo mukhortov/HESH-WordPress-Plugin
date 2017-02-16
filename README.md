@@ -7,6 +7,7 @@
 	- build concationate all js?
 	- ulgilfy js?
 - update documentation
+- fill links in the bottom
 - create logo
 
 

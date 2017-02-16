@@ -4706,7 +4706,7 @@ THE SOFTWARE.
 .CodeMirror-settings__credits {
   float: right;
 }
-.CodeMirror-settings__form {
+.CodeMirror-settings__body {
   position: absolute;
   right: 0;
   left: 0;
@@ -4718,22 +4718,22 @@ THE SOFTWARE.
   border-right: 1px solid #ddd;
 }
 @media screen and (min-width: 782px) {
-  .CodeMirror-settings__form {
+  .CodeMirror-settings__body {
     top: 35px;
   }
 }
 @media screen and (max-width: 781px) {
-  .CodeMirror-settings__form {
+  .CodeMirror-settings__body {
     top: 44px;
   }
 }
 @media screen and (min-width: 782px) {
-  .CodeMirror-settings__form {
+  .CodeMirror-settings__body {
     bottom: 35px;
   }
 }
 @media screen and (max-width: 781px) {
-  .CodeMirror-settings__form {
+  .CodeMirror-settings__body {
     bottom: 44px;
   }
 }
@@ -4763,6 +4763,15 @@ td.CodeMirror-settings__heading {
 }
 .CodeMirror-settings.closed .CodeMirror-settings__toggle:before {
   opacity: 1;
+}
+.CodeMirror-settings__advanced.open {
+  display: block;
+}
+.CodeMirror-settings__advanced.closed {
+  display: none;
+}
+.CodeMirror-settings__toggle-advanced {
+  cursor: pointer;
 }
 @media screen and (min-width: 782px) {
   #template .CodeMirror {

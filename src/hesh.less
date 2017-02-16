@@ -140,7 +140,7 @@
 		}
 
 
-		&__form{
+		&__body{
 			position: absolute;
 			.media(top, @docked-mobile-height, @docked-desktop-height);
 			.media(bottom, @docked-mobile-height, @docked-desktop-height);
@@ -191,7 +191,26 @@
 				}
 			}
 		}
+
+		&__advanced{
+			&.open{
+				display: block;
+			}
+			&.closed{
+				display: none;
+			}
+		}
+
+		// BUTTON TYPES
+		&__button{
+
+		}
+		&__toggle-advanced{
+			cursor: pointer;
+		}
+
 	}
+
 
 	
 

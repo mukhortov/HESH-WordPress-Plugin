@@ -66,6 +66,7 @@
 		editor.getWrapperElement().appendChild(settingsPanel);
 		settingsPanel.style.display = 'block';
 		settingsPanel.querySelector('.CodeMirror-settings__toggle').addEventListener('click', toggleSettings);
+		settingsPanel.querySelector('.CodeMirror-settings__toggle-advanced').addEventListener('click', toggleAdvanced);
 
 		// attach all the inputs to live update
 		settingsPanel.querySelectorAll('.CodeMirror-settings__option').forEach(function(option) {
@@ -84,6 +85,11 @@
 		// TODO: review browser support for toggle
 		settingsPanel.classList.toggle('open');
 		settingsPanel.classList.toggle('closed');
+	}
+	function toggleAdvanced(event) {
+		// TODO: review browser support for toggle
+		settingsPanel.querySelector('#CodeMirror-settings__advanced').classList.toggle('open');
+		settingsPanel.querySelector('#CodeMirror-settings__advanced').classList.toggle('closed');
 	}
 	function updateOption(event) {
 		var value = +event.target.value;
