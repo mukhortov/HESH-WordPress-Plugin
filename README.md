@@ -1,7 +1,6 @@
 #TODOs
 - re-add window fullscreen
-- add content resizer
-- fix button code placement bug
+- 
 - build dist branch
 
 - build module loader?
