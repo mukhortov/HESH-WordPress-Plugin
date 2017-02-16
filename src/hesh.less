@@ -29,6 +29,7 @@
 		@media @desktop-media{ @{property}: @desktop; }
 		@media @mobile-media{ @{property}: @mobile; }
 	}
+	@z-index: 9;
 
 	&-settings{
 
@@ -48,7 +49,7 @@
 
 		&__toggle{
 			border-radius: @border-radius;
-			z-index: 9;
+			z-index: @z-index;
 			box-sizing: border-box;
 			position: absolute;
 			top:    @margin;
@@ -83,31 +84,30 @@
 			}
 
 		}
-		&__wrapper{
-			z-index: 9;
-			position: absolute;
-			top:    @margin;
-			right:  @margin;
-			bottom: @margin;
-			left:   @margin;
-			border-radius: @border-radius;
-			background-color: @background-color;  
-			border-color: @border-color;
-			transform-origin: top right;
-			transition: 250ms ease;
-			transition-property: transform opacity;
+		// &__wrapper{
+		// 	z-index: 9;
+		// 	// pointer-events: none;
+		// 	// position: absolute;
+		// 	// top:    @margin;
+		// 	// right:  @margin;
+		// 	// bottom: @margin;
+		// 	// left:   @margin;
+		// 	// transform-origin: top right;
+		// 	// transition: 250ms ease;
+		// 	// transition-property: transform opacity;
 			
-		}
+		// }
 
 
 		&__docked{
-			background-color: @background-color;  
+			background-color: white;  
 			box-sizing: border-box;
-			z-index: 2;
+			z-index: @z-index;
 			position: absolute;
 			right:0;
 			left:0;
-			width: 100%;
+			// width: 100%;
+			margin: @margin;
 			.media(height, @docked-mobile-height, @docked-desktop-height);
 		}
 		&__header{
@@ -141,6 +141,7 @@
 
 
 		&__body{
+			z-index: @z-index;
 			position: absolute;
 			.media(top, @docked-mobile-height, @docked-desktop-height);
 			.media(bottom, @docked-mobile-height, @docked-desktop-height);
@@ -149,7 +150,11 @@
 			box-sizing: border-box;
 			padding: 1px @padding;
 			overflow-y: auto;
-			margin: 0;
+			margin: @margin;
+
+			// border-radius: @border-radius;
+			background-color: @background-color;  
+			// border-color: @border-color;
 			border-left: 1px solid @border-color;
 			border-right: 1px solid @border-color;
 		}
@@ -157,28 +162,53 @@
 			padding: 0;
 		}
 
-		&.open{
+
+		// OPEN AND CLOSED STATES
+		&__toggle, 
+		&__toggle-advanced, 
+		&__header, 
+		&__body, 
+		&__footer
+		{
+			transition: opacity 250ms ease;
+			transition-property: opacity, transform;
+			transform-origin: top right;
+		}
+
+		&.closed-advanced{
 			.CodeMirror-settings{
-				&__wrapper{
-					opacity: 1;
-					transform: scale3d(1,1,1);
-				}
-				&__toggle{
-					&:after{
-						content:'\f158';
-					}
+				&__toggle-advanced{
 					&:before{
-						opacity: 0;
+						content: 'more...'
 					}
+				}
+				&__body, &__footer{
+					opacity: 0;
+					transform: translate(0,-20px) scaleX(1);
+				}
+				&__header{
+					border-bottom-left-radius: @border-radius;
+					border-bottom-right-radius: @border-radius;
 				}
 			}
 		}
+
+		&.open-advanced{
+			.CodeMirror-settings{
+				&__toggle-advanced{
+					&:before{
+						content: 'less'
+					}
+				}
+				&__body, &__footer{
+					opacity: 1;
+					transform: translate(0,0) scaleX(1);
+				}
+			}
+		}
+
 		&.closed{
 			.CodeMirror-settings{
-				&__wrapper{
-					opacity: 0;
-					transform: scale3d(0,0,0);
-				}
 				&__toggle{
 					transition: opacity 250ms ease;
 					opacity: .5;
@@ -189,15 +219,45 @@
 						opacity: 1;
 					}
 				}
+				&__header{
+					opacity: 0;
+					transform: scaleX(0);
+				}
+				&__body, &__footer{
+					opacity: 0;
+					transform: translate(0,-20px) scaleX(0);
+				}
+			}
+		}
+		
+		&.open{
+			.CodeMirror-settings{
+				&__toggle{
+					&:after{
+						content:'\f158';
+					}
+					&:before{
+						opacity: 0;
+					}
+				}
+				&__header{
+					opacity: 1;
+					transform: scaleX(1);
+				}
 			}
 		}
 
 		&__advanced{
+			transform-origin: top;
+			transition: 250ms ease;
+			transition-property: transform opacity;
 			&.open{
-				display: block;
+				opacity: 1;
+				// transform: translate(0,0);
 			}
 			&.closed{
-				display: none;
+				opacity: 0;
+				// transform: translate(0,-5px);
 			}
 		}
 

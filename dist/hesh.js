@@ -66,7 +66,7 @@
 		editor.getWrapperElement().appendChild(settingsPanel);
 		settingsPanel.style.display = 'block';
 		settingsPanel.querySelector('.CodeMirror-settings__toggle').addEventListener('click', toggleSettings);
-		settingsPanel.querySelector('.CodeMirror-settings__toggle-advanced').addEventListener('click', toggleAdvanced);
+		settingsPanel.querySelector('.CodeMirror-settings__toggle-advanced').addEventListener('click', toggleSettings);
 
 		// attach all the inputs to live update
 		settingsPanel.querySelectorAll('.CodeMirror-settings__option').forEach(function(option) {
@@ -82,14 +82,25 @@
 	}
 	
 	function toggleSettings(event) {
-		// TODO: review browser support for toggle
-		settingsPanel.classList.toggle('open');
-		settingsPanel.classList.toggle('closed');
-	}
-	function toggleAdvanced(event) {
-		// TODO: review browser support for toggle
-		settingsPanel.querySelector('#CodeMirror-settings__advanced').classList.toggle('open');
-		settingsPanel.querySelector('#CodeMirror-settings__advanced').classList.toggle('closed');
+		if (event.target.id.includes('advanced')) {
+			if (settingsPanel.classList.contains('open-advanced')) {
+				settingsPanel.classList.remove('open-advanced');
+				settingsPanel.classList.add('closed-advanced');
+			} else {
+				settingsPanel.classList.add('open-advanced');
+				settingsPanel.classList.remove('closed-advanced');
+			}
+		} else {
+			if (settingsPanel.classList.contains('open')) {
+				settingsPanel.classList.remove('open');
+				settingsPanel.classList.add('closed');
+				settingsPanel.classList.remove('open-advanced');
+				settingsPanel.classList.add('closed-advanced');
+			} else {
+				settingsPanel.classList.add('open');
+				settingsPanel.classList.remove('closed');
+			}
+		}
 	}
 	function updateOption(event) {
 		var value = +event.target.value;
@@ -180,7 +191,7 @@
 				.match(/[a-z]*/ig)[1];
 			options.mode = fileType;
 			
-			settingsPanel.querySelector('.CodeMirror-settings__wrapper').id = 'poststuff';
+			// settingsPanel.querySelector('.CodeMirror-settings__wrapper').id = 'poststuff';
 		}
 
 		// start up codemirror

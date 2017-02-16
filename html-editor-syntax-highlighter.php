@@ -271,7 +271,7 @@ class wp_html_editor_syntax {
 	public function hesh_print_form() {
 		// ob_start();
 		?>
-			<div class="CodeMirror-settings open" id="CodeMirror-settings" style="display:none;">
+			<div class="CodeMirror-settings closed closed-advanced" id="CodeMirror-settings" style="display:none;">
 				<form
 					action="<?php echo admin_url('admin-ajax.php');?>" 
 					method="post" 
@@ -282,52 +282,48 @@ class wp_html_editor_syntax {
 						<span class="CodeMirror-settings__button">selection</span>
 						<a class="CodeMirror-settings__toggle-advanced" 
 							id="CodeMirror-settings__toggle-advanced"
-							>
-							more...
-						</a>
+							></a>
 					</header>
-					<div class="CodeMirror-settings__advanced closed" id="CodeMirror-settings__advanced">
-						<div class="form CodeMirror-settings__body">
-							<?php wp_nonce_field('hesh_options_form','secret-code');?>
-							<input name="action" value="hesh_options_form" type="hidden">
-							<table class="form-table"><tbody>
-								<tr><td class="CodeMirror-settings__heading"><h1>
-									User Prefrences
-								</h1></td></tr>
-								<?php
-									// foreach ($this->userPrefrences as $id => $value) {
-									// 	$this->output_option($id,$value);
-									// }
-								?>
-								<tr><td class="CodeMirror-settings__heading"><h1>
-									Addons
-								</h1></td></tr>
-								<tr>
-									<th scope="row"><label>Coming Soon...</label></th>
-								</tr>
-							</tbody></table>
-						</div>
-						<footer class="CodeMirror-settings__footer CodeMirror-settings__docked">
-							<p class="CodeMirror-settings__foot-content CodeMirror-settings__feedback">
-								<small>
-									Submit a 
-									<a href="#" target="_blank">bug report</a> 
-									or 
-									<a href="#" target="_blank">feature request</a>.
-								</small>
-							</p>
-							<p class="CodeMirror-settings__foot-content CodeMirror-settings__credits">
-								<small>
-									Created by 
-									<a href="#" target="_blank">James Bradford</a> 
-									&amp; 
-									<a href="#" target="_blank">Petr Mukhortov</a>.
-								</small>
-							</p>
-						</footer>
+					<div class="form CodeMirror-settings__body">
+						<?php wp_nonce_field('hesh_options_form','secret-code');?>
+						<input name="action" value="hesh_options_form" type="hidden">
+						<table class="form-table"><tbody>
+							<!--<tr><td class="CodeMirror-settings__heading"><h1>
+								User Prefrences
+							</h1></td></tr>-->
+							<?php
+								// foreach ($this->userPrefrences as $id => $value) {
+								// 	$this->output_option($id,$value);
+								// }
+							?>
+							<tr><td class="CodeMirror-settings__heading"><h1>
+								Addons
+							</h1></td></tr>
+							<tr>
+								<th scope="row"><label>Coming Soon...</label></th>
+							</tr>
+						</tbody></table>
 					</div>
+					<footer class="CodeMirror-settings__footer CodeMirror-settings__docked">
+						<p class="CodeMirror-settings__foot-content CodeMirror-settings__feedback">
+							<small>
+								Submit a 
+								<a href="#" target="_blank">bug report</a> 
+								or 
+								<a href="#" target="_blank">feature request</a>.
+							</small>
+						</p>
+						<p class="CodeMirror-settings__foot-content CodeMirror-settings__credits">
+							<small>
+								Created by 
+								<a href="#" target="_blank">James Bradford</a> 
+								&amp; 
+								<a href="#" target="_blank">Petr Mukhortov</a>.
+							</small>
+						</p>
+					</footer>
 				</form>
-				<div class="CodeMirror-settings__toggle"></div>
+				<div class="CodeMirror-settings__toggle" id="CodeMirror-settings__toggle"></div>
 			</div>
 		<?php 
 		// return ob_get_clean();
