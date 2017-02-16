@@ -4781,11 +4781,11 @@ td.CodeMirror-settings__heading {
   width: auto;
 }
 .hesh-content-resize-handle {
+  position: absolute;
+  right: 0;
+  bottom: 0;
   width: 12px;
   height: 12px;
   z-index: 99;
   margin: 1px !important;
-  position: absolute;
-  right: 0;
-  bottom: 0;
 }
