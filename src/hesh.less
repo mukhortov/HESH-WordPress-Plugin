@@ -193,6 +193,8 @@
 		}
 	}
 
+	
+
 	// THEME AND PLUGIN EDITOR PAGES
 
 	// to beat the stupid, lazy:
@@ -204,6 +206,52 @@
 	}
 }
 
+
+// FULLSCREEN
+.heshFullscreen {
+	z-index: 99999;
+	position: fixed !important;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	height: 100%;
+	background: #fff;
+	padding: 2% 2% 0;
+
+	.CodeMirror {
+		border: 1px solid #ccc;
+		border-radius: 0 0 4px 4px;
+		height: 85% !important;
+		@media screen and (max-height: 550px) {
+			height: 75% !important;
+		}
+	}
+	#ed_toolbar {
+		border: 1px solid #ccc;
+		border-bottom: 0;
+		border-radius: 4px 4px 0 0;
+	}
+	#cm_content_fullscreen:before{
+		content:'\f506';
+	}
+}
+#cm_content_fullscreen{
+	position: absolute;
+	right: 3px;
+	margin: 2px;
+	padding: 2px 3px;
+	height: 26px;
+	&:before{
+		display: block;
+		font-family: dashicons;
+		font-size: 20px;
+		content:'\f211';
+	}
+}
+
+
+// ONLY IN THE THEME/PLUGIN EDITOR
 .hesh-content-resize-handle{
 	position: absolute;
 	right: 0;
