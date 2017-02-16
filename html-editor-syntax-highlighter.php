@@ -180,20 +180,37 @@ class wp_html_editor_syntax {
 		# add user meta
 	}
 
-	private function output_option($id, $config) {
+	private function output_option($id, $config, $cm=false) {
 		switch ($config['type']){
 			case 'select':
-				$this->output_select($id, $config);
+				$this->output_select($id, $config, $cm);
 				break;
 			case 'checkbox':
-				$this->output_checkbox($id, $config);
+				$this->output_checkbox($id, $config, $cm);
 				break;
 		}
 	}
 
-	private function output_checkbox($id, $config) {
+	private function output_checkbox($id, $config, $cm=false) {
 		extract($config);
-		?>
+		if ($cm): ?>
+			<label 
+				class="CodeMirror-settings__button button button-small"
+				for="<?php echo $id; ?>"
+				<?php if (isset($description)) echo "title=\"$id-description\"" ?>
+				>
+				<?php echo $title; ?>
+				<input type="hidden" value="false"  name="<?php echo $id; ?>" />
+				<input 
+					name="<?php echo $id; ?>" 
+					id="<?php echo $id; ?>" 
+					type="checkbox"
+					value="true"
+					class="CodeMirror-settings__option"
+					<?php if ((isset($current) && $current) || (!isset($current) && $default)) echo "checked"; ?>
+					/>
+			</label>
+		<?php else: ?>
 			<tr>
 				<th scope="row">
 					<?php echo $title; ?>
@@ -226,13 +243,38 @@ class wp_html_editor_syntax {
 					</fieldset>
 				</td>
 			</tr>
-		<?php
+		<?php endif;
 	}
 	
-	private function output_select($id, $config) {
+	private function output_select($id, $config, $cm=false) {
 		// http://stackoverflow.com/questions/18881693/how-to-import-external-json-and-display-in-php
 		extract($config);
-		?>
+		if ($cm): ?>
+			<label 
+				class="CodeMirror-settings__button CodeMirror-settings__button--select button button-small"
+				for="<?php echo $id; ?>"
+				<?php if (isset($description)) echo "title=\"$id-description\"" ?>
+				>
+				<?php echo $id; ?>
+				<select 
+					id="<?php echo $id; ?>" 
+					name="<?php echo $id; ?>"
+					class="CodeMirror-settings__option"
+					>
+					<?php foreach ($options as $option): ?>
+						<option 
+							value="<?php echo $option; ?>"
+							<?php 
+								if (isset($current) && $current == $option) echo "selected";
+								elseif (!isset($current) && $default == $option) echo "selected"; //TODO: test this
+							?>
+							>
+							<?php echo ucfirst($option); ?>
+						</option>
+					<?php endforeach; ?>
+				</select>
+			</label>
+		<?php else: ?>
 			<tr>
 				<th scope="row">
 					<label for="<?php echo $id; ?>"><?php echo $title; ?></label>
@@ -265,7 +307,7 @@ class wp_html_editor_syntax {
 					<?php endif; ?>
 				</td>
 			</tr>
-		<?php
+		<?php endif;
 	}
 		
 	public function hesh_print_form() {
@@ -279,7 +321,11 @@ class wp_html_editor_syntax {
 					id="CodeMirror-settings__form"
 					>
 					<header class="CodeMirror-settings__header CodeMirror-settings__docked">
-						<span class="CodeMirror-settings__button">selection</span>
+						<?php
+							foreach ($this->userPrefrences as $id => $value) {
+								$this->output_option($id,$value,true);
+							}
+						?>
 						<a class="CodeMirror-settings__toggle-advanced" 
 							id="CodeMirror-settings__toggle-advanced"
 							></a>

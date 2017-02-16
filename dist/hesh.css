@@ -4568,7 +4568,7 @@ THE SOFTWARE.
 }
 .CodeMirror-settings__toggle {
   border-radius: 3px;
-  z-index: 9;
+  z-index: 11;
   box-sizing: border-box;
   position: absolute;
   top: 6px;
@@ -4637,9 +4637,9 @@ THE SOFTWARE.
   left: 0;
 }
 .CodeMirror-settings__docked {
+  z-index: 10;
   background-color: white;
   box-sizing: border-box;
-  z-index: 9;
   position: absolute;
   right: 0;
   left: 0;
@@ -4660,6 +4660,7 @@ THE SOFTWARE.
   border-top-right-radius: 3px;
   top: 0;
   border: 1px solid #ddd;
+  padding: 4px 35px 4px 4px;
 }
 .CodeMirror-settings__title {
   display: inline-block;
@@ -4742,6 +4743,7 @@ td.CodeMirror-settings__heading {
 }
 .CodeMirror-settings.closed-advanced .CodeMirror-settings__body,
 .CodeMirror-settings.closed-advanced .CodeMirror-settings__footer {
+  pointer-events: none;
   opacity: 0;
   transform: translate(0, -20px) scaleX(1);
 }
@@ -4797,8 +4799,46 @@ td.CodeMirror-settings__heading {
 .CodeMirror-settings__advanced.closed {
   opacity: 0;
 }
+.CodeMirror-settings__button {
+  position: relative;
+}
+.CodeMirror-settings__button:active {
+  transform: none !important;
+}
+.CodeMirror-settings__button select,
+.CodeMirror-settings__button input {
+  display: block;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  -webkit-appearance: none;
+  margin: 0;
+  padding: 0;
+  border: none;
+  height: auto;
+  font-size: 0;
+  line-height: 0;
+  height: 100% !important;
+  width: 100% !important;
+  background: none;
+  opacity: 0;
+}
+.CodeMirror-settings__button--select:after {
+  content: '\f140';
+  font-family: dashicons;
+  font-size: 20px;
+  vertical-align: top;
+  display: inline-block;
+  margin: 0 -5px;
+}
 .CodeMirror-settings__toggle-advanced {
   cursor: pointer;
+  display: inline-block;
+  line-height: 25px;
+  padding: 0 4px;
+  vertical-align: middle;
 }
 @media screen and (min-width: 782px) {
   #template .CodeMirror {
@@ -4864,6 +4904,6 @@ td.CodeMirror-settings__heading {
   bottom: 0;
   width: 12px;
   height: 12px;
-  z-index: 99;
+  z-index: 8;
   margin: 1px !important;
 }

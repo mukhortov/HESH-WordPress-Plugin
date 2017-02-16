@@ -164,6 +164,7 @@
 			isDragging = false;
 			editorHeight = Math.max(minEditorHieght, newHeight);
 			document.removeEventListener('mousemove', changeCodemirrorHeight);
+			editor.refresh();
 		});
 	}
 
@@ -177,6 +178,7 @@
 		});
 		document.addEventListener('mouseup', function () {
 			document.removeEventListener('mousemove', matchTextAreaHeight);
+			editor.refresh();
 		});
 		matchTextAreaHeight();
 	}
