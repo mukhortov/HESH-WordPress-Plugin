@@ -4565,6 +4565,7 @@ THE SOFTWARE.
   color: #444;
   height: 0;
   width: 0;
+  text-shadow: none;
 }
 .CodeMirror-settings__toggle {
   border-radius: 3px;
