@@ -1,11 +1,18 @@
 #TODOs
-- re-add window fullscreen
-- 
+- recreate the settings
+	- two stage foldout
+	- new selecetion element
+	- new toggle element
 - build dist branch
+	- build concationate all js?
+	- ulgilfy js?
+- update documentation
+- create logo
 
-- build module loader?
-  - in php
-  - on the fly in js
+
+- success/progress/failure ui for saving options
+- rtl support
+
 
 
 #HTML Editor Syntax Highlighter

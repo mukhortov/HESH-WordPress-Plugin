@@ -254,7 +254,7 @@
 		else attachResizePostOrPage();
 		attachSettings();
 		setFontSizeAndLineHeight();
-		attachFullscreen();
+		if (!isThemeOrPluginEditorPage) attachFullscreen();
 		isActive = true;
 	}
 
