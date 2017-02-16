@@ -1,18 +1,20 @@
 #TODOs
-- recreate the settings
-	- two stage foldout
-	- new selecetion element
-	- new toggle element
 - build dist branch
 	- build concationate all js?
 	- ulgilfy js?
 - update documentation
 - fill links in the bottom
 - create logo
-
-
 - success/progress/failure ui for saving options
 - rtl support
+
+##links
+- process user settings
+	- [working with user metadata](https://developer.wordpress.org/plugins/users/working-with-user-metadata/)
+	- [update_user_meta()](https://codex.wordpress.org/Function_Reference/update_user_meta)
+- AJAX forms
+	- [submitting a form in wordpress using ajax](https://teamtreehouse.com/community/submitting-a-form-in-wordpress-using-ajax)
+	- [how to handle form submission](http://wordpress.stackexchange.com/questions/60758/how-to-handle-form-submission)
 
 
 

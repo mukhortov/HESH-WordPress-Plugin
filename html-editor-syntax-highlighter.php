@@ -69,16 +69,16 @@ class wp_html_editor_syntax {
 		wp_enqueue_script( 'heshjs', HESH_LIBS.'hesh.js', array('codemirror', 'jquery', 'editor'), $ver, true );
 
 		$heshOptions = [
-			'ajaxUrl' => admin_url( 'admin-ajax.php' ), // url for php file that process ajax request to WP
-			'nonce' => wp_create_nonce( 'hesh_options_form' ), // this is a unique token to prevent form hijacking
+			'ajaxUrl' => admin_url( 'admin-ajax.php' ),
+			'nonce' => wp_create_nonce( 'hesh_options_form' )
 		];
 		foreach ($this->userPrefrences as $id => $value) {
 			$heshOptions[$id] = isset($value['current']) ? $value['current'] : $value['default'];
 		}
 
 		wp_localize_script(
-			'heshjs', // i think... // the handle for the js // the_unique_name_for_your_js
-			'heshOptions', // theUniqueNameForYourJSObject
+			'heshjs',
+			'heshOptions',
 			$heshOptions
 		);
 		
@@ -93,7 +93,8 @@ class wp_html_editor_syntax {
 				'title' => 'Theme',
 				// 'description' => 'choose a theme',
 				'type' => 'select',
-				'options' => json_decode(file_get_contents(dirname(__FILE__) . '/css.json'), true),
+				// http://stackoverflow.com/questions/18881693/how-to-import-external-json-and-display-in-php
+				'options' => json_decode(file_get_contents(dirname(__FILE__) . '/css.json'), true), 
 				'current' => get_user_meta( get_current_user_id(), $this->prefix.'theme' , true),
 				'default' => 'material',
 			],
@@ -105,7 +106,7 @@ class wp_html_editor_syntax {
 				'default' => 4,
 			],
 			'lineWrapping'=> [
-				'title' => 'Text Wrapping',
+				'title' => 'Line Wrap',
 				'type' => 'checkbox',
 				'text' => 'Wrap lines',
 				'current' => get_user_meta( get_current_user_id(), $this->prefix.'lineWrapping' , true),
@@ -154,17 +155,11 @@ class wp_html_editor_syntax {
 	}
 
 	
-	
-	// 	AJAX forms
-	// 	https://teamtreehouse.com/community/submitting-a-form-in-wordpress-using-ajax
-	// 	http://wordpress.stackexchange.com/questions/60758/how-to-handle-form-submission
-	
 	public function hesh_options_form_process() {
 		if (empty($_POST) || !wp_verify_nonce($_POST['secret-code'], 'hesh_options_form')) {
 			error_log('You targeted the right function, but sorry, your nonce did not verify.');
 			wp_die();
 		} else {
-			// do your function here
 			foreach ($this->userPrefrences as $id => $value) {
 				$setting = $_POST[$id];
 				if ($setting === 'true') $setting = true;
@@ -173,11 +168,6 @@ class wp_html_editor_syntax {
 				update_user_meta( get_current_user_id(), $this->prefix.$id, $setting);
 			}
 		}
-
-		// 	process user settings
-		// 	https://developer.wordpress.org/plugins/users/working-with-user-metadata/
-		// 	https://codex.wordpress.org/Function_Reference/update_user_meta
-		# add user meta
 	}
 
 	private function output_option($id, $config, $cm=false) {
@@ -247,7 +237,6 @@ class wp_html_editor_syntax {
 	}
 	
 	private function output_select($id, $config, $cm=false) {
-		// http://stackoverflow.com/questions/18881693/how-to-import-external-json-and-display-in-php
 		extract($config);
 		if ($cm): ?>
 			<label 

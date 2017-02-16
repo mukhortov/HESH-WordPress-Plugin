@@ -76,7 +76,6 @@
 		settingsPanel.querySelector('#tabSize').addEventListener('change', updateOption)
 		settingsPanel.querySelector('#lineWrapping').addEventListener('change', updateOption)
 		settingsPanel.querySelector('#lineNumbers').addEventListener('change', updateOption)
-
 		settingsPanel.querySelector('#fontSize').addEventListener('change', updateFontSize)
 		settingsPanel.querySelector('#lineHeight').addEventListener('change', updateLineHeight)
 	}
