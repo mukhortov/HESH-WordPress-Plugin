@@ -33,7 +33,7 @@ gulp.task('less', function () {
 });
 
 
-var codemirrorPath = './node_modules/codemirror/'
+var codemirrorPath = './node_modules/codemirror/';
 gulp.task('copy:codemirror', function () {
     return gulp.src([
         codemirrorPath + 'lib/codemirror.*',
