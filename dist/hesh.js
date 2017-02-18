@@ -72,9 +72,11 @@
 		settingsPanel.querySelector('.CodeMirror-settings__toggle-advanced').addEventListener('click', toggleSettings);
 
 		// attach all the inputs to live update
-		settingsPanel.querySelectorAll('.CodeMirror-settings__option').forEach(function(option) {
+		var options = settingsPanel.querySelectorAll('.CodeMirror-settings__option');
+		for (var index = 0; index < options.length; index++) {
+			var option = options[index];
 			option.addEventListener('change', submitForm);
-		});
+		}
 		settingsPanel.querySelector('#theme').addEventListener('change', updateOption);
 		settingsPanel.querySelector('#tabSize').addEventListener('change', updateOption);
 		settingsPanel.querySelector('#lineWrapping').addEventListener('change', updateOption);
@@ -203,6 +205,7 @@
 		if (isActive) {
 			if (switchEditors.switchto) switchEditors.switchto(this);
 			editor.toTextArea();
+			window.clearInterval(checkEditorInterval);
 			tabHTML.onclick = toHTML;
 			isActive = false;
 		}
@@ -226,6 +229,7 @@
 		});
 	}
 	
+	var checkEditorInterval;
 	function startEditor() {
 
 		// change the mode if on the theme/plugin editor page
@@ -270,7 +274,7 @@
 		});
 
 		// Check if any edits were made to the textarea.value at 20Hz
-		window.setInterval(function () {
+		checkEditorInterval = window.setInterval(function () {
 			var editorLength = editor.doc.getValue().length;
 			var textAreaLength = editor.getTextArea().value.length;
 			if (editorLength !== textAreaLength) { // if there were changes...
