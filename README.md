@@ -19,6 +19,7 @@
 - support `<!--nextpage-->` in shortcode parser
 - add fullscreen to plugin/theme editor
 - success/progress/failure ui for saving options
+- [autoformat](http://codemirror.net/2/lib/util/formatting.js)? [demo](http://codemirror.net/2/demo/formatting.html) - this was discontinued
 - addon/advanced options
 	- keymaps
 	- editor options:

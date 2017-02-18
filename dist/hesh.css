@@ -4912,5 +4912,5 @@ td.CodeMirror-settings__heading {
   margin: 1px !important;
 }
 .CodeMirror-vscrollbar {
-  display: none;
+  display: none !important;
 }

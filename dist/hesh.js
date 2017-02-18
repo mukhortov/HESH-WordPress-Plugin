@@ -235,11 +235,9 @@
 		// change the mode if on the theme/plugin editor page
 		if (isThemeOrPluginEditorPage){
 			var fileNameElement = document.querySelector('.fileedit-sub .alignleft');
-			// console.log(fileNameElement);
 			var fileType = fileNameElement.textContent
 				.match(/\.[a-z\d]{2,}/ig)[0]
 				.match(/[a-z]*/ig)[1];
-			// console.log(fileType);
 			var filetypeToModeMap = {
 				php: 'php',
 				css: 'css',
