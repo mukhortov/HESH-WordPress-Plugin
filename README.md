@@ -1,13 +1,10 @@
 #TODOs
 - test
+	- WP <= 4.0.15
+	- PHP <= 5.2.17
 	- browsers
-		- Safari
-		- FireFox
 		- Edge
 		- IE 11
-		- Opera
-	- WP <= 4.0
-	- PHP <= 5.2
 - create logo
 - update documentation
 	- all meta to 2.0

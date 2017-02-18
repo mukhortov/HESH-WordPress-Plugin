@@ -2,7 +2,7 @@
 
 
 /**
-* @since              1.7.2
+ * @since              2.0.0
  * @package            HESH_plugin
  *
  * Plugin Name:        HTML Editor Syntax Highlighter - DEV
@@ -10,7 +10,7 @@
  * Description:        Adds syntax highlighting in the WordPress post HTML/text editor using Codemirror.js
  * Text Domain:        html-editor-syntax-highlighter
  * Author:             James Bradford
- * Author URI:         http://arniebradfo.com/
+ * Author URI:         http://bradford.digital/
  * Author:             Petr Mukhortov
  * Author URI:         http://mukhortov.com/
  * License:            GPL-2.0+
@@ -18,14 +18,20 @@
  * GitHub Branch:      master
  * GitHub Plugin URI:  https://github.com/mukhortov/HESH-WordPress-Plugin
  * Version:            2.0.0
- * Requires at least:  4.0.11
- * Tested up to:       4.5.2
- * Stable tag:         1.7.2
+ * Requires at least:  4.0.15
+ * Tested up to:       4.7.2
+ * Stable tag:         2.0.0
  **/
+
+// Check for required PHP version
+if ( version_compare( PHP_VERSION, '5.2.17', '<' ) ) {
+    exit( sprintf( 'Foo requires PHP 5.2.17 or higher. You’re still on %s.', PHP_VERSION ) );
+}
 
 if ( preg_match( '#' . basename(__FILE__) . '#', $_SERVER['PHP_SELF'] ) ) {
 	die('You are not allowed to call this page directly.');
 }
+
 
 define( 'HESH_LIBS', plugins_url( '/dist/', __FILE__ ) );
 
@@ -36,6 +42,7 @@ class wp_html_editor_syntax {
 		add_action( 'admin_enqueue_scripts', array(&$this, 'hesh_admin_enqueue_scripts' ) );
 		add_action( 'wp_ajax_'.$this->formProcessName, array(&$this, 'hesh_options_form_process'));
 		add_action( 'admin_footer', array(&$this, 'hesh_output_form') );
+
 	}
 	
 	// Enqueues scripts and styles for hesh.js
@@ -68,10 +75,10 @@ class wp_html_editor_syntax {
 		wp_enqueue_script( 'heshjs', HESH_LIBS.'hesh.js', array('codemirror', 'jquery', 'editor'), $ver, true );
 
 		// this shows up in js as window.heshOptions
-		$heshOptions = [
+		$heshOptions = array(
 			'ajaxUrl' => admin_url( 'admin-ajax.php' ),
 			// 'nonce' => wp_create_nonce( $this->formProcessName ) // TODO: use this instead of the hidden field?
-		];
+		);
 		// place all the userPrefrences into the heshOptions object
 		foreach ($this->userPrefrences as $id => $value) {
 			$heshOptions[$id] = isset($value['current']) ? $value['current'] : $value['default'];
@@ -90,8 +97,8 @@ class wp_html_editor_syntax {
 	private $userPrefrences; // added to the primary bar
 	private $addOns; // added to the addons menu
 	public function hesh_set_options() {
-		$this->userPrefrences = [
-			'theme' => [
+		$this->userPrefrences = array(
+			'theme' => array(
 				'title' => 'Theme',
 				'type' => 'select',
 				// http://stackoverflow.com/questions/18881693/how-to-import-external-json-and-display-in-php
@@ -99,62 +106,62 @@ class wp_html_editor_syntax {
 				'options' => json_decode(file_get_contents(dirname(__FILE__) . '/css.json'), true), 
 				'current' => get_user_meta( get_current_user_id(), $this->prefix.'theme' , true),
 				'default' => 'material',
-			],
-			'tabSize' => [
+			),
+			'tabSize' => array(
 				'title' => 'Indent',
 				'type' => 'select',
 				'options' => range(1,6),
 				'current' => get_user_meta( get_current_user_id(), $this->prefix.'tabSize' , true),
 				'default' => 4,
-			],
-			'lineWrapping'=> [
+			),
+			'lineWrapping'=> array(
 				'title' => 'Line Wrap',
 				'type' => 'checkbox',
 				'text' => 'Wrap lines',
 				'current' => get_user_meta( get_current_user_id(), $this->prefix.'lineWrapping' , true),
 				'default' => true,
-			],
-			'lineNumbers'=> [
+			),
+			'lineNumbers'=> array(
 				'title' => 'Numbering',
 				'type' => 'checkbox',
 				'text' => 'Show line numbers',
 				'current' => get_user_meta( get_current_user_id(), $this->prefix.'lineNumbers' , true),
 				'default' => true,
-			],
-			'fontSize'=> [
+			),
+			'fontSize'=> array(
 				'title' => 'Font Size',
 				'type' => 'select',
 				'options' => range(8,20),
 				'current' => get_user_meta( get_current_user_id(), $this->prefix.'fontSize' , true),
 				'default' => 13,
-			],
-			'lineHeight'=> [
+			),
+			'lineHeight'=> array(
 				'title' => 'Line Height',
 				'type' => 'select',
 				'options' => range(1,2,0.25),
 				'current' => get_user_meta( get_current_user_id(), $this->prefix.'lineHeight' , true),
 				'default' => 1.5,
-			],
-		];
-		// $this->addOns = [
-		// 	'keyMap'=> [
+			),
+		);
+		// $this->addOns = array(
+		// 	'keyMap'=> array(
 		// 		'title' => 'Key Mapping',
 		//		'description' => 'choose a theme',
 		// 		'type' => 'select',
-		// 		'options' => ['none', 'emacs', 'sublime', 'vim'],
+		// 		'options' => array('none', 'emacs', 'sublime', 'vim'),
 		// 		'current' => get_user_meta( get_current_user_id(), $this->prefix.'keyMap' , true),
 		// 		'default' => 'none',
-		// 	],
-		// 	'styleActiveLine'=> [],
-		// 	'matchBrackets'=> [],
-		// 	'search'=> [], // and replace
-		// 	'highlightSelectionMatches'=> [],
-		// 	'styleSelectedText'=> [], // ?
-		// 	'autoCloseBrackets'=> [],
-		// 	'autoCloseTags'=> [],
-		// 	'comment'=> [], // continueComments?
-		// 	'foldCode'=> [], // ?
-		// ];
+		// 	),
+		// 	'styleActiveLine'=> array(),
+		// 	'matchBrackets'=> array(),
+		// 	'search'=> array(), // and replace
+		// 	'highlightSelectionMatches'=> array(),
+		// 	'styleSelectedText'=> array(), // ?
+		// 	'autoCloseBrackets'=> array(),
+		// 	'autoCloseTags'=> array(),
+		// 	'comment'=> array(), // continueComments?
+		// 	'foldCode'=> array(), // ?
+		// );
 	}
 
 	
@@ -304,6 +311,11 @@ class wp_html_editor_syntax {
 		
 	public function hesh_output_form() {
 		// ob_start();
+		// $array = [
+		// 	"foo" => "bar",
+		// 	"bar" => "foo",
+		// ];
+		// error_log(var_dump($array));
 		?>
 			<div class="CodeMirror-settings closed closed-advanced" id="CodeMirror-settings" style="display:none;">
 				<form
