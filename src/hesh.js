@@ -31,6 +31,7 @@
 	var publishButton = document.getElementById('save-post') || document.getElementById('publish');
 	var fontSize = +heshOptions.fontSize;
 	var lineHeight = +heshOptions.lineHeight;
+	var postID = document.getElementById('post_ID').value || 0;
 
 	var options = {
 		mode: 'wordpresspost',
@@ -182,6 +183,12 @@
 		matchTextAreaHeight();
 	}
 
+	function getCookie(name) {
+		var value = '; ' + document.cookie;
+		var parts = value.split('; ' + name + '=');
+		if (parts.length === 2) return parts.pop().split(';').shift();
+	}
+	
 	function startEditor() {
 
 		// change the mode if on the theme/plugin editor page
@@ -199,8 +206,8 @@
 		editor = CodeMirror.fromTextArea(target, options);
 		scrollPanel = editor.getWrapperElement().querySelector('.CodeMirror-code');
 
-		// matain cursor/selection pairity between codemirror and the textarea
 		editor.on('cursorActivity', function (instance) {
+			// matain cursor & selection pairity between codemirror and the textarea
 			var cursorPosition = instance.doc.getCursor()
 			var position = 0;
 			var i = 0
@@ -210,8 +217,17 @@
 				i++;
 			})
 			position += cursorPosition.ch;
-			instance.getTextArea().selectionStart = instance.getTextArea().selectionEnd = position
+			instance.getTextArea().selectionStart = instance.getTextArea().selectionEnd = position;
+
+			// Saving cursor state
+			document.cookie = 'hesh_plugin_cursor_position=' + postID + ',' + cursorPosition.line + ',' + cursorPosition.ch;
 		});
+
+		// Restoring cursor state
+		var cursorCookiePosition = (getCookie('hesh_plugin_cursor_position') || '0,0,0').split(',');
+		if (postID === cursorCookiePosition[0]) {
+			editor.setCursor(+cursorCookiePosition[1], +cursorCookiePosition[2]);
+		}
 
 		// Save save all changes to the textarea.value
 		editor.on('change', function (instance, changeObj) {

@@ -17,6 +17,7 @@
 	- add comments
 	- php
 	- js
+	- js lint
 - create logo
 - update documentation
 - create bradford.digital homepage
