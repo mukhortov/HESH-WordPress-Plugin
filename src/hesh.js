@@ -236,9 +236,9 @@
 		if (isThemeOrPluginEditorPage){
 			var fileNameElement = document.querySelector('.fileedit-sub .alignleft');
 			var fileType = fileNameElement.textContent
-				.match(/\.[a-z\d]{2,}/ig)[0]
-				.match(/[a-z]*/ig)[1];
-			var filetypeToModeMap = {
+				.match(/\.[a-z\d]{2,}/ig)[0] // find the file extention
+				.match(/[a-z]*/ig)[1]; // remove the dot
+			var filetypeToMode = { // map file extensions to their CodeMirror modes
 				php: 'php',
 				css: 'css',
 				xml: 'xml',
@@ -246,7 +246,7 @@
 				js: 'javascript',
 				json: 'javascript'
 			};
-			options.mode = filetypeToModeMap[fileType];
+			options.mode = filetypeToMode[fileType];
 		}
 
 		// start up codemirror
@@ -307,6 +307,7 @@
 					line: line,
 					ch: ch
 				});
+				editor.focus(); // for safari
 
 			}
 		}, 50); // run it 20times/second
