@@ -1,8 +1,9 @@
 #TODOs
-- save cursor position
-- build dist branch
-	- build concationate all js?
-	- ulgilfy js?
+- refactor
+	- add comments
+	- php
+	- js
+	- js lint
 - test
 	- browsers
 		- Chrome
@@ -13,14 +14,11 @@
 		- Opera
 	- WP <= 4.0
 	- PHP <= 5.2
-- refactor
-	- add comments
-	- php
-	- js
-	- js lint
 - create logo
 - update documentation
+	- all meta to 2.0
 - create bradford.digital homepage
+- push to dev then to master
 
 
 ##TODO later:
@@ -46,6 +44,8 @@
 		- link to other auto p disabling plugins
 - rtl support
 - translation support
+- CodeMirror themes inspired by WordPress themes
+	- and an auto theme that will match the CM theme to the WP theme - set by default
 - compatible with other plugin:
 	- [Site Origin Editor](https://siteorigin.com/widgets-bundle/)
 	- [Advanced Custom Fields](https://www.advancedcustomfields.com/)

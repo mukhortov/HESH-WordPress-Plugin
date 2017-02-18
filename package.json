@@ -19,6 +19,7 @@
     "gulp-less": "^3.3.0",
     "gulp-livereload": "^3.8.1",
     "gulp-to-json": "^1.0.1",
+    "jshint": "^2.9.4",
     "less-plugin-glob": "^2.0.0"
   }
 }
