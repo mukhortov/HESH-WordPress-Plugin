@@ -32,14 +32,14 @@ define( 'HESH_LIBS', plugins_url( '/dist/', __FILE__ ) );
 class wp_html_editor_syntax {
 	
 	public function __construct () {
-		add_action( 'admin_init', array(&$this, 'set_options') );
-		add_action( 'admin_enqueue_scripts', array(&$this, 'admin_enqueue_scripts' ) );
-		add_action( 'wp_ajax_hesh_options_form', array(&$this, 'hesh_options_form_process'));
-		add_action( 'admin_footer', array(&$this, 'hesh_print_form') );
+		add_action( 'admin_init', array(&$this, 'hesh_set_options') );
+		add_action( 'admin_enqueue_scripts', array(&$this, 'hesh_admin_enqueue_scripts' ) );
+		add_action( 'wp_ajax_'.$this->formProcessName, array(&$this, 'hesh_options_form_process'));
+		add_action( 'admin_footer', array(&$this, 'hesh_output_form') );
 	}
 	
 	// Enqueues scripts and styles for hesh.js
-	public function admin_enqueue_scripts () {
+	public function hesh_admin_enqueue_scripts () {
 		
 		if (
 			!strstr($_SERVER['SCRIPT_NAME'], 'post.php') && 
@@ -47,8 +47,7 @@ class wp_html_editor_syntax {
 			!strstr($_SERVER['SCRIPT_NAME'], 'editor.php')
 		) return;
 		
-		$plugData = get_plugin_data( __FILE__ );
-		// need this temporary var to support versions of php < 5.4
+		$plugData = get_plugin_data( __FILE__ ); // need this temporary var to support versions of php < 5.4
 		$ver = $plugData['Version'];
 		
 		wp_enqueue_style( 'codemirror', HESH_LIBS.'codemirror.css', false, $ver );
@@ -68,32 +67,35 @@ class wp_html_editor_syntax {
 		wp_enqueue_script( 'jquery');
 		wp_enqueue_script( 'heshjs', HESH_LIBS.'hesh.js', array('codemirror', 'jquery', 'editor'), $ver, true );
 
+		// this shows up in js as window.heshOptions
 		$heshOptions = [
 			'ajaxUrl' => admin_url( 'admin-ajax.php' ),
-			'nonce' => wp_create_nonce( 'hesh_options_form' )
+			// 'nonce' => wp_create_nonce( $this->formProcessName ) // TODO: use this instead of the hidden field?
 		];
+		// place all the userPrefrences into the heshOptions object
 		foreach ($this->userPrefrences as $id => $value) {
 			$heshOptions[$id] = isset($value['current']) ? $value['current'] : $value['default'];
 		}
-
 		wp_localize_script(
-			'heshjs',
-			'heshOptions',
-			$heshOptions
+			'heshjs',        // for hesh.js
+			'heshOptions',   // the object name, shows up in js as window.heshOptions
+			$heshOptions     // the php object to translate to js
 		);
 		
 	}
 
+	private $formProcessName = 'hesh_options_form';
+	private $nonceSecretCode = 'secret-code';
 	private $prefix = 'hesh_';
-	private $userPrefrences;
-	private $addOns;
-	public function set_options() {
+	private $userPrefrences; // added to the primary bar
+	private $addOns; // added to the addons menu
+	public function hesh_set_options() {
 		$this->userPrefrences = [
 			'theme' => [
 				'title' => 'Theme',
-				// 'description' => 'choose a theme',
 				'type' => 'select',
 				// http://stackoverflow.com/questions/18881693/how-to-import-external-json-and-display-in-php
+				// TODO: add this in without a file_get_contents()
 				'options' => json_decode(file_get_contents(dirname(__FILE__) . '/css.json'), true), 
 				'current' => get_user_meta( get_current_user_id(), $this->prefix.'theme' , true),
 				'default' => 'material',
@@ -133,31 +135,32 @@ class wp_html_editor_syntax {
 				'current' => get_user_meta( get_current_user_id(), $this->prefix.'lineHeight' , true),
 				'default' => 1.5,
 			],
-			// 'keyMap'=> [
-			// 	'title' => 'Key Mapping',
-			// 	'type' => 'select',
-			// 	'options' => ['none', 'emacs', 'sublime', 'vim'],
-			// 	'current' => get_user_meta( get_current_user_id(), $this->prefix.'keyMap' , true),
-			// 	'default' => 'none',
-			// ],
 		];
-		$this->addOns = [
-			'styleActiveLine'=> [],
-			'matchBrackets'=> [],
-			'search'=> [], // and replace
-			'highlightSelectionMatches'=> [],
-			'styleSelectedText'=> [], // ?
-			'autoCloseBrackets'=> [],
-			'autoCloseTags'=> [],
-			'comment'=> [], // continueComments?
-			'foldCode'=> [], // ?
-		];
+		// $this->addOns = [
+		// 	'keyMap'=> [
+		// 		'title' => 'Key Mapping',
+		//		'description' => 'choose a theme',
+		// 		'type' => 'select',
+		// 		'options' => ['none', 'emacs', 'sublime', 'vim'],
+		// 		'current' => get_user_meta( get_current_user_id(), $this->prefix.'keyMap' , true),
+		// 		'default' => 'none',
+		// 	],
+		// 	'styleActiveLine'=> [],
+		// 	'matchBrackets'=> [],
+		// 	'search'=> [], // and replace
+		// 	'highlightSelectionMatches'=> [],
+		// 	'styleSelectedText'=> [], // ?
+		// 	'autoCloseBrackets'=> [],
+		// 	'autoCloseTags'=> [],
+		// 	'comment'=> [], // continueComments?
+		// 	'foldCode'=> [], // ?
+		// ];
 	}
 
 	
 	public function hesh_options_form_process() {
-		if (empty($_POST) || !wp_verify_nonce($_POST['secret-code'], 'hesh_options_form')) {
-			error_log('You targeted the right function, but sorry, your nonce did not verify.');
+		if (empty($_POST) || !wp_verify_nonce($_POST[$this->nonceSecretCode], $this->formProcessName)) {
+			error_log('The nonce did not verify.');
 			wp_die();
 		} else {
 			foreach ($this->userPrefrences as $id => $value) {
@@ -170,18 +173,18 @@ class wp_html_editor_syntax {
 		}
 	}
 
-	private function output_option($id, $config, $cm=false) {
+	private function hesh_output_option($id, $config, $cm=false) {
 		switch ($config['type']){
 			case 'select':
-				$this->output_select($id, $config, $cm);
+				$this->hesh_output_select($id, $config, $cm);
 				break;
 			case 'checkbox':
-				$this->output_checkbox($id, $config, $cm);
+				$this->hesh_output_checkbox($id, $config, $cm);
 				break;
 		}
 	}
 
-	private function output_checkbox($id, $config, $cm=false) {
+	private function hesh_output_checkbox($id, $config, $cm=false) {
 		extract($config);
 		if ($cm): ?>
 			<label 
@@ -236,7 +239,7 @@ class wp_html_editor_syntax {
 		<?php endif;
 	}
 	
-	private function output_select($id, $config, $cm=false) {
+	private function hesh_output_select($id, $config, $cm=false) {
 		extract($config);
 		if ($cm): ?>
 			<label 
@@ -299,7 +302,7 @@ class wp_html_editor_syntax {
 		<?php endif;
 	}
 		
-	public function hesh_print_form() {
+	public function hesh_output_form() {
 		// ob_start();
 		?>
 			<div class="CodeMirror-settings closed closed-advanced" id="CodeMirror-settings" style="display:none;">
@@ -312,7 +315,7 @@ class wp_html_editor_syntax {
 					<header class="CodeMirror-settings__header CodeMirror-settings__docked">
 						<?php
 							foreach ($this->userPrefrences as $id => $value) {
-								$this->output_option($id,$value,true);
+								$this->hesh_output_option($id,$value,true);
 							}
 						?>
 						<a class="CodeMirror-settings__toggle-advanced" 
@@ -320,7 +323,7 @@ class wp_html_editor_syntax {
 							></a>
 					</header>
 					<div class="form CodeMirror-settings__body">
-						<?php wp_nonce_field('hesh_options_form','secret-code');?>
+						<?php wp_nonce_field($this->formProcessName,$this->nonceSecretCode);?>
 						<input name="action" value="hesh_options_form" type="hidden">
 						<table class="form-table"><tbody>
 							<tr><td class="CodeMirror-settings__heading"><h1>
