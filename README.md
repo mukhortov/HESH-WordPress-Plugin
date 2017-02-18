@@ -1,10 +1,8 @@
 #TODOs
 - test
 	- browsers
-		- Chrome
 		- Safari
 		- FireFox
-			- options don't work
 		- Edge
 		- IE 11
 		- Opera

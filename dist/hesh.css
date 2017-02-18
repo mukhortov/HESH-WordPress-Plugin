@@ -4826,6 +4826,9 @@ td.CodeMirror-settings__heading {
   background: none;
   opacity: 0;
 }
+.CodeMirror-settings__button option {
+  font-size: 12px;
+}
 .CodeMirror-settings__button--select:after {
   content: '\f140';
   font-family: dashicons;
