@@ -50,10 +50,10 @@
 		electricChars: false,
 		extraKeys: {
 			'F11': function () {
-				toggleFullscreen();
+				// toggleFullscreen();
 			},
 			'Esc': function () {
-				toggleFullscreen();
+				// toggleFullscreen();
 			},
 			'Ctrl-S': function () {
 				publishButton.click();
@@ -135,20 +135,20 @@
 	}
 
 	// setup the fullscreen button
-	var fullscreenBox = document.getElementById('wp-content-editor-container');
-	var fullscreenClass = 'heshFullscreen';
-	function attachFullscreen() {
-		document.getElementById('ed_toolbar').insertAdjacentHTML(
-			'afterbegin',
-			'<div id="cm_content_fullscreen" class="ed_button button button-small" title="Toggle fullscreen mode" ></div>'
-		);
-		document.getElementById('cm_content_fullscreen').onclick = toggleFullscreen;
-	}
+	// var fullscreenBox = document.getElementById('wp-content-editor-container');
+	// var fullscreenClass = 'heshFullscreen';
+	// function attachFullscreen() {
+	// 	document.getElementById('ed_toolbar').insertAdjacentHTML(
+	// 		'afterbegin',
+	// 		'<div id="cm_content_fullscreen" class="ed_button button button-small" title="Toggle fullscreen mode" ></div>'
+	// 	);
+	// 	document.getElementById('cm_content_fullscreen').onclick = toggleFullscreen;
+	// }
 
-	function toggleFullscreen() {
-		fullscreenBox.classList.toggle(fullscreenClass); // TODO: fix the use of toggle
-		editor.focus();
-	}
+	// function toggleFullscreen() {
+	// 	fullscreenBox.classList.toggle(fullscreenClass); // TODO: fix the use of toggle
+	// 	editor.focus();
+	// }
 
 	// attaches a dragger to the bottom right of the theme/plugin editor to control editor height
 	function attachResizeThemeOrPlugin() {
@@ -192,7 +192,16 @@
 			document.removeEventListener('mousemove', matchTextAreaHeight);
 			editor.refresh();
 		});
-		matchTextAreaHeight();
+		function matchTextAreaDimensions() {
+			editor.getWrapperElement().style.marginTop = editor.getTextArea().style.marginTop;
+			matchTextAreaHeight();
+		}
+		var timeout;
+		window.addEventListener('resize', function () {
+			matchTextAreaDimensions();
+			editor.refresh();
+		});
+		matchTextAreaDimensions();
 	}
 
 	function getCookie(name) {
@@ -319,7 +328,7 @@
 		else attachResizePostOrPage();
 		attachSettings();
 		setFontSizeAndLineHeight();
-		if (!isThemeOrPluginEditorPage) attachFullscreen();
+		// if (!isThemeOrPluginEditorPage) attachFullscreen();
 		isActive = true;
 	}
 

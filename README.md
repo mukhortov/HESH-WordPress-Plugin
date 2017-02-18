@@ -1,7 +1,18 @@
 #TODOs
+- enable switch from destraction free mode.
+	- boolean for distraction free
+	- handle switch with some event like thing
+	- fullscreen only enabled without distractionfree? uses same button
+		- replace fullscreenbutton with the one in the distracton free bar
+	- codemirror [autoresize](https://codemirror.net/doc/manual.html#option_viewportMargin) - set `viewportMargin` to `Infinity`
+	- #ed_toolbar z-index
+	- settings should have a min and max height
+		- not absolute positioned?
+		- grows and scrolls with maxheight of parent
+
 - test
-	- WP <= 4.0.15
-	- PHP <= 5.2.17
+	- if there is no visual editor
+	- initializing wihout any settings/fresh user
 	- browsers
 		- Edge
 		- IE 11
