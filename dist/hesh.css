@@ -4911,3 +4911,6 @@ td.CodeMirror-settings__heading {
   z-index: 8;
   margin: 1px !important;
 }
+.CodeMirror-vscrollbar {
+  display: none;
+}

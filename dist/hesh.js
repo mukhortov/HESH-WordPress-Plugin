@@ -30,7 +30,7 @@
 	var isVisualEditorActive = document.getElementsByClassName('tmce-active')[0] != null;
 	var isVisualEditorEnabled = document.getElementById('content-tmce') != null;
 	var publishButton = document.getElementById('save-post') || document.getElementById('publish');
-	var postID = document.getElementById('post_ID').value || 0;
+	var postID = document.getElementById('post_ID') != null ? document.getElementById('post_ID').value : 0;
 	var fontSize = +heshOptions.fontSize;
 	var lineHeight = +heshOptions.lineHeight;
 
