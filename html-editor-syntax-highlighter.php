@@ -99,7 +99,7 @@ class wp_html_editor_syntax {
 				'default' => 'material',
 			],
 			'tabSize' => [
-				'title' => 'Indent Size',
+				'title' => 'Indent',
 				'type' => 'select',
 				'options' => range(1,6),
 				'current' => get_user_meta( get_current_user_id(), $this->prefix.'tabSize' , true),
@@ -244,7 +244,7 @@ class wp_html_editor_syntax {
 				for="<?php echo $id; ?>"
 				<?php if (isset($description)) echo "title=\"$id-description\"" ?>
 				>
-				<?php echo $id; ?>
+				<?php echo $title; ?>
 				<select 
 					id="<?php echo $id; ?>" 
 					name="<?php echo $id; ?>"
@@ -323,14 +323,6 @@ class wp_html_editor_syntax {
 						<?php wp_nonce_field('hesh_options_form','secret-code');?>
 						<input name="action" value="hesh_options_form" type="hidden">
 						<table class="form-table"><tbody>
-							<!--<tr><td class="CodeMirror-settings__heading"><h1>
-								User Prefrences
-							</h1></td></tr>-->
-							<?php
-								// foreach ($this->userPrefrences as $id => $value) {
-								// 	$this->output_option($id,$value);
-								// }
-							?>
 							<tr><td class="CodeMirror-settings__heading"><h1>
 								Addons
 							</h1></td></tr>
@@ -341,19 +333,18 @@ class wp_html_editor_syntax {
 					</div>
 					<footer class="CodeMirror-settings__footer CodeMirror-settings__docked">
 						<p class="CodeMirror-settings__foot-content CodeMirror-settings__feedback">
-							<small>
+							<small>Leave a 
+								<a href="https://wordpress.org/support/plugin/html-editor-syntax-highlighter/reviews/#new-post" target="_blank">review</a>. 
 								Submit a 
-								<a href="#" target="_blank">bug report</a> 
-								or 
-								<a href="#" target="_blank">feature request</a>.
+								<a href="https://github.com/mukhortov/HESH-WordPress-Plugin/issues/new" target="_blank">bug report or enhancement request</a>. 
 							</small>
 						</p>
 						<p class="CodeMirror-settings__foot-content CodeMirror-settings__credits">
 							<small>
 								Created by 
-								<a href="#" target="_blank">James Bradford</a> 
+								<a href="http://www.bradford.digital" target="_blank">James Bradford</a> 
 								&amp; 
-								<a href="#" target="_blank">Petr Mukhortov</a>.
+								<a href="https://www.mukhortov.com/" target="_blank">Petr Mukhortov</a>.
 							</small>
 						</p>
 					</footer>

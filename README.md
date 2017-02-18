@@ -1,12 +1,57 @@
 #TODOs
+- save cursor position
 - build dist branch
 	- build concationate all js?
 	- ulgilfy js?
-- update documentation
-- fill links in the bottom
+- test
+	- browsers
+		- Chrome
+		- Safari
+		- FireFox
+		- Edge
+		- IE 11
+		- Opera
+	- WP <= 4.0
+	- PHP <= 5.2
+- refactor
+	- add comments
+	- php
+	- js
 - create logo
+- update documentation
+- create bradford.digital homepage
+
+
+##TODO later:
+- support `<!--nextpage-->` in shortcode parser
+- add fullscreen to plugin/theme editor
 - success/progress/failure ui for saving options
+- addon/advanced options
+	- keymaps
+	- editor options:
+		- style active line
+		- matchBrackets
+		- highlight selection matches
+		- search
+		- foldcode
+	- code commands
+		- commenting: Ctrl+/, Cmd+/
+		- autoclose tags
+		- autoclose brackets
+		- [emmet](https://github.com/emmetio/codemirror)?
+		- [spellcheck](https://github.com/NextStepWebs/codemirror-spell-checker)?
+	- prevent reformatting like:
+		- auto p
+		- link to other auto p disabling plugins
 - rtl support
+- translation support
+- compatible with other plugin:
+	- [Site Origin Editor](https://siteorigin.com/widgets-bundle/)
+	- [Advanced Custom Fields](https://www.advancedcustomfields.com/)
+	- [Visual Composer](https://vc.wpbakery.com/)
+	- [King Composer](https://wordpress.org/plugins/kingcomposer/)
+	- [Revisionary](https://wordpress.org/plugins/revisionary/)
+
 
 ##links
 - process user settings
@@ -15,6 +60,7 @@
 - AJAX forms
 	- [submitting a form in wordpress using ajax](https://teamtreehouse.com/community/submitting-a-form-in-wordpress-using-ajax)
 	- [how to handle form submission](http://wordpress.stackexchange.com/questions/60758/how-to-handle-form-submission)
+- [wp usage stats](https://wordpress.org/about/stats/)
 
 
 
