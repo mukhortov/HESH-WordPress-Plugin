@@ -34,6 +34,27 @@
 	var fontSize = +heshOptions.fontSize;
 	var lineHeight = +heshOptions.lineHeight;
 
+	var fullHeightToggle = document.getElementById('editor-expand-toggle');
+	function isFullHeight() {
+		if (!fullHeightToggle) return false;
+		return fullHeightToggle.checked;
+	}
+	function attachFullHeightToggle() {
+		if (!fullHeightToggle) return;
+		fullHeightToggle.addEventListener('change', fullHeightToggled);
+		fullHeightToggled();
+	}
+	function fullHeightToggled() {
+		console.log('full height changed');
+		if (isFullHeight()) {
+			editor.setOption('viewportMargin', Infinity); 
+			editor.getWrapperElement().style.height = 'auto';
+			editor.refresh();
+		} else {
+			editor.setOption('viewportMargin', options.viewportMargin);
+		}
+	}
+
 	var options = {
 		mode: 'wordpresspost',
 		tabMode: 'indent',
@@ -48,6 +69,7 @@
 		autofocus: true,
 		styleActiveLine: true,
 		electricChars: false,
+		viewportMargin: 10,
 		extraKeys: {
 			'F11': function () {
 				// toggleFullscreen();
@@ -324,8 +346,12 @@
 
 	function runEditor() {
 		startEditor();
-		if (isThemeOrPluginEditorPage) attachResizeThemeOrPlugin();
-		else attachResizePostOrPage();
+		if (isThemeOrPluginEditorPage){ 
+			attachResizeThemeOrPlugin();
+		} else {
+			attachResizePostOrPage();
+			attachFullHeightToggle();
+		}
 		attachSettings();
 		setFontSizeAndLineHeight();
 		// if (!isThemeOrPluginEditorPage) attachFullscreen();

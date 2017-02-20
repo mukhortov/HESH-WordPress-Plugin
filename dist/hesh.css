@@ -4914,3 +4914,6 @@ td.CodeMirror-settings__heading {
 .CodeMirror-vscrollbar {
   display: none !important;
 }
+#ed_toolbar {
+  z-index: 10;
+}
