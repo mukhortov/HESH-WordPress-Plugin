@@ -49,10 +49,13 @@
 		if (isFullHeight()) {
 			editor.setOption('viewportMargin', Infinity); 
 			editor.getWrapperElement().style.height = 'auto';
-			editor.refresh();
+			matchTextAreaMarginTop();
 		} else {
 			editor.setOption('viewportMargin', options.viewportMargin);
+			editor.getWrapperElement().style.marginTop = '';
+			matchTextAreaHeight();
 		}
+		editor.getTextArea().style.display = 'none'; // just to make sure
 	}
 
 	var options = {
@@ -202,11 +205,14 @@
 		});
 	}
 
+	function matchTextAreaHeight() {
+		editor.getWrapperElement().style.height = editor.getTextArea().style.height;
+	}
+	function matchTextAreaMarginTop() {
+		editor.getWrapperElement().style.marginTop = editor.getTextArea().style.marginTop;
+	}
 	// copy the resize of the textarea in codemirror
 	function attachResizePostOrPage() {
-		function matchTextAreaHeight() {
-			editor.getWrapperElement().style.height = editor.getTextArea().style.height;
-		}
 		document.getElementById('content-resize-handle').addEventListener('mousedown', function () {
 			document.addEventListener('mousemove', matchTextAreaHeight);
 		});
@@ -214,16 +220,12 @@
 			document.removeEventListener('mousemove', matchTextAreaHeight);
 			editor.refresh();
 		});
-		function matchTextAreaDimensions() {
-			editor.getWrapperElement().style.marginTop = editor.getTextArea().style.marginTop;
-			matchTextAreaHeight();
-		}
-		var timeout;
+		var timeout; // debounce the resize listner
 		window.addEventListener('resize', function () {
-			matchTextAreaDimensions();
-			editor.refresh();
+			if (isFullHeight()) matchTextAreaMarginTop();
+			// editor.refresh();
 		});
-		matchTextAreaDimensions();
+		if (!isFullHeight()) matchTextAreaHeight();
 	}
 
 	function getCookie(name) {

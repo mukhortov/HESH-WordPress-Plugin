@@ -55,6 +55,7 @@
 	- [Visual Composer](https://vc.wpbakery.com/)
 	- [King Composer](https://wordpress.org/plugins/kingcomposer/)
 	- [Revisionary](https://wordpress.org/plugins/revisionary/)
+- read [bugs](https://wordpress.org/support/plugin/html-editor-syntax-highlighter) and add more TODOs
 
 
 ##links
@@ -219,22 +220,6 @@ Bug fix (thanks to collinprice):
 ###1.0
 Initial release.
 
-
-##TODOs:
-* [add non-minified js and css?](https://wordpress.org/support/topic/add-non-minfied-javascript-and-css-files)
-* [don't reformat on editor switch](https://wordpress.org/support/topic/loses-schemaorg-data)
-	- incorporate the process of that other plugin
-	- give a checkbox option to turn it on and off
-* [spellcheck](https://wordpress.org/support/topic/trying-to-enable-spell-check-inside-the-editor)
-* add image previews
-* more options
-	- indenting: size and tabs/spaces
-	- wordwrap
-	- save scroll position in addition to cursor position
-* themes that match the current WordPess admin theme
-* support for adding content from the "Add Media" button
-* use WordPess native buttons for adding html tags
-* read [bugs](https://wordpress.org/support/plugin/html-editor-syntax-highlighter) and add more TODOs
 
 ##Sample Text for testing
 `
