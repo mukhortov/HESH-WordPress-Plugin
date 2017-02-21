@@ -171,7 +171,6 @@
 		document.getElementById('ed_toolbar').insertAdjacentHTML(
 			'afterbegin',
 			'<button type="button" id="cm_content_fullscreen" class="ed_button qt-dfw" title="Full Screen"></button>'
-			// '<div id="cm_content_fullscreen" class="ed_button button button-small" title="Toggle fullscreen mode" ></div>'
 		);
 		document.getElementById('cm_content_fullscreen').onclick = toggleFullscreen;
 	}

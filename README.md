@@ -1,8 +1,6 @@
 #TODOs
 - enable switch from destraction free mode.
 	- the textarea still misses the heightmatch after toggling back from the visual editor.
-	- fullscreen only enabled without distractionfree? uses same button
-		- replace fullscreenbutton with the one in the distracton free bar
 	- redo settings panel
 		- settings should have a min and max height
 		- not absolute positioned?
