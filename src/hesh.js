@@ -44,19 +44,43 @@
 		fullHeightToggle.addEventListener('change', fullHeightToggled);
 		fullHeightToggled();
 	}
+	function fullHeightMatch() {
+		// console.log(editor.getTextArea().getBoundingClientRect());
+		editor.getTextArea().style.height = editor.getWrapperElement().getBoundingClientRect().height + 'px';
+	}
+	// function oneTimeScroll() {
+	// 	fullHeightMatch();
+	// 	window.removeEventListener('scroll', oneTimeScroll);
+	// }
 	function fullHeightToggled() {
-		console.log('full height changed');
+		// console.log('full height changed');
 		if (isFullHeight()) {
 			editor.setOption('viewportMargin', Infinity); 
 			editor.getWrapperElement().style.height = 'auto';
+			editor.on('change', fullHeightMatch);
+			window.setTimeout(function(){
+				fullHeightMatch();
+			},50); // TODO: find a better way to override
+			// window.addEventListener('scroll', oneTimeScroll);
 			matchTextAreaMarginTop();
 		} else {
 			editor.setOption('viewportMargin', options.viewportMargin);
+			editor.off('change', fullHeightMatch);
 			editor.getWrapperElement().style.marginTop = '';
 			matchTextAreaHeight();
 		}
+		// toggleTextAreaDisplayType(isFullHeight());
 		editor.getTextArea().style.display = 'none'; // just to make sure
 	}
+
+	// function toggleTextAreaDisplayType(render) {
+	// 	var textAreaStyle = editor.getTextArea().style;
+	// 	textAreaStyle.display = render ? '' : 'none';
+	// 	textAreaStyle.position = render ? 'absolute' : '';
+	// 	textAreaStyle.zIndex = render ? '-999' : '';
+	// 	textAreaStyle.opacity = render ? '0' : '';
+	// 	textAreaStyle.pointerEvents = render ? 'none' : '';
+	// }
 
 	var options = {
 		mode: 'wordpresspost',

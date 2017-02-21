@@ -1,15 +1,18 @@
 #TODOs
 - enable switch from destraction free mode.
-	- boolean for distraction free
 	- handle switch with some event like thing
+		- handle bottom info bar being fixed
+		- fullHeight off, load in visual, fullHeight on, switch back to code
+			- bottom bar is stuck fixed
+		- fullHeight on, load in code, switch to visual, switch back to code
+			- fixed top and bottom bar dont follow
 	- fullscreen only enabled without distractionfree? uses same button
 		- replace fullscreenbutton with the one in the distracton free bar
-	- codemirror [autoresize](https://codemirror.net/doc/manual.html#option_viewportMargin) - set `viewportMargin` to `Infinity`
-	- #ed_toolbar z-index
-	- settings should have a min and max height
+	- redo settings panel
+		- settings should have a min and max height
 		- not absolute positioned?
 		- grows and scrolls with maxheight of parent
-
+	- remove event handlers appropriately
 - test
 	- if there is no visual editor
 	- initializing wihout any settings/fresh user
