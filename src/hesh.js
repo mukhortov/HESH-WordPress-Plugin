@@ -45,23 +45,14 @@
 		fullHeightToggled();
 	}
 	function fullHeightMatch() {
-		// console.log(editor.getTextArea().getBoundingClientRect());
 		editor.getTextArea().style.height = editor.getWrapperElement().getBoundingClientRect().height + 'px';
 	}
-	// function oneTimeScroll() {
-	// 	fullHeightMatch();
-	// 	window.removeEventListener('scroll', oneTimeScroll);
-	// }
 	function fullHeightToggled() {
-		// console.log('full height changed');
 		if (isFullHeight()) {
 			editor.setOption('viewportMargin', Infinity); 
 			editor.getWrapperElement().style.height = 'auto';
 			editor.on('change', fullHeightMatch);
-			window.setTimeout(function(){
-				fullHeightMatch();
-			},50); // TODO: find a better way to override
-			// window.addEventListener('scroll', oneTimeScroll);
+			window.setTimeout(fullHeightMatch, 50); // TODO: find a better way to override
 			matchTextAreaMarginTop();
 		} else {
 			editor.setOption('viewportMargin', options.viewportMargin);
@@ -69,18 +60,8 @@
 			editor.getWrapperElement().style.marginTop = '';
 			matchTextAreaHeight();
 		}
-		// toggleTextAreaDisplayType(isFullHeight());
 		editor.getTextArea().style.display = 'none'; // just to make sure
 	}
-
-	// function toggleTextAreaDisplayType(render) {
-	// 	var textAreaStyle = editor.getTextArea().style;
-	// 	textAreaStyle.display = render ? '' : 'none';
-	// 	textAreaStyle.position = render ? 'absolute' : '';
-	// 	textAreaStyle.zIndex = render ? '-999' : '';
-	// 	textAreaStyle.opacity = render ? '0' : '';
-	// 	textAreaStyle.pointerEvents = render ? 'none' : '';
-	// }
 
 	var options = {
 		mode: 'wordpresspost',
@@ -99,10 +80,10 @@
 		viewportMargin: 10,
 		extraKeys: {
 			'F11': function () {
-				// toggleFullscreen();
+				toggleFullscreen();
 			},
 			'Esc': function () {
-				// toggleFullscreen();
+				toggleFullscreen();
 			},
 			'Ctrl-S': function () {
 				publishButton.click();
@@ -184,20 +165,21 @@
 	}
 
 	// setup the fullscreen button
-	// var fullscreenBox = document.getElementById('wp-content-editor-container');
-	// var fullscreenClass = 'heshFullscreen';
-	// function attachFullscreen() {
-	// 	document.getElementById('ed_toolbar').insertAdjacentHTML(
-	// 		'afterbegin',
-	// 		'<div id="cm_content_fullscreen" class="ed_button button button-small" title="Toggle fullscreen mode" ></div>'
-	// 	);
-	// 	document.getElementById('cm_content_fullscreen').onclick = toggleFullscreen;
-	// }
+	var fullscreenBox = document.getElementById('wp-content-editor-container');
+	var fullscreenClass = 'heshFullscreen';
+	function attachFullscreen() {
+		document.getElementById('ed_toolbar').insertAdjacentHTML(
+			'afterbegin',
+			'<button type="button" id="cm_content_fullscreen" class="ed_button qt-dfw" title="Full Screen"></button>'
+			// '<div id="cm_content_fullscreen" class="ed_button button button-small" title="Toggle fullscreen mode" ></div>'
+		);
+		document.getElementById('cm_content_fullscreen').onclick = toggleFullscreen;
+	}
 
-	// function toggleFullscreen() {
-	// 	fullscreenBox.classList.toggle(fullscreenClass); // TODO: fix the use of toggle
-	// 	editor.focus();
-	// }
+	function toggleFullscreen() {
+		fullscreenBox.classList.toggle(fullscreenClass); // TODO: fix the use of toggle
+		editor.focus();
+	}
 
 	// attaches a dragger to the bottom right of the theme/plugin editor to control editor height
 	function attachResizeThemeOrPlugin() {
@@ -380,7 +362,7 @@
 		}
 		attachSettings();
 		setFontSizeAndLineHeight();
-		// if (!isThemeOrPluginEditorPage) attachFullscreen();
+		if (!isThemeOrPluginEditorPage) attachFullscreen();
 		isActive = true;
 	}
 

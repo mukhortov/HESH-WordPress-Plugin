@@ -1,11 +1,6 @@
 #TODOs
 - enable switch from destraction free mode.
-	- handle switch with some event like thing
-		- handle bottom info bar being fixed
-		- fullHeight off, load in visual, fullHeight on, switch back to code
-			- bottom bar is stuck fixed
-		- fullHeight on, load in code, switch to visual, switch back to code
-			- fixed top and bottom bar dont follow
+	- the textarea still misses the heightmatch after toggling back from the visual editor.
 	- fullscreen only enabled without distractionfree? uses same button
 		- replace fullscreenbutton with the one in the distracton free bar
 	- redo settings panel

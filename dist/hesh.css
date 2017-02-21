@@ -4890,17 +4890,10 @@ td.CodeMirror-settings__heading {
   content: '\f506';
 }
 #cm_content_fullscreen {
-  position: absolute;
-  right: 3px;
-  margin: 2px;
-  padding: 2px 3px;
-  height: 26px;
+  display: inline-block;
 }
-#cm_content_fullscreen:before {
-  display: block;
-  font-family: dashicons;
-  font-size: 20px;
-  content: '\f211';
+.wp-editor-expand #cm_content_fullscreen {
+  display: none;
 }
 .hesh-content-resize-handle {
   position: absolute;
