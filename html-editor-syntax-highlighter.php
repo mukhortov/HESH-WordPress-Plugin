@@ -311,11 +311,6 @@ class wp_html_editor_syntax {
 		
 	public function hesh_output_form() {
 		// ob_start();
-		// $array = [
-		// 	"foo" => "bar",
-		// 	"bar" => "foo",
-		// ];
-		// error_log(var_dump($array));
 		?>
 			<div class="CodeMirror-settings closed closed-advanced" id="CodeMirror-settings" style="display:none;">
 				<form
@@ -344,7 +339,72 @@ class wp_html_editor_syntax {
 							<tr>
 								<th scope="row"><label>Coming Soon...</label></th>
 							</tr>
-						</tbody></table>
+							<tr><td class="CodeMirror-settings__heading"><h1>
+								Addons
+							</h1></td></tr>
+							<tr>
+								<th scope="row"><label>Coming Soon...</label></th>
+							</tr>							<tr><td class="CodeMirror-settings__heading"><h1>
+								Addons
+							</h1></td></tr>
+							<tr>
+								<th scope="row"><label>Coming Soon...</label></th>
+							</tr>							<tr><td class="CodeMirror-settings__heading"><h1>
+								Addons
+							</h1></td></tr>
+							<tr>
+								<th scope="row"><label>Coming Soon...</label></th>
+							</tr>							<tr><td class="CodeMirror-settings__heading"><h1>
+								Addons
+							</h1></td></tr>
+							<tr>
+								<th scope="row"><label>Coming Soon...</label></th>
+							</tr>							<tr><td class="CodeMirror-settings__heading"><h1>
+								Addons
+							</h1></td></tr>
+							<tr>
+								<th scope="row"><label>Coming Soon...</label></th>
+							</tr>							<tr><td class="CodeMirror-settings__heading"><h1>
+								Addons
+							</h1></td></tr>
+							<tr>
+								<th scope="row"><label>Coming Soon...</label></th>
+							</tr>							<tr><td class="CodeMirror-settings__heading"><h1>
+								Addons
+							</h1></td></tr>
+							<tr>
+								<th scope="row"><label>Coming Soon...</label></th>
+							</tr>							<tr><td class="CodeMirror-settings__heading"><h1>
+								Addons
+							</h1></td></tr>
+							<tr>
+								<th scope="row"><label>Coming Soon...</label></th>
+							</tr>							<tr><td class="CodeMirror-settings__heading"><h1>
+								Addons
+							</h1></td></tr>
+							<tr>
+								<th scope="row"><label>Coming Soon...</label></th>
+							</tr>							<tr><td class="CodeMirror-settings__heading"><h1>
+								Addons
+							</h1></td></tr>
+							<tr>
+								<th scope="row"><label>Coming Soon...</label></th>
+							</tr>							<tr><td class="CodeMirror-settings__heading"><h1>
+								Addons
+							</h1></td></tr>
+							<tr>
+								<th scope="row"><label>Coming Soon...</label></th>
+							</tr>							<tr><td class="CodeMirror-settings__heading"><h1>
+								Addons
+							</h1></td></tr>
+							<tr>
+								<th scope="row"><label>Coming Soon...</label></th>
+							</tr>							<tr><td class="CodeMirror-settings__heading"><h1>
+								Addons
+							</h1></td></tr>
+							<tr>
+								<th scope="row"><label>Coming Soon...</label></th>
+							</tr>						</tbody></table>
 					</div>
 					<footer class="CodeMirror-settings__footer CodeMirror-settings__docked">
 						<p class="CodeMirror-settings__foot-content CodeMirror-settings__feedback">
