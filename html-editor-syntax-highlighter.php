@@ -339,72 +339,7 @@ class wp_html_editor_syntax {
 							<tr>
 								<th scope="row"><label>Coming Soon...</label></th>
 							</tr>
-							<tr><td class="CodeMirror-settings__heading"><h1>
-								Addons
-							</h1></td></tr>
-							<tr>
-								<th scope="row"><label>Coming Soon...</label></th>
-							</tr>							<tr><td class="CodeMirror-settings__heading"><h1>
-								Addons
-							</h1></td></tr>
-							<tr>
-								<th scope="row"><label>Coming Soon...</label></th>
-							</tr>							<tr><td class="CodeMirror-settings__heading"><h1>
-								Addons
-							</h1></td></tr>
-							<tr>
-								<th scope="row"><label>Coming Soon...</label></th>
-							</tr>							<tr><td class="CodeMirror-settings__heading"><h1>
-								Addons
-							</h1></td></tr>
-							<tr>
-								<th scope="row"><label>Coming Soon...</label></th>
-							</tr>							<tr><td class="CodeMirror-settings__heading"><h1>
-								Addons
-							</h1></td></tr>
-							<tr>
-								<th scope="row"><label>Coming Soon...</label></th>
-							</tr>							<tr><td class="CodeMirror-settings__heading"><h1>
-								Addons
-							</h1></td></tr>
-							<tr>
-								<th scope="row"><label>Coming Soon...</label></th>
-							</tr>							<tr><td class="CodeMirror-settings__heading"><h1>
-								Addons
-							</h1></td></tr>
-							<tr>
-								<th scope="row"><label>Coming Soon...</label></th>
-							</tr>							<tr><td class="CodeMirror-settings__heading"><h1>
-								Addons
-							</h1></td></tr>
-							<tr>
-								<th scope="row"><label>Coming Soon...</label></th>
-							</tr>							<tr><td class="CodeMirror-settings__heading"><h1>
-								Addons
-							</h1></td></tr>
-							<tr>
-								<th scope="row"><label>Coming Soon...</label></th>
-							</tr>							<tr><td class="CodeMirror-settings__heading"><h1>
-								Addons
-							</h1></td></tr>
-							<tr>
-								<th scope="row"><label>Coming Soon...</label></th>
-							</tr>							<tr><td class="CodeMirror-settings__heading"><h1>
-								Addons
-							</h1></td></tr>
-							<tr>
-								<th scope="row"><label>Coming Soon...</label></th>
-							</tr>							<tr><td class="CodeMirror-settings__heading"><h1>
-								Addons
-							</h1></td></tr>
-							<tr>
-								<th scope="row"><label>Coming Soon...</label></th>
-							</tr>							<tr><td class="CodeMirror-settings__heading"><h1>
-								Addons
-							</h1></td></tr>
-							<tr>
-								<th scope="row"><label>Coming Soon...</label></th>
-							</tr>						</tbody></table>
+						</tbody></table>
 					</div>
 					<footer class="CodeMirror-settings__footer CodeMirror-settings__docked">
 						<p class="CodeMirror-settings__foot-content CodeMirror-settings__feedback">

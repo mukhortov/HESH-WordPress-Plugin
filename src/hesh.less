@@ -83,7 +83,6 @@
 
 		}
 
-
 		&__wrapper{
 			position: absolute;
 			width: 100%;
@@ -95,6 +94,7 @@
 			display: flex;
 			flex-direction: column;
 		}
+
 		&__docked{
 			flex: 0 0 auto;
 			z-index: @z-index + 1;
@@ -102,6 +102,7 @@
 			box-sizing: border-box;
 			.media(min-height, @docked-mobile-height, @docked-desktop-height);
 		}
+
 		&__header{
 			border-top-left-radius: @border-radius;
 			border-top-right-radius: @border-radius;
@@ -109,6 +110,18 @@
 			padding: 4px;
 			.media(padding-right);
 		}
+
+		&__body{
+			flex: 1 1 auto;
+			box-sizing: border-box;
+			padding: 1px @padding;
+			overflow-y: auto;
+			// border-radius: @border-radius;
+			background-color: @background-color;  
+			border-left: 1px solid @border-color;
+			border-right: 1px solid @border-color;
+		}
+		
 		&__footer{
 			border-bottom-left-radius: @border-radius;
 			border-bottom-right-radius: @border-radius;
@@ -121,39 +134,15 @@
 			justify-content: space-between;
 		}
 
-
-		&__body{
-			flex: 1 1 auto;
-			box-sizing: border-box;
-			padding: 1px @padding;
-			overflow-y: auto;
-			// border-radius: @border-radius;
-			background-color: @background-color;  
-			border-left: 1px solid @border-color;
-			border-right: 1px solid @border-color;
-		}
-		td&__heading{ //td& for specificity
+		td&__heading{ // td& for specificity
 			padding: 0;
 		}
 
-
-		&__title{
-			display: inline-block;
-		}
 		&__foot-content{
 			margin: 0;
-			// height: 100%;
-			// vertical-align: middle;
-			// .media(line-height);
 		}
-		&__feedback{
-			// flex: 1 0 auto;
-			// float:left;
-		}
-		&__credits{
-			// flex: 0 0 auto;
-			// float:right;
-		}
+		&__feedback{}
+		&__credits{}
 
 		// OPEN AND CLOSED STATES
 		&__toggle, 
