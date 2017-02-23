@@ -4564,7 +4564,8 @@ THE SOFTWARE.
 .CodeMirror-settings {
   color: #444;
   height: 0;
-  width: 0;
+  width: 100%;
+  z-index: 9;
   text-shadow: none;
 }
 .CodeMirror-settings__toggle {
@@ -4572,8 +4573,9 @@ THE SOFTWARE.
   z-index: 11;
   box-sizing: border-box;
   position: absolute;
-  top: 6px;
-  right: 6px;
+  top: 0;
+  right: 0;
+  margin: 6px;
   display: block;
   cursor: pointer;
 }

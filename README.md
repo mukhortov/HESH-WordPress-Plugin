@@ -1,5 +1,6 @@
 #TODOs
 - enable switch from destraction free mode.
+	- the hidden menu scrolls when the first menu is open
 	- the textarea still misses the heightmatch after toggling back from the visual editor.
 	- redo settings panel
 		- settings should have a min and max height

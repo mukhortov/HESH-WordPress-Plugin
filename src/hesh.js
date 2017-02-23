@@ -23,6 +23,7 @@
 	var scrollPanel;
 	var isActive = false;
 	var settingsPanel = document.getElementById('CodeMirror-settings');
+	var toobar = document.getElementById('ed_toolbar');
 	var isThemeOrPluginEditorPage = document.getElementById('newcontent') != null;
 	var target = document.getElementById('content') || document.getElementById('newcontent');
 	var tabHTML = document.getElementById('content-html');
@@ -47,15 +48,62 @@
 	function fullHeightMatch() {
 		editor.getTextArea().style.height = editor.getWrapperElement().getBoundingClientRect().height + 'px';
 	}
+	var isFixed = false;
+	function fixedSettings() { // debounce this
+		var wasntFixed = !isFixed;
+		isFixed = (toobar && toobar.style.position === 'fixed');
+		// console.log(wasntFixed);
+		// console.log(isFixed);
+		if (isFixed && wasntFixed) {
+			console.dir(settingsPanel);
+			var toobarRect = toobar.getBoundingClientRect();
+			for (var index = 0; index < settingsPanel.children.length; index++) {
+				var element = settingsPanel.children[index];
+				element.style.position = 'fixed';
+				element.style.top = toobarRect.bottom + 'px';
+				element.style.right = (window.innerWidth - toobarRect.right) + 'px';
+				if (!element.id.includes('toggle'))	{
+					element.style.left = toobarRect.left + 'px';
+					element.style.width = 'auto';
+				} else {}
+			}
+			// settingsPanel.style.width = toobar.style.width;
+		} else if (!isFixed && !wasntFixed) {
+			for (var index = 0; index < settingsPanel.children.length; index++) {
+				var element = settingsPanel.children[index];
+				element.style.position = '';
+				element.style.top = '';
+				element.style.left = '';
+				element.style.right = '';
+				element.style.width = '';
+			}
+		}
+		// if (isFixed) {
+			var margin = 6; // better way to get this?
+			var theForm = settingsPanel.querySelector('#CodeMirror-settings__form');
+			var formTop = theForm.getBoundingClientRect().top;
+			console.log(formTop);
+			// console.log(window.innerHeight);
+			var editorBottom = document.getElementById('post-status-info').getBoundingClientRect().top;
+			var editorBottomMaxHeight = editorBottom - formTop;
+			var screenBottomMaxHeight = window.innerHeight - formTop;
+			console.log(editorBottomMaxHeight, screenBottomMaxHeight);
+			theForm.style.maxHeight = Math.min(editorBottomMaxHeight, screenBottomMaxHeight) - margin + 'px';
+		// }
+	}
 	function fullHeightToggled() {
 		if (isFullHeight()) {
 			editor.setOption('viewportMargin', Infinity); 
 			editor.getWrapperElement().style.height = 'auto';
 			editor.on('change', fullHeightMatch);
+			window.addEventListener('scroll', fixedSettings);
+			window.addEventListener('resize', fixedSettings);
 			window.setTimeout(fullHeightMatch, 50); // TODO: find a better way to override
 			matchTextAreaMarginTop();
 		} else {
 			editor.setOption('viewportMargin', options.viewportMargin);
+			window.removeEventListener('scroll', fixedSettings);
+			window.addEventListener('resize', fixedSettings);
 			editor.off('change', fullHeightMatch);
 			editor.getWrapperElement().style.marginTop = '';
 			matchTextAreaHeight();
@@ -170,7 +218,7 @@
 	var fullscreenBox = document.getElementById('wp-content-editor-container');
 	var fullscreenClass = 'heshFullscreen';
 	function attachFullscreen() {
-		document.getElementById('ed_toolbar').insertAdjacentHTML(
+		toobar.insertAdjacentHTML(
 			'afterbegin',
 			'<button type="button" id="cm_content_fullscreen" class="ed_button qt-dfw" title="Full Screen"></button>'
 		);

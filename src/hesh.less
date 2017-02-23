@@ -42,7 +42,8 @@
 		color: #444;
 		// display: block;
 		height: 0;
-		width: 0;
+		width: 100%;
+		z-index: 9;
 		text-shadow: none;
 
 		&__toggle{
@@ -50,8 +51,9 @@
 			z-index: @z-index + 2;
 			box-sizing: border-box;
 			position: absolute;
-			top:    @margin;
-			right:  @margin;
+			top: 0;
+			right: 0;
+			margin: @margin;
 			display: block;
 			cursor: pointer;
 			.media(height, @docked-mobile-height, @docked-desktop-height);
