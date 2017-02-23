@@ -120,20 +120,22 @@
 		if (event.target.id.includes('advanced')) {
 			if (settingsPanel.classList.contains('open-advanced')) {
 				settingsPanel.classList.remove('open-advanced');
-				settingsPanel.classList.add('closed-advanced');
+				settingsPanel.classList.remove('closed');
+				settingsPanel.classList.add('open');
 			} else {
 				settingsPanel.classList.add('open-advanced');
-				settingsPanel.classList.remove('closed-advanced');
+				settingsPanel.classList.add('open');
+				settingsPanel.classList.remove('closed');
 			}
 		} else {
 			if (settingsPanel.classList.contains('open')) {
-				settingsPanel.classList.remove('open');
 				settingsPanel.classList.add('closed');
+				settingsPanel.classList.remove('open');
 				settingsPanel.classList.remove('open-advanced');
-				settingsPanel.classList.add('closed-advanced');
 			} else {
 				settingsPanel.classList.add('open');
 				settingsPanel.classList.remove('closed');
+				settingsPanel.classList.remove('open-advanced');
 			}
 		}
 	}
