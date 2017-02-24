@@ -48,49 +48,62 @@
 	function fullHeightMatch() {
 		editor.getTextArea().style.height = editor.getWrapperElement().getBoundingClientRect().height + 'px';
 	}
-	var isFixed = false;
-	function fixedSettings() { // debounce this
-		var wasntFixed = !isFixed;
-		isFixed = (toobar && toobar.style.position === 'fixed');
-		// console.log(wasntFixed);
-		// console.log(isFixed);
-		if (isFixed && wasntFixed) {
-			console.dir(settingsPanel);
-			var toobarRect = toobar.getBoundingClientRect();
-			for (var index = 0; index < settingsPanel.children.length; index++) {
-				var element = settingsPanel.children[index];
-				element.style.position = 'fixed';
-				element.style.top = toobarRect.bottom + 'px';
-				element.style.right = (window.innerWidth - toobarRect.right) + 'px';
-				if (!element.id.includes('toggle'))	{
-					element.style.left = toobarRect.left + 'px';
-					element.style.width = 'auto';
-				} else {}
-			}
-			// settingsPanel.style.width = toobar.style.width;
-		} else if (!isFixed && !wasntFixed) {
-			for (var index = 0; index < settingsPanel.children.length; index++) {
-				var element = settingsPanel.children[index];
-				element.style.position = '';
-				element.style.top = '';
-				element.style.left = '';
-				element.style.right = '';
-				element.style.width = '';
+
+	function setFixedValues() {
+		var toobarRect = toobar.getBoundingClientRect();
+		for (var index = 0; index < settingsPanel.children.length; index++) {
+			var element = settingsPanel.children[index];
+			element.style.position = 'fixed';
+			element.style.top = toobarRect.bottom + 'px';
+			element.style.right = (window.innerWidth - toobarRect.right) + 'px';
+			if (!element.id.includes('toggle'))	{
+				element.style.left = toobarRect.left + 'px';
+				element.style.width = 'auto';
 			}
 		}
-		// if (isFixed) {
-			var margin = 6; // better way to get this?
-			var theForm = settingsPanel.querySelector('#CodeMirror-settings__form');
-			var formTop = theForm.getBoundingClientRect().top;
-			console.log(formTop);
-			// console.log(window.innerHeight);
-			var editorBottom = document.getElementById('post-status-info').getBoundingClientRect().top;
-			var editorBottomMaxHeight = editorBottom - formTop;
-			var screenBottomMaxHeight = window.innerHeight - formTop;
-			console.log(editorBottomMaxHeight, screenBottomMaxHeight);
-			theForm.style.maxHeight = Math.min(editorBottomMaxHeight, screenBottomMaxHeight) - margin + 'px';
-		// }
 	}
+	function removeFixedValues() {
+		for (var index = 0; index < settingsPanel.children.length; index++) {
+			var element = settingsPanel.children[index];
+			element.style.position = '';
+			element.style.top = '';
+			element.style.left = '';
+			element.style.right = '';
+			element.style.width = '';
+		}
+	}
+	function setFullHeightMaxHeight() {
+		var margin = 20; // arbitrary
+		var theForm = settingsPanel.querySelector('#CodeMirror-settings__form');
+		var formTop = theForm.getBoundingClientRect().top;
+		var editorBottom = document.getElementById('post-status-info').getBoundingClientRect().top;
+		var editorBottomMaxHeight = editorBottom - formTop;
+		var screenBottomMaxHeight = window.innerHeight - formTop;
+		theForm.style.maxHeight = Math.min(editorBottomMaxHeight, screenBottomMaxHeight) - margin + 'px';
+	}
+	function removeFullHeightMaxHeight() {
+		settingsPanel.querySelector('#CodeMirror-settings__form').style.maxWidth = '';
+	}
+
+	var isFixed = false;
+	var setFixedNotScheduled = true;
+	function fixedSettings() {
+		if (setFixedNotScheduled) {
+			window.requestAnimationFrame(function(){
+				console.log('it happened');
+				var wasntFixed = !isFixed;
+				isFixed = (toobar && toobar.style.position === 'fixed');
+				if (isFixed && wasntFixed) setFixedValues();
+				else if (!isFixed && !wasntFixed) removeFixedValues();
+				setFullHeightMaxHeight();
+				setFixedNotScheduled = true;
+			});
+			setFixedNotScheduled = false;
+		}
+	}
+
+
+
 	function fullHeightToggled() {
 		if (isFullHeight()) {
 			editor.setOption('viewportMargin', Infinity); 
@@ -98,12 +111,14 @@
 			editor.on('change', fullHeightMatch);
 			window.addEventListener('scroll', fixedSettings);
 			window.addEventListener('resize', fixedSettings);
-			window.setTimeout(fullHeightMatch, 50); // TODO: find a better way to override
+			setFullHeightMaxHeight();
+			window.setTimeout(fullHeightMatch, 100); // TODO: find a better way to override
 			matchTextAreaMarginTop();
 		} else {
 			editor.setOption('viewportMargin', options.viewportMargin);
 			window.removeEventListener('scroll', fixedSettings);
 			window.addEventListener('resize', fixedSettings);
+			removeFullHeightMaxHeight();
 			editor.off('change', fullHeightMatch);
 			editor.getWrapperElement().style.marginTop = '';
 			matchTextAreaHeight();

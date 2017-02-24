@@ -1,5 +1,8 @@
 #TODOs
 - enable switch from destraction free mode.
+	- refactor fixedSettings
+		- debounce
+		-resize maxheight - if settings is visible?
 	- the hidden menu scrolls when the first menu is open
 	- the textarea still misses the heightmatch after toggling back from the visual editor.
 	- redo settings panel
