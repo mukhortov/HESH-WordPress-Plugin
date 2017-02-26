@@ -40,6 +40,7 @@
 		if (!fullHeightToggle) return false;
 		return fullHeightToggle.checked;
 	}
+
 	function attachFullHeightToggle() {
 		if (!fullHeightToggle) return;
 		fullHeightToggle.addEventListener('change', fullHeightToggled);
@@ -72,9 +73,11 @@
 			element.style.width = '';
 		}
 	}
+
 	function setFullHeightMaxHeight() {
-		var margin = 20; // arbitrary
+		// if (!settingsPanel.classList.contains('open-advanced')) return;
 		var theForm = settingsPanel.querySelector('#CodeMirror-settings__form');
+		var margin = 6; // arbitrary
 		var formTop = theForm.getBoundingClientRect().top;
 		var editorBottom = document.getElementById('post-status-info').getBoundingClientRect().top;
 		var editorBottomMaxHeight = editorBottom - formTop;
@@ -90,7 +93,6 @@
 	function fixedSettings() {
 		if (setFixedNotScheduled) {
 			window.requestAnimationFrame(function(){
-				console.log('it happened');
 				var wasntFixed = !isFixed;
 				isFixed = (toobar && toobar.style.position === 'fixed');
 				if (isFixed && wasntFixed) setFixedValues();
@@ -101,8 +103,6 @@
 			setFixedNotScheduled = false;
 		}
 	}
-
-
 
 	function fullHeightToggled() {
 		if (isFullHeight()) {
