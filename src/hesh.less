@@ -88,6 +88,15 @@
 		}
 
 		&__wrapper{
+			pointer-events: none;
+			visibility: hidden;
+		}
+		&__docked, &__body{
+			pointer-events: initial;
+			visibility: visible;
+		}
+
+		&__wrapper{
 			position: absolute;
 			width: ~'calc(100% -' @margin*2 ~')';
 			max-height: ~'calc(100% -' @margin*2 ~')';

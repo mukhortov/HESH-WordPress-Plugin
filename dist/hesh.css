@@ -4640,6 +4640,15 @@ THE SOFTWARE.
   left: 0;
 }
 .CodeMirror-settings__wrapper {
+  pointer-events: none;
+  visibility: hidden;
+}
+.CodeMirror-settings__docked,
+.CodeMirror-settings__body {
+  pointer-events: initial;
+  visibility: visible;
+}
+.CodeMirror-settings__wrapper {
   position: absolute;
   width: calc(100% - 12px );
   max-height: calc(100% - 12px );
