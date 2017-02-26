@@ -4716,7 +4716,7 @@ td.CodeMirror-settings__heading {
 .CodeMirror-settings__body,
 .CodeMirror-settings__footer,
 .CodeMirror-settings__wrapper {
-  transition: opacity 250ms ease;
+  transition: 250ms ease;
   transition-property: opacity, transform;
   transform-origin: top right;
 }
@@ -4738,8 +4738,10 @@ td.CodeMirror-settings__heading {
 }
 .CodeMirror-settings.closed .CodeMirror-settings__body,
 .CodeMirror-settings.closed .CodeMirror-settings__footer {
+  visibility: hidden;
   opacity: 0;
   transform: translate(0, -20px);
+  transition: opacity 250ms ease, transform 250ms ease, visibility 1ms ease 250ms;
 }
 .CodeMirror-settings.open .CodeMirror-settings__toggle-advanced:before {
   content: 'more...';
@@ -4756,8 +4758,13 @@ td.CodeMirror-settings__heading {
 }
 .CodeMirror-settings.open .CodeMirror-settings__body,
 .CodeMirror-settings.open .CodeMirror-settings__footer {
+  visibility: hidden;
   opacity: 0;
   transform: translate(0, -20px);
+  transition: opacity 250ms ease, transform 250ms ease, visibility 1ms ease 250ms;
+}
+.CodeMirror-settings.open-advanced .CodeMirror-settings__toggle-advanced:before {
+  content: 'less';
 }
 .CodeMirror-settings.open-advanced .CodeMirror-settings__header {
   border-bottom-left-radius: 0;
@@ -4765,8 +4772,10 @@ td.CodeMirror-settings__heading {
 }
 .CodeMirror-settings.open-advanced .CodeMirror-settings__body,
 .CodeMirror-settings.open-advanced .CodeMirror-settings__footer {
+  visibility: visible;
   opacity: 1;
   transform: translate(0, 0);
+  transition: visibility 1ms ease, opacity 250ms ease 1ms, transform 250ms ease 1ms;
 }
 .CodeMirror-settings__button {
   position: relative;

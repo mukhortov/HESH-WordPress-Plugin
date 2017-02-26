@@ -38,6 +38,8 @@
 		@border-radius: 3px;
 		@border-color: #ddd;
 		@background-color: fade(white, 93%);
+		@transition-duration: 250ms;
+		@transition-easing: ease;
 
 		color: #444;
 		// display: block;
@@ -156,24 +158,30 @@
 		&__footer,
 		&__wrapper
 		{
-			transition: opacity 250ms ease;
+			transition: @transition-duration @transition-easing;
 			transition-property: opacity, transform;
 			transform-origin: top right;
 		}
 
-		// &.closed-advanced{
-		// 	.CodeMirror-settings{
-		// 		&__body, &__footer{
-		// 			// pointer-events: none;
-		// 			// opacity: 0;
-		// 			// transform: translate(0,-20px) scaleX(1);
-		// 		}
-		// 		&__header{
-		// 			// border-bottom-left-radius: @border-radius;
-		// 			// border-bottom-right-radius: @border-radius;
-		// 		}
-		// 	}
-		// }
+		@body-and-footer-closed-state:{
+			visibility: hidden;
+			opacity: 0;
+			transform: translate(0,-20px);
+			transition:
+				opacity @transition-duration @transition-easing,
+				transform @transition-duration @transition-easing,
+				visibility 1ms @transition-easing @transition-duration;
+		};
+		@body-and-footer-open-state:{
+			visibility: visible;
+			opacity: 1;
+			transform: translate(0,0);
+			transition:
+				visibility 1ms @transition-easing,
+				opacity @transition-duration @transition-easing 1ms,
+				transform @transition-duration @transition-easing 1ms;
+		};
+		
 
 		&.closed{
 			.CodeMirror-settings{
@@ -195,13 +203,8 @@
 					opacity: 0;
 					transform: scaleX(0);					
 				}
-				// &__header{
-				// 	opacity: 0;
-				// 	transform: scaleX(0);
-				// }
 				&__body, &__footer{
-					opacity: 0;
-					transform: translate(0,-20px);
+					@body-and-footer-closed-state();
 				}
 			}
 		}
@@ -226,21 +229,24 @@
 					transform: scaleX(1);
 				}
 				&__body, &__footer{
-					opacity: 0;
-					transform: translate(0,-20px);
+					@body-and-footer-closed-state();
 				}
 			}
 		}
 
 		&.open-advanced{
 			.CodeMirror-settings{
+				&__toggle-advanced{
+					&:before{
+						content: 'less'
+					}
+				}
 				&__header{
 					border-bottom-left-radius:  0;
 					border-bottom-right-radius: 0;
 				}
 				&__body, &__footer{
-					opacity: 1;
-					transform: translate(0,0);
+					@body-and-footer-open-state();
 				}
 			}
 		}
