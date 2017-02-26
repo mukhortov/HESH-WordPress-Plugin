@@ -85,32 +85,23 @@
 
 		}
 
-		// everything borderbox
-
-		&__advanced{
-			box-sizing: border-box;
-			display: flex;
-			flex-direction: column;
-			flex: 1 1 auto;
-		}
-
 		&__wrapper{
-			box-sizing: border-box;
 			position: absolute;
 			width: ~'calc(100% -' @margin*2 ~')';
 			max-height: ~'calc(100% -' @margin*2 ~')';
 			top: 0;
 			margin: @margin;
+			box-sizing: border-box;
 			z-index: @z-index;
 			display: flex;
 			flex-direction: column;
 		}
 
 		&__docked{
-			box-sizing: border-box;
 			flex: 0 0 auto;
 			z-index: @z-index + 1;
 			background-color: white;  
+			box-sizing: border-box;
 			.media(min-height, @docked-mobile-height, @docked-desktop-height);
 		}
 
@@ -125,8 +116,8 @@
 		}
 
 		&__body{
-			box-sizing: border-box;
 			flex: 1 1 auto;
+			box-sizing: border-box;
 			padding: 1px @padding;
 			overflow-y: auto;
 			// border-radius: @border-radius;
@@ -161,13 +152,28 @@
 		&__toggle, 
 		&__toggle-advanced, 
 		&__header, 
-		&__wrapper,
-		&__advanced
+		&__body, 
+		&__footer,
+		&__wrapper
 		{
 			transition: opacity 250ms ease;
 			transition-property: opacity, transform;
 			transform-origin: top right;
 		}
+
+		// &.closed-advanced{
+		// 	.CodeMirror-settings{
+		// 		&__body, &__footer{
+		// 			// pointer-events: none;
+		// 			// opacity: 0;
+		// 			// transform: translate(0,-20px) scaleX(1);
+		// 		}
+		// 		&__header{
+		// 			// border-bottom-left-radius: @border-radius;
+		// 			// border-bottom-right-radius: @border-radius;
+		// 		}
+		// 	}
+		// }
 
 		&.closed{
 			.CodeMirror-settings{
@@ -189,9 +195,13 @@
 					opacity: 0;
 					transform: scaleX(0);					
 				}
-				&__advanced{
+				// &__header{
+				// 	opacity: 0;
+				// 	transform: scaleX(0);
+				// }
+				&__body, &__footer{
 					opacity: 0;
-					transform: translate(0,-20px) scaleY(0);
+					transform: translate(0,-20px);
 				}
 			}
 		}
@@ -215,9 +225,9 @@
 					opacity: 1;
 					transform: scaleX(1);
 				}
-				&__advanced{
+				&__body, &__footer{
 					opacity: 0;
-					transform: translate(0,-20px) scaleY(0);
+					transform: translate(0,-20px);
 				}
 			}
 		}
@@ -228,9 +238,9 @@
 					border-bottom-left-radius:  0;
 					border-bottom-right-radius: 0;
 				}
-				&__advanced{
+				&__body, &__footer{
 					opacity: 1;
-					transform: translate(0,0) scaleY(1);
+					transform: translate(0,0);
 				}
 			}
 		}

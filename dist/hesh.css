@@ -4639,28 +4639,22 @@ THE SOFTWARE.
   bottom: 0;
   left: 0;
 }
-.CodeMirror-settings__advanced {
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  flex: 1 1 auto;
-}
 .CodeMirror-settings__wrapper {
-  box-sizing: border-box;
   position: absolute;
   width: calc(100% - 12px );
   max-height: calc(100% - 12px );
   top: 0;
   margin: 6px;
+  box-sizing: border-box;
   z-index: 9;
   display: flex;
   flex-direction: column;
 }
 .CodeMirror-settings__docked {
-  box-sizing: border-box;
   flex: 0 0 auto;
   z-index: 10;
   background-color: white;
+  box-sizing: border-box;
 }
 @media screen and (min-width: 782px) {
   .CodeMirror-settings__docked {
@@ -4691,8 +4685,8 @@ THE SOFTWARE.
   }
 }
 .CodeMirror-settings__body {
-  box-sizing: border-box;
   flex: 1 1 auto;
+  box-sizing: border-box;
   padding: 1px 12px;
   overflow-y: auto;
   background-color: rgba(255, 255, 255, 0.93);
@@ -4719,8 +4713,9 @@ td.CodeMirror-settings__heading {
 .CodeMirror-settings__toggle,
 .CodeMirror-settings__toggle-advanced,
 .CodeMirror-settings__header,
-.CodeMirror-settings__wrapper,
-.CodeMirror-settings__advanced {
+.CodeMirror-settings__body,
+.CodeMirror-settings__footer,
+.CodeMirror-settings__wrapper {
   transition: opacity 250ms ease;
   transition-property: opacity, transform;
   transform-origin: top right;
@@ -4741,9 +4736,10 @@ td.CodeMirror-settings__heading {
   opacity: 0;
   transform: scaleX(0);
 }
-.CodeMirror-settings.closed .CodeMirror-settings__advanced {
+.CodeMirror-settings.closed .CodeMirror-settings__body,
+.CodeMirror-settings.closed .CodeMirror-settings__footer {
   opacity: 0;
-  transform: translate(0, -20px) scaleY(0);
+  transform: translate(0, -20px);
 }
 .CodeMirror-settings.open .CodeMirror-settings__toggle-advanced:before {
   content: 'more...';
@@ -4758,17 +4754,19 @@ td.CodeMirror-settings__heading {
   opacity: 1;
   transform: scaleX(1);
 }
-.CodeMirror-settings.open .CodeMirror-settings__advanced {
+.CodeMirror-settings.open .CodeMirror-settings__body,
+.CodeMirror-settings.open .CodeMirror-settings__footer {
   opacity: 0;
-  transform: translate(0, -20px) scaleY(0);
+  transform: translate(0, -20px);
 }
 .CodeMirror-settings.open-advanced .CodeMirror-settings__header {
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
 }
-.CodeMirror-settings.open-advanced .CodeMirror-settings__advanced {
+.CodeMirror-settings.open-advanced .CodeMirror-settings__body,
+.CodeMirror-settings.open-advanced .CodeMirror-settings__footer {
   opacity: 1;
-  transform: translate(0, 0) scaleY(1);
+  transform: translate(0, 0);
 }
 .CodeMirror-settings__button {
   position: relative;
