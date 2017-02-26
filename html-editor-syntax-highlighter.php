@@ -329,106 +329,107 @@ class wp_html_editor_syntax {
 							id="CodeMirror-settings__toggle-advanced"
 							></a>
 					</header>
-					<div class="form CodeMirror-settings__body">
-						<?php wp_nonce_field($this->formProcessName,$this->nonceSecretCode);?>
-						<input name="action" value="hesh_options_form" type="hidden">
-						<table class="form-table"><tbody>
-							<tr><td class="CodeMirror-settings__heading"><h1>
-								Addons
-							</h1></td></tr>
-							<tr>
-								<th scope="row"><label>Coming Soon...</label></th>
-							</tr>
-						</tbody></table>
-						<table class="form-table"><tbody>
-							<tr><td class="CodeMirror-settings__heading"><h1>
-								Addons
-							</h1></td></tr>
-							<tr>
-								<th scope="row"><label>Coming Soon...</label></th>
-							</tr>
-						</tbody></table>
-						<table class="form-table"><tbody>
-							<tr><td class="CodeMirror-settings__heading"><h1>
-								Addons
-							</h1></td></tr>
-							<tr>
-								<th scope="row"><label>Coming Soon...</label></th>
-							</tr>
-						</tbody></table>
-						<table class="form-table"><tbody>
-							<tr><td class="CodeMirror-settings__heading"><h1>
-								Addons
-							</h1></td></tr>
-							<tr>
-								<th scope="row"><label>Coming Soon...</label></th>
-							</tr>
-						</tbody></table>
-						<table class="form-table"><tbody>
-							<tr><td class="CodeMirror-settings__heading"><h1>
-								Addons
-							</h1></td></tr>
-							<tr>
-								<th scope="row"><label>Coming Soon...</label></th>
-							</tr>
-						</tbody></table>
-						<table class="form-table"><tbody>
-							<tr><td class="CodeMirror-settings__heading"><h1>
-								Addons
-							</h1></td></tr>
-							<tr>
-								<th scope="row"><label>Coming Soon...</label></th>
-							</tr>
-						</tbody></table>
-						<table class="form-table"><tbody>
-							<tr><td class="CodeMirror-settings__heading"><h1>
-								Addons
-							</h1></td></tr>
-							<tr>
-								<th scope="row"><label>Coming Soon...</label></th>
-							</tr>
-						</tbody></table>
-						<table class="form-table"><tbody>
-							<tr><td class="CodeMirror-settings__heading"><h1>
-								Addons
-							</h1></td></tr>
-							<tr>
-								<th scope="row"><label>Coming Soon...</label></th>
-							</tr>
-						</tbody></table>
-						<table class="form-table"><tbody>
-							<tr><td class="CodeMirror-settings__heading"><h1>
-								Addons
-							</h1></td></tr>
-							<tr>
-								<th scope="row"><label>Coming Soon...</label></th>
-							</tr>
-						</tbody></table>
-						<table class="form-table"><tbody>
-							<tr><td class="CodeMirror-settings__heading"><h1>
-								Addons
-							</h1></td></tr>
-							<tr>
-								<th scope="row"><label>Coming Soon...</label></th>
-							</tr>
-						</tbody></table>
-						<table class="form-table"><tbody>
-							<tr><td class="CodeMirror-settings__heading"><h1>
-								Addons
-							</h1></td></tr>
-							<tr>
-								<th scope="row"><label>Coming Soon...</label></th>
-							</tr>
-						</tbody></table>
-						<table class="form-table"><tbody>
-							<tr><td class="CodeMirror-settings__heading"><h1>
-								Addons
-							</h1></td></tr>
-							<tr>
-								<th scope="row"><label>Coming Soon...</label></th>
-							</tr>
-						</tbody></table>
-					</div>
+					<div class="CodeMirror-settings__advanced">
+						<div class="form CodeMirror-settings__body">
+							<?php wp_nonce_field($this->formProcessName,$this->nonceSecretCode);?>
+							<input name="action" value="hesh_options_form" type="hidden">
+							<table class="form-table"><tbody>
+								<tr><td class="CodeMirror-settings__heading"><h1>
+									Addons
+								</h1></td></tr>
+								<tr>
+									<th scope="row"><label>Coming Soon...</label></th>
+								</tr>
+							</tbody></table>
+							<table class="form-table"><tbody>
+								<tr><td class="CodeMirror-settings__heading"><h1>
+									Addons
+								</h1></td></tr>
+								<tr>
+									<th scope="row"><label>Coming Soon...</label></th>
+								</tr>
+							</tbody></table>
+							<table class="form-table"><tbody>
+								<tr><td class="CodeMirror-settings__heading"><h1>
+									Addons
+								</h1></td></tr>
+								<tr>
+									<th scope="row"><label>Coming Soon...</label></th>
+								</tr>
+							</tbody></table>
+							<table class="form-table"><tbody>
+								<tr><td class="CodeMirror-settings__heading"><h1>
+									Addons
+								</h1></td></tr>
+								<tr>
+									<th scope="row"><label>Coming Soon...</label></th>
+								</tr>
+							</tbody></table>
+							<table class="form-table"><tbody>
+								<tr><td class="CodeMirror-settings__heading"><h1>
+									Addons
+								</h1></td></tr>
+								<tr>
+									<th scope="row"><label>Coming Soon...</label></th>
+								</tr>
+							</tbody></table>
+							<table class="form-table"><tbody>
+								<tr><td class="CodeMirror-settings__heading"><h1>
+									Addons
+								</h1></td></tr>
+								<tr>
+									<th scope="row"><label>Coming Soon...</label></th>
+								</tr>
+							</tbody></table>
+							<table class="form-table"><tbody>
+								<tr><td class="CodeMirror-settings__heading"><h1>
+									Addons
+								</h1></td></tr>
+								<tr>
+									<th scope="row"><label>Coming Soon...</label></th>
+								</tr>
+							</tbody></table>
+							<table class="form-table"><tbody>
+								<tr><td class="CodeMirror-settings__heading"><h1>
+									Addons
+								</h1></td></tr>
+								<tr>
+									<th scope="row"><label>Coming Soon...</label></th>
+								</tr>
+							</tbody></table>
+							<table class="form-table"><tbody>
+								<tr><td class="CodeMirror-settings__heading"><h1>
+									Addons
+								</h1></td></tr>
+								<tr>
+									<th scope="row"><label>Coming Soon...</label></th>
+								</tr>
+							</tbody></table>
+							<table class="form-table"><tbody>
+								<tr><td class="CodeMirror-settings__heading"><h1>
+									Addons
+								</h1></td></tr>
+								<tr>
+									<th scope="row"><label>Coming Soon...</label></th>
+								</tr>
+							</tbody></table>
+							<table class="form-table"><tbody>
+								<tr><td class="CodeMirror-settings__heading"><h1>
+									Addons
+								</h1></td></tr>
+								<tr>
+									<th scope="row"><label>Coming Soon...</label></th>
+								</tr>
+							</tbody></table>
+							<table class="form-table"><tbody>
+								<tr><td class="CodeMirror-settings__heading"><h1>
+									Addons
+								</h1></td></tr>
+								<tr>
+									<th scope="row"><label>Coming Soon...</label></th>
+								</tr>
+							</tbody></table>
+						</div>
 					<footer class="CodeMirror-settings__footer CodeMirror-settings__docked">
 						<p class="CodeMirror-settings__foot-content CodeMirror-settings__feedback">
 							<small>Leave a 
@@ -447,6 +448,7 @@ class wp_html_editor_syntax {
 						</p>
 					</footer>
 				</form>
+				</div>
 				<div class="CodeMirror-settings__toggle" id="CodeMirror-settings__toggle"></div>
 			</div>
 		<?php 
