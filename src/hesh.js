@@ -75,7 +75,7 @@
 	}
 
 	function setFullHeightMaxHeight() {
-		console.log('setmaxheight');
+		// console.log('setmaxheight');
 		// if (!settingsPanel.classList.contains('open-advanced')) return;
 		var theForm = settingsPanel.querySelector('#CodeMirror-settings__form');
 		var margin = 6; // arbitrary
@@ -86,7 +86,7 @@
 		theForm.style.maxHeight = Math.min(editorBottomMaxHeight, screenBottomMaxHeight) - margin + 'px';
 	}
 	function removeFullHeightMaxHeight() {
-		console.log('removemaxheight');
+		// console.log('removemaxheight');
 		settingsPanel.querySelector('#CodeMirror-settings__form').style.maxHeight = '';
 	}
 
@@ -107,7 +107,7 @@
 	}
 
 	function fullHeightToggled() {
-		console.log('fullHeightToggled');
+		// console.log('fullHeightToggled');
 		if (isFullHeight()) {
 			editor.setOption('viewportMargin', Infinity); 
 			editor.on('change', fullHeightMatch);
@@ -338,6 +338,12 @@
 			// console.log(response); // for debug
 		});
 	}
+
+	function isSafari() {
+		// TODO: test for focus change here.
+		return true;
+	}
+	var thisIsSafari = isSafari();
 	
 	var checkEditorInterval;
 	function startEditor() {
@@ -364,8 +370,10 @@
 		scrollPanel = editor.getWrapperElement().querySelector('.CodeMirror-code');
 
 		editor.on('cursorActivity', function (instance) {
+			// console.log('cursorActivity');
 			// matain cursor & selection pairity between codemirror and the textarea
 			var cursorPosition = instance.doc.getCursor();
+			var scrollPosition = editor.getScrollInfo();
 			var position = 0;
 			var i = 0;
 			instance.doc.eachLine(function(line){
@@ -374,7 +382,12 @@
 				i++;
 			});
 			position += cursorPosition.ch;
+			// console.dir(instance.getTextArea());
+			// instance.getTextArea().disabled = true;
 			instance.getTextArea().selectionStart = instance.getTextArea().selectionEnd = position;
+			if (thisIsSafari) editor.focus(); // for safari ?
+			if (thisIsSafari) editor.scrollTo(scrollPosition.left, scrollPosition.top); // for safari ?
+			// editor.setCursor(cursorPosition.line, cursorPosition.ch);  // for safari ?
 
 			// Saving cursor state
 			document.cookie = 'hesh_plugin_cursor_position=' + postID + ',' + cursorPosition.line + ',' + cursorPosition.ch;
@@ -388,6 +401,7 @@
 
 		// Save save all changes to the textarea.value
 		editor.on('change', function (instance) {
+			// console.log('change');
 			instance.save();
 		});
 
@@ -398,7 +412,9 @@
 			if (editorLength !== textAreaLength) { // if there were changes...
 
 				// save the cursor state
-				var cursorPosition = editor.doc.getCursor()
+				var cursorPosition = editor.doc.getCursor();
+				var scrollPosition = editor.getScrollInfo();
+				// console.log(scrollPosition);
 
 				// update codemirror with the new textarea.value
 				editor.doc.setValue(editor.getTextArea().value);
@@ -417,7 +433,8 @@
 					line: line,
 					ch: ch
 				});
-				editor.focus(); // for safari
+				if (thisIsSafari) editor.scrollTo(scrollPosition.left, scrollPosition.top); // for safari ?
+				// editor.focus(); // for safari ?
 
 			}
 		}, 50); // run it 20times/second

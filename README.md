@@ -1,15 +1,20 @@
 # TODOs
-- add less post processors
 - test
-	- initializing wihout any settings/fresh user
 	- browsers
 		- safari
-		- FireFox (Mac)
+			- doubleclick to highlight a word deletes it - something to do with focus between textarea and codemirror
+			- safari has lots of issues with the textarea pairity thing
+			- return doesn't work
+			- delete twice deletes everything
+		- FireFox (Mac) - seems ok
 		- FireFox (Win10)
-		- chrome (Win10)
+		- Chrome (Mac) - seems ok
+		- Chrome (Win10)
 		- Edge
 		- IE 11
 - create logo
+- add less post processors
+- reorganize js
 - update documentation
 	- all meta to 2.0
 	- note browser support - no IE 10 and under - get a better browser
