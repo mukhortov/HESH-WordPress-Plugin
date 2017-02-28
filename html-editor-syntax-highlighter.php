@@ -81,7 +81,8 @@ class wp_html_editor_syntax {
 		);
 		// place all the userPrefrences into the heshOptions object
 		foreach ($this->userPrefrences as $id => $value) {
-			$heshOptions[$id] = isset($value['current']) ? $value['current'] : $value['default'];
+			$heshOptions[$id] = $value['current'] ? $value['current'] : $value['default'];
+			// error_log( $id . ': ' . $heshOptions[$id] . ' type: ' . gettype($heshOptions[$id]) ); // for debug
 		}
 		wp_localize_script(
 			'heshjs',        // for hesh.js
@@ -95,7 +96,7 @@ class wp_html_editor_syntax {
 	private $nonceSecretCode = 'secret-code';
 	private $prefix = 'hesh_';
 	private $userPrefrences; // added to the primary bar
-	private $addOns; // added to the addons menu
+	private $addOns; // added to the advanced menu
 	public function hesh_set_options() {
 		$this->userPrefrences = array(
 			'theme' => array(
@@ -175,6 +176,7 @@ class wp_html_editor_syntax {
 				if ($setting === 'true') $setting = true;
 				if ($setting === 'false') $setting = false;
 				if (is_numeric($setting)) $setting = floatval($setting);
+				// error_log( $id . ': ' . $setting . ' type: ' . gettype($setting) ); // for debug
 				update_user_meta( get_current_user_id(), $this->prefix.$id, $setting);
 			}
 		}
@@ -207,7 +209,10 @@ class wp_html_editor_syntax {
 					type="checkbox"
 					value="true"
 					class="CodeMirror-settings__option"
-					<?php if ((isset($current) && $current) || (!isset($current) && $default)) echo "checked"; ?>
+					<?php if (
+						(gettype($current) == 'boolean' && $current) || 
+						(gettype($current) != 'boolean' && $default)
+					) echo 'checked'; ?>
 					/>
 			</label>
 		<?php else: ?>
@@ -229,7 +234,10 @@ class wp_html_editor_syntax {
 								value="true"
 								class="CodeMirror-settings__option"
 								<?php if (isset($description)) echo "aria-describedby=\"$id-description\"" ?>
-								<?php if ((isset($current) && $current) || (!isset($current) && $default)) echo "checked"; ?>
+								<?php if (
+									(gettype($current) == 'boolean' && $current) || 
+									(gettype($current) != 'boolean' && $default)
+								) echo 'checked'; ?>
 								/>
 							<?php echo $text; ?>
 						</label>
@@ -264,8 +272,10 @@ class wp_html_editor_syntax {
 						<option 
 							value="<?php echo $option; ?>"
 							<?php 
-								if (isset($current) && $current == $option) echo "selected";
-								elseif (!isset($current) && $default == $option) echo "selected"; //TODO: test this
+								if (
+									($current == $option) ||
+									(!$current && $default == $option)
+								) echo 'selected';
 							?>
 							>
 							<?php echo ucfirst($option); ?>
@@ -289,8 +299,10 @@ class wp_html_editor_syntax {
 							<option 
 								value="<?php echo $option; ?>"
 								<?php 
-									if (isset($current) && $current == $option) echo "selected";
-									elseif (!isset($current) && $default == $option) echo "selected"; //TODO: test this
+									if (
+										($current == $option) ||
+										(!$current && $default == $option)
+									) echo 'selected';
 								?>
 								>
 								<?php echo ucfirst($option); ?>
@@ -340,100 +352,14 @@ class wp_html_editor_syntax {
 								<th scope="row"><label>Coming Soon...</label></th>
 							</tr>
 						</tbody></table>
-						<table class="form-table"><tbody>
-							<tr><td class="CodeMirror-settings__heading"><h1>
-								Addons
-							</h1></td></tr>
-							<tr>
-								<th scope="row"><label>Coming Soon...</label></th>
-							</tr>
-						</tbody></table>
-						<table class="form-table"><tbody>
-							<tr><td class="CodeMirror-settings__heading"><h1>
-								Addons
-							</h1></td></tr>
-							<tr>
-								<th scope="row"><label>Coming Soon...</label></th>
-							</tr>
-						</tbody></table>
-						<table class="form-table"><tbody>
-							<tr><td class="CodeMirror-settings__heading"><h1>
-								Addons
-							</h1></td></tr>
-							<tr>
-								<th scope="row"><label>Coming Soon...</label></th>
-							</tr>
-						</tbody></table>
-						<table class="form-table"><tbody>
-							<tr><td class="CodeMirror-settings__heading"><h1>
-								Addons
-							</h1></td></tr>
-							<tr>
-								<th scope="row"><label>Coming Soon...</label></th>
-							</tr>
-						</tbody></table>
-						<table class="form-table"><tbody>
-							<tr><td class="CodeMirror-settings__heading"><h1>
-								Addons
-							</h1></td></tr>
-							<tr>
-								<th scope="row"><label>Coming Soon...</label></th>
-							</tr>
-						</tbody></table>
-						<table class="form-table"><tbody>
-							<tr><td class="CodeMirror-settings__heading"><h1>
-								Addons
-							</h1></td></tr>
-							<tr>
-								<th scope="row"><label>Coming Soon...</label></th>
-							</tr>
-						</tbody></table>
-						<table class="form-table"><tbody>
-							<tr><td class="CodeMirror-settings__heading"><h1>
-								Addons
-							</h1></td></tr>
-							<tr>
-								<th scope="row"><label>Coming Soon...</label></th>
-							</tr>
-						</tbody></table>
-						<table class="form-table"><tbody>
-							<tr><td class="CodeMirror-settings__heading"><h1>
-								Addons
-							</h1></td></tr>
-							<tr>
-								<th scope="row"><label>Coming Soon...</label></th>
-							</tr>
-						</tbody></table>
-						<table class="form-table"><tbody>
-							<tr><td class="CodeMirror-settings__heading"><h1>
-								Addons
-							</h1></td></tr>
-							<tr>
-								<th scope="row"><label>Coming Soon...</label></th>
-							</tr>
-						</tbody></table>
-						<table class="form-table"><tbody>
-							<tr><td class="CodeMirror-settings__heading"><h1>
-								Addons
-							</h1></td></tr>
-							<tr>
-								<th scope="row"><label>Coming Soon...</label></th>
-							</tr>
-						</tbody></table>
-						<table class="form-table"><tbody>
-							<tr><td class="CodeMirror-settings__heading"><h1>
-								Addons
-							</h1></td></tr>
-							<tr>
-								<th scope="row"><label>Coming Soon...</label></th>
-							</tr>
-						</tbody></table>
 					</div>
 					<footer class="CodeMirror-settings__footer CodeMirror-settings__docked">
 						<p class="CodeMirror-settings__foot-content CodeMirror-settings__feedback">
 							<small>Leave a 
-								<a href="https://wordpress.org/support/plugin/html-editor-syntax-highlighter/reviews/#new-post" target="_blank">review</a>. 
-								Submit a 
+								<a href="https://wordpress.org/support/plugin/html-editor-syntax-highlighter/reviews/#new-post" target="_blank">review</a>,
+								fork this on
+								<a href="https://github.com/mukhortov/HESH-WordPress-Plugin/issues/new" target="_blank">Github</a>, 
+								or submit a 
 								<a href="https://github.com/mukhortov/HESH-WordPress-Plugin/issues/new" target="_blank">bug report or enhancement request</a>. 
 							</small>
 						</p>

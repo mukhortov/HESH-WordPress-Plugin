@@ -1,6 +1,6 @@
 # TODOs
+- add less post processors
 - test
-	- if there is no visual editor
 	- initializing wihout any settings/fresh user
 	- browsers
 		- safari
