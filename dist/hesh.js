@@ -75,6 +75,7 @@
 	}
 
 	function setFullHeightMaxHeight() {
+		console.log('setmaxheight');
 		// if (!settingsPanel.classList.contains('open-advanced')) return;
 		var theForm = settingsPanel.querySelector('#CodeMirror-settings__form');
 		var margin = 6; // arbitrary
@@ -85,7 +86,8 @@
 		theForm.style.maxHeight = Math.min(editorBottomMaxHeight, screenBottomMaxHeight) - margin + 'px';
 	}
 	function removeFullHeightMaxHeight() {
-		settingsPanel.querySelector('#CodeMirror-settings__form').style.maxWidth = '';
+		console.log('removemaxheight');
+		settingsPanel.querySelector('#CodeMirror-settings__form').style.maxHeight = '';
 	}
 
 	var isFixed = false;
@@ -105,23 +107,29 @@
 	}
 
 	function fullHeightToggled() {
+		console.log('fullHeightToggled');
 		if (isFullHeight()) {
 			editor.setOption('viewportMargin', Infinity); 
-			editor.getWrapperElement().style.height = 'auto';
 			editor.on('change', fullHeightMatch);
 			window.addEventListener('scroll', fixedSettings);
 			window.addEventListener('resize', fixedSettings);
-			setFullHeightMaxHeight();
-			window.setTimeout(fullHeightMatch, 100); // TODO: find a better way to override
-			matchTextAreaMarginTop();
+			window.setTimeout(function(){
+				editor.getWrapperElement().style.height = 'auto';
+				fullHeightMatch();
+				setFullHeightMaxHeight();
+				matchTextAreaMarginTop();
+			}, 100); // TODO: find a better way to override
 		} else {
 			editor.setOption('viewportMargin', options.viewportMargin);
+			editor.off('change', fullHeightMatch);
 			window.removeEventListener('scroll', fixedSettings);
 			window.addEventListener('resize', fixedSettings);
-			removeFullHeightMaxHeight();
-			editor.off('change', fullHeightMatch);
-			editor.getWrapperElement().style.marginTop = '';
-			matchTextAreaHeight();
+			window.setTimeout(function(){
+				editor.getWrapperElement().style.marginTop = '';
+				removeFullHeightMaxHeight();
+				removeFixedValues();
+				matchTextAreaHeight();
+			}, 100);
 		}
 		editor.getTextArea().style.display = 'none'; // just to make sure
 	}
@@ -290,8 +298,7 @@
 			document.removeEventListener('mousemove', matchTextAreaHeight);
 			editor.refresh();
 		});
-		var timeout; // debounce the resize listner
-		window.addEventListener('resize', function () {
+		window.addEventListener('resize', function () { // debounce the resize listner
 			if (isFullHeight()) matchTextAreaMarginTop();
 			// editor.refresh();
 		});
@@ -423,10 +430,10 @@
 		} else {
 			attachResizePostOrPage();
 			attachFullHeightToggle();
+			attachFullscreen();
 		}
 		attachSettings();
 		setFontSizeAndLineHeight();
-		if (!isThemeOrPluginEditorPage) attachFullscreen();
 		isActive = true;
 	}
 

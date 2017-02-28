@@ -1,14 +1,4 @@
-#TODOs
-- enable switch from destraction free mode.
-	- refactor fixedSettings
-		- resize maxheight - if settings is visible?
-	- the hidden menu scrolls when the first menu is open
-	- the textarea still misses the heightmatch after toggling back from the visual editor.
-	- redo settings panel
-		- settings should have a min and max height
-		- not absolute positioned?
-		- grows and scrolls with maxheight of parent
-	- remove event handlers appropriately
+# TODOs
 - test
 	- if there is no visual editor
 	- initializing wihout any settings/fresh user
@@ -22,7 +12,7 @@
 - push to dev then to master
 
 
-##TODO later:
+## TODO later:
 - support `<!--nextpage-->` in shortcode parser
 - add fullscreen to plugin/theme editor
 - success/progress/failure ui for saving options
@@ -57,7 +47,7 @@
 - read [bugs](https://wordpress.org/support/plugin/html-editor-syntax-highlighter) and add more TODOs
 
 
-##links
+## links
 - process user settings
 	- [working with user metadata](https://developer.wordpress.org/plugins/users/working-with-user-metadata/)
 	- [update_user_meta()](https://codex.wordpress.org/Function_Reference/update_user_meta)
@@ -68,12 +58,12 @@
 
 
 
-#HTML Editor Syntax Highlighter
+# HTML Editor Syntax Highlighter
 
 WordPress plugin that adds syntax highlighting in the WordPress Post & Page HTML/text editor using Codemirror.js
 
 
-##Features
+## Features
 
 * Syntax highlighting in the Post/Page HTML editor
 * _NEW:_ Syntax highlighting for WordPress shortcodes
@@ -91,20 +81,20 @@ Please report any issues or suggestions.
 - settings icon by Oksana Latysheva from [the noun project](https://thenounproject.com/)
 
 
-##Changelog
+## Changelog
 
-###1.7.2
+### 1.7.2
 * fixed bug: pre v5.4 php was causing an error - `func_that_returns_array()['index']` syntax is [not allowed](http://php.net/manual/en/language.types.array.php#example-105)
 * fixed bug: CodeMirror not initializing properly when new user tries to edit post for the first time
 * fixed bug: CodeMirror no longer trying to load on "All Posts" and "All Pages"
 * fixed bug: Font and theme were reset to default when switching to the visual editor and back
 
-###1.7.1
+### 1.7.1
 * fixed bug: return key would create two new lines and ignore indent
 * fixed bug: wp native "Add Media" button was not working
 * added version string to .css and .js resources for cache-busting purposes
 
-###1.7.0
+### 1.7.0
 * Ctrl-S / Cmd-S saving will now select "Save Draft" if the post has not been published yet
 * Switched to an [npm](https://www.npmjs.com/) and [grunt.js](http://gruntjs.com/) based build so new versions of CodeMirror can be applied easier
 * Updated CodeMirror to its latest version
@@ -123,105 +113,106 @@ Please report any issues or suggestions.
 * Tested with WordPress 4.5.2
 * Tested in all modern desktop browsers on OSX and Windows 10
 
-###1.6.9
+### 1.6.9
 * Fixed issues with switching editor modes in WP 4.3
 
-###1.6.7
+### 1.6.7
 * Added paragraph tag button, it's visible only when the visual editor is disabled
 * Added minimum editor window height for the full-height mode
 
-###1.6.6
+### 1.6.6
 * Added minimum editor window height for the full-height mode
 
-###1.6.5
+### 1.6.5
 * Fixes for full-height mode
 * Fixed the issue with a hidden first line on smaller screens
 
-###1.6.4
+### 1.6.4
 * Fixed the issue with a hidden first line on smaller screens
 
 ###1.6.3
 * Fixed editor window height and resize handler
 * "headers already sent" issue
 
-###1.6.2
+### 1.6.2
 * Compatibility with WP 4.0
 * Fixed fullscreen mode
 
-###1.6.0
+### 1.6.0
 * You can change font size in the editor
 * Fixed issue with restoring cursor position
 * Updated CodeMirror library
 * Some minor improvements
 
-###1.5.0
+### 1.5.0
 * Updated CodeMirror library
 * Some minor improvements
 
-###1.4.8
+### 1.4.8
 * Add Link button now works with page selector window
 * Some minor improvements
 
-###1.4.7
+### 1.4.7
 * You can now select Light or Dark editor color theme
 
-###1.4.6
+### 1.4.6
 * Fixed issue when "Add Media" button stopped working
 * Fixed editor resize bug in Visual mode.
 
-###1.4.5
+### 1.4.5
 * Bug fixing
 
-###1.4.4
+### 1.4.4
 * Add Media button now works correctly in Text mode
 * Fixed jumping cursor issue when ‘:’, '{', '}' keys are pressed
 
-###1.4.3
+### 1.4.3
 * Fixed jumping cursor issue when ‘/’ key is pressed.
 
-###1.4.2
+### 1.4.2
 * Fixed a focus bug
 
-###1.4.1
+### 1.4.1
 * Toggle fullscreen mode with F11/Esc hotkeys
 * Publish Post/Page hotkeys Ctrl + S / Cmd + S
 * Fixed some bugs for IE 8
 * Added development files to the zip bundle
 
-###1.4.0
+### 1.4.0
 * New fullscreen mode
 * Remembers tab state
 * Editor resize handler
 * Code refactoring and minification for better loading performance
 
-###1.3.2
+### 1.3.2
 * Updated CodeMirror library
 * Increased loading performance
 * Match brackets
 
-###1.3.0
+### 1.3.0
 * CodeMirror library updated to version 3.02
 * Added quick-tags toolbar buttons
 * Preserve the scroll position after update or page reload
 
-###1.2.1
+### 1.2.1
 * vertical resize for the editing box (works on FireFox, Chrome, Safari).
 * not working buttons/tags was hidden
 
-###1.2
+### 1.2
 Bug fix:
 * plugin does not work in new post/page.
 
-###1.1
+### 1.1
 Bug fix (thanks to collinprice):
 * when user has the visual editor disabled this plugin does not show up.
 
-###1.0
+### 1.0
 Initial release.
 
 
-##Sample Text for testing
-`
+## Sample Text for testing
+
+```
 <div>
 	[shortcode attribute="value" standAloneAttribute bool=true int=42 ]
 		[oneliner noquotes=stringvaluewithnospaces]
@@ -271,4 +262,4 @@ ERRORS!
 	document.getElementById('identifier').style.width = 200px;
 	var string = '</script' + '>'; // writing this straght out will break the mix
 </script>
-`
+```
