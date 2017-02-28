@@ -3,13 +3,19 @@
 	- if there is no visual editor
 	- initializing wihout any settings/fresh user
 	- browsers
+		- safari
+		- FireFox (Mac)
+		- FireFox (Win10)
+		- chrome (Win10)
 		- Edge
 		- IE 11
 - create logo
 - update documentation
 	- all meta to 2.0
-- create bradford.digital homepage
-- push to dev then to master
+	- note browser support - no IE 10 and under - get a better browser
+- create [bradford.digital](http://www.bradford.digital) homepage
+- push to `dev` then to `master`
+- make `release` branch
 
 
 ## TODO later:
