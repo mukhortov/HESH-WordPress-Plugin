@@ -1,14 +1,10 @@
 # TODOs
 - test
 	- browsers
-		- safari
-			- doubleclick to highlight a word deletes it - something to do with focus between textarea and codemirror
-			- safari has lots of issues with the textarea pairity thing
-			- return doesn't work
-			- delete twice deletes everything
+		- safari - seems ok
 		- FireFox (Mac) - seems ok
-		- FireFox (Win10)
 		- Chrome (Mac) - seems ok
+		- FireFox (Win10)
 		- Chrome (Win10)
 		- Edge
 		- IE 11
@@ -24,6 +20,8 @@
 
 
 ## TODO later:
+- add all these as enhancement requests
+- store scroll position as well as cursor position
 - support `<!--nextpage-->` in shortcode parser
 - add fullscreen to plugin/theme editor
 - success/progress/failure ui for saving options

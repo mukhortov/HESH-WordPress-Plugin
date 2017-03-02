@@ -75,7 +75,6 @@
 	}
 
 	function setFullHeightMaxHeight() {
-		// console.log('setmaxheight');
 		// if (!settingsPanel.classList.contains('open-advanced')) return;
 		var theForm = settingsPanel.querySelector('#CodeMirror-settings__form');
 		var margin = 6; // arbitrary
@@ -86,7 +85,6 @@
 		theForm.style.maxHeight = Math.min(editorBottomMaxHeight, screenBottomMaxHeight) - margin + 'px';
 	}
 	function removeFullHeightMaxHeight() {
-		// console.log('removemaxheight');
 		settingsPanel.querySelector('#CodeMirror-settings__form').style.maxHeight = '';
 	}
 
@@ -107,7 +105,6 @@
 	}
 
 	function fullHeightToggled() {
-		// console.log('fullHeightToggled');
 		if (isFullHeight()) {
 			editor.setOption('viewportMargin', Infinity); 
 			editor.on('change', fullHeightMatch);
@@ -370,7 +367,6 @@
 		scrollPanel = editor.getWrapperElement().querySelector('.CodeMirror-code');
 
 		editor.on('cursorActivity', function (instance) {
-			// console.log('cursorActivity');
 			// matain cursor & selection pairity between codemirror and the textarea
 			var cursorPosition = instance.doc.getCursor();
 			var scrollPosition = editor.getScrollInfo();
@@ -382,26 +378,24 @@
 				i++;
 			});
 			position += cursorPosition.ch;
-			// console.dir(instance.getTextArea());
-			// instance.getTextArea().disabled = true;
 			instance.getTextArea().selectionStart = instance.getTextArea().selectionEnd = position;
 			if (thisIsSafari) editor.focus(); // for safari ?
 			if (thisIsSafari) editor.scrollTo(scrollPosition.left, scrollPosition.top); // for safari ?
-			// editor.setCursor(cursorPosition.line, cursorPosition.ch);  // for safari ?
 
 			// Saving cursor state
 			document.cookie = 'hesh_plugin_cursor_position=' + postID + ',' + cursorPosition.line + ',' + cursorPosition.ch;
+			// TODO: save scroll position too
 		});
 
 		// Restoring cursor state
 		var cursorCookiePosition = (getCookie('hesh_plugin_cursor_position') || '0,0,0').split(',');
 		if (postID === cursorCookiePosition[0]) {
 			editor.setCursor(+cursorCookiePosition[1], +cursorCookiePosition[2]);
+			// TODO: restore scroll position too
 		}
 
 		// Save save all changes to the textarea.value
 		editor.on('change', function (instance) {
-			// console.log('change');
 			instance.save();
 		});
 
@@ -414,7 +408,6 @@
 				// save the cursor state
 				var cursorPosition = editor.doc.getCursor();
 				var scrollPosition = editor.getScrollInfo();
-				// console.log(scrollPosition);
 
 				// update codemirror with the new textarea.value
 				editor.doc.setValue(editor.getTextArea().value);
@@ -433,8 +426,7 @@
 					line: line,
 					ch: ch
 				});
-				if (thisIsSafari) editor.scrollTo(scrollPosition.left, scrollPosition.top); // for safari ?
-				// editor.focus(); // for safari ?
+				if (thisIsSafari) editor.scrollTo(scrollPosition.left, scrollPosition.top);
 
 			}
 		}, 50); // run it 20times/second
