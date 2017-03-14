@@ -1,13 +1,30 @@
 # TODOs
 - test
+	- general bugs
+		- all editor set options don't persist when switching to visual and back
+		- loading in reg then switching to full height doesn't set the maxheight.
+		- settings button is mispositioned in plugin editor
+			```
+			#template .CodeMirror div {
+				margin-right: initial;
+			}
+			```
+		- the fixed settings don't stick when scrolled past the editor
+		- minimum maxheight? 
 	- browsers
 		- safari - seems ok
 		- FireFox (Mac) - seems ok
 		- Chrome (Mac) - seems ok
-		- FireFox (Win10)
+		- FireFox (Win10) - seems ok
 		- Chrome (Win10)
+			- scrollbar screws up fixed positioning of settings
+			- wrong scrollbar is hidden in plugin/theme editor? maybe?
 		- Edge
+			- scrollbar screws up fixed positioning of settings
+			- adding content with buttons doesn't work :(
 		- IE 11
+			- object doesn't support `includes()` method. hesh.js line 188
+			- adding content with buttons doesn't work :(
 - create logo
 - add less post processors
 - reorganize js

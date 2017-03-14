@@ -57,7 +57,7 @@
 			element.style.position = 'fixed';
 			element.style.top = toobarRect.bottom + 'px';
 			element.style.right = (window.innerWidth - toobarRect.right) + 'px';
-			if (!element.id.includes('toggle'))	{
+			if (!element.id.match(/toggle/ig))	{
 				element.style.left = toobarRect.left + 'px';
 				element.style.width = 'auto';
 			}
@@ -185,7 +185,7 @@
 	
 	// toggle classes for settingsPanel state
 	function toggleSettings(event) {
-		if (event.target.id.includes('advanced')) {
+		if (event.target.id.match(/advanced/ig)) {
 			if (settingsPanel.classList.contains('open-advanced')) {
 				settingsPanel.classList.remove('open-advanced');
 				settingsPanel.classList.remove('closed');
