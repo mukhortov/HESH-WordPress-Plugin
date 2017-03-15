@@ -11,6 +11,7 @@
 			```
 		- the fixed settings don't stick when scrolled past the editor
 		- minimum maxheight? 
+		- highlight a selection and have it wrap elements
 	- browsers
 		- safari - seems ok
 		- FireFox (Mac) - seems ok
@@ -20,11 +21,10 @@
 			- scrollbar screws up fixed positioning of settings
 			- wrong scrollbar is hidden in plugin/theme editor? maybe?
 		- Edge
-			- scrollbar screws up fixed positioning of settings
-			- adding content with buttons doesn't work :(
+			- scrollbar screws up fixed positioning of settings - like chrome
 		- IE 11
-			- object doesn't support `includes()` method. hesh.js line 188
-			- adding content with buttons doesn't work :(
+			- scrollbar screws up fixed positioning of settings - like chrome
+
 - create logo
 - add less post processors
 - reorganize js
@@ -62,6 +62,13 @@
 		- link to other auto p disabling plugins
 - rtl support
 - translation support
+- IE & Edge Bug: adding content with the buttons doesn't work :(
+	- ...because setting selection on a textarea doesn't work unless the text area is in focus
+	- possible solution: 
+		- detect mousedown on a button in the bar
+		- give the real textarea focus and the proper selection
+		- when that textarea changes, update the value in codemirror
+		- then switch back to codemirror in the correct cursor position
 - CodeMirror themes inspired by WordPress themes
 	- and an auto theme that will match the CM theme to the WP theme - set by default
 - compatible with other plugin:

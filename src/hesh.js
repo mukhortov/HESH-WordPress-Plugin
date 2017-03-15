@@ -378,7 +378,7 @@
 				i++;
 			});
 			position += cursorPosition.ch;
-			instance.getTextArea().selectionStart = instance.getTextArea().selectionEnd = position;
+			instance.getTextArea().setSelectionRange(position, position);
 			if (thisIsSafari) editor.focus(); // for safari ?
 			if (thisIsSafari) editor.scrollTo(scrollPosition.left, scrollPosition.top); // for safari ?
 
