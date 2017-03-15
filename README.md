@@ -13,24 +13,23 @@
 		- minimum maxheight? 
 		- highlight a selection and have it wrap elements
 	- browsers
-		- safari - seems ok
+		- Safari - seems ok
 		- FireFox (Mac) - seems ok
 		- Chrome (Mac) - seems ok
 		- FireFox (Win10) - seems ok
 		- Chrome (Win10)
+		- Edge
+		- IE 11
+		- Chrome (Win10), IE, & Edge
 			- scrollbar screws up fixed positioning of settings
 			- wrong scrollbar is hidden in plugin/theme editor? maybe?
-		- Edge
-			- scrollbar screws up fixed positioning of settings - like chrome
-		- IE 11
-			- scrollbar screws up fixed positioning of settings - like chrome
-
 - create logo
 - add less post processors
 - reorganize js
 - update documentation
 	- all meta to 2.0
 	- note browser support - no IE 10 and under - get a better browser
+	- note IE and Edge Bug
 - create [bradford.digital](http://www.bradford.digital) homepage
 - push to `dev` then to `master`
 - make `release` branch
