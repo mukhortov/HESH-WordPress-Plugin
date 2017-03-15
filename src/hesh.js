@@ -56,7 +56,7 @@
 			var element = settingsPanel.children[index];
 			element.style.position = 'fixed';
 			element.style.top = toobarRect.bottom + 'px';
-			element.style.right = (window.innerWidth - toobarRect.right) + 'px';
+			element.style.right = (document.documentElement.getBoundingClientRect().width - toobarRect.right) + 'px';
 			if (!element.id.match(/toggle/ig))	{
 				element.style.left = toobarRect.left + 'px';
 				element.style.width = 'auto';
