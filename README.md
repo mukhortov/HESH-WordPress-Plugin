@@ -19,6 +19,7 @@
 		- FireFox (Win10) - seems ok
 		- Chrome (Win10)
 		- Edge
+			- match top margin is broken
 		- IE 11
 		- Chrome (Win10), IE, & Edge
 			- scrollbar screws up fixed positioning of settings
@@ -33,7 +34,7 @@
 - create [bradford.digital](http://www.bradford.digital) homepage
 - push to `dev` then to `master`
 - make `release` branch
-
+ 
 
 ## TODO later:
 - add all these as enhancement requests

@@ -321,6 +321,15 @@
 		div{ margin-right: initial; }
 		p{ width: auto; }
 	}
+	&-vscrollbar{
+		display: none !important; // prevent second scrollbar
+	}
+	&-scroll{
+		margin-right: -30px !important;
+	}
+	&-settings__toggle{
+		margin-right: @margin !important;
+	}
 }
 
 
@@ -373,9 +382,6 @@
 	margin: 1px !important;
 }
 
-.CodeMirror-vscrollbar{
-	display: none !important; // prevent second scrollbar
-}
 
 
 // FULL HEIGHT EDITOR
