@@ -1,14 +1,9 @@
 # TODOs
 - test
 	- general bugs
-		- all editor set options don't persist when switching to visual and back
+		- all editor set options don't persist when switching to visual and back.
+			- save state to that wp object
 		- loading in reg then switching to full height doesn't set the maxheight.
-		- settings button is mispositioned in plugin editor
-			```
-			#template .CodeMirror div {
-				margin-right: initial;
-			}
-			```
 		- the fixed settings don't stick when scrolled past the editor
 		- minimum maxheight? 
 		- highlight a selection and have it wrap elements
@@ -21,9 +16,6 @@
 		- Edge
 			- match top margin is broken
 		- IE 11
-		- Chrome (Win10), IE, & Edge
-			- scrollbar screws up fixed positioning of settings
-			- wrong scrollbar is hidden in plugin/theme editor? maybe?
 - create logo
 - add less post processors
 - reorganize js
