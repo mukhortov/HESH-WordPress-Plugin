@@ -344,6 +344,7 @@ class wp_html_editor_syntax {
 					<div class="form CodeMirror-settings__body">
 						<?php wp_nonce_field($this->formProcessName,$this->nonceSecretCode);?>
 						<input name="action" value="hesh_options_form" type="hidden">
+						<?php $i=0; while ($i > 12): ?>
 						<table class="form-table"><tbody>
 							<tr><td class="CodeMirror-settings__heading"><h1>
 								Addons
@@ -352,102 +353,7 @@ class wp_html_editor_syntax {
 								<th scope="row"><label>Coming Soon...</label></th>
 							</tr>
 						</tbody></table>
-						<table class="form-table"><tbody>
-							<tr><td class="CodeMirror-settings__heading"><h1>
-								Addons
-							</h1></td></tr>
-							<tr>
-								<th scope="row"><label>Coming Soon...</label></th>
-							</tr>
-						</tbody></table>
-						<table class="form-table"><tbody>
-							<tr><td class="CodeMirror-settings__heading"><h1>
-								Addons
-							</h1></td></tr>
-							<tr>
-								<th scope="row"><label>Coming Soon...</label></th>
-							</tr>
-						</tbody></table>
-						<table class="form-table"><tbody>
-							<tr><td class="CodeMirror-settings__heading"><h1>
-								Addons
-							</h1></td></tr>
-							<tr>
-								<th scope="row"><label>Coming Soon...</label></th>
-							</tr>
-						</tbody></table>
-						<table class="form-table"><tbody>
-							<tr><td class="CodeMirror-settings__heading"><h1>
-								Addons
-							</h1></td></tr>
-							<tr>
-								<th scope="row"><label>Coming Soon...</label></th>
-							</tr>
-						</tbody></table>
-						<table class="form-table"><tbody>
-							<tr><td class="CodeMirror-settings__heading"><h1>
-								Addons
-							</h1></td></tr>
-							<tr>
-								<th scope="row"><label>Coming Soon...</label></th>
-							</tr>
-						</tbody></table>
-						<table class="form-table"><tbody>
-							<tr><td class="CodeMirror-settings__heading"><h1>
-								Addons
-							</h1></td></tr>
-							<tr>
-								<th scope="row"><label>Coming Soon...</label></th>
-							</tr>
-						</tbody></table>
-						<table class="form-table"><tbody>
-							<tr><td class="CodeMirror-settings__heading"><h1>
-								Addons
-							</h1></td></tr>
-							<tr>
-								<th scope="row"><label>Coming Soon...</label></th>
-							</tr>
-						</tbody></table>
-						<table class="form-table"><tbody>
-							<tr><td class="CodeMirror-settings__heading"><h1>
-								Addons
-							</h1></td></tr>
-							<tr>
-								<th scope="row"><label>Coming Soon...</label></th>
-							</tr>
-						</tbody></table>
-						<table class="form-table"><tbody>
-							<tr><td class="CodeMirror-settings__heading"><h1>
-								Addons
-							</h1></td></tr>
-							<tr>
-								<th scope="row"><label>Coming Soon...</label></th>
-							</tr>
-						</tbody></table>
-						<table class="form-table"><tbody>
-							<tr><td class="CodeMirror-settings__heading"><h1>
-								Addons
-							</h1></td></tr>
-							<tr>
-								<th scope="row"><label>Coming Soon...</label></th>
-							</tr>
-						</tbody></table>
-						<table class="form-table"><tbody>
-							<tr><td class="CodeMirror-settings__heading"><h1>
-								Addons
-							</h1></td></tr>
-							<tr>
-								<th scope="row"><label>Coming Soon...</label></th>
-							</tr>
-						</tbody></table>
-						<table class="form-table"><tbody>
-							<tr><td class="CodeMirror-settings__heading"><h1>
-								Addons
-							</h1></td></tr>
-							<tr>
-								<th scope="row"><label>Coming Soon...</label></th>
-							</tr>
-						</tbody></table>
+						<?php $i++; endwhile; ?>
 					</div>
 					<footer class="CodeMirror-settings__footer CodeMirror-settings__docked">
 						<p class="CodeMirror-settings__foot-content CodeMirror-settings__feedback">
