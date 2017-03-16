@@ -8,6 +8,7 @@
 		- minimum maxheight? 
 		- highlight a selection and have it wrap elements
 		- resize while fixed is broken
+		- load in text and click text again
 	- browsers
 		- Safari - seems ok
 		- FireFox (Mac) - seems ok

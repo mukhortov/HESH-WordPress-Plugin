@@ -13,33 +13,72 @@
 	document,
 	window,
 	CodeMirror,
-	switchEditors,
+	// switchEditors,
 	$,
 	heshOptions
 ) {
 	'use strict';
 
-	var editor;
+
+	// var isThemeOrPluginPage = document.getElementById('newcontent') != null; //
+	// var isActive = false; //
+	// var isVisualEditorActive = document.getElementsByClassName('tmce-active')[0] != null; //
+	// var isVisualEditorEnabled = document.getElementById('content-tmce') != null; //
+
+
+	// ELEMENTS //
+	var editor; // CodeMirror
 	var scrollPanel;
-	var isActive = false;
 	var settingsPanel = document.getElementById('CodeMirror-settings');
-	var toobar = document.getElementById('ed_toolbar');
-	var isThemeOrPluginEditorPage = document.getElementById('newcontent') != null;
+	var toolbar = document.getElementById('ed_toolbar');
 	var target = document.getElementById('content') || document.getElementById('newcontent');
-	var tabHTML = document.getElementById('content-html');
-	var tabTinyMCE = document.getElementById('content-tmce');
-	var isVisualEditorActive = document.getElementsByClassName('tmce-active')[0] != null;
-	var isVisualEditorEnabled = document.getElementById('content-tmce') != null;
+	var tabText = document.getElementById('content-html');
+	var tabVisual = document.getElementById('content-tmce');
 	var publishButton = document.getElementById('save-post') || document.getElementById('publish');
 	var postID = document.getElementById('post_ID') != null ? document.getElementById('post_ID').value : 0;
+	var fullHeightToggle = document.getElementById('editor-expand-toggle');
+
 	var fontSize = +heshOptions.fontSize;
 	var lineHeight = +heshOptions.lineHeight;
 
-	var fullHeightToggle = document.getElementById('editor-expand-toggle');
-	function isFullHeight() {
-		if (!fullHeightToggle) return false;
-		return fullHeightToggle.checked;
-	}
+	var state = {
+		isVisualEnabled: document.getElementById('content-tmce') != null,
+		isThemeOrPlugin: document.getElementById('newcontent') != null,
+
+		isActive: function() {
+			return document.getElementsByClassName('CodeMirror')[0] != null;
+		},
+
+		isVisualActive: function() {
+			return document.getElementsByClassName('tmce-active')[0] != null;
+		},
+
+		isFullHeight: function() {
+			if (!fullHeightToggle) return false;
+			return fullHeightToggle.checked;
+		},
+
+		settingsPosition: function() { // : 'top' | 'middle' | 'bottom' | 'normal'
+			if (toolbar.style.position === 'absolute') {
+				if (toolbar.style.top === '0px') return 'top';
+				else return 'bottom';
+			} else if (toolbar.style.position === 'fixed') {
+				return 'middle';
+			} else {
+				return 'normal';
+			}
+		}
+
+		// isSettingsClosed: true,
+		// isSettingsOpen: false,
+		// isAdvancedSettingsOpen: false
+	};
+	// console.log(state);
+
+	// function isFullHeight() {
+	// 	if (!fullHeightToggle) return false;
+	// 	return fullHeightToggle.checked;
+	// }
 
 	function attachFullHeightToggle() {
 		if (!fullHeightToggle) return;
@@ -51,14 +90,14 @@
 	}
 
 	function setFixedValues() {
-		var toobarRect = toobar.getBoundingClientRect();
+		var toolbarRect = toolbar.getBoundingClientRect();
 		for (var index = 0; index < settingsPanel.children.length; index++) {
 			var element = settingsPanel.children[index];
 			element.style.position = 'fixed';
-			element.style.top = toobarRect.bottom + 'px';
-			element.style.right = (document.documentElement.getBoundingClientRect().width - toobarRect.right) + 'px';
+			element.style.top = toolbarRect.bottom + 'px';
+			element.style.right = (document.documentElement.getBoundingClientRect().width - toolbarRect.right) + 'px';
 			if (!element.id.match(/toggle/ig))	{
-				element.style.left = toobarRect.left + 'px';
+				element.style.left = toolbarRect.left + 'px';
 				element.style.width = 'auto';
 			}
 		}
@@ -94,7 +133,7 @@
 		if (setFixedNotScheduled) {
 			window.requestAnimationFrame(function(){
 				var wasntFixed = !isFixed;
-				isFixed = (toobar && toobar.style.position === 'fixed');
+				isFixed = (toolbar && toolbar.style.position === 'fixed');
 				if (isFixed && wasntFixed) setFixedValues();
 				else if (!isFixed && !wasntFixed) removeFixedValues();
 				setFullHeightMaxHeight();
@@ -105,7 +144,7 @@
 	}
 
 	function fullHeightToggled() {
-		if (isFullHeight()) {
+		if (state.isFullHeight()) {
 			editor.setOption('viewportMargin', Infinity); 
 			editor.on('change', fullHeightMatch);
 			window.addEventListener('scroll', fixedSettings);
@@ -238,7 +277,7 @@
 	var fullscreenBox = document.getElementById('wp-content-editor-container');
 	var fullscreenClass = 'heshFullscreen';
 	function attachFullscreen() {
-		toobar.insertAdjacentHTML(
+		toolbar.insertAdjacentHTML(
 			'afterbegin',
 			'<button type="button" id="cm_content_fullscreen" class="ed_button qt-dfw" title="Full Screen"></button>'
 		);
@@ -296,10 +335,10 @@
 			editor.refresh();
 		});
 		window.addEventListener('resize', function () { // debounce the resize listner
-			if (isFullHeight()) matchTextAreaMarginTop();
+			if (state.isFullHeight()) matchTextAreaMarginTop();
 			// editor.refresh();
 		});
-		if (!isFullHeight()) matchTextAreaHeight();
+		if (!state.isFullHeight()) matchTextAreaHeight();
 	}
 
 	function getCookie(name) {
@@ -309,20 +348,19 @@
 	}
 
 	function toVisual() {
-		if (isActive) {
-			if (switchEditors.switchto) switchEditors.switchto(this);
+		if (state.isActive()) {
+			// console.log(this);
+			// if (switchEditors.switchto) switchEditors.switchto(this);
 			editor.toTextArea();
 			window.clearInterval(checkEditorInterval);
-			tabHTML.onclick = toHTML;
-			isActive = false;
+			tabText.onclick = toText;
 		}
 	}
-
-	function toHTML() {
-		if (!isActive) {
-			if (switchEditors.switchto) switchEditors.switchto(this);
+	function toText() {
+		if (!state.isActive()) {
+			// if (switchEditors.switchto) switchEditors.switchto(this);
 			window.setTimeout(runEditor, 0);
-			tabTinyMCE.onclick = toVisual;
+			tabVisual.onclick = toVisual;
 		}
 	}
 
@@ -331,7 +369,7 @@
 		var formArray = $('#CodeMirror-settings__form').serializeArray();
 		// TODO: drop jQuery dependency
 		// console.log(formArray); // for debug
-		$.post(heshOptions.ajaxUrl, formArray, function (response) {
+		$.post(heshOptions.ajaxUrl, formArray, function (/*response*/) {
 			// console.log(response); // for debug
 		});
 	}
@@ -342,11 +380,12 @@
 	}
 	var thisIsSafari = isSafari();
 	
+	// TODO: combine runEditor and startEditor
 	var checkEditorInterval;
 	function startEditor() {
 
 		// change the mode if on the theme/plugin editor page
-		if (isThemeOrPluginEditorPage){
+		if (state.isThemeOrPlugin){
 			var fileNameElement = document.querySelector('.fileedit-sub .alignleft');
 			var fileType = fileNameElement.textContent
 				.match(/\.[a-z\d]{2,}/ig)[0] // find the file extention
@@ -431,10 +470,9 @@
 			}
 		}, 50); // run it 20times/second
 	}
-
 	function runEditor() {
 		startEditor();
-		if (isThemeOrPluginEditorPage){ 
+		if (state.isThemeOrPlugin) { 
 			attachResizeThemeOrPlugin();
 		} else {
 			attachResizePostOrPage();
@@ -443,17 +481,17 @@
 		}
 		attachSettings();
 		setFontSizeAndLineHeight();
-		isActive = true;
 	}
 
 	function initialise() {
-		if (isThemeOrPluginEditorPage){
+		if (state.isThemeOrPlugin) {
 			runEditor();
-		} else if (isVisualEditorEnabled && isVisualEditorActive) {
-			tabHTML.onclick = toHTML;
+		} else if (state.isVisualEnabled && state.isVisualActive()) {
+			tabText.addEventListener('click', toText);
 		} else {
 			runEditor();
-			if (isVisualEditorEnabled) tabTinyMCE.onclick = toVisual;
+			if (state.isVisualEnabled) 
+				tabVisual.addEventListener('click', toVisual);
 			else document.body.className += ' visual-editor-is-disabled';
 		}
 	}
@@ -468,7 +506,7 @@
 	document,
 	window,
 	window.CodeMirror,
-	window.switchEditors,
+	// window.switchEditors,
 	window.jQuery,
 	window.heshOptions
 );
