@@ -73,7 +73,10 @@
 		// isSettingsOpen: false,
 		// isAdvancedSettingsOpen: false
 	};
-
+	var thisIsSafari = (function() {
+		// TODO: test for focus change here. indicative of Safari
+		return true;
+	})();
 
 	function attachFullHeightToggle() {
 		if (!fullHeightToggle) return;
@@ -317,9 +320,11 @@
 	function matchTextAreaHeight() {
 		editor.getWrapperElement().style.height = editor.getTextArea().style.height;
 	}
+
 	function matchTextAreaMarginTop() {
 		editor.getWrapperElement().style.marginTop = editor.getTextArea().style.marginTop;
 	}
+
 	// copy the resize of the textarea in codemirror
 	function attachResizePostOrPage() {
 		document.getElementById('content-resize-handle').addEventListener('mousedown', function () {
@@ -342,23 +347,6 @@
 		if (parts.length === 2) return parts.pop().split(';').shift();
 	}
 
-	// function toVisual() {
-	// 	if (state.isActive()) {
-	// 		// console.log(this);
-	// 		// if (switchEditors.switchto) switchEditors.switchto(this);
-	// 		editor.toTextArea();
-	// 		window.clearInterval(checkEditorInterval);
-	// 		// tabText.onclick = toText;
-	// 	}
-	// }
-	// function toText() {
-	// 	if (!state.isActive()) {
-	// 		// if (switchEditors.switchto) switchEditors.switchto(this);
-	// 		window.setTimeout(startEditor, 0);
-	// 		// tabVisual.onclick = toVisual;
-	// 	}
-	// }
-
 	// updates the user settings in the wordpress DB
 	function submitForm() {
 		var formArray = $('#CodeMirror-settings__form').serializeArray();
@@ -369,10 +357,80 @@
 		});
 	}
 
-	var thisIsSafari = (function() {
-		// TODO: test for focus change here. indicative of Safari
-		return true;
-	})();
+	function setFileType() {
+		var fileNameElement = document.querySelector('.fileedit-sub .alignleft');
+		var fileType = fileNameElement.textContent
+			.match(/\.[a-z\d]{2,}/ig)[0] // find the file extention
+			.match(/[a-z]*/ig)[1]; // remove the dot
+		var filetypeToMode = { // map file extensions to their CodeMirror modes
+			php: 'php',
+			css: 'css',
+			xml: 'xml',
+			html: 'htmlmixed',
+			js: 'javascript',
+			json: 'javascript'
+		};
+		options.mode = filetypeToMode[fileType];
+	}
+
+	function syncSelection(instance) {
+		var cursorPosition = instance.doc.getCursor();
+		var scrollPosition = editor.getScrollInfo();
+		var position = 0;
+		var i = 0;
+		instance.doc.eachLine(function(line){
+			if (i > (cursorPosition.line - 1)) return;
+			position += line.text.length + 1; 
+			i++;
+		});
+		position += cursorPosition.ch;
+		instance.getTextArea().setSelectionRange(position, position);
+		if (thisIsSafari) editor.focus(); // for safari ?
+		if (thisIsSafari) editor.scrollTo(scrollPosition.left, scrollPosition.top); // for safari ?
+
+		// Saving cursor state
+		document.cookie = 'hesh_plugin_cursor_position=' + postID + ',' + cursorPosition.line + ',' + cursorPosition.ch;
+		// TODO: save scroll position too
+	}
+
+	function restoreCursorState() {
+		var cursorCookiePosition = (getCookie('hesh_plugin_cursor_position') || '0,0,0').split(',');
+		if (postID === cursorCookiePosition[0]) {
+			editor.setCursor(+cursorCookiePosition[1], +cursorCookiePosition[2]);
+			// TODO: restore scroll position too
+		}
+	}
+
+	function checkForTextAreaEdits() {
+		var editorLength = editor.doc.getValue().length;
+		var textAreaLength = editor.getTextArea().value.length;
+		if (editorLength !== textAreaLength) { // if there were changes...
+
+			// save the cursor state
+			var cursorPosition = editor.doc.getCursor();
+			var scrollPosition = editor.getScrollInfo();
+
+			// update codemirror with the new textarea.value
+			editor.doc.setValue(editor.getTextArea().value);
+			editor.focus();
+
+			// reset the cursors new state - there may be new lines added
+			var line = cursorPosition.line;
+			var maxCh = editor.getLineHandle(line).text.length + 1;
+			var ch = cursorPosition.ch + (textAreaLength - editorLength);
+			while (maxCh < (ch + 1)) {
+				line++;
+				ch -= maxCh;
+				maxCh = editor.getLineHandle(line).text.length + 1;
+			}
+			editor.doc.setCursor({
+				line: line,
+				ch: ch
+			});
+			if (thisIsSafari) editor.scrollTo(scrollPosition.left, scrollPosition.top);
+
+		}
+	}
 	
 	// TODO: combine runEditor and startEditor
 	var checkEditorInterval;
@@ -380,91 +438,24 @@
 		if (state.isActive()) return;
 
 		// change the mode if on the theme/plugin editor page
-		if (state.isThemeOrPlugin){
-			var fileNameElement = document.querySelector('.fileedit-sub .alignleft');
-			var fileType = fileNameElement.textContent
-				.match(/\.[a-z\d]{2,}/ig)[0] // find the file extention
-				.match(/[a-z]*/ig)[1]; // remove the dot
-			var filetypeToMode = { // map file extensions to their CodeMirror modes
-				php: 'php',
-				css: 'css',
-				xml: 'xml',
-				html: 'htmlmixed',
-				js: 'javascript',
-				json: 'javascript'
-			};
-			options.mode = filetypeToMode[fileType];
-		}
+		if (state.isThemeOrPlugin) setFileType();
 
 		// start up codemirror
 		editor = CodeMirror.fromTextArea(target, options);		
 		scrollPanel = editor.getWrapperElement().querySelector('.CodeMirror-code');
 		target.classList.add('CodeMirror-mirrored');
 
-		editor.on('cursorActivity', function (instance) {
-			// matain cursor & selection pairity between codemirror and the textarea
-			var cursorPosition = instance.doc.getCursor();
-			var scrollPosition = editor.getScrollInfo();
-			var position = 0;
-			var i = 0;
-			instance.doc.eachLine(function(line){
-				if (i > (cursorPosition.line - 1)) return;
-				position += line.text.length + 1; 
-				i++;
-			});
-			position += cursorPosition.ch;
-			instance.getTextArea().setSelectionRange(position, position);
-			if (thisIsSafari) editor.focus(); // for safari ?
-			if (thisIsSafari) editor.scrollTo(scrollPosition.left, scrollPosition.top); // for safari ?
+		// matain cursor & selection pairity between codemirror and the textarea
+		editor.on('cursorActivity', syncSelection);
 
-			// Saving cursor state
-			document.cookie = 'hesh_plugin_cursor_position=' + postID + ',' + cursorPosition.line + ',' + cursorPosition.ch;
-			// TODO: save scroll position too
-		});
-
-		// Restoring cursor state
-		var cursorCookiePosition = (getCookie('hesh_plugin_cursor_position') || '0,0,0').split(',');
-		if (postID === cursorCookiePosition[0]) {
-			editor.setCursor(+cursorCookiePosition[1], +cursorCookiePosition[2]);
-			// TODO: restore scroll position too
-		}
+		restoreCursorState();
 
 		// Save save all changes to the textarea.value
-		editor.on('change', function (instance) {
-			instance.save();
-		});
+		editor.on('change', function (instance) { instance.save(); });
 
 		// Check if any edits were made to the textarea.value at 20Hz
-		checkEditorInterval = window.setInterval(function () {
-			var editorLength = editor.doc.getValue().length;
-			var textAreaLength = editor.getTextArea().value.length;
-			if (editorLength !== textAreaLength) { // if there were changes...
+		checkEditorInterval = window.setInterval(checkForTextAreaEdits , 50);
 
-				// save the cursor state
-				var cursorPosition = editor.doc.getCursor();
-				var scrollPosition = editor.getScrollInfo();
-
-				// update codemirror with the new textarea.value
-				editor.doc.setValue(editor.getTextArea().value);
-				editor.focus();
-
-				// reset the cursors new state - there may be new lines added
-				var line = cursorPosition.line;
-				var maxCh = editor.getLineHandle(line).text.length + 1;
-				var ch = cursorPosition.ch + (textAreaLength - editorLength);
-				while (maxCh < (ch + 1)) {
-					line++;
-					ch -= maxCh;
-					maxCh = editor.getLineHandle(line).text.length + 1;
-				}
-				editor.doc.setCursor({
-					line: line,
-					ch: ch
-				});
-				if (thisIsSafari) editor.scrollTo(scrollPosition.left, scrollPosition.top);
-
-			}
-		}, 50); // run it 20times/second
 
 		if (state.isThemeOrPlugin) { 
 			attachResizeThemeOrPlugin();
