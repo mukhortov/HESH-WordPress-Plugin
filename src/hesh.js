@@ -171,14 +171,10 @@
 	var options = {
 		mode: 'wordpresspost',
 		tabMode: 'indent',
-		theme: heshOptions.theme,
-		lineNumbers: !!heshOptions.lineNumbers,
 		matchBrackets: true,
 		indentUnit: 1,
-		tabSize: +heshOptions.tabSize,
 		indentWithTabs: true,
 		enterMode: 'keep',
-		lineWrapping: !!heshOptions.lineWrapping,
 		autofocus: true,
 		styleActiveLine: true,
 		electricChars: false,
@@ -198,6 +194,12 @@
 			}
 		}
 	};
+	function updateOptions() {
+		options.theme = heshOptions.theme;
+		options.lineNumbers = !!heshOptions.lineNumbers;
+		options.tabSize = +heshOptions.tabSize;
+		options.lineWrapping = !!heshOptions.lineWrapping;
+	}
 
 	function attachSettings() {
 		// move the settingsPanel (produced in php) to inside the codemirror instance
@@ -250,6 +252,10 @@
 		var value = +event.target.value;
 		value = isNaN(value) ? event.target.value : value ;
 		if (event.target.checked != null) value = event.target.checked;
+		console.log(event.target.id);
+		console.log(value);
+		console.log(heshOptions);
+		heshOptions[event.target.id] = value;
 		editor.setOption(event.target.id, value);
 	}
 
@@ -437,6 +443,8 @@
 	function startEditor() {
 		if (state.isActive()) return;
 
+		updateOptions();
+
 		// change the mode if on the theme/plugin editor page
 		if (state.isThemeOrPlugin) setFileType();
 
@@ -455,7 +463,6 @@
 
 		// Check if any edits were made to the textarea.value at 20Hz
 		checkEditorInterval = window.setInterval(checkForTextAreaEdits , 50);
-
 
 		if (state.isThemeOrPlugin) { 
 			attachResizeThemeOrPlugin();

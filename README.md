@@ -1,12 +1,10 @@
 # TODOs
 - test
 	- general bugs
-		- all editor set options don't persist when switching to visual and back.
-			- save state to that wp object
-		- loading in reg then switching to full height doesn't set the maxheight.
-		- the fixed settings don't stick when scrolled past the editor
-		- minimum maxheight? 
 		- highlight a selection and have it wrap elements
+		- loading in reg then switching to full height doesn't set the maxheight.
+		- minimum maxheight? 
+		- the fixed settings don't stick when scrolled past the editor
 		- resize while fixed is broken
 	- browsers
 		- Safari - seems ok
