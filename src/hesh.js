@@ -381,33 +381,24 @@
 
 	// cursor & selection pairity between codemirror and the textarea
 	function syncSelection() {
-		// var cursorPosition = editor.doc.getCursor();
 		var selection = editor.doc.listSelections()[0];
-		var scrollPosition = editor.getScrollInfo();
+		// var scrollPosition = editor.getScrollInfo();
 		var head, anchor, i;
 		head = anchor = i = 0;
-		// console.log(selection);
 		editor.doc.eachLine(function(line){
-			if (i > (selection.head.line - 1)) return;
-			head += line.text.length + 1; 
+			if (i <= (selection.head.line - 1)) head += line.text.length + 1; 
+			if (i <= (selection.anchor.line - 1)) anchor += line.text.length + 1; 
 			i++;
 		});
 		head += selection.head.ch;
-		i = 0;
-		editor.doc.eachLine(function(line){
-			if (i > (selection.anchor.line - 1)) return;
-			anchor += line.text.length + 1; 
-			i++;
-		});
 		anchor += selection.anchor.ch;
-		// console.log(head);
-		// console.log(anchor);
-		editor.getTextArea().setSelectionRange(anchor, head, anchor > head ? 'forward' : 'backward');
-		if (thisIsSafari) editor.focus(); // for safari ?
-		if (thisIsSafari) editor.scrollTo(scrollPosition.left, scrollPosition.top); // for safari ?
+		editor.getTextArea().setSelectionRange(Math.min(anchor,head), Math.max(anchor,head));
+
+		// if (thisIsSafari) editor.focus(); // for safari ?
+		// if (thisIsSafari) editor.scrollTo(scrollPosition.left, scrollPosition.top); // for safari ?
 
 		// Saving cursor state
-		document.cookie = 'hesh_plugin_cursor_position=' + postID + ',' + head.line + ',' + head.ch;
+		document.cookie = 'hesh_plugin_cursor_position=' + postID + ',' + anchor.line + ',' + anchor.ch;
 		// TODO: save scroll position and selection state too
 	}
 
@@ -427,7 +418,7 @@
 
 			// save the cursor state
 			var cursorPosition = editor.doc.getCursor();
-			var scrollPosition = editor.getScrollInfo();
+			// var scrollPosition = editor.getScrollInfo();
 
 			// update codemirror with the new textarea.value
 			editor.doc.setValue(editor.getTextArea().value);
@@ -446,9 +437,10 @@
 				line: line,
 				ch: ch
 			});
-			if (thisIsSafari) editor.scrollTo(scrollPosition.left, scrollPosition.top);
+			// if (thisIsSafari) editor.scrollTo(scrollPosition.left, scrollPosition.top);
 
 		}
+		editor.save();
 	}
 	
 	// TODO: combine runEditor and startEditor
@@ -471,10 +463,12 @@
 			window.setTimeout(matchTextArea,0);
 		});
 
-		restoreCursorState();
+		// restoreCursorState(); // TODO: Fix This
 
 		// Save save all changes to the textarea.value
-		editor.on('change', function (instance) { instance.save(); });
+		editor.on('change', function () { 
+			console.log('here');
+			editor.save(); });
 
 		if (state.isThemeOrPlugin) { 
 			attachResizeThemeOrPlugin();

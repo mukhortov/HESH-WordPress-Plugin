@@ -6,6 +6,7 @@
 		- the fixed settings don't stick when scrolled past the editor
 		- resize while fixed is broken
 		- drager is broke
+		- fix restoreCursorState()
 	- browsers
 		- Safari - seems ok
 		- FireFox (Mac) - seems ok
