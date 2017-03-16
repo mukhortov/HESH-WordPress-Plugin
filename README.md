@@ -7,15 +7,15 @@
 		- the fixed settings don't stick when scrolled past the editor
 		- minimum maxheight? 
 		- highlight a selection and have it wrap elements
+		- resize while fixed is broken
 	- browsers
 		- Safari - seems ok
 		- FireFox (Mac) - seems ok
 		- Chrome (Mac) - seems ok
 		- FireFox (Win10) - seems ok
-		- Chrome (Win10)
-		- Edge
-			- match top margin is broken
-		- IE 11
+		- Chrome (Win10) - seems ok
+		- Edge - seems ok other than button bug
+		- IE 11 - seems ok other than button bug
 - create logo
 - add less post processors
 - reorganize js
