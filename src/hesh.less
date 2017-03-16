@@ -311,7 +311,12 @@
 
 
 	&-mirrored{ // the textarea CodeMirror is mirroring
-		display: none !important; // just to make sure
+		display: block !important; // just to make sure
+		position: absolute;
+		left: -9999px;
+		top: -9999px;
+		z-index: -999;
+		opacity: 0;
 	}
 
 	// THEME AND PLUGIN EDITOR PAGES

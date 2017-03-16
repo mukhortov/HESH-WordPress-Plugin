@@ -380,8 +380,9 @@
 	}
 
 	// cursor & selection pairity between codemirror and the textarea
+	var selection;
 	function syncSelection() {
-		var selection = editor.doc.listSelections()[0];
+		selection = editor.doc.listSelections()[0];
 		// var scrollPosition = editor.getScrollInfo();
 		var head, anchor, i;
 		head = anchor = i = 0;
@@ -392,6 +393,7 @@
 		});
 		head += selection.head.ch;
 		anchor += selection.anchor.ch;
+		editor.getTextArea().focus();
 		editor.getTextArea().setSelectionRange(Math.min(anchor,head), Math.max(anchor,head));
 
 		// if (thisIsSafari) editor.focus(); // for safari ?
@@ -417,8 +419,9 @@
 		if (editorLength !== textAreaLength) { // if there were changes...
 
 			// save the cursor state
+			console.dir(editor.getTextArea());
 			var cursorPosition = editor.doc.getCursor();
-			// var scrollPosition = editor.getScrollInfo();
+			var scrollPosition = editor.getScrollInfo();
 
 			// update codemirror with the new textarea.value
 			editor.doc.setValue(editor.getTextArea().value);
@@ -428,7 +431,7 @@
 			var line = cursorPosition.line;
 			var maxCh = editor.getLineHandle(line).text.length + 1;
 			var ch = cursorPosition.ch + (textAreaLength - editorLength);
-			while (maxCh < (ch + 1)) {
+			while (maxCh <= ch) {
 				line++;
 				ch -= maxCh;
 				maxCh = editor.getLineHandle(line).text.length + 1;
@@ -437,7 +440,7 @@
 				line: line,
 				ch: ch
 			});
-			// if (thisIsSafari) editor.scrollTo(scrollPosition.left, scrollPosition.top);
+			editor.scrollTo(scrollPosition.left, scrollPosition.top);
 
 		}
 		editor.save();
