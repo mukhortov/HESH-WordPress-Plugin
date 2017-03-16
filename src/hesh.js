@@ -379,18 +379,18 @@
 		options.mode = filetypeToMode[fileType];
 	}
 
-	function syncSelection(instance) {
-		var cursorPosition = instance.doc.getCursor();
+	function syncSelection() {
+		var cursorPosition = editor.doc.getCursor();
 		var scrollPosition = editor.getScrollInfo();
 		var position = 0;
 		var i = 0;
-		instance.doc.eachLine(function(line){
+		editor.doc.eachLine(function(line){
 			if (i > (cursorPosition.line - 1)) return;
 			position += line.text.length + 1; 
 			i++;
 		});
 		position += cursorPosition.ch;
-		instance.getTextArea().setSelectionRange(position, position);
+		editor.getTextArea().setSelectionRange(position, position);
 		if (thisIsSafari) editor.focus(); // for safari ?
 		if (thisIsSafari) editor.scrollTo(scrollPosition.left, scrollPosition.top); // for safari ?
 
@@ -407,7 +407,7 @@
 		}
 	}
 
-	function checkForTextAreaEdits() {
+	function matchTextArea() {
 		var editorLength = editor.doc.getValue().length;
 		var textAreaLength = editor.getTextArea().value.length;
 		if (editorLength !== textAreaLength) { // if there were changes...
@@ -439,7 +439,7 @@
 	}
 	
 	// TODO: combine runEditor and startEditor
-	var checkEditorInterval;
+	// var checkEditorInterval;
 	function startEditor() {
 		if (state.isActive()) return;
 
@@ -454,7 +454,12 @@
 		target.classList.add('CodeMirror-mirrored');
 
 		// matain cursor & selection pairity between codemirror and the textarea
-		editor.on('cursorActivity', syncSelection);
+		// editor.on('cursorActivity', syncSelection);
+
+		toolbar.addEventListener('mousedown', syncSelection);
+		toolbar.addEventListener('click', function(){
+			window.setTimeout(matchTextArea,0);
+		});
 
 		restoreCursorState();
 
@@ -462,7 +467,7 @@
 		editor.on('change', function (instance) { instance.save(); });
 
 		// Check if any edits were made to the textarea.value at 20Hz
-		checkEditorInterval = window.setInterval(checkForTextAreaEdits , 50);
+		// checkEditorInterval = window.setInterval(checkForTextAreaEdits , 50);
 
 		if (state.isThemeOrPlugin) { 
 			attachResizeThemeOrPlugin();
@@ -478,7 +483,7 @@
 	function stopEditor() {
 		if (!state.isActive()) return;
 		editor.toTextArea();
-		window.clearInterval(checkEditorInterval);
+		// window.clearInterval(checkEditorInterval);
 	}
 
 	function initialise() {
