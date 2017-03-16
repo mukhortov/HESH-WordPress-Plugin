@@ -73,12 +73,7 @@
 		// isSettingsOpen: false,
 		// isAdvancedSettingsOpen: false
 	};
-	// console.log(state);
 
-	// function isFullHeight() {
-	// 	if (!fullHeightToggle) return false;
-	// 	return fullHeightToggle.checked;
-	// }
 
 	function attachFullHeightToggle() {
 		if (!fullHeightToggle) return;
@@ -167,7 +162,7 @@
 				matchTextAreaHeight();
 			}, 100);
 		}
-		editor.getTextArea().style.display = 'none'; // just to make sure
+		// editor.getTextArea().style.display = 'none'; // just to make sure
 	}
 
 	var options = {
@@ -347,22 +342,22 @@
 		if (parts.length === 2) return parts.pop().split(';').shift();
 	}
 
-	function toVisual() {
-		if (state.isActive()) {
-			// console.log(this);
-			// if (switchEditors.switchto) switchEditors.switchto(this);
-			editor.toTextArea();
-			window.clearInterval(checkEditorInterval);
-			tabText.onclick = toText;
-		}
-	}
-	function toText() {
-		if (!state.isActive()) {
-			// if (switchEditors.switchto) switchEditors.switchto(this);
-			window.setTimeout(runEditor, 0);
-			tabVisual.onclick = toVisual;
-		}
-	}
+	// function toVisual() {
+	// 	if (state.isActive()) {
+	// 		// console.log(this);
+	// 		// if (switchEditors.switchto) switchEditors.switchto(this);
+	// 		editor.toTextArea();
+	// 		window.clearInterval(checkEditorInterval);
+	// 		// tabText.onclick = toText;
+	// 	}
+	// }
+	// function toText() {
+	// 	if (!state.isActive()) {
+	// 		// if (switchEditors.switchto) switchEditors.switchto(this);
+	// 		window.setTimeout(startEditor, 0);
+	// 		// tabVisual.onclick = toVisual;
+	// 	}
+	// }
 
 	// updates the user settings in the wordpress DB
 	function submitForm() {
@@ -374,15 +369,15 @@
 		});
 	}
 
-	function isSafari() {
-		// TODO: test for focus change here.
+	var thisIsSafari = (function() {
+		// TODO: test for focus change here. indicative of Safari
 		return true;
-	}
-	var thisIsSafari = isSafari();
+	})();
 	
 	// TODO: combine runEditor and startEditor
 	var checkEditorInterval;
 	function startEditor() {
+		if (state.isActive()) return;
 
 		// change the mode if on the theme/plugin editor page
 		if (state.isThemeOrPlugin){
@@ -402,8 +397,9 @@
 		}
 
 		// start up codemirror
-		editor = CodeMirror.fromTextArea(target, options);
+		editor = CodeMirror.fromTextArea(target, options);		
 		scrollPanel = editor.getWrapperElement().querySelector('.CodeMirror-code');
+		target.classList.add('CodeMirror-mirrored');
 
 		editor.on('cursorActivity', function (instance) {
 			// matain cursor & selection pairity between codemirror and the textarea
@@ -469,9 +465,7 @@
 
 			}
 		}, 50); // run it 20times/second
-	}
-	function runEditor() {
-		startEditor();
+
 		if (state.isThemeOrPlugin) { 
 			attachResizeThemeOrPlugin();
 		} else {
@@ -483,16 +477,24 @@
 		setFontSizeAndLineHeight();
 	}
 
+	function stopEditor() {
+		if (!state.isActive()) return;
+		editor.toTextArea();
+		window.clearInterval(checkEditorInterval);
+	}
+
 	function initialise() {
 		if (state.isThemeOrPlugin) {
-			runEditor();
-		} else if (state.isVisualEnabled && state.isVisualActive()) {
-			tabText.addEventListener('click', toText);
+			startEditor();
+		} else if (state.isVisualEnabled) {
+			tabText.addEventListener('click', function(){
+				window.setTimeout(startEditor, 0);
+			});
+			tabVisual.addEventListener('click', stopEditor);
+			if (!state.isVisualActive()) startEditor();
 		} else {
-			runEditor();
-			if (state.isVisualEnabled) 
-				tabVisual.addEventListener('click', toVisual);
-			else document.body.className += ' visual-editor-is-disabled';
+			startEditor();
+			document.body.className += ' visual-editor-is-disabled';
 		}
 	}
 
