@@ -379,24 +379,36 @@
 		options.mode = filetypeToMode[fileType];
 	}
 
+	// cursor & selection pairity between codemirror and the textarea
 	function syncSelection() {
-		var cursorPosition = editor.doc.getCursor();
+		// var cursorPosition = editor.doc.getCursor();
+		var selection = editor.doc.listSelections()[0];
 		var scrollPosition = editor.getScrollInfo();
-		var position = 0;
-		var i = 0;
+		var head, anchor, i;
+		head = anchor = i = 0;
+		// console.log(selection);
 		editor.doc.eachLine(function(line){
-			if (i > (cursorPosition.line - 1)) return;
-			position += line.text.length + 1; 
+			if (i > (selection.head.line - 1)) return;
+			head += line.text.length + 1; 
 			i++;
 		});
-		position += cursorPosition.ch;
-		editor.getTextArea().setSelectionRange(position, position);
+		head += selection.head.ch;
+		i = 0;
+		editor.doc.eachLine(function(line){
+			if (i > (selection.anchor.line - 1)) return;
+			anchor += line.text.length + 1; 
+			i++;
+		});
+		anchor += selection.anchor.ch;
+		// console.log(head);
+		// console.log(anchor);
+		editor.getTextArea().setSelectionRange(anchor, head, anchor > head ? 'forward' : 'backward');
 		if (thisIsSafari) editor.focus(); // for safari ?
 		if (thisIsSafari) editor.scrollTo(scrollPosition.left, scrollPosition.top); // for safari ?
 
 		// Saving cursor state
-		document.cookie = 'hesh_plugin_cursor_position=' + postID + ',' + cursorPosition.line + ',' + cursorPosition.ch;
-		// TODO: save scroll position too
+		document.cookie = 'hesh_plugin_cursor_position=' + postID + ',' + head.line + ',' + head.ch;
+		// TODO: save scroll position and selection state too
 	}
 
 	function restoreCursorState() {
@@ -407,6 +419,7 @@
 		}
 	}
 
+	// Check if any edits were made to the textarea.value
 	function matchTextArea() {
 		var editorLength = editor.doc.getValue().length;
 		var textAreaLength = editor.getTextArea().value.length;
@@ -453,9 +466,6 @@
 		scrollPanel = editor.getWrapperElement().querySelector('.CodeMirror-code');
 		target.classList.add('CodeMirror-mirrored');
 
-		// matain cursor & selection pairity between codemirror and the textarea
-		// editor.on('cursorActivity', syncSelection);
-
 		toolbar.addEventListener('mousedown', syncSelection);
 		toolbar.addEventListener('click', function(){
 			window.setTimeout(matchTextArea,0);
@@ -465,9 +475,6 @@
 
 		// Save save all changes to the textarea.value
 		editor.on('change', function (instance) { instance.save(); });
-
-		// Check if any edits were made to the textarea.value at 20Hz
-		// checkEditorInterval = window.setInterval(checkForTextAreaEdits , 50);
 
 		if (state.isThemeOrPlugin) { 
 			attachResizeThemeOrPlugin();
@@ -483,7 +490,6 @@
 	function stopEditor() {
 		if (!state.isActive()) return;
 		editor.toTextArea();
-		// window.clearInterval(checkEditorInterval);
 	}
 
 	function initialise() {

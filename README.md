@@ -1,11 +1,11 @@
 # TODOs
 - test
 	- general bugs
-		- highlight a selection and have it wrap elements
 		- loading in reg then switching to full height doesn't set the maxheight.
 		- minimum maxheight? 
 		- the fixed settings don't stick when scrolled past the editor
 		- resize while fixed is broken
+		- drager is broke
 	- browsers
 		- Safari - seems ok
 		- FireFox (Mac) - seems ok
