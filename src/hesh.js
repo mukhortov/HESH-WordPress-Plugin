@@ -381,7 +381,8 @@
 
 	// cursor & selection pairity between codemirror and the textarea
 	var selection;
-	function syncSelection() {
+	function giveFocusToTextArea() {
+		console.log(editor.doc.getCursor());
 		selection = editor.doc.listSelections()[0];
 		// var scrollPosition = editor.getScrollInfo();
 		var head, anchor, i;
@@ -402,6 +403,7 @@
 		// Saving cursor state
 		document.cookie = 'hesh_plugin_cursor_position=' + postID + ',' + anchor.line + ',' + anchor.ch;
 		// TODO: save scroll position and selection state too
+		// TODO: move this some where else
 	}
 
 	function restoreCursorState() {
@@ -413,33 +415,59 @@
 	}
 
 	// Check if any edits were made to the textarea.value
-	function matchTextArea() {
+	function returnFocusFromTextArea() {
 		var editorLength = editor.doc.getValue().length;
 		var textAreaLength = editor.getTextArea().value.length;
 		if (editorLength !== textAreaLength) { // if there were changes...
 
-			// save the cursor state
-			console.dir(editor.getTextArea());
-			var cursorPosition = editor.doc.getCursor();
+			// console.dir(editor.getTextArea().selectionEnd);
+			// console.log(editor.getTextArea().selectionStart);
+
+			// save the selection state and scroll state
+			var selectionStart = editor.getTextArea().selectionStart;
+			var selectionEnd = editor.getTextArea().selectionEnd;
 			var scrollPosition = editor.getScrollInfo();
 
 			// update codemirror with the new textarea.value
 			editor.doc.setValue(editor.getTextArea().value);
 			editor.focus();
 
-			// reset the cursors new state - there may be new lines added
-			var line = cursorPosition.line;
-			var maxCh = editor.getLineHandle(line).text.length + 1;
-			var ch = cursorPosition.ch + (textAreaLength - editorLength);
-			while (maxCh <= ch) {
-				line++;
-				ch -= maxCh;
-				maxCh = editor.getLineHandle(line).text.length + 1;
+			var startLine, endLine, currentLine = 0;
+			var startCh = selectionStart;
+			var endCh = selectionEnd;
+			var lineLength = editor.getLineHandle(currentLine).text.length + 1;
+			while (lineLength <= startCh && lineLength <= endCh) {
+				currentLine++;
+				if (lineLength <= startCh){
+					startCh -= lineLength;
+					startLine = currentLine;
+				}
+				if (lineLength <= endCh){
+					endCh -= lineLength;
+					endLine = currentLine;
+				}
+				lineLength = editor.getLineHandle(currentLine).text.length + 1;
+				// console.log('line: '+currentLine, 'startCh: '+startCh, 'endCh: '+endCh); // for debug
 			}
-			editor.doc.setCursor({
-				line: line,
-				ch: ch
-			});
+
+			// reset the cursors new state - there may be new lines added
+			// var line = cursorPosition.line;
+			// var maxCh = editor.getLineHandle(line).text.length + 1;
+			// var ch = cursorPosition.ch + (textAreaLength - editorLength);
+			// while (maxCh <= ch) {
+			// 	line++;
+			// 	ch -= maxCh;
+			// 	maxCh = editor.getLineHandle(line).text.length + 1;
+			// }
+			// editor.doc.setCursor({
+			// 	line: line,
+			// 	ch: ch
+			// });
+			editor.doc.setSelection(
+				{ line:startLine, ch:startCh },
+				{ line:endLine, ch:endCh },
+				{ scroll:false }
+			);
 			editor.scrollTo(scrollPosition.left, scrollPosition.top);
 
 		}
@@ -461,17 +489,15 @@
 		scrollPanel = editor.getWrapperElement().querySelector('.CodeMirror-code');
 		target.classList.add('CodeMirror-mirrored');
 
-		toolbar.addEventListener('mousedown', syncSelection);
+		toolbar.addEventListener('mousedown', giveFocusToTextArea);
 		toolbar.addEventListener('click', function(){
-			window.setTimeout(matchTextArea,0);
+			window.setTimeout(returnFocusFromTextArea,0);
 		});
 
 		// restoreCursorState(); // TODO: Fix This
 
 		// Save save all changes to the textarea.value
-		editor.on('change', function () { 
-			console.log('here');
-			editor.save(); });
+		editor.on('change', function () { editor.save(); });
 
 		if (state.isThemeOrPlugin) { 
 			attachResizeThemeOrPlugin();
