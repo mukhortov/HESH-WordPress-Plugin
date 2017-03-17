@@ -81,10 +81,8 @@
 	// })();
 
 	function fullHeightMatch() {
-		// console.log(editor.getWrapperElement().getBoundingClientRect().height);
 		editor.save();
 		editor.getTextArea().style.height  = editor.getWrapperElement().getBoundingClientRect().height + 'px';
-		// console.log(editor.getTextArea().style.height);
 	}
 
 	function setSettingsPositionTopValues() {
@@ -296,9 +294,6 @@
 		var value = +event.target.value;
 		value = isNaN(value) ? event.target.value : value ;
 		if (event.target.checked != null) value = event.target.checked;
-		console.log(event.target.id);
-		console.log(value);
-		console.log(heshOptions);
 		heshOptions[event.target.id] = value;
 		editor.setOption(event.target.id, value);
 	}
@@ -355,11 +350,6 @@
 			document.removeEventListener('mousemove', matchTextAreaHeight);
 			editor.refresh();
 		});
-		// window.addEventListener('resize', function () { // debounce the resize listner
-		// 	if (state.isFullHeight()) matchTextAreaMarginTop();
-		// 	// editor.refresh();
-		// });
-		// if (!state.isFullHeight()) matchTextAreaHeight();
 	}
 
 	// attaches a dragger to the bottom right of the theme/plugin editor to control editor height
@@ -393,7 +383,6 @@
 	}
 
 
-
 	// updates the user settings in the wordpress DB
 	function submitForm() {
 		var formArray = $('#CodeMirror-settings__form').serializeArray();
@@ -420,12 +409,43 @@
 		options.mode = filetypeToMode[fileType];
 	}
 
+	function getCookie(name) {
+		var value = '; ' + document.cookie;
+		var parts = value.split('; ' + name + '=');
+		if (parts.length === 2) return parts.pop().split(';').shift();
+	}
+	function restoreSelectionState() {
+		var selectionState = (getCookie('hesh_plugin_selection_state') || '0,0,0,0,0,0,0').split(',');
+		if (postID === selectionState[0]) {
+			editor.doc.setSelection(
+				{ line: selectionState[1], ch: selectionState[2] },
+				{ line: selectionState[3], ch: selectionState[4] },
+				{ scroll: false }
+			);
+			editor.scrollTo(selectionState[5], selectionState[6]);
+		}
+	}
+	function recordSelectionState() {
+		var selection = editor.doc.listSelections()[0];
+		var scrollPosition = editor.getScrollInfo();
+
+		// console.log(selection);
+		// console.log(scrollPosition);
+
+		document.cookie = 'hesh_plugin_selection_state=' + 
+			postID + ',' + 
+			selection.anchor.line + ',' + 
+			selection.anchor.ch + ',' + 
+			selection.head.line + ',' + 
+			selection.head.ch + ',' + 
+			scrollPosition.left + ',' + 
+			scrollPosition.top;
+	}
+
 	// cursor & selection pairity between codemirror and the textarea
-	var selection;
+	var selection; // ???
 	function giveFocusToTextArea() {
-		console.log(editor.doc.getCursor());
 		selection = editor.doc.listSelections()[0];
-		// var scrollPosition = editor.getScrollInfo();
 		var head, anchor, i;
 		head = anchor = i = 0;
 		editor.doc.eachLine(function(line){
@@ -437,37 +457,13 @@
 		anchor += selection.anchor.ch;
 		editor.getTextArea().focus();
 		editor.getTextArea().setSelectionRange(Math.min(anchor,head), Math.max(anchor,head));
-
-		// if (thisIsSafari) editor.focus(); // for safari ?
-		// if (thisIsSafari) editor.scrollTo(scrollPosition.left, scrollPosition.top); // for safari ?
-
 	}
-
-	// function getCookie(name) {
-	// 	var value = '; ' + document.cookie;
-	// 	var parts = value.split('; ' + name + '=');
-	// 	if (parts.length === 2) return parts.pop().split(';').shift();
-	// }
-	// function restoreCursorState() {
-	// 	var cursorCookiePosition = (getCookie('hesh_plugin_cursor_position') || '0,0,0').split(',');
-	// 	if (postID === cursorCookiePosition[0]) {
-	// 		editor.setCursor(+cursorCookiePosition[1], +cursorCookiePosition[2]);
-	// 		// TODO: restore scroll position too
-	// 	}
-	// }
-	// Saving cursor state
-	// document.cookie = 'hesh_plugin_cursor_position=' + postID + ',' + anchor.line + ',' + anchor.ch;
-	// TODO: save scroll position and selection state too
-	// TODO: move this some where else
-
+	
 	// Check if any edits were made to the textarea.value
 	function returnFocusFromTextArea() {
 		var editorLength = editor.doc.getValue().length;
 		var textAreaLength = editor.getTextArea().value.length;
 		if (editorLength !== textAreaLength) { // if there were changes...
-
-			// console.dir(editor.getTextArea().selectionEnd);
-			// console.log(editor.getTextArea().selectionStart);
 
 			// save the selection state and scroll state
 			var selectionStart = editor.getTextArea().selectionStart;
@@ -496,19 +492,6 @@
 				// console.log('line: '+currentLine, 'startCh: '+startCh, 'endCh: '+endCh); // for debug
 			}
 
-			// reset the cursors new state - there may be new lines added
-			// var line = cursorPosition.line;
-			// var maxCh = editor.getLineHandle(line).text.length + 1;
-			// var ch = cursorPosition.ch + (textAreaLength - editorLength);
-			// while (maxCh <= ch) {
-			// 	line++;
-			// 	ch -= maxCh;
-			// 	maxCh = editor.getLineHandle(line).text.length + 1;
-			// }
-			// editor.doc.setCursor({
-			// 	line: line,
-			// 	ch: ch
-			// });
 			editor.doc.setSelection(
 				{ line:startLine, ch:startCh },
 				{ line:endLine, ch:endCh },
@@ -520,8 +503,6 @@
 		editor.save();
 	}
 	
-	// TODO: combine runEditor and startEditor
-	// var checkEditorInterval;
 	function startEditor() {
 		if (state.isActive()) return;
 
@@ -540,10 +521,16 @@
 			window.setTimeout(returnFocusFromTextArea,0);
 		});
 
-		// restoreCursorState(); // TODO: Fix This
-
 		// Save save all changes to the textarea.value
 		editor.on('change', function () { editor.save(); });
+
+		restoreSelectionState();
+		editor.on('cursorActivity', function() {
+			window.requestAnimationFrame(recordSelectionState);
+		});
+		editor.on('scroll', function() {
+			window.requestAnimationFrame(recordSelectionState);
+		});
 
 		if (state.isThemeOrPlugin) { 
 			attachDragResizeThemeOrPlugin();

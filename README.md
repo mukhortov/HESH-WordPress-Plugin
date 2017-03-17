@@ -1,7 +1,7 @@
 # TODOs
 - test
 	- general bugs
-		- fix restoreCursorState()
+		- none currently
 	- browsers
 		- Safari - seems ok
 		- FireFox (Mac) - seems ok
