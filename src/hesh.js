@@ -179,9 +179,9 @@
 			// window.addEventListener('resize', fixedSettings);
 				editor.getWrapperElement().style.height = 'auto';
 				setSettingsPosition();
-				updateFullHeightMaxHeight();
 				matchTextAreaMarginTop();
 			window.setTimeout(function(){
+				updateFullHeightMaxHeight();
 				fullHeightMatch();
 			}, 100); // TODO: find a better way to override
 		} else {
