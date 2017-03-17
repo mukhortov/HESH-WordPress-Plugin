@@ -19,13 +19,6 @@
 ) {
 	'use strict';
 
-
-	// var isThemeOrPluginPage = document.getElementById('newcontent') != null; //
-	// var isActive = false; //
-	// var isVisualEditorActive = document.getElementsByClassName('tmce-active')[0] != null; //
-	// var isVisualEditorEnabled = document.getElementById('content-tmce') != null; //
-
-
 	// ELEMENTS //
 	var editor; // CodeMirror
 	var scrollPanel;
@@ -58,36 +51,50 @@
 			return fullHeightToggle.checked;
 		},
 
-		settingsPosition: function() { // : 'top' | 'middle' | 'bottom' | 'normal'
-			if (toolbar.style.position === 'absolute') {
-				if (toolbar.style.top === '0px') return 'top';
-				else return 'bottom';
+		previousSettingsPosition: 'none',
+		settingsPosition: function() { // : 'top' | 'middle' | 'bottom' | 'normal' | 'none'
+			var position;
+			var self = this;
+			if (!toolbar){
+				position = 'none';
+			} else if (toolbar.style.position === 'absolute') {
+				if (toolbar.style.top === '0px') position = 'top';
+				else position = 'bottom';
 			} else if (toolbar.style.position === 'fixed') {
-				return 'middle';
+				position = 'middle';
 			} else {
-				return 'normal';
+				position = 'normal';
 			}
+			window.setTimeout(function(){
+				self.previousSettingsPosition = position;
+			},0);
+			return position;
 		}
 
 		// isSettingsClosed: true,
 		// isSettingsOpen: false,
 		// isAdvancedSettingsOpen: false
 	};
-	var thisIsSafari = (function() {
-		// TODO: test for focus change here. indicative of Safari
-		return true;
-	})();
+	// var thisIsSafari = (function() {
+	// 	// TODO: test for focus change here. indicative of Safari
+	// 	return true;
+	// })();
 
-	function attachFullHeightToggle() {
-		if (!fullHeightToggle) return;
-		fullHeightToggle.addEventListener('change', fullHeightToggled);
-		fullHeightToggled();
-	}
 	function fullHeightMatch() {
 		editor.getTextArea().style.height = editor.getWrapperElement().getBoundingClientRect().height + 'px';
 	}
 
-	function setFixedValues() {
+	function setSettingsPositionTopValues() {
+		for (var index = 0; index < settingsPanel.children.length; index++) {
+			var element = settingsPanel.children[index];
+			element.style.position = '';
+			element.style.top = '';
+			element.style.left = '';
+			element.style.right = '';
+			element.style.width = '';
+		}
+	}
+	function setSettingsPositionMiddleValues() {
 		var toolbarRect = toolbar.getBoundingClientRect();
 		for (var index = 0; index < settingsPanel.children.length; index++) {
 			var element = settingsPanel.children[index];
@@ -100,18 +107,33 @@
 			}
 		}
 	}
-	function removeFixedValues() {
-		for (var index = 0; index < settingsPanel.children.length; index++) {
-			var element = settingsPanel.children[index];
-			element.style.position = '';
-			element.style.top = '';
-			element.style.left = '';
-			element.style.right = '';
-			element.style.width = '';
+	function setSettingsPositionBottomValues() {}
+
+	function setSettingsPosition(event) {
+		updateFullHeightMaxHeight();
+		var currentSettingsPosition = state.settingsPosition();
+		if (currentSettingsPosition === state.previousSettingsPosition && event.type !== 'resize') return;
+		switch (currentSettingsPosition) {
+			case 'top':
+				console.log('top');
+				setSettingsPositionTopValues();
+				break;
+			case 'middle':
+				console.log('middle');
+				setSettingsPositionMiddleValues();
+				break;
+			case 'bottom':
+				console.log('bottom');
+				setSettingsPositionBottomValues();
+				break;
+			case 'normal': 
+			case 'none':
+				console.log('normal/none');
+				break;
 		}
 	}
 
-	function setFullHeightMaxHeight() {
+	function updateFullHeightMaxHeight() {
 		// if (!settingsPanel.classList.contains('open-advanced')) return;
 		var theForm = settingsPanel.querySelector('#CodeMirror-settings__form');
 		var margin = 6; // arbitrary
@@ -125,45 +147,57 @@
 		settingsPanel.querySelector('#CodeMirror-settings__form').style.maxHeight = '';
 	}
 
-	var isFixed = false;
-	var setFixedNotScheduled = true;
-	function fixedSettings() {
-		if (setFixedNotScheduled) {
-			window.requestAnimationFrame(function(){
-				var wasntFixed = !isFixed;
-				isFixed = (toolbar && toolbar.style.position === 'fixed');
-				if (isFixed && wasntFixed) setFixedValues();
-				else if (!isFixed && !wasntFixed) removeFixedValues();
-				setFullHeightMaxHeight();
-				setFixedNotScheduled = true;
-			});
-			setFixedNotScheduled = false;
-		}
-	}
+	// var isFixed = false;
+	// var setFixedNotScheduled = true;
+	// function fixedSettings() {
+	// 	if (setFixedNotScheduled) {
+	// 		window.requestAnimationFrame(function(){
+	// 			var wasntFixed = !isFixed;
+	// 			isFixed = (toolbar && toolbar.style.position === 'fixed');
+	// 			if (isFixed && wasntFixed) setFixedValues();
+	// 			else if (!isFixed && !wasntFixed) removeFixedValues();
+	// 			setFullHeightMaxHeight();
+	// 			setFixedNotScheduled = true;
+	// 		});
+	// 		setFixedNotScheduled = false;
+	// 	}
+	// }
 
+	function attachFullHeightToggle() {
+		if (!fullHeightToggle) return;
+		fullHeightToggle.addEventListener('change', fullHeightToggled);
+		fullHeightToggled();
+	}
 	function fullHeightToggled() {
 		if (state.isFullHeight()) {
 			editor.setOption('viewportMargin', Infinity); 
 			editor.on('change', fullHeightMatch);
-			window.addEventListener('scroll', fixedSettings);
-			window.addEventListener('resize', fixedSettings);
-			window.setTimeout(function(){
+			window.addEventListener('scroll', setSettingsPosition);
+			window.addEventListener('resize', setSettingsPosition);
+			window.addEventListener('resize', matchTextAreaMarginTop);
+			// window.addEventListener('scroll', fixedSettings);
+			// window.addEventListener('resize', fixedSettings);
+			// window.setTimeout(function(){
 				editor.getWrapperElement().style.height = 'auto';
 				fullHeightMatch();
-				setFullHeightMaxHeight();
+				setSettingsPosition();
+				updateFullHeightMaxHeight();
 				matchTextAreaMarginTop();
-			}, 100); // TODO: find a better way to override
+			// }, 100); // TODO: find a better way to override
 		} else {
 			editor.setOption('viewportMargin', options.viewportMargin);
 			editor.off('change', fullHeightMatch);
-			window.removeEventListener('scroll', fixedSettings);
-			window.addEventListener('resize', fixedSettings);
-			window.setTimeout(function(){
+			window.removeEventListener('scroll', setSettingsPosition);
+			window.removeEventListener('resize', setSettingsPosition);
+			window.removeEventListener('resize', matchTextAreaMarginTop);
+			// window.removeEventListener('scroll', fixedSettings);
+			// window.addEventListener('resize', fixedSettings);
+			// window.setTimeout(function(){
 				editor.getWrapperElement().style.marginTop = '';
 				removeFullHeightMaxHeight();
-				removeFixedValues();
+				setSettingsPositionTopValues();
 				matchTextAreaHeight();
-			}, 100);
+			// }, 100);
 		}
 		// editor.getTextArea().style.display = 'none'; // just to make sure
 	}
@@ -277,6 +311,7 @@
 		editor.refresh();
 	}
 
+
 	// setup the fullscreen button
 	var fullscreenBox = document.getElementById('wp-content-editor-container');
 	var fullscreenClass = 'heshFullscreen';
@@ -287,14 +322,38 @@
 		);
 		document.getElementById('cm_content_fullscreen').onclick = toggleFullscreen;
 	}
-
 	function toggleFullscreen() {
 		fullscreenBox.classList.toggle(fullscreenClass); // TODO: fix the use of toggle
 		editor.focus();
 	}
 
+
+	function matchTextAreaHeight() {
+		editor.getWrapperElement().style.height = editor.getTextArea().style.height;
+	}
+
+	function matchTextAreaMarginTop() {
+		editor.getWrapperElement().style.marginTop = editor.getTextArea().style.marginTop;
+	}
+
+	// copy the resize of the textarea in codemirror
+	function attachDragResizePostOrPage() {
+		document.getElementById('content-resize-handle').addEventListener('mousedown', function () {
+			document.addEventListener('mousemove', matchTextAreaHeight);
+		});
+		document.addEventListener('mouseup', function () {
+			document.removeEventListener('mousemove', matchTextAreaHeight);
+			editor.refresh();
+		});
+		// window.addEventListener('resize', function () { // debounce the resize listner
+		// 	if (state.isFullHeight()) matchTextAreaMarginTop();
+		// 	// editor.refresh();
+		// });
+		// if (!state.isFullHeight()) matchTextAreaHeight();
+	}
+
 	// attaches a dragger to the bottom right of the theme/plugin editor to control editor height
-	function attachResizeThemeOrPlugin() {
+	function attachDragResizeThemeOrPlugin() {
 		var editorHeight = 500;
 		var minEditorHieght = 200;
 		editor.getWrapperElement().style.height = editorHeight + 'px';
@@ -323,35 +382,7 @@
 		});
 	}
 
-	function matchTextAreaHeight() {
-		editor.getWrapperElement().style.height = editor.getTextArea().style.height;
-	}
 
-	function matchTextAreaMarginTop() {
-		editor.getWrapperElement().style.marginTop = editor.getTextArea().style.marginTop;
-	}
-
-	// copy the resize of the textarea in codemirror
-	function attachResizePostOrPage() {
-		document.getElementById('content-resize-handle').addEventListener('mousedown', function () {
-			document.addEventListener('mousemove', matchTextAreaHeight);
-		});
-		document.addEventListener('mouseup', function () {
-			document.removeEventListener('mousemove', matchTextAreaHeight);
-			editor.refresh();
-		});
-		window.addEventListener('resize', function () { // debounce the resize listner
-			if (state.isFullHeight()) matchTextAreaMarginTop();
-			// editor.refresh();
-		});
-		if (!state.isFullHeight()) matchTextAreaHeight();
-	}
-
-	function getCookie(name) {
-		var value = '; ' + document.cookie;
-		var parts = value.split('; ' + name + '=');
-		if (parts.length === 2) return parts.pop().split(';').shift();
-	}
 
 	// updates the user settings in the wordpress DB
 	function submitForm() {
@@ -400,19 +431,24 @@
 		// if (thisIsSafari) editor.focus(); // for safari ?
 		// if (thisIsSafari) editor.scrollTo(scrollPosition.left, scrollPosition.top); // for safari ?
 
-		// Saving cursor state
-		document.cookie = 'hesh_plugin_cursor_position=' + postID + ',' + anchor.line + ',' + anchor.ch;
-		// TODO: save scroll position and selection state too
-		// TODO: move this some where else
 	}
 
-	function restoreCursorState() {
-		var cursorCookiePosition = (getCookie('hesh_plugin_cursor_position') || '0,0,0').split(',');
-		if (postID === cursorCookiePosition[0]) {
-			editor.setCursor(+cursorCookiePosition[1], +cursorCookiePosition[2]);
-			// TODO: restore scroll position too
-		}
-	}
+	// function getCookie(name) {
+	// 	var value = '; ' + document.cookie;
+	// 	var parts = value.split('; ' + name + '=');
+	// 	if (parts.length === 2) return parts.pop().split(';').shift();
+	// }
+	// function restoreCursorState() {
+	// 	var cursorCookiePosition = (getCookie('hesh_plugin_cursor_position') || '0,0,0').split(',');
+	// 	if (postID === cursorCookiePosition[0]) {
+	// 		editor.setCursor(+cursorCookiePosition[1], +cursorCookiePosition[2]);
+	// 		// TODO: restore scroll position too
+	// 	}
+	// }
+	// Saving cursor state
+	// document.cookie = 'hesh_plugin_cursor_position=' + postID + ',' + anchor.line + ',' + anchor.ch;
+	// TODO: save scroll position and selection state too
+	// TODO: move this some where else
 
 	// Check if any edits were made to the textarea.value
 	function returnFocusFromTextArea() {
@@ -500,9 +536,9 @@
 		editor.on('change', function () { editor.save(); });
 
 		if (state.isThemeOrPlugin) { 
-			attachResizeThemeOrPlugin();
+			attachDragResizeThemeOrPlugin();
 		} else {
-			attachResizePostOrPage();
+			attachDragResizePostOrPage();
 			attachFullHeightToggle();
 			attachFullscreen();
 		}

@@ -1,7 +1,6 @@
 # TODOs
 - test
 	- general bugs
-		- pull in the textarea's focus after update from textarea
 		- loading in reg then switching to full height doesn't set the maxheight.
 		- minimum maxheight? 
 		- the fixed settings don't stick when scrolled past the editor

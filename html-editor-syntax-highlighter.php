@@ -344,7 +344,7 @@ class wp_html_editor_syntax {
 					<div class="form CodeMirror-settings__body">
 						<?php wp_nonce_field($this->formProcessName,$this->nonceSecretCode);?>
 						<input name="action" value="hesh_options_form" type="hidden">
-						<?php $i=0; while ($i > 12): ?>
+						<?php $i=0; while ($i < 12): ?>
 						<table class="form-table"><tbody>
 							<tr><td class="CodeMirror-settings__heading"><h1>
 								Addons
