@@ -259,27 +259,37 @@
 	// toggle classes for settingsPanel state
 	function toggleSettings(event) {
 		if (event.target.id.match(/advanced/ig)) {
-			if (settingsPanel.classList.contains('open-advanced')) {
-				settingsPanel.classList.remove('open-advanced');
-				settingsPanel.classList.remove('closed');
-				settingsPanel.classList.add('open');
-			} else {
-				settingsPanel.classList.add('open-advanced');
-				settingsPanel.classList.add('open');
-				settingsPanel.classList.remove('closed');
-			}
+			if (!settingsPanel.classList.contains('open-advanced')) settingsToggle('advanced');
+			else settingsToggle('open');
 		} else {
-			if (settingsPanel.classList.contains('open')) {
-				settingsPanel.classList.add('closed');
-				settingsPanel.classList.remove('open');
-				settingsPanel.classList.remove('open-advanced');
-			} else {
-				settingsPanel.classList.add('open');
-				settingsPanel.classList.remove('closed');
-				settingsPanel.classList.remove('open-advanced');
-			}
+			if (settingsPanel.classList.contains('open')) settingsToggle('closed');
+			else settingsToggle('open');
 		}
 	}
+
+	function settingsToggle(toState) {
+		switch (toState){
+			case 'open':
+				settingsPanel.classList.add('open');
+				settingsPanel.classList.remove('open-advanced');
+				settingsPanel.classList.remove('closed');
+				break;
+			case 'advanced':
+				settingsPanel.classList.add('open');
+				settingsPanel.classList.add('open-advanced');
+				settingsPanel.classList.remove('closed');
+				break;
+			case 'closed':
+			default:
+				settingsPanel.classList.remove('open');
+				settingsPanel.classList.remove('open-advanced');
+				settingsPanel.classList.add('closed');
+				break;
+				
+		}
+	}
+
+
 
 	// set a codemirror option from an input.onchange event callback
 	function updateOption(event) {
@@ -548,6 +558,7 @@
 
 	function stopEditor() {
 		if (!state.isActive()) return;
+		settingsToggle('closed');
 		editor.toTextArea();
 	}
 
