@@ -2,7 +2,7 @@
 - test
 	- general bugs
 		- loading in reg then switching to full height doesn't set the maxheight.
-		- minimum maxheight? 
+		- minimum maxheight?
 		- the fixed settings don't stick when scrolled past the editor
 		- resize while fixed is broken
 		- fix restoreCursorState()

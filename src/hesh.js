@@ -81,7 +81,10 @@
 	// })();
 
 	function fullHeightMatch() {
-		editor.getTextArea().style.height = editor.getWrapperElement().getBoundingClientRect().height + 'px';
+		// console.log(editor.getWrapperElement().getBoundingClientRect().height);
+		editor.save();
+		editor.getTextArea().style.height  = editor.getWrapperElement().getBoundingClientRect().height + 'px';
+		// console.log(editor.getTextArea().style.height);
 	}
 
 	function setSettingsPositionTopValues() {
@@ -107,12 +110,24 @@
 			}
 		}
 	}
-	function setSettingsPositionBottomValues() {}
+	function setSettingsPositionBottomValues() {
+		var toolbarRect = toolbar.getBoundingClientRect();
+		var codeMirrorRect = editor.getWrapperElement().getBoundingClientRect();
+		for (var index = 0; index < settingsPanel.children.length; index++) {
+			var element = settingsPanel.children[index];
+			element.style.position = 'absolute';
+			element.style.top = (codeMirrorRect.top - toolbarRect.bottom) * -1 + 'px';
+			element.style.left = '';
+			element.style.right = '';
+			element.style.width = '';
+		}
+	}
 
 	function setSettingsPosition(event) {
 		updateFullHeightMaxHeight();
 		var currentSettingsPosition = state.settingsPosition();
-		if (currentSettingsPosition === state.previousSettingsPosition && event.type !== 'resize') return;
+		if (currentSettingsPosition === state.previousSettingsPosition && !(event && event.type === 'resize')) return;
+		fullHeightMatch();
 		switch (currentSettingsPosition) {
 			case 'top':
 				console.log('top');
@@ -147,21 +162,6 @@
 		settingsPanel.querySelector('#CodeMirror-settings__form').style.maxHeight = '';
 	}
 
-	// var isFixed = false;
-	// var setFixedNotScheduled = true;
-	// function fixedSettings() {
-	// 	if (setFixedNotScheduled) {
-	// 		window.requestAnimationFrame(function(){
-	// 			var wasntFixed = !isFixed;
-	// 			isFixed = (toolbar && toolbar.style.position === 'fixed');
-	// 			if (isFixed && wasntFixed) setFixedValues();
-	// 			else if (!isFixed && !wasntFixed) removeFixedValues();
-	// 			setFullHeightMaxHeight();
-	// 			setFixedNotScheduled = true;
-	// 		});
-	// 		setFixedNotScheduled = false;
-	// 	}
-	// }
 
 	function attachFullHeightToggle() {
 		if (!fullHeightToggle) return;
@@ -177,13 +177,13 @@
 			window.addEventListener('resize', matchTextAreaMarginTop);
 			// window.addEventListener('scroll', fixedSettings);
 			// window.addEventListener('resize', fixedSettings);
-			// window.setTimeout(function(){
 				editor.getWrapperElement().style.height = 'auto';
-				fullHeightMatch();
 				setSettingsPosition();
 				updateFullHeightMaxHeight();
 				matchTextAreaMarginTop();
-			// }, 100); // TODO: find a better way to override
+			window.setTimeout(function(){
+				fullHeightMatch();
+			}, 100); // TODO: find a better way to override
 		} else {
 			editor.setOption('viewportMargin', options.viewportMargin);
 			editor.off('change', fullHeightMatch);
