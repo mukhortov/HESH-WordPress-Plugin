@@ -386,9 +386,8 @@
 
 	function setFileType() {
 		var fileNameElement = document.querySelector('.fileedit-sub .alignleft');
-		var fileType = fileNameElement.textContent
-			.match(/\.[a-z\d]{2,}/ig)[0] // find the file extention
-			.match(/[a-z]*/ig)[1]; // remove the dot
+		var fileTypeMatches = fileNameElement.textContent .match(/\.[a-z\d]{2,}/ig); // find the file extention
+		var fileType = fileTypeMatches[fileTypeMatches.length - 1].match(/[a-z]*/ig)[1]; // remove the dot
 		var filetypeToMode = { // map file extensions to their CodeMirror modes
 			php: 'php',
 			css: 'css',
@@ -397,6 +396,7 @@
 			js: 'javascript',
 			json: 'javascript'
 		};
+		console.log(fileType);
 		options.mode = filetypeToMode[fileType];
 	}
 
