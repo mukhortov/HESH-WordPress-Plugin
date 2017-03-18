@@ -25,11 +25,23 @@ gulp.task('clean', function () {
 
 
 var less = require('gulp-less');
+var autoprefixer = require('gulp-autoprefixer');
+var combineMq = require('gulp-combine-mq');
+var cssnano = require('gulp-cssnano');
 gulp.task('less', function () {
     return gulp.src('./src/*.less')
         .pipe(less({
             plugins: [ require('less-plugin-glob') ]
         }))
+        .pipe(autoprefixer({
+            browsers: ['last 2 versions'],
+            flexbox: 'no-2009'
+            // cascade: false
+        }))
+        .pipe(combineMq({
+            beautify: true
+        }))
+        .pipe(cssnano())
         .pipe(gulp.dest('./dist'))
         .pipe(livereload());
 });

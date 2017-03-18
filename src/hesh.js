@@ -23,6 +23,7 @@
 	var editor; // CodeMirror
 	var scrollPanel;
 	var settingsPanel = document.getElementById('CodeMirror-settings');
+	var theForm = document.getElementById('CodeMirror-settings__form');
 	var toolbar = document.getElementById('ed_toolbar');
 	var target = document.getElementById('content') || document.getElementById('newcontent');
 	var tabText = document.getElementById('content-html');
@@ -82,7 +83,7 @@
 
 	function fullHeightMatch() {
 		editor.save();
-		editor.getTextArea().style.height  = editor.getWrapperElement().getBoundingClientRect().height + 'px';
+		editor.getTextArea().style.height = editor.getWrapperElement().getBoundingClientRect().height + 'px';
 	}
 
 	function setSettingsPositionTopValues() {
@@ -128,36 +129,40 @@
 		fullHeightMatch();
 		switch (currentSettingsPosition) {
 			case 'top':
-				console.log('top');
+				// console.log('top');
 				setSettingsPositionTopValues();
 				break;
 			case 'middle':
-				console.log('middle');
+				// console.log('middle');
 				setSettingsPositionMiddleValues();
 				break;
 			case 'bottom':
-				console.log('bottom');
+				// console.log('bottom');
 				setSettingsPositionBottomValues();
 				break;
 			case 'normal': 
 			case 'none':
-				console.log('normal/none');
+				// console.log('normal/none');
 				break;
 		}
 	}
 
+	var isIE = !!navigator.userAgent.match(/Trident/ig);
+	console.log(isIE);
 	function updateFullHeightMaxHeight() {
 		// if (!settingsPanel.classList.contains('open-advanced')) return;
-		var theForm = settingsPanel.querySelector('#CodeMirror-settings__form');
+		if (!theForm) return;
 		var margin = 6; // arbitrary
 		var formTop = theForm.getBoundingClientRect().top;
 		var editorBottom = document.getElementById('post-status-info').getBoundingClientRect().top;
 		var editorBottomMaxHeight = editorBottom - formTop;
 		var screenBottomMaxHeight = window.innerHeight - formTop;
 		theForm.style.maxHeight = Math.min(editorBottomMaxHeight, screenBottomMaxHeight) - margin + 'px';
+		if (isIE) theForm.style.height = theForm.style.maxHeight;
 	}
 	function removeFullHeightMaxHeight() {
-		settingsPanel.querySelector('#CodeMirror-settings__form').style.maxHeight = '';
+		theForm.style.maxHeight = '';
+		if (isIE) theForm.style.height = '';
 	}
 
 
@@ -173,11 +178,9 @@
 			window.addEventListener('scroll', setSettingsPosition);
 			window.addEventListener('resize', setSettingsPosition);
 			window.addEventListener('resize', matchTextAreaMarginTop);
-			// window.addEventListener('scroll', fixedSettings);
-			// window.addEventListener('resize', fixedSettings);
-				editor.getWrapperElement().style.height = 'auto';
-				setSettingsPosition();
-				matchTextAreaMarginTop();
+			editor.getWrapperElement().style.height = 'auto';
+			setSettingsPosition();
+			matchTextAreaMarginTop();
 			window.setTimeout(function(){
 				updateFullHeightMaxHeight();
 				fullHeightMatch();
@@ -188,8 +191,6 @@
 			window.removeEventListener('scroll', setSettingsPosition);
 			window.removeEventListener('resize', setSettingsPosition);
 			window.removeEventListener('resize', matchTextAreaMarginTop);
-			// window.removeEventListener('scroll', fixedSettings);
-			// window.addEventListener('resize', fixedSettings);
 			// window.setTimeout(function(){
 				editor.getWrapperElement().style.marginTop = '';
 				removeFullHeightMaxHeight();
@@ -197,7 +198,6 @@
 				matchTextAreaHeight();
 			// }, 100);
 		}
-		// editor.getTextArea().style.display = 'none'; // just to make sure
 	}
 
 	var options = {
@@ -283,11 +283,8 @@
 				settingsPanel.classList.remove('open-advanced');
 				settingsPanel.classList.add('closed');
 				break;
-				
 		}
 	}
-
-
 
 	// set a codemirror option from an input.onchange event callback
 	function updateOption(event) {
@@ -443,9 +440,9 @@
 	}
 
 	// cursor & selection pairity between codemirror and the textarea
-	var selection; // ???
+	// var selection; // ???
 	function giveFocusToTextArea() {
-		selection = editor.doc.listSelections()[0];
+		var selection = editor.doc.listSelections()[0];
 		var head, anchor, i;
 		head = anchor = i = 0;
 		editor.doc.eachLine(function(line){
@@ -516,11 +513,6 @@
 		scrollPanel = editor.getWrapperElement().querySelector('.CodeMirror-code');
 		target.classList.add('CodeMirror-mirrored');
 
-		toolbar.addEventListener('mousedown', giveFocusToTextArea);
-		toolbar.addEventListener('click', function(){
-			window.setTimeout(returnFocusFromTextArea,0);
-		});
-
 		// Save save all changes to the textarea.value
 		editor.on('change', function () { editor.save(); });
 
@@ -535,6 +527,10 @@
 		if (state.isThemeOrPlugin) { 
 			attachDragResizeThemeOrPlugin();
 		} else {
+			toolbar.addEventListener('mousedown', giveFocusToTextArea);
+			toolbar.addEventListener('click', function(){
+				window.setTimeout(returnFocusFromTextArea,0);
+			});
 			attachDragResizePostOrPage();
 			attachFullHeightToggle();
 			attachFullscreen();
