@@ -1,7 +1,7 @@
 === HTML Editor Syntax Highlighter ===
 Contributors: nixdns, arniebradfo, rraub, collinprice
 Donate link: https://www.paypal.me/mukhortov/5
-Tags: editor, html editor, text editor, post editor, syntax, highlighting, highlighter, syntax highlighting, syntax highlighter, codemirror, codemirror.js, code, code highlighter, code coloring
+Tags: editor, html editor, text editor, text editor, theme editor, plugin editor, syntax, highlighting, highlighter, syntax highlighting, syntax highlighter, codemirror, codemirror.js, code, code highlighter, code coloring
 Requires at least: 4.0.11
 Tested up to: 4.7.3
 Stable tag: 2.0.0
@@ -29,7 +29,7 @@ If you like the plugin, please [donate](https://www.paypal.me/mukhortov/5) and l
 If you would like to contribute to this plugin, view the [github repo](https://github.com/mukhortov/HESH-WordPress-Plugin).
 
 __Browser Support:__
-Everything except Internet Expolorer 10 and under
+Everything except Internet Expolorer 10 and under. If you are using Internet Explorer you should get a [better browser](https://www.mozilla.org/en-US/firefox/new/).
 
 == Installation ==
 
@@ -176,8 +176,7 @@ Bug fix (thanks to collinprice):
 Initial release.
 
 
-
-
 == Screenshots ==
 1. Syntax highlighting in the Post/Page HTML editor.
-2. Syntax highlighting in the Post/Page HTML editor - full screen mode.
+1. Settings Panel.
+1. Syntax highlighting in the Theme/Plugin editor.

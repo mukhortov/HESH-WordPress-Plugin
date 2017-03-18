@@ -12,9 +12,6 @@
 		- IE 11 - seems ok other than button bug
 - create logo
 - reorganize js
-- update documentation
-	- all meta to 2.0
-	- note browser support - no IE 10 and under - get a better browser
 - create [bradford.digital](http://www.bradford.digital) homepage
 - push to `dev` then to `master`
 - make `release` branch
