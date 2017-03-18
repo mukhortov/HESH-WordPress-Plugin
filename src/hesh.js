@@ -315,8 +315,12 @@
 		document.getElementById('cm_content_fullscreen').onclick = toggleFullscreen;
 	}
 	function toggleFullscreen() {
-		fullscreenBox.classList.toggle(fullscreenClass); // TODO: fix the use of toggle
-		editor.focus();
+		if (state.isFullHeight()){
+			fullscreenBox.classList.remove(fullscreenClass);
+		} else {
+			fullscreenBox.classList.toggle(fullscreenClass); // TODO: fix the use of toggle
+			editor.focus();
+		}
 	}
 
 

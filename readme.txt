@@ -17,32 +17,37 @@ Add syntax highlighting in the WordPress Post & Page HTML text editor and the Th
 = Features =
 
 * Syntax highlighting in the Post/Page HTML editor
-* _NEW:_ Syntax highlighting for WordPress shortcodes
+* _NEW:_ Syntax highlighting in the Theme & Plugin editors
+* Syntax highlighting for WordPress shortcodes
 * Save your posts and pages pressing Ctrl+S (Cmd+S on Mac)
 * Restore cursor position after page is reloaded
-* _NEW:_ Huge Selection of themes
+* Huge Selection of themes and other customization options
 * Fullscreen mode: toggle with F11/Esc hotkeys
 
 If you like the plugin, please [donate](https://www.paypal.me/mukhortov/5) and leave a review :)
 
 If you would like to contribute to this plugin, view the [github repo](https://github.com/mukhortov/HESH-WordPress-Plugin).
 
+__Browser Support:__
+Everything except Internet Expolorer 10 and under
+
 == Installation ==
 
-1. Upload the 'html-editor-syntax-highlighter' directory to the '/wp-content/plugins/' directory
+1. Install HTML Editor Syntax Highlighter either via the WordPress.org plugin repository or by uploading the files to your server
 2. Activate the plugin on the 'Plugins' page
+3. Enjoy
 
 == Changelog ==
 
 = 2.0.0 =
-* totally recoded the codebase
-* native wp editor buttons work on content - no longer overwrites with emulating buttons
 * now adjusts to the _'Enable full-height editor and distraction-free functionality'_ setting
 * syntax highlighting on Theme and Plugin Editor pages
+* fixed bug: native wp editor buttons work on content - no longer overwrites with emulating buttons
 * __Settings:__
 	* added an extendable settings panel
 	* saves settings to WordPress user profile
 	* added more text customization settings
+* basically rewrote the whole codebase
 
 = 1.7.2 =
 * fixed bug: pre v5.4 php was causing an error - `func_that_returns_array()['index']` syntax is [not allowed](http://php.net/manual/en/language.types.array.php#example-105)
