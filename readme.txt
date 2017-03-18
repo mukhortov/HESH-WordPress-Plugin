@@ -12,7 +12,7 @@ Add syntax highlighting to the all WordPress code editors using Codemirror.js
 
 == Description ==
 
-Add syntax highlighting in the WordPress Post/Page HTML text editor and Theme/Plugin editors using Codemirror.js
+Add syntax highlighting in the WordPress Post & Page HTML text editor and the Theme & Plugin editors using Codemirror.js
 
 = Features =
 
@@ -33,6 +33,16 @@ If you would like to contribute to this plugin, view the [github repo](https://g
 2. Activate the plugin on the 'Plugins' page
 
 == Changelog ==
+
+= 2.0.0 =
+* totally recoded the codebase
+* native wp editor buttons work on content - no longer overwrites with emulating buttons
+* now adjusts to the _'Enable full-height editor and distraction-free functionality'_ setting
+* syntax highlighting on Theme and Plugin Editor pages
+* __Settings:__
+	* added an extendable settings panel
+	* saves settings to WordPress user profile
+	* added more text customization settings
 
 = 1.7.2 =
 * fixed bug: pre v5.4 php was causing an error - `func_that_returns_array()['index']` syntax is [not allowed](http://php.net/manual/en/language.types.array.php#example-105)

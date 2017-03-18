@@ -1,10 +1,10 @@
 /**
  * @name     HTML Editor Syntax Highlighter
- * @author   Petr Mukhortov
- * @link     http://mukhortov.com/
  * @author   James Bradford
  * @link     http://arniebradfo.com/
- * @since    1.7.2
+ * @author   Petr Mukhortov
+ * @link     http://mukhortov.com/
+ * @since    2.0.0
 */
 
 // console.log(window.heshOptions); // from wordpress php
@@ -38,24 +38,24 @@
 		isVisualEnabled: document.getElementById('content-tmce') != null,
 		isThemeOrPlugin: document.getElementById('newcontent') != null,
 
-		isActive: function() {
+		isActive: function () {
 			return document.getElementsByClassName('CodeMirror')[0] != null;
 		},
 
-		isVisualActive: function() {
+		isVisualActive: function () {
 			return document.getElementsByClassName('tmce-active')[0] != null;
 		},
 
-		isFullHeight: function() {
+		isFullHeight: function () {
 			if (!fullHeightToggle) return false;
 			return fullHeightToggle.checked;
 		},
 
 		previousSettingsPosition: 'none',
-		settingsPosition: function() { // : 'top' | 'middle' | 'bottom' | 'normal' | 'none'
+		settingsPosition: function () { // : 'top' | 'middle' | 'bottom' | 'normal' | 'none'
 			var position;
 			var self = this;
-			if (!toolbar){
+			if (!toolbar) {
 				position = 'none';
 			} else if (toolbar.style.position === 'absolute') {
 				if (toolbar.style.top === '0px') position = 'top';
@@ -65,15 +65,11 @@
 			} else {
 				position = 'normal';
 			}
-			window.setTimeout(function(){
+			window.setTimeout(function () {
 				self.previousSettingsPosition = position;
-			},0);
+			}, 0);
 			return position;
 		}
-
-		// isSettingsClosed: true,
-		// isSettingsOpen: false,
-		// isAdvancedSettingsOpen: false
 	};
 
 	function fullHeightMatch() {
@@ -98,7 +94,7 @@
 			element.style.position = 'fixed';
 			element.style.top = toolbarRect.bottom + 'px';
 			element.style.right = (document.documentElement.getBoundingClientRect().width - toolbarRect.right) + 'px';
-			if (!element.id.match(/toggle/ig))	{
+			if (!element.id.match(/toggle/ig)) {
 				element.style.left = toolbarRect.left + 'px';
 				element.style.width = 'auto';
 			}
@@ -135,7 +131,7 @@
 				// console.log('bottom');
 				setSettingsPositionBottomValues();
 				break;
-			case 'normal': 
+			case 'normal':
 			case 'none':
 				// console.log('normal/none');
 				break;
@@ -167,7 +163,7 @@
 	}
 	function fullHeightToggled() {
 		if (state.isFullHeight()) {
-			editor.setOption('viewportMargin', Infinity); 
+			editor.setOption('viewportMargin', Infinity);
 			editor.on('change', fullHeightMatch);
 			window.addEventListener('scroll', setSettingsPosition);
 			window.addEventListener('resize', setSettingsPosition);
@@ -175,7 +171,7 @@
 			editor.getWrapperElement().style.height = 'auto';
 			setSettingsPosition();
 			matchTextAreaMarginTop();
-			window.setTimeout(function(){
+			window.setTimeout(function () {
 				updateFullHeightMaxHeight();
 				fullHeightMatch();
 			}, 100); // TODO: find a better way to override
@@ -186,10 +182,10 @@
 			window.removeEventListener('resize', setSettingsPosition);
 			window.removeEventListener('resize', matchTextAreaMarginTop);
 			// window.setTimeout(function(){
-				editor.getWrapperElement().style.marginTop = '';
-				removeFullHeightMaxHeight();
-				setSettingsPositionTopValues();
-				matchTextAreaHeight();
+			editor.getWrapperElement().style.marginTop = '';
+			removeFullHeightMaxHeight();
+			setSettingsPositionTopValues();
+			matchTextAreaHeight();
 			// }, 100);
 		}
 	}
@@ -247,7 +243,7 @@
 		settingsPanel.querySelector('#fontSize').addEventListener('change', updateFontSize);
 		settingsPanel.querySelector('#lineHeight').addEventListener('change', updateLineHeight);
 	}
-	
+
 	// toggle classes for settingsPanel state
 	function toggleSettings(event) {
 		if (event.target.id.match(/advanced/ig)) {
@@ -260,7 +256,7 @@
 	}
 
 	function settingsToggle(toState) {
-		switch (toState){
+		switch (toState) {
 			case 'open':
 				settingsPanel.classList.add('open');
 				settingsPanel.classList.remove('open-advanced');
@@ -283,7 +279,7 @@
 	// set a codemirror option from an input.onchange event callback
 	function updateOption(event) {
 		var value = +event.target.value;
-		value = isNaN(value) ? event.target.value : value ;
+		value = isNaN(value) ? event.target.value : value;
 		if (event.target.checked != null) value = event.target.checked;
 		heshOptions[event.target.id] = value;
 		editor.setOption(event.target.id, value);
@@ -386,7 +382,7 @@
 
 	function setFileType() {
 		var fileNameElement = document.querySelector('.fileedit-sub .alignleft');
-		var fileTypeMatches = fileNameElement.textContent .match(/\.[a-z\d]{2,}/ig); // find the file extention
+		var fileTypeMatches = fileNameElement.textContent.match(/\.[a-z\d]{2,}/ig); // find the file extention
 		var fileType = fileTypeMatches[fileTypeMatches.length - 1].match(/[a-z]*/ig)[1]; // remove the dot
 		var filetypeToMode = { // map file extensions to their CodeMirror modes
 			php: 'php',
@@ -419,17 +415,13 @@
 	function recordSelectionState() {
 		var selection = editor.doc.listSelections()[0];
 		var scrollPosition = editor.getScrollInfo();
-
-		// console.log(selection);
-		// console.log(scrollPosition);
-
-		document.cookie = 'hesh_plugin_selection_state=' + 
-			postID + ',' + 
-			selection.anchor.line + ',' + 
-			selection.anchor.ch + ',' + 
-			selection.head.line + ',' + 
-			selection.head.ch + ',' + 
-			scrollPosition.left + ',' + 
+		document.cookie = 'hesh_plugin_selection_state=' +
+			postID + ',' +
+			selection.anchor.line + ',' +
+			selection.anchor.ch + ',' +
+			selection.head.line + ',' +
+			selection.head.ch + ',' +
+			scrollPosition.left + ',' +
 			scrollPosition.top;
 	}
 
@@ -438,61 +430,56 @@
 		var selection = editor.doc.listSelections()[0];
 		var head, anchor, i;
 		head = anchor = i = 0;
-		editor.doc.eachLine(function(line){
-			if (i <= (selection.head.line - 1)) head += line.text.length + 1; 
-			if (i <= (selection.anchor.line - 1)) anchor += line.text.length + 1; 
+		editor.doc.eachLine(function (line) {
+			if (i <= (selection.head.line - 1)) head += line.text.length + 1;
+			if (i <= (selection.anchor.line - 1)) anchor += line.text.length + 1;
 			i++;
 		});
 		head += selection.head.ch;
 		anchor += selection.anchor.ch;
-		editor.getTextArea().setSelectionRange(Math.min(anchor,head), Math.max(anchor,head));
+		editor.getTextArea().setSelectionRange(Math.min(anchor, head), Math.max(anchor, head));
 		editor.getTextArea().focus();
 	}
-	
+
 	// Check if any edits were made to the textarea.value
 	function returnFocusFromTextArea() {
-		// var editorLength = editor.doc.getValue().length;
-		// var textAreaLength = editor.getTextArea().value.length;
-		// if (editorLength !== textAreaLength) { // if there were changes...
+		// save the selection state and scroll state
+		var selectionStart = editor.getTextArea().selectionStart;
+		var selectionEnd = editor.getTextArea().selectionEnd;
+		var scrollPosition = editor.getScrollInfo();
 
-			// save the selection state and scroll state
-			var selectionStart = editor.getTextArea().selectionStart;
-			var selectionEnd = editor.getTextArea().selectionEnd;
-			var scrollPosition = editor.getScrollInfo();
+		// update codemirror with the new textarea.value
+		editor.doc.setValue(editor.getTextArea().value);
+		editor.focus();
 
-			// update codemirror with the new textarea.value
-			editor.doc.setValue(editor.getTextArea().value);
-			editor.focus();
-
-			var startLine = 0, endLine = 0, currentLine = 0;
-			var startCh = selectionStart;
-			var endCh = selectionEnd;
-			var lineLength = editor.getLineHandle(currentLine).text.length + 1;
-			while (lineLength <= startCh && lineLength <= endCh) {
-				currentLine++;
-				if (lineLength <= startCh){
-					startCh -= lineLength;
-					startLine = currentLine;
-				}
-				if (lineLength <= endCh){
-					endCh -= lineLength;
-					endLine = currentLine;
-				}
-				lineLength = editor.getLineHandle(currentLine).text.length + 1;
-				// console.log('line: '+currentLine, 'startCh: '+startCh, 'endCh: '+endCh); // for debug
+		var startLine = 0, endLine = 0, currentLine = 0;
+		var startCh = selectionStart;
+		var endCh = selectionEnd;
+		var lineLength = editor.getLineHandle(currentLine).text.length + 1;
+		while (lineLength <= startCh && lineLength <= endCh) {
+			currentLine++;
+			if (lineLength <= startCh) {
+				startCh -= lineLength;
+				startLine = currentLine;
 			}
+			if (lineLength <= endCh) {
+				endCh -= lineLength;
+				endLine = currentLine;
+			}
+			lineLength = editor.getLineHandle(currentLine).text.length + 1;
+			// console.log('line: '+currentLine, 'startCh: '+startCh, 'endCh: '+endCh); // for debug
+		}
 
-			editor.doc.setSelection(
-				{ line:startLine, ch:startCh },
-				{ line:endLine, ch:endCh },
-				{ scroll:false }
-			);
-			editor.scrollTo(scrollPosition.left, scrollPosition.top);
+		editor.doc.setSelection(
+			{ line: startLine, ch: startCh },
+			{ line: endLine, ch: endCh },
+			{ scroll: false }
+		);
+		editor.scrollTo(scrollPosition.left, scrollPosition.top);
 
-		// }
 		editor.save();
 	}
-	
+
 	function startEditor() {
 		if (state.isActive()) return;
 
@@ -502,7 +489,7 @@
 		if (state.isThemeOrPlugin) setFileType();
 
 		// start up codemirror
-		editor = CodeMirror.fromTextArea(target, options);		
+		editor = CodeMirror.fromTextArea(target, options);
 		scrollPanel = editor.getWrapperElement().querySelector('.CodeMirror-code');
 		target.classList.add('CodeMirror-mirrored');
 
@@ -510,19 +497,20 @@
 		editor.on('change', function () { editor.save(); });
 
 		restoreSelectionState();
-		editor.on('cursorActivity', function() {
+		editor.on('cursorActivity', function () {
 			window.requestAnimationFrame(recordSelectionState);
 		});
-		editor.on('scroll', function() {
+		editor.on('scroll', function () {
 			window.requestAnimationFrame(recordSelectionState);
 		});
 
-		if (state.isThemeOrPlugin) { 
+		if (state.isThemeOrPlugin) {
 			attachDragResizeThemeOrPlugin();
+			publishButton = document.getElementById('submit');
 		} else {
 			toolbar.addEventListener('mousedown', giveFocusToTextArea);
-			toolbar.addEventListener('click', function(){
-				window.setTimeout(returnFocusFromTextArea,0);
+			toolbar.addEventListener('click', function () {
+				window.setTimeout(returnFocusFromTextArea, 0);
 			});
 			attachDragResizePostOrPage();
 			attachFullHeightToggle();
@@ -542,7 +530,7 @@
 		if (state.isThemeOrPlugin) {
 			startEditor();
 		} else if (state.isVisualEnabled) {
-			tabText.addEventListener('click', function(){
+			tabText.addEventListener('click', function () {
 				window.setTimeout(startEditor, 0);
 			});
 			tabVisual.addEventListener('click', stopEditor);
@@ -566,4 +554,4 @@
 	// window.switchEditors,
 	window.jQuery,
 	window.heshOptions
-);
+	);
