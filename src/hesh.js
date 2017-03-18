@@ -13,7 +13,6 @@
 	document,
 	window,
 	CodeMirror,
-	// switchEditors,
 	$,
 	heshOptions
 ) {
@@ -76,10 +75,6 @@
 		// isSettingsOpen: false,
 		// isAdvancedSettingsOpen: false
 	};
-	// var thisIsSafari = (function() {
-	// 	// TODO: test for focus change here. indicative of Safari
-	// 	return true;
-	// })();
 
 	function fullHeightMatch() {
 		editor.save();
@@ -148,7 +143,6 @@
 	}
 
 	var isIE = !!navigator.userAgent.match(/Trident/ig);
-	console.log(isIE);
 	function updateFullHeightMaxHeight() {
 		// if (!settingsPanel.classList.contains('open-advanced')) return;
 		if (!theForm) return;
@@ -345,7 +339,7 @@
 		});
 		document.addEventListener('mouseup', function () {
 			document.removeEventListener('mousemove', matchTextAreaHeight);
-			editor.refresh();
+			// editor.refresh(); // TODO: put this somewhere else 
 		});
 	}
 
@@ -440,7 +434,6 @@
 	}
 
 	// cursor & selection pairity between codemirror and the textarea
-	// var selection; // ???
 	function giveFocusToTextArea() {
 		var selection = editor.doc.listSelections()[0];
 		var head, anchor, i;
@@ -452,15 +445,15 @@
 		});
 		head += selection.head.ch;
 		anchor += selection.anchor.ch;
-		editor.getTextArea().focus();
 		editor.getTextArea().setSelectionRange(Math.min(anchor,head), Math.max(anchor,head));
+		editor.getTextArea().focus();
 	}
 	
 	// Check if any edits were made to the textarea.value
 	function returnFocusFromTextArea() {
-		var editorLength = editor.doc.getValue().length;
-		var textAreaLength = editor.getTextArea().value.length;
-		if (editorLength !== textAreaLength) { // if there were changes...
+		// var editorLength = editor.doc.getValue().length;
+		// var textAreaLength = editor.getTextArea().value.length;
+		// if (editorLength !== textAreaLength) { // if there were changes...
 
 			// save the selection state and scroll state
 			var selectionStart = editor.getTextArea().selectionStart;
@@ -471,7 +464,7 @@
 			editor.doc.setValue(editor.getTextArea().value);
 			editor.focus();
 
-			var startLine, endLine, currentLine = 0;
+			var startLine = 0, endLine = 0, currentLine = 0;
 			var startCh = selectionStart;
 			var endCh = selectionEnd;
 			var lineLength = editor.getLineHandle(currentLine).text.length + 1;
@@ -496,7 +489,7 @@
 			);
 			editor.scrollTo(scrollPosition.left, scrollPosition.top);
 
-		}
+		// }
 		editor.save();
 	}
 	
