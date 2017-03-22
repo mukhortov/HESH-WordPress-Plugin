@@ -19,7 +19,7 @@
 	'use strict';
 
 	// ELEMENTS //
-	var editor; // CodeMirror
+	var editor;
 	var scrollPanel;
 	var settingsPanel = document.getElementById('CodeMirror-settings');
 	var theForm = document.getElementById('CodeMirror-settings__form');
@@ -87,6 +87,23 @@
 			element.style.width = '';
 		}
 	}
+
+	function throttleAnimationFrame (callback) {
+		var wait = false;
+		return function () {
+			var context = this, args = arguments;
+			if (!wait) {
+				callback.apply(context, args);
+				wait = true;
+				window.requestAnimationFrame(function () {
+					window.requestAnimationFrame(function () {
+						wait = false;
+					});
+				});
+			}
+		};
+	}
+
 	function setSettingsPositionMiddleValues() {
 		var toolbarRect = toolbar.getBoundingClientRect();
 		for (var index = 0; index < settingsPanel.children.length; index++) {
@@ -100,6 +117,7 @@
 			}
 		}
 	}
+
 	function setSettingsPositionBottomValues() {
 		var toolbarRect = toolbar.getBoundingClientRect();
 		var codeMirrorRect = editor.getWrapperElement().getBoundingClientRect();
@@ -113,6 +131,7 @@
 		}
 	}
 
+	var throttledSetSettingsPosition = throttleAnimationFrame(setSettingsPosition);
 	function setSettingsPosition(event) {
 		updateFullHeightMaxHeight();
 		var currentSettingsPosition = state.settingsPosition();
@@ -120,27 +139,23 @@
 		fullHeightMatch();
 		switch (currentSettingsPosition) {
 			case 'top':
-				// console.log('top');
 				setSettingsPositionTopValues();
 				break;
 			case 'middle':
-				// console.log('middle');
 				setSettingsPositionMiddleValues();
 				break;
 			case 'bottom':
-				// console.log('bottom');
 				setSettingsPositionBottomValues();
 				break;
 			case 'normal':
 			case 'none':
-				// console.log('normal/none');
 				break;
 		}
 	}
 
 	var isIE = !!navigator.userAgent.match(/Trident/ig);
+
 	function updateFullHeightMaxHeight() {
-		// if (!settingsPanel.classList.contains('open-advanced')) return;
 		if (!theForm) return;
 		var margin = 6; // arbitrary
 		var formTop = theForm.getBoundingClientRect().top;
@@ -150,6 +165,7 @@
 		theForm.style.maxHeight = Math.min(editorBottomMaxHeight, screenBottomMaxHeight) - margin + 'px';
 		if (isIE) theForm.style.height = theForm.style.maxHeight;
 	}
+
 	function removeFullHeightMaxHeight() {
 		theForm.style.maxHeight = '';
 		if (isIE) theForm.style.height = '';
@@ -161,13 +177,14 @@
 		fullHeightToggle.addEventListener('change', fullHeightToggled);
 		fullHeightToggled();
 	}
+
 	function fullHeightToggled() {
 		if (state.isFullHeight()) {
 			editor.setOption('viewportMargin', Infinity);
 			editor.on('change', fullHeightMatch);
-			window.addEventListener('scroll', setSettingsPosition);
-			window.addEventListener('resize', setSettingsPosition);
-			window.addEventListener('resize', matchTextAreaMarginTop);
+			window.addEventListener('scroll', throttledSetSettingsPosition);
+			window.addEventListener('resize', throttledSetSettingsPosition);
+			window.addEventListener('resize', throttledMatchTextAreaMarginTop);
 			editor.getWrapperElement().style.height = 'auto';
 			setSettingsPosition();
 			matchTextAreaMarginTop();
@@ -178,9 +195,9 @@
 		} else {
 			editor.setOption('viewportMargin', options.viewportMargin);
 			editor.off('change', fullHeightMatch);
-			window.removeEventListener('scroll', setSettingsPosition);
-			window.removeEventListener('resize', setSettingsPosition);
-			window.removeEventListener('resize', matchTextAreaMarginTop);
+			window.removeEventListener('scroll', throttledSetSettingsPosition);
+			window.removeEventListener('resize', throttledSetSettingsPosition);
+			window.removeEventListener('resize', throttledMatchTextAreaMarginTop);
 			// window.setTimeout(function(){
 			editor.getWrapperElement().style.marginTop = '';
 			removeFullHeightMaxHeight();
@@ -216,6 +233,7 @@
 			}
 		}
 	};
+
 	function updateOptions() {
 		options.theme = heshOptions.theme;
 		options.lineNumbers = !!heshOptions.lineNumbers;
@@ -267,7 +285,7 @@
 				settingsPanel.classList.add('open-advanced');
 				settingsPanel.classList.remove('closed');
 				break;
-			case 'closed':
+			// case 'closed':
 			default:
 				settingsPanel.classList.remove('open');
 				settingsPanel.classList.remove('open-advanced');
@@ -314,6 +332,7 @@
 		);
 		document.getElementById('cm_content_fullscreen').onclick = toggleFullscreen;
 	}
+
 	function toggleFullscreen() {
 		if (state.isFullHeight()){
 			fullscreenBox.classList.remove(fullscreenClass);
@@ -328,6 +347,7 @@
 		editor.getWrapperElement().style.height = editor.getTextArea().style.height;
 	}
 
+	var throttledMatchTextAreaMarginTop = throttleAnimationFrame(matchTextAreaMarginTop);
 	function matchTextAreaMarginTop() {
 		editor.getWrapperElement().style.marginTop = editor.getTextArea().style.marginTop;
 	}
@@ -396,7 +416,6 @@
 			js: 'javascript',
 			json: 'javascript'
 		};
-		console.log(fileType);
 		options.mode = filetypeToMode[fileType];
 	}
 
@@ -405,6 +424,7 @@
 		var parts = value.split('; ' + name + '=');
 		if (parts.length === 2) return parts.pop().split(';').shift();
 	}
+
 	function restoreSelectionState() {
 		var selectionState = (getCookie('hesh_plugin_selection_state') || '0,0,0,0,0,0,0').split(',');
 		if (postID === selectionState[0]) {
@@ -416,6 +436,8 @@
 			editor.scrollTo(selectionState[5], selectionState[6]);
 		}
 	}
+
+	var throttledRecordSelectionState = throttleAnimationFrame(recordSelectionState);
 	function recordSelectionState() {
 		var selection = editor.doc.listSelections()[0];
 		var scrollPosition = editor.getScrollInfo();
@@ -501,12 +523,8 @@
 		editor.on('change', function () { editor.save(); });
 
 		restoreSelectionState();
-		editor.on('cursorActivity', function () {
-			window.requestAnimationFrame(recordSelectionState);
-		});
-		editor.on('scroll', function () {
-			window.requestAnimationFrame(recordSelectionState);
-		});
+		editor.on('cursorActivity', throttledRecordSelectionState);
+		editor.on('scroll', throttledRecordSelectionState);
 
 		if (state.isThemeOrPlugin) {
 			attachDragResizeThemeOrPlugin();
@@ -555,7 +573,6 @@
 	document,
 	window,
 	window.CodeMirror,
-	// window.switchEditors,
 	window.jQuery,
 	window.heshOptions
-	);
+);

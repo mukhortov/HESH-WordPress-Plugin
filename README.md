@@ -8,8 +8,8 @@
 		- Chrome (Mac) - seems ok
 		- FireFox (Win10) - seems ok
 		- Chrome (Win10) - seems ok
-		- Edge - seems ok other than button bug
-		- IE 11 - seems ok other than button bug
+		- Edge - seems ok
+		- IE 11 - seems ok
 - create logo
 - reorganize js
 - create [bradford.digital](http://www.bradford.digital) homepage
