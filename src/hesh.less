@@ -1,9 +1,9 @@
 /**!
  * Plugin Name:  HTML Editor Syntax Highlighter
+ * Author:       James Bradford
+ * Author URI:   http://arniebradfo.com/
  * Author:       Peter Mukhortov
  * Author URI:   http://mukhortov.com/
- * Author:             James Bradford
- * Author URI:         http://arniebradfo.com/
  * Version:      2.0.0
 */
 
@@ -17,8 +17,6 @@
 	&-scroll{
 		font-family: Menlo Regular, Consolas, Monaco, monospace;
 		line-height: 150%;
-		// font-size: 12px;
-		// height: 500px;
 		position: relative;
 	}
 
@@ -42,7 +40,6 @@
 	&-settings{
 
 		color: #444;
-		// display: block;
 		height: 0;
 		width: 100%;
 		z-index: 9;
@@ -131,7 +128,6 @@
 			box-sizing: border-box;
 			padding: 1px @padding;
 			overflow-y: auto;
-			// border-radius: @border-radius;
 			background-color: @background-color;  
 			border-left: 1px solid @border-color;
 			border-right: 1px solid @border-color;
@@ -156,8 +152,8 @@
 		&__foot-content{
 			margin: 0;
 		}
-		&__feedback{}
-		&__credits{}
+		// &__feedback{}
+		// &__credits{}
 
 		// OPEN AND CLOSED STATES
 		&__toggle, 
@@ -303,7 +299,6 @@
 			display: inline-block;
 			line-height: 35px - 10px;
 			padding: 0 4px;
-			// .media(line-height, (@docked-mobile-height - 14), (@docked-desktop-height - 10));
 			vertical-align: middle;
 		}
 
@@ -311,13 +306,14 @@
 
 
 	&-mirrored{ // the textarea CodeMirror is mirroring
-		display: block !important; // just to make sure
+		display: block !important; // so that focus still works in all browsers
 		position: fixed;
 		left: -9999px;
 		top: -9999px;
 		z-index: -999;
 		opacity: 0;
 	}
+
 
 	// THEME AND PLUGIN EDITOR PAGES
 

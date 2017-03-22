@@ -18,6 +18,8 @@
 ) {
 	'use strict';
 
+
+
 	// ELEMENTS //
 	var editor;
 	var scrollPanel;
@@ -30,9 +32,6 @@
 	var publishButton = document.getElementById('save-post') || document.getElementById('publish');
 	var postID = document.getElementById('post_ID') != null ? document.getElementById('post_ID').value : 0;
 	var fullHeightToggle = document.getElementById('editor-expand-toggle');
-
-	var fontSize = +heshOptions.fontSize;
-	var lineHeight = +heshOptions.lineHeight;
 
 	var state = {
 		isVisualEnabled: document.getElementById('content-tmce') != null,
@@ -72,21 +71,44 @@
 		}
 	};
 
-	function fullHeightMatch() {
-		editor.save();
-		editor.getTextArea().style.height = editor.getWrapperElement().getBoundingClientRect().height + 'px';
-	}
+	var fontSize = +heshOptions.fontSize;
+	var lineHeight = +heshOptions.lineHeight;
 
-	function setSettingsPositionTopValues() {
-		for (var index = 0; index < settingsPanel.children.length; index++) {
-			var element = settingsPanel.children[index];
-			element.style.position = '';
-			element.style.top = '';
-			element.style.left = '';
-			element.style.right = '';
-			element.style.width = '';
+	var options = {
+		mode: 'wordpresspost',
+		tabMode: 'indent',
+		matchBrackets: true,
+		indentUnit: 1,
+		indentWithTabs: true,
+		enterMode: 'keep',
+		autofocus: true,
+		styleActiveLine: true,
+		electricChars: false,
+		viewportMargin: 10,
+		extraKeys: {
+			'F11': function () {
+				toggleFullscreen();
+			},
+			'Esc': function () {
+				toggleFullscreen();
+			},
+			'Ctrl-S': function () {
+				publishButton.click();
+			},
+			'Cmd-S': function () {
+				publishButton.click();
+			}
 		}
+	};
+
+	function updateOptions() {
+		options.theme = heshOptions.theme;
+		options.lineNumbers = !!heshOptions.lineNumbers;
+		options.tabSize = +heshOptions.tabSize;
+		options.lineWrapping = !!heshOptions.lineWrapping;
 	}
+	
+
 
 	function throttleAnimationFrame (callback) {
 		var wait = false;
@@ -102,6 +124,19 @@
 				});
 			}
 		};
+	}
+
+
+	
+	function setSettingsPositionTopValues() {
+		for (var index = 0; index < settingsPanel.children.length; index++) {
+			var element = settingsPanel.children[index];
+			element.style.position = '';
+			element.style.top = '';
+			element.style.left = '';
+			element.style.right = '';
+			element.style.width = '';
+		}
 	}
 
 	function setSettingsPositionMiddleValues() {
@@ -153,8 +188,10 @@
 		}
 	}
 
-	var isIE = !!navigator.userAgent.match(/Trident/ig);
 
+
+	var isIE = !!navigator.userAgent.match(/Trident/ig);
+	
 	function updateFullHeightMaxHeight() {
 		if (!theForm) return;
 		var margin = 6; // arbitrary
@@ -170,6 +207,7 @@
 		theForm.style.maxHeight = '';
 		if (isIE) theForm.style.height = '';
 	}
+
 
 
 	function attachFullHeightToggle() {
@@ -207,40 +245,9 @@
 		}
 	}
 
-	var options = {
-		mode: 'wordpresspost',
-		tabMode: 'indent',
-		matchBrackets: true,
-		indentUnit: 1,
-		indentWithTabs: true,
-		enterMode: 'keep',
-		autofocus: true,
-		styleActiveLine: true,
-		electricChars: false,
-		viewportMargin: 10,
-		extraKeys: {
-			'F11': function () {
-				toggleFullscreen();
-			},
-			'Esc': function () {
-				toggleFullscreen();
-			},
-			'Ctrl-S': function () {
-				publishButton.click();
-			},
-			'Cmd-S': function () {
-				publishButton.click();
-			}
-		}
-	};
 
-	function updateOptions() {
-		options.theme = heshOptions.theme;
-		options.lineNumbers = !!heshOptions.lineNumbers;
-		options.tabSize = +heshOptions.tabSize;
-		options.lineWrapping = !!heshOptions.lineWrapping;
-	}
 
+	// initalize the settings panel
 	function attachSettings() {
 		// move the settingsPanel (produced in php) to inside the codemirror instance
 		editor.getWrapperElement().appendChild(settingsPanel);
@@ -265,15 +272,15 @@
 	// toggle classes for settingsPanel state
 	function toggleSettings(event) {
 		if (event.target.id.match(/advanced/ig)) {
-			if (!settingsPanel.classList.contains('open-advanced')) settingsToggle('advanced');
-			else settingsToggle('open');
+			if (!settingsPanel.classList.contains('open-advanced')) setSettingsPanelState('advanced');
+			else setSettingsPanelState('open');
 		} else {
-			if (settingsPanel.classList.contains('open')) settingsToggle('closed');
-			else settingsToggle('open');
+			if (settingsPanel.classList.contains('open')) setSettingsPanelState('closed');
+			else setSettingsPanelState('open');
 		}
 	}
 
-	function settingsToggle(toState) {
+	function setSettingsPanelState(toState) {
 		switch (toState) {
 			case 'open':
 				settingsPanel.classList.add('open');
@@ -293,6 +300,8 @@
 				break;
 		}
 	}
+
+
 
 	// set a codemirror option from an input.onchange event callback
 	function updateOption(event) {
@@ -322,6 +331,19 @@
 	}
 
 
+
+	// updates the user settings in the wordpress DB
+	function submitForm() {
+		var formArray = $('#CodeMirror-settings__form').serializeArray();
+		// TODO: drop jQuery dependency
+		// console.log(formArray); // for debug
+		$.post(heshOptions.ajaxUrl, formArray, function (/*response*/) {
+			// console.log(response); // for debug
+		});
+	}
+
+
+
 	// setup the fullscreen button
 	var fullscreenBox = document.getElementById('wp-content-editor-container');
 	var fullscreenClass = 'heshFullscreen';
@@ -337,11 +359,17 @@
 		if (state.isFullHeight()){
 			fullscreenBox.classList.remove(fullscreenClass);
 		} else {
-			fullscreenBox.classList.toggle(fullscreenClass); // TODO: fix the use of toggle
+			fullscreenBox.classList.toggle(fullscreenClass);
 			editor.focus();
 		}
 	}
 
+
+
+	function fullHeightMatch() {
+		editor.save();
+		editor.getTextArea().style.height = editor.getWrapperElement().getBoundingClientRect().height + 'px';
+	}
 
 	function matchTextAreaHeight() {
 		editor.getWrapperElement().style.height = editor.getTextArea().style.height;
@@ -351,6 +379,8 @@
 	function matchTextAreaMarginTop() {
 		editor.getWrapperElement().style.marginTop = editor.getTextArea().style.marginTop;
 	}
+
+
 
 	// copy the resize of the textarea in codemirror
 	function attachDragResizePostOrPage() {
@@ -394,15 +424,6 @@
 	}
 
 
-	// updates the user settings in the wordpress DB
-	function submitForm() {
-		var formArray = $('#CodeMirror-settings__form').serializeArray();
-		// TODO: drop jQuery dependency
-		// console.log(formArray); // for debug
-		$.post(heshOptions.ajaxUrl, formArray, function (/*response*/) {
-			// console.log(response); // for debug
-		});
-	}
 
 	function setFileType() {
 		var fileNameElement = document.querySelector('.fileedit-sub .alignleft');
@@ -418,6 +439,8 @@
 		};
 		options.mode = filetypeToMode[fileType];
 	}
+
+
 
 	function getCookie(name) {
 		var value = '; ' + document.cookie;
@@ -450,6 +473,8 @@
 			scrollPosition.left + ',' +
 			scrollPosition.top;
 	}
+
+
 
 	// cursor & selection pairity between codemirror and the textarea
 	function giveFocusToTextArea() {
@@ -506,6 +531,8 @@
 		editor.save();
 	}
 
+
+
 	function startEditor() {
 		if (state.isActive()) return;
 
@@ -544,9 +571,11 @@
 
 	function stopEditor() {
 		if (!state.isActive()) return;
-		settingsToggle('closed');
+		setSettingsPanelState('closed');
 		editor.toTextArea();
 	}
+
+
 
 	function initialise() {
 		if (state.isThemeOrPlugin) {
@@ -569,6 +598,9 @@
 	} else {
 		initialise();
 	}
+
+
+
 })(
 	document,
 	window,

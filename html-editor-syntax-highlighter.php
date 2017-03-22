@@ -344,7 +344,7 @@ class wp_html_editor_syntax {
 					<div class="form CodeMirror-settings__body">
 						<?php wp_nonce_field($this->formProcessName,$this->nonceSecretCode);?>
 						<input name="action" value="hesh_options_form" type="hidden">
-						<?php $i=0; while ($i < 12): ?>
+						<?php $i=0; while ($i < 1): ?>
 						<table class="form-table"><tbody>
 							<tr><td class="CodeMirror-settings__heading"><h1>
 								Addons
@@ -359,7 +359,7 @@ class wp_html_editor_syntax {
 						<p class="CodeMirror-settings__foot-content CodeMirror-settings__feedback">
 							<small>Leave a 
 								<a href="https://wordpress.org/support/plugin/html-editor-syntax-highlighter/reviews/#new-post" target="_blank">review</a>,
-								fork this on
+								fork on
 								<a href="https://github.com/mukhortov/HESH-WordPress-Plugin/issues/new" target="_blank">Github</a>, 
 								or submit a 
 								<a href="https://github.com/mukhortov/HESH-WordPress-Plugin/issues/new" target="_blank">bug report or enhancement request</a>. 
