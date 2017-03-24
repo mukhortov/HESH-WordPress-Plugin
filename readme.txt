@@ -20,8 +20,8 @@ Add syntax highlighting to the HTML editor.
 == Changelog ==
 
 = 1.3.0 =
-* CodeMirror libruary updated to the version 3.02
-* Added quicktags toolbar buttons
+* CodeMirror library updated to the version 3.02
+* Added quick-tags toolbar buttons
 * Preserve the scroll position after update or page reload
 
 = 1.2.1 =
@@ -38,9 +38,6 @@ Bug fix (thanks to collinprice):
 
 = 1.0 =
 Initial release.
-
-
-
 
 == Screenshots ==
 1. Syntax highlighting in the Post/Page HTML editor.
