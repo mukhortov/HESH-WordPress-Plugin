@@ -12,7 +12,7 @@ WordPress plugin that adds syntax highlighting in the Post & Page HTML text edit
 * Huge Selection of themes and other customization options
 * Fullscreen mode: toggle with F11/Esc hotkeys
 
-If you are not a developer, please use the [HTML Editor Syntax Highlighter plugin page](http://wordpress.org/plugins/html-editor-syntax-highlighter/) on WordPress.org to download and install it.
+If you are not a developer, please use the [HTML Editor Syntax Highlighter plugin page](http://wordpress.org/plugins/html-editor-syntax-highlighter/) on WordPress.org to download and install it. You can also download the latest release from [here](https://github.com/mukhortov/HESH-WordPress-Plugin/releases).
 
 ## Contributing
 
@@ -25,7 +25,7 @@ Please report any issues or suggestions.
 4. Run `npm install` on the project folder.
 5. Run `gulp build` to build the project.
 
-Running `gulp` will build the project and run it in a watch state. Making any changes to files will automatically rebuild the project. If you install the [LiveReload](https://chrome.google.com/webstore/detail/livereload/jnihajbhpnppcggbcgedagnkighmdlei) chrome browser extension, the page will reload when the project rebuilds.
+Running `gulp` will build the project and run it in a watch state. Making any changes to files will automatically rebuild the project. Install the [LiveReload](https://chrome.google.com/webstore/detail/livereload/jnihajbhpnppcggbcgedagnkighmdlei) chrome browser extension and the page will reload when the project rebuilds.
 
 ## Sample Text for testing
 
