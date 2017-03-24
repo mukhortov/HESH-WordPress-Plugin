@@ -1,18 +1,18 @@
 === HTML Editor Syntax Highlighter ===
-Contributors: nixdns, arniebradfo, collinprice
+Contributors: nixdns, arniebradfo, rraub, collinprice,
 Donate link: https://www.paypal.me/mukhortov/5
 Tags: editor, html editor, text editor, post editor, syntax, highlighting, highlighter, syntax highlighting, syntax highlighter, codemirror, code, code highlighter, code coloring
 Requires at least: 4.0.11
 Tested up to: 4.5.2
-Stable tag: 1.7.1
+Stable tag: 1.7.2
 License: GPL-2.0
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Add syntax highlighting to the HTML editor.
+Add syntax highlighting to the HTML editor using Codemirror.js
 
 == Description ==
 
-Add syntax highlighting to the Post/Page HTML editor.
+Add syntax highlighting in the WordPress Post & Page HTML/text editor using Codemirror.js
 
 = Features =
 
@@ -33,6 +33,11 @@ If you would like to contribute to this plugin, view the [github repo](https://g
 2. Activate the plugin on the 'Plugins' page
 
 == Changelog ==
+
+= 1.7.2 =
+* fixed bug: code mirror not initializing properly when new user tries to edit post for the first time
+* fixed bug: CodeMirror no longer trying to load on "All Post" and "All Pages"
+* fixed bug: Font and theme were reset to default when switching to the visual editor and back
 
 = 1.7.1 =
 * fixed bug: return key would create two new lines and ignore indent
