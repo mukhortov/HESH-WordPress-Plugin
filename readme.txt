@@ -3,8 +3,8 @@ Contributors: nixdns
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=DC9K7UMY8AGUJ
 Tags: html editor, syntax highlighter, plugin editor, syntax, highlighting, syntax highlighting, text editor, editor, text editor syntax, editor, editor syntax
 Requires at least: 3.3
-Tested up to: 3.7.1
-Stable tag: 1.4.4
+Tested up to: 3.8.1
+Stable tag: 1.4.6
 
 Add syntax highlighting to the HTML editor.
 
@@ -26,6 +26,13 @@ Add syntax highlighting to the HTML editor.
 2. Activate the plugin on the 'Plugins' page
 
 == Changelog ==
+
+= 1.4.6 =
+* Fixed issue when "Add Media" button stopped working
+* Fixed editor resize bug in Visual mode.
+
+= 1.4.5 =
+* Bug fixing
 
 = 1.4.4 =
 * Add Media button now works correctly in Text mode
