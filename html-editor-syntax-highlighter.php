@@ -1,64 +1,140 @@
 <?php
 /**
- *
- * @since              1.7.2
- * @package            HESH_plugin
- *
- * Plugin Name:        HTML Editor Syntax Highlighter
- * Plugin URI:         http://wordpress.org/extend/plugins/html-editor-syntax-highlighter/
- * Description:        Adds syntax highlighting in the WordPress post HTML/text editor using Codemirror.js
- * Text Domain:        html-editor-syntax-highlighter
- * Author:             Petr Mukhortov
- * Author URI:         http://mukhortov.com/
- * Author:             James Bradford
- * Author URI:         http://arniebradfo.com/
- * License:            GPL-2.0+
- * License URI:        http://www.gnu.org/licenses/gpl-2.0.txt
- * GitHub Branch:      master
- * GitHub Plugin URI:  https://github.com/mukhortov/HESH-WordPress-Plugin
- * Version:            1.7.2
- * Requires at least:  4.0.11
- * Tested up to:       4.5.2
- * Stable tag:         1.7.2
+ * Plugin Name: HTML Editor Syntax Highlighter
+ * Plugin URI: http://wordpress.org/extend/plugins/html-editor-syntax-highlighter/
+ * Description: Syntax Highlighting in WordPress HTML Editor
+ * Author: Peter Mukhortov
+ * Author URI: http://mukhortov.com/
+ * Version: 1.2.1
+ * Requires at least: 3.3
+ * Tested up to: 3.3
+ * Stable tag: 1.2.1
  **/
 
-if ( preg_match( '#' . basename(__FILE__) . '#', $_SERVER['PHP_SELF'] ) ) {
-	die('You are not allowed to call this page directly.');
-}
+if(preg_match('#' . basename(__FILE__) . '#', $_SERVER['PHP_SELF'])) { die('You are not allowed to call this page directly.'); }
 
-define( 'HESH_LIBS', plugins_url( '/lib/', __FILE__ ) );
+define('HESH_LIBS',plugins_url('/lib/',__FILE__));
 
 class wp_html_editor_syntax {
-
-	public function __construct () {
-		add_action( 'admin_enqueue_scripts', array(&$this, 'admin_enqueue_scripts' ) );
+	public function __construct(){
+		add_action('admin_init',array(&$this,'admin_init'));
+		add_action('admin_head',array(&$this,'admin_head'));
+		add_action('admin_footer',array(&$this,'admin_footer'));
 	}
+	public function admin_footer(){
+		if (!$this->is_editor())
+			return;
+		?>
 
-	// Enqueues scripts and styles for hesh.js
-	public function admin_enqueue_scripts () {
+		<script type="text/javascript">
+		
+			function runEditorHighlighter(el) {
+				fullscreen.switchmode('html');
+				//switchEditors.switchto(document.getElementById("content-html"));
 
-		if (!strstr($_SERVER['SCRIPT_NAME'], 'post.php') &&
-			!strstr($_SERVER['SCRIPT_NAME'], 'post-new.php')) return;
+				//fix
+				var visualEditorEnabled;
 
-		$plugData = get_plugin_data( __FILE__ ); // need this temporary var to support versions of php < 5.4
-		$ver = $plugData['Version'];
+				if (document.getElementById("content-tmce") != null) {
+					visualEditorEnabled = true;
+				} else {
+					visualEditorEnabled = false;
+				}
 
-		wp_enqueue_style( 'codemirror', HESH_LIBS.'codemirror.min.css', false, $ver );
+				if (visualEditorEnabled) {
+					switchEditors.switchto(document.getElementById("content-html"));
+				}
+				// end fix
 
-		wp_enqueue_style( 'heshcss', HESH_LIBS.'hesh.min.css', false, $ver );
+				var editor = CodeMirror.fromTextArea(document.getElementById(el), {
+					mode: "text/html",
+					tabMode: "indent",
+					lineNumbers: true,
+					matchBrackets: true,
+					indentUnit: 4,
+					indentWithTabs: true,
+					enterMode: "keep",
+					lineWrapping: true,
+					onCursorActivity: function() {
+						editor.setLineClass(hlLine, null, null);
+						hlLine = editor.setLineClass(editor.getCursor().line, null, "activeline");
+					},
+					onChange: function(){
+						editor.save();
+					}
+				});
+				var hlLine = editor.setLineClass(0, "activeline");
+				
+				if (visualEditorEnabled) {
+					document.getElementById("content-tmce").onclick = function(e){
+						editor.toTextArea();
+						switchEditors.switchto(document.getElementById("content-tmce"));
+						document.getElementById("content-html").onclick = function(e){
+							runEditorHighlighter("content");
+						}
+					}
+				}
+				
+				document.getElementById("qt_content_fullscreen").onclick = function(e){
+					editor.toTextArea();
+					fullscreen.switchmode('html');
+					setTimeout('runEditorHighlighter("wp_mce_fullscreen")', 2000);
+					document.getElementById("wp-fullscreen-close").onclick = function(e){
+						fullscreen.off();
+						runEditorHighlighter("content");
+						return false;
+					}
+				}
+			}
 
-		wp_register_script( 'codemirror', HESH_LIBS.'codemirror.min.js', false, $ver, true );
-		wp_enqueue_script( 'codemirror' );
+			window.onload = function() {
+				runEditorHighlighter("content");
+			}
 
-		wp_register_script( 'heshjs', HESH_LIBS.'hesh.min.js', array('codemirror'), $ver, true );
-		wp_enqueue_script( 'heshjs' );
+
+		</script>
+
+		<?php
+	}
+	public function admin_init(){
+		wp_enqueue_script('jquery');	// For AJAX code submissions
+		wp_enqueue_script('jquery-ui-core');
+		wp_enqueue_script('jquery-ui-widget');
+		wp_enqueue_script('jquery-ui-mouse');
+		wp_enqueue_script('jquery-ui-resizable');
+	}
+	public function admin_head(){
+		if (!$this->is_editor())
+			return;
+
+		?>
+				<link rel="stylesheet" href="<?php echo HESH_LIBS; ?>codemirror.css">
+				<script src="<?php echo HESH_LIBS; ?>codemirror.js"></script>
+				<script src="<?php echo HESH_LIBS; ?>xml.js"></script>
+				<script src="<?php echo HESH_LIBS; ?>javascript.js"></script>
+				<script src="<?php echo HESH_LIBS; ?>css.js"></script>
+				<script src="<?php echo HESH_LIBS; ?>htmlmixed.js"></script>
+				<style>
+					.CodeMirror-scroll {resize: vertical;}
+					.wp-editor-area,
+					.quicktags-toolbar input.ed_button {display: none;}
+					.quicktags-toolbar input#qt_content_fullscreen {display: inline-block;}
+				</style>
+				</style>
+		<?php
 
 	}
-
+	
+	private function is_editor(){
+		if (!strstr($_SERVER['SCRIPT_NAME'],'post.php') && !strstr($_SERVER['SCRIPT_NAME'],'post-new.php')) {
+			return false;
+		}
+		return true;
+	}
 }
 
-if (is_admin()) {
+if (is_admin())
 	$hesh = new wp_html_editor_syntax();
-}
+
 
 ?>
