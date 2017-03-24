@@ -5,10 +5,10 @@
  * Description: Syntax Highlighting in WordPress HTML Editor
  * Author: Petr Mukhortov
  * Author URI: http://mukhortov.com/
- * Version: 1.4.2
+ * Version: 1.4.3
  * Requires at least: 3.3
  * Tested up to: 3.7
- * Stable tag: 1.4.2
+ * Stable tag: 1.4.3
  **/
 
 if(preg_match('#' . basename(__FILE__) . '#', $_SERVER['PHP_SELF'])) { die('You are not allowed to call this page directly.'); }
