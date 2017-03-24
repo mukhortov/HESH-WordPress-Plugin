@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: html editor, syntax highlighter, plugin editor, syntax, highlighting, syntax highlighting, text editor, editor, text editor syntax, editor, editor syntax
 Requires at least: 3.3
 Tested up to: 4.1.1
-Stable tag: 1.6.5
+Stable tag: 1.6.6
 
 Add syntax highlighting to the HTML editor.
 
@@ -30,6 +30,9 @@ If you like the plugin, don’t hesitate to support me and leave a review :)
 2. Activate the plugin on the 'Plugins' page
 
 == Changelog ==
+
+= 1.6.6 =
+* Added minimum editor window height for the full-height mode
 
 = 1.6.5 =
 * Fixes for full-height mode
