@@ -5,11 +5,6 @@
     - Syntax highlighting in the Post/Page HTML editor
     - Settings Panel
     - Syntax highlighting in the Theme/Plugin editor
-- push to `dev` then to `master`
-- close this branch
-- make `release` branch
-    - add all released to that branch and tag them
-
 
 ## Testing
 - general bugs

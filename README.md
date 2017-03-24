@@ -27,6 +27,9 @@ Please report any issues or suggestions.
 
 Running `gulp` will build the project and run it in a watch state. Making any changes to files will automatically rebuild the project. Install the [LiveReload](https://chrome.google.com/webstore/detail/livereload/jnihajbhpnppcggbcgedagnkighmdlei) chrome browser extension and the page will reload when the project rebuilds.
 
+### Releasing
+Don't manually edit the release branch. Only merge master into the release branch to update it.
+
 ## Sample Text for testing
 
 Paste this code in the editor to test out all the different syntax highlighting features.
