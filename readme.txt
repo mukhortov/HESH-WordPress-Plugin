@@ -3,8 +3,8 @@ Contributors: nixdns
 Donate link: https://www.paypal.me/mukhortov/5
 Tags: html editor, syntax highlighter, plugin editor, syntax, highlighting, syntax highlighting, text editor, editor, text editor syntax, editor, editor syntax
 Requires at least: 3.3
-Tested up to: 4.3
-Stable tag: 1.6.8
+Tested up to: 4.3.1
+Stable tag: 1.6.9
 
 Add syntax highlighting to the HTML editor.
 
@@ -21,8 +21,7 @@ Add syntax highlighting to the HTML editor.
 * New fullscreen mode.
 * Toggle fullscreen mode with F11/Esc hotkeys
 
-If you like the plugin, don’t hesitate to support me and leave a review :)
-
+If you like the plugin, please [donate](https://www.paypal.me/mukhortov/5) and leave a review :)
 
 == Installation ==
 
@@ -31,7 +30,7 @@ If you like the plugin, don’t hesitate to support me and leave a review :)
 
 == Changelog ==
 
-= 1.6.8 =
+= 1.6.9 =
 * Fixed issues with switching editor modes in WP 4.3
 
 = 1.6.7 =

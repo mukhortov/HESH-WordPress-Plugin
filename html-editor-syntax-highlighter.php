@@ -3,12 +3,13 @@
  * Plugin Name: HTML Editor Syntax Highlighter
  * Plugin URI: http://wordpress.org/extend/plugins/html-editor-syntax-highlighter/
  * Description: Syntax Highlighting in WordPress HTML Editor
+ * Text Domain: html-editor-syntax-highlighter
  * Author: Petr Mukhortov
  * Author URI: http://mukhortov.com/
- * Version: 1.6.8
+ * Version: 1.6.9
  * Requires at least: 3.3
- * Tested up to: 4.3
- * Stable tag: 1.6.8
+ * Tested up to: 4.3.1
+ * Stable tag: 1.6.9
  **/
 
 if(preg_match('#' . basename(__FILE__) . '#', $_SERVER['PHP_SELF'])) { die('You are not allowed to call this page directly.'); }
