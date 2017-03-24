@@ -4,3 +4,10 @@ node_modules
 .trash
 resources
 dist
+.jshintrc
+*.md
+gulpfile.js
+package.json
+.vscode
+src
+mockups
