@@ -1,0 +1,65 @@
+.CodeMirror {
+	font-family: Menlo Regular,Consolas,Monaco,monospace;
+	line-height: 150%;
+	font-size: 12px;
+	height: 500px;
+}
+.wp-editor-area,
+.wp-fullscreen-both,
+#content-resize-handle,
+#wp-fullscreen-modes, /* fullscreen controls */
+.heshFullscreen #content_wp_fullscreen, /* fullscreen button in view mode */
+.quicktags-toolbar input.ed_button {
+	display: none !important;
+}
+.quicktags-toolbar input#cm_content_fullscreen,
+#ed_toolbar input.cm_ed_button {
+	display: inline-block !important;
+}
+.CodeMirror-matchingbracket {
+	background-color: #fff490;
+	color: inherit !important;
+}
+.content-resize-handle {
+	width: 12px;
+	height: 19px;
+	cursor: ns-resize;
+	right: 2px;
+	position: absolute;
+	background: transparent url('../../../../wp-admin/images/resize-2x.gif') no-repeat scroll right bottom;
+	background-image: url('../../../../wp-admin/images/resize.gif')\0; /* IE8 */
+	background-size: 11px 11px;
+}
+
+#cm_content_fullscreen {
+	float: right;
+}
+.heshFullscreen {
+	z-index: 99999;
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	height: 100%;
+	background: #fff;
+	padding: 2% 2% 0;
+}
+.heshFullscreen .CodeMirror,
+.heshFullscreen #ed_toolbar {
+	border: 1px solid #ccc;
+}
+.heshFullscreen #ed_toolbar {
+	border-bottom: 0;
+	border-radius: 4px 4px 0 0;
+}
+.heshFullscreen .CodeMirror {
+	border-radius: 0 0 4px 4px;
+	height: 85%!important;
+}
+
+@media only screen and (max-height: 550px), only screen and (max-device-height: 550px) {
+	.heshFullscreen .CodeMirror {
+		height: 75%!important;
+	}
+}
