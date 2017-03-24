@@ -4,7 +4,7 @@
 	font-size: 12px;
 	height: 500px;
 }
-.wp-editor-area,
+
 .wp-fullscreen-both,
 #content-resize-handle,
 #wp-fullscreen-modes, /* fullscreen controls */
@@ -12,6 +12,14 @@
 .quicktags-toolbar input.ed_button {
 	display: none !important;
 }
+
+/* Fixing problems with hidden Textarea in IE */
+#content {
+	display: block!important;
+	position: absolute;
+	left: -9000px;
+}
+
 .quicktags-toolbar input#cm_content_fullscreen,
 #ed_toolbar input.cm_ed_button {
 	display: inline-block !important;
