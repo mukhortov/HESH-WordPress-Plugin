@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: html editor, syntax highlighter, plugin editor, syntax, highlighting, syntax highlighting, hilighting
 Requires at least: 3.3
 Tested up to: 3.7
-Stable tag: 1.4.1
+Stable tag: 1.4.2
 
 Add syntax highlighting to the HTML editor.
 
@@ -18,6 +18,7 @@ Add syntax highlighting to the HTML editor.
 * Save your posts and pages pressing Ctrl+S (Cmd+S on Mac)
 * New fullscreen mode.
 * Toggle fullscreen mode with F11/Esc hotkeys
+* Restore cursor position after page is reloaded
 
 == Installation ==
 
@@ -25,6 +26,10 @@ Add syntax highlighting to the HTML editor.
 2. Activate the plugin on the 'Plugins' page
 
 == Changelog ==
+
+
+= 1.4.2 =
+* Fixed a focus bug
 
 = 1.4.1 =
 * Toggle fullscreen mode with F11/Esc hotkeys
