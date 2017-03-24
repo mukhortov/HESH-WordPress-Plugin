@@ -3,10 +3,10 @@ Contributors: nixdns
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=TM7JTJY6HDTAQ
 Tags: html editor, syntax highlighter, plugin editor, syntax, highlighting, syntax hilighting
 Requires at least: 3.3
-Tested up to: 3.5.1
-Stable tag: 1.3.0
+Tested up to: 3.6.1
+Stable tag: 1.3.2
 
-Add syntax highlighting to the HTML editor.
+Add syntax highlighting to the Post/Page HTML editor.
 
 == Description ==
 
@@ -18,6 +18,11 @@ Add syntax highlighting to the HTML editor.
 2. Activate the plugin on the 'Plugins' page
 
 == Changelog ==
+
+= 1.3.2 =
+* Updated CodeMirror library 
+* Increased loading performance
+* Match brackets
 
 = 1.3.0 =
 * CodeMirror library updated to the version 3.02
@@ -38,6 +43,9 @@ Bug fix (thanks to collinprice):
 
 = 1.0 =
 Initial release.
+
+
+
 
 == Screenshots ==
 1. Syntax highlighting in the Post/Page HTML editor.

@@ -5,10 +5,10 @@
  * Description: Syntax Highlighting in WordPress HTML Editor
  * Author: Peter Mukhortov
  * Author URI: http://mukhortov.com/
- * Version: 1.3.0
+ * Version: 1.3.2
  * Requires at least: 3.3
- * Tested up to: 3.5.1
- * Stable tag: 1.3.0
+ * Tested up to: 3.6.1
+ * Stable tag: 1.3.2
  **/
 
 if(preg_match('#' . basename(__FILE__) . '#', $_SERVER['PHP_SELF'])) { die('You are not allowed to call this page directly.'); }
@@ -32,7 +32,7 @@ class wp_html_editor_syntax {
 				fullscreen.switchmode('html');
 				//switchEditors.switchto(document.getElementById("content-html"));
 
-				//fix
+				//
 				var visualEditorEnabled;
 
 				if (document.getElementById("content-tmce") != null) {
@@ -44,7 +44,7 @@ class wp_html_editor_syntax {
 				if (visualEditorEnabled) {
 					switchEditors.switchto(document.getElementById("content-html"));
 				}
-				// end fix
+				// end
 
 				var editor = CodeMirror.fromTextArea(document.getElementById(el), {
 					mode: "text/html",
@@ -64,13 +64,13 @@ class wp_html_editor_syntax {
 				});
 
 				//Saving cursor state
-				cmPostID = document.getElementById("post_ID").value;
+				var cmPostID = document.getElementById("post_ID").value;
 				editor.on("cursorActivity", function(){
-					curPos = editor.getCursor();
-					window.name = cmPostID+','+curPos.line+','+curPos.ch;
+					var curPos = editor.getCursor();
+					window.name = cmPostID + ',' + curPos.line + ',' + curPos.ch;
 				});
 				//Restoring cursor state
-				curPos = window.name.split(',');
+				var curPos = window.name.split(',');
 				if (cmPostID == curPos[0]) {
 					editor.setCursor(parseFloat(curPos[1]),parseFloat(curPos[2]));
 				}
@@ -99,13 +99,12 @@ class wp_html_editor_syntax {
 				/* buttons */
 
 				var cmToolbar = document.getElementById("ed_toolbar");
-				//Villeman og Magnhild
 
 				if (!cmToolbar.getAttribute('data-updated')) {
 					cmToolbarVars = [
 						//['search','','','Search:'],
 						['more','<!--more-->',''],
-						['comment','<!--','-->'],
+						['comment','<!-- ',' -->'],
 						['code','<code>','</code>'],
 						['li','<li>','</li>'],
 						['ol','<ol>','</ol>'],
@@ -121,23 +120,28 @@ class wp_html_editor_syntax {
 						['i','<em>','</em>'],
 						['b','<strong>','</strong>'],
 
-					]
+					];
+
+					function cmToolbarClick() {
+						var selStart	= editor.getCursor("start"), //var range = { from: editor.getCursor(true), to: editor.getCursor(false) },
+							start		= this.getAttribute('data-start'),
+							end			= this.getAttribute('data-end'),
+							cmPrompt	= this.getAttribute('data-prompt'),
+							selText		= editor.getSelection();
+							
+						if (cmPrompt) start = start.replace('$',prompt(cmPrompt, ''));
+
+						editor.replaceSelection(start+selText+end);
+						editor.setSelection(selStart, editor.getCursor("end"));
+						editor.setCursor(selStart.line, selStart.ch + start.length);
+						editor.focus();
+					}
+
 					for (var i=0; i<cmToolbarVars.length; i++) {
-						t = cmToolbarVars[i];
-						t3 = t[3] ? ('data-prompt="'+t[3]+'"') : '';
+						var t = cmToolbarVars[i];
+						var t3 = t[3] ? ('data-prompt="'+t[3]+'"') : '';
 						cmToolbar.insertAdjacentHTML('afterbegin', '<input type="button" id="cm_content_'+t[0]+'" data-start=\''+t[1]+'\' data-end=\''+t[2]+'\' '+t3+' class="ed_button cm_ed_button" value="'+t[0]+'">');
-						document.getElementById('cm_content_'+t[0]).onclick = function (e) {
-							var range = { from: editor.getCursor(true), to: editor.getCursor(false) }, selStart = editor.getCursor("start");
-							var start = this.getAttribute('data-start');
-							var end = this.getAttribute('data-end');
-							var cmPrompt = this.getAttribute('data-prompt');
-							var selText = editor.getSelection();
-							if (cmPrompt) start = start.replace('$',prompt(cmPrompt, ''));
-							editor.replaceSelection(start+selText+end, range.from, range.to);
-							editor.setSelection(selStart, editor.getCursor("end"));
-							editor.setCursor(range.from.line,range.from.ch+start.length);
-							editor.focus();
-						}
+						document.getElementById('cm_content_'+t[0]).onclick = cmToolbarClick;
 					}
 					cmToolbar.setAttribute("data-updated", "1");
 				}
@@ -150,25 +154,13 @@ class wp_html_editor_syntax {
 		</script>
 		<?php
 	}
-	/*public function admin_init(){
-		wp_enqueue_script('jquery');	// For AJAX code submissions
-		wp_enqueue_script('jquery-ui-core');
-		wp_enqueue_script('jquery-ui-widget');
-		wp_enqueue_script('jquery-ui-mouse');
-		wp_enqueue_script('jquery-ui-resizable');
-	}*/
+
 	public function admin_head(){
 		if (!$this->is_editor())
 			return;
 		?>
-				<link rel="stylesheet" href="<?php echo HESH_LIBS; ?>codemirror.css">
-				<script src="<?php echo HESH_LIBS; ?>codemirror.js"></script>
-				<script src="<?php echo HESH_LIBS; ?>xml.js"></script>
-				<script src="<?php echo HESH_LIBS; ?>javascript.js"></script>
-				<script src="<?php echo HESH_LIBS; ?>css.js"></script>
-				<script src="<?php echo HESH_LIBS; ?>htmlmixed.js"></script>
-				<script src="<?php echo HESH_LIBS; ?>util/active-line.js"></script>
-				<script src="<?php echo HESH_LIBS; ?>util/formatting.js"></script>
+				<link rel="stylesheet" href="<?php echo HESH_LIBS; ?>codemirror.min.css">
+				<script src="<?php echo HESH_LIBS; ?>codemirror-compressed.js"></script>
 				<style>
 					.CodeMirror-scroll {resize:vertical;}
 					.wp-editor-area,
@@ -176,8 +168,11 @@ class wp_html_editor_syntax {
 					#content-resize-handle,
 					.quicktags-toolbar input.ed_button {display: none !important;}
 					.quicktags-toolbar input#qt_content_fullscreen, #ed_toolbar input.cm_ed_button {display: inline-block !important;}
+					
+					.CodeMirror-matchingbracket {background-color: #fff490; color: inherit !important;}
+					.CodeMirror {font-family: Menlo Regular,Consolas,Monaco,monospace;line-height: 150%;font-size: 12px; height: 600px;}
 
-					#wp-fullscreen-container .CodeMirror {height: auto; min-height: 400px;}
+					#wp-fullscreen-container .CodeMirror {height: auto; min-height: 600px;}
 					#wp-fullscreen-container .CodeMirror-scroll {overflow-y: hidden; overflow-x: auto;}
 					#wp-fullscreen-wrap {width: 80% !important;}
 					#wp-fullscreen-container {padding-bottom: 4px !important;}
