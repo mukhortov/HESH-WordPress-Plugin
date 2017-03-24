@@ -1,0 +1,393 @@
+/**!
+ * Plugin Name:  HTML Editor Syntax Highlighter
+ * Author:       James Bradford
+ * Author URI:   http://arniebradfo.com/
+ * Author:       Peter Mukhortov
+ * Author URI:   http://mukhortov.com/
+ * Version:      2.0.0
+*/
+
+// import all the themes css
+@import (less) 'node_modules/codemirror/theme/*.css';
+@z-index: 9;
+
+.CodeMirror {
+
+	font: inherit;
+	&-scroll{
+		font-family: Menlo Regular, Consolas, Monaco, monospace;
+		line-height: 150%;
+		position: relative;
+	}
+
+	@mobile-media:  ~'screen and (max-width: 781px)';
+	@desktop-media: ~'screen and (min-width: 782px)';
+	@docked-mobile-height:44px;
+	@docked-desktop-height:35px;
+	.media(@property; @mobile:@docked-mobile-height; @desktop:@docked-desktop-height;){
+		@media @desktop-media{ @{property}: @desktop; }
+		@media @mobile-media{ @{property}: @mobile; }
+	}
+
+	@margin: 6px;
+	@padding: 12px;
+	@border-radius: 3px;
+	@border-color: #ddd;
+	@background-color: fade(white, 93%);
+	@transition-duration: 250ms;
+	@transition-easing: ease;
+
+	&-settings{
+
+		color: #444;
+		height: 0;
+		width: 100%;
+		z-index: 9;
+		text-shadow: none;
+
+		&__toggle{
+			border-radius: @border-radius;
+			z-index: @z-index + 2;
+			box-sizing: border-box;
+			position: absolute;
+			top: 0;
+			right: 0;
+			margin: @margin;
+			display: block;
+			cursor: pointer;
+			.media(height, @docked-mobile-height, @docked-desktop-height);
+			.media(width, @docked-mobile-height, @docked-desktop-height);
+
+			&:after{
+				content:'\f111';
+				font-family: dashicons;
+				.media(font-size, 28px, 20px);
+				.media(margin, 8px, 7px);
+				line-height: 1em;
+				display: inline-block;
+			}
+
+			&:before{
+				border: 1px solid @border-color;
+				border-radius: @border-radius;
+				z-index: -1;
+				content:'';
+				background-color: white;  
+				transition: 250ms ease;
+				transition-property: transform opacity;
+				position: absolute;
+				top:    0;
+				right:  0;
+				bottom: 0;
+				left:   0;
+			}
+
+		}
+
+		&__wrapper{
+			pointer-events: none;
+			visibility: hidden;
+		}
+		&__docked, &__body{
+			pointer-events: initial;
+			visibility: visible;
+		}
+
+		&__wrapper{
+			position: absolute;
+			width: ~'calc(100% -' @margin*2 ~')';
+			max-height: ~'calc(100% -' @margin*2 ~')';
+			top: 0;
+			margin: @margin;
+			box-sizing: border-box;
+			z-index: @z-index;
+			display: flex;
+			flex-direction: column;
+		}
+
+		&__docked{
+			flex: 0 0 auto;
+			z-index: @z-index + 1;
+			background-color: white;  
+			box-sizing: border-box;
+			.media(min-height, @docked-mobile-height, @docked-desktop-height);
+		}
+
+		&__header{
+			border-top-left-radius: @border-radius;
+			border-top-right-radius: @border-radius;
+			border: 1px solid @border-color;
+			padding: 4px;
+			.media(padding-right);
+			border-bottom-left-radius: @border-radius;
+			border-bottom-right-radius: @border-radius;
+		}
+
+		&__body{
+			flex: 1 1 auto;
+			box-sizing: border-box;
+			padding: 1px @padding;
+			overflow-y: auto;
+			background-color: @background-color;  
+			border-left: 1px solid @border-color;
+			border-right: 1px solid @border-color;
+		}
+		
+		&__footer{
+			border-bottom-left-radius: @border-radius;
+			border-bottom-right-radius: @border-radius;
+			border: 1px solid @border-color;
+			padding: @padding*.5 @padding;
+			display: flex;
+			flex-wrap: wrap;
+			align-items: baseline;
+			align-content: center;
+			justify-content: space-between;
+		}
+
+		td&__heading{ // td& for specificity
+			padding: 0;
+		}
+
+		&__foot-content{
+			margin: 0;
+		}
+		// &__feedback{}
+		// &__credits{}
+
+		// OPEN AND CLOSED STATES
+		&__toggle, 
+		&__toggle-advanced, 
+		&__header, 
+		&__body, 
+		&__footer,
+		&__wrapper
+		{
+			transition: @transition-duration @transition-easing;
+			transition-property: opacity, transform;
+			transform-origin: top right;
+		}
+
+		@body-and-footer-closed-state:{
+			visibility: hidden;
+			opacity: 0;
+			transform: translate(0,-20px);
+			transition:
+				opacity @transition-duration @transition-easing,
+				transform @transition-duration @transition-easing,
+				visibility 1ms @transition-easing @transition-duration;
+		};
+		@body-and-footer-open-state:{
+			visibility: visible;
+			opacity: 1;
+			transform: translate(0,0);
+			transition:
+				visibility 1ms @transition-easing,
+				opacity @transition-duration @transition-easing 1ms,
+				transform @transition-duration @transition-easing 1ms;
+		};
+		
+
+		&.closed{
+			.CodeMirror-settings{
+				&__toggle-advanced{
+					&:before{
+						content: 'more...'
+					}
+				}
+				&__toggle{
+					opacity: .5;
+					&:hover{
+						opacity: 1;
+					}
+					&:before{
+						opacity: 1;
+					}
+				}
+				&__wrapper{
+					opacity: 0;
+					transform: scaleX(0);					
+				}
+				&__body, &__footer{
+					@body-and-footer-closed-state();
+				}
+			}
+		}
+
+		&.open{
+			.CodeMirror-settings{
+				&__toggle-advanced{
+					&:before{
+						content: 'more...'
+					}
+				}
+				&__toggle{
+					&:after{
+						content:'\f158';
+					}
+					&:before{
+						opacity: 0;
+					}
+				}
+				&__wrapper{
+					opacity: 1;
+					transform: scaleX(1);
+				}
+				&__body, &__footer{
+					@body-and-footer-closed-state();
+				}
+			}
+		}
+
+		&.open-advanced{
+			.CodeMirror-settings{
+				&__toggle-advanced{
+					&:before{
+						content: 'less'
+					}
+				}
+				&__header{
+					border-bottom-left-radius:  0;
+					border-bottom-right-radius: 0;
+				}
+				&__body, &__footer{
+					@body-and-footer-open-state();
+				}
+			}
+		}
+
+		// BUTTON TYPES
+		&__button{
+			&:active{ transform:none !important; }
+			position: relative;
+			select, input{
+				display: block;
+				position: absolute;
+				top:0;
+				right:0;
+				bottom:0;
+				left:0;
+				-webkit-appearance: none; //TODO: autoprefixer
+				margin: 0;
+				padding: 0;
+				border: none;
+				height: auto;
+				font-size: 0;
+				line-height: 0;
+				height: 100% !important;
+				width: 100% !important;
+				background: none;
+				opacity: 0;
+			}
+			option{
+				font-size: 12px; // for FireFox
+			}
+			&--select{
+				&:after{
+					content: '\f140';
+					font-family: dashicons;
+					vertical-align: top;
+					display: inline-block;
+					.media(font-size, 20px, 16px);
+					margin: 0 -5px -4px;
+					.media(margin-top, -2px, 0);
+				}
+			}
+		}
+		&__toggle-advanced{
+			cursor: pointer;
+			display: inline-block;
+			line-height: 35px - 10px;
+			padding: 0 4px;
+			vertical-align: middle;
+		}
+
+	}
+
+
+	&-mirrored{ // the textarea CodeMirror is mirroring
+		display: block !important; // so that focus still works in all browsers
+		position: fixed;
+		left: -9999px;
+		top: -9999px;
+		z-index: -999;
+		opacity: 0;
+	}
+
+
+	// THEME AND PLUGIN EDITOR PAGES
+
+	// to beat the stupid, lazy:
+	// #template div { margin-right: 190px; }
+	#template & {
+		.media(margin-right, initial, 20px);
+		div{ margin-right: initial; }
+		p{ width: auto; }
+	}
+	&-vscrollbar{
+		display: none !important; // prevent second scrollbar
+	}
+	&-scroll{
+		margin-right: -30px !important;
+	}
+	&-settings__toggle{
+		margin-right: @margin !important;
+	}
+}
+
+
+// FULLSCREEN
+.heshFullscreen {
+	z-index: 99999;
+	position: fixed !important;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	height: 100%;
+	background: #fff;
+	padding: 2% 2% 0;
+
+	.CodeMirror {
+		border: 1px solid #ccc;
+		border-radius: 0 0 4px 4px;
+		height: 85% !important;
+		@media screen and (max-height: 550px) {
+			height: 75% !important;
+		}
+	}
+	#ed_toolbar {
+		border: 1px solid #ccc;
+		border-bottom: 0;
+		border-radius: 4px 4px 0 0;
+	}
+	#cm_content_fullscreen:before{
+		content:'\f506';
+	}
+}
+
+#cm_content_fullscreen{
+	display: inline-block;
+	.wp-editor-expand & {
+		display: none;
+	}
+}
+
+
+// ONLY IN THE THEME/PLUGIN EDITOR
+.hesh-content-resize-handle{
+	position: absolute;
+	right: 0;
+	bottom: 0;
+    width:  12px;
+    height: 12px;
+	z-index: @z-index - 1;
+	margin: 1px !important;
+}
+
+
+
+// FULL HEIGHT EDITOR
+#ed_toolbar{
+	z-index: @z-index + 1;
+}
