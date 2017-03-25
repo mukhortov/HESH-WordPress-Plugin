@@ -1,10 +1,24 @@
 # TODOs
+- reorganize the tags - only picks the top five
 - create logo
+	- `icon-128x128.png`
+	- `icon-256x256.png`
+	- `icon.svg`
 - get screenshots
-    - cover
-    - Syntax highlighting in the Post/Page HTML editor
-    - Settings Panel
-    - Syntax highlighting in the Theme/Plugin editor
+	- banner
+    	- `assets/banner-1544x500.png`
+    	- `assets/banner-772x250.png`
+	- screenshots page - render at 1218px @ 2xDPI - 609px
+		- [old style page](https://wordpress.org/plugins/html-editor-syntax-highlighter/screenshots/)
+			- 902px(or less) wide @ <= 960px 
+			- 543px wide @ < 960px
+		- [new style page](https://wordpress.org/plugins-wp/html-editor-syntax-highlighter/)
+			- 715px(or less) @ < 768px
+			- 609px(or less) @ >= 768px
+		- Syntax highlighting in the Post/Page HTML editor - `assets/screenshot-1.png`
+		- Settings Panel - `assets/screenshot-2.png`
+		- Syntax highlighting in the Theme/Plugin editor - `assets/screenshot-3.png`
+[directions](https://developer.wordpress.org/plugins/wordpress-org/plugin-assets/)
 
 ## Testing
 - general bugs
