@@ -1,28 +1,10 @@
 # TODOs
 - reorganize the tags - only picks the top five
-- create logo
-	- `icon-128x128.png`
-	- `icon-256x256.png`
-	- `icon.svg`
-- get screenshots
-	- banner
-    	- `assets/banner-1544x500.png`
-    	- `assets/banner-772x250.png`
-	- screenshots page - render at 1218px @ 2xDPI - 609px
-		- [old style page](https://wordpress.org/plugins/html-editor-syntax-highlighter/screenshots/)
-			- 902px(or less) wide @ <= 960px 
-			- 543px wide @ < 960px
-		- [new style page](https://wordpress.org/plugins-wp/html-editor-syntax-highlighter/)
-			- 715px(or less) @ < 768px
-			- 609px(or less) @ >= 768px
-		- Syntax highlighting in the Post/Page HTML editor - `assets/screenshot-1.png`
-		- Settings Panel - `assets/screenshot-2.png`
-		- Syntax highlighting in the Theme/Plugin editor - `assets/screenshot-3.png`
-[directions](https://developer.wordpress.org/plugins/wordpress-org/plugin-assets/)
+
 
 ## Testing
 - general bugs
-    - place a cursor. reload the page. press delete. undo.
+    - none at the moment
 - browsers
     - Safari - seems ok
     - FireFox (Mac) - seems ok
@@ -77,7 +59,7 @@
 - read [bugs](https://wordpress.org/support/plugin/html-editor-syntax-highlighter) and add more TODOs
 
 
-## links
+## Links
 - process user settings
 	- [working with user metadata](https://developer.wordpress.org/plugins/users/working-with-user-metadata/)
 	- [update_user_meta()](https://codex.wordpress.org/Function_Reference/update_user_meta)
@@ -85,3 +67,27 @@
 	- [submitting a form in wordpress using ajax](https://teamtreehouse.com/community/submitting-a-form-in-wordpress-using-ajax)
 	- [how to handle form submission](http://wordpress.stackexchange.com/questions/60758/how-to-handle-form-submission)
 - [wp usage stats](https://wordpress.org/about/stats/)
+
+
+## Assets Info
+[directions](https://developer.wordpress.org/plugins/wordpress-org/plugin-assets/)
+- logos:
+	- `assets/icon-128x128.png`
+	- `assets/icon-256x256.png`
+	- `assets/icon.svg`
+- banner:
+	- `assets/banner-1544x500.png`
+	- `assets/banner-772x250.png`
+	- `assets/banner-940x305.png`
+	- `assets/banner-1880x610.png`
+- screenshots: 
+	- render at 1218px @ 2xDPI - 609px
+	- [old style page](https://wordpress.org/plugins/html-editor-syntax-highlighter/screenshots/)
+		- 902px(or less) wide @ <= 960px 
+		- 543px wide @ < 960px
+	- [new style page](https://wordpress.org/plugins-wp/html-editor-syntax-highlighter/)
+		- 715px(or less) @ < 768px
+		- 609px(or less) @ >= 768px
+	- Syntax highlighting in the Post/Page HTML editor - `assets/screenshot-1.png`
+	- Settings Panel - `assets/screenshot-2.png`
+	- Syntax highlighting in the Theme/Plugin editor - `assets/screenshot-3.png`
