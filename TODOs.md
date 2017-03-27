@@ -22,7 +22,8 @@
 
 ## Testing
 - general bugs
-    - none currently
+    - place a cursor. reload the page. press delete. undo.
+	- numbering and line wrap don't save
 - browsers
     - Safari - seems ok
     - FireFox (Mac) - seems ok
