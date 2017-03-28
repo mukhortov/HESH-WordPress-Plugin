@@ -79,9 +79,12 @@ class wp_html_editor_syntax {
 			'ajaxUrl' => admin_url( 'admin-ajax.php' ),
 			// 'nonce' => wp_create_nonce( $this->formProcessName ) // TODO: use this instead of the hidden field?
 		);
+
+
+
 		// place all the userPrefrences into the heshOptions object
 		foreach ($this->userPrefrences as $id => $value) {
-			$heshOptions[$id] = isset($value['current']) ? $value['current'] : $value['default'];
+			$heshOptions[$id] = $value['current'];
 			// error_log( $id . ': ' . $heshOptions[$id] . ' type: ' . gettype($heshOptions[$id]) ); // for debug
 		}
 		wp_localize_script(
@@ -163,6 +166,14 @@ class wp_html_editor_syntax {
 		// 	'comment'=> array(), // continueComments?
 		// 	'foldCode'=> array(), // ?
 		// );
+
+		// Intalize all the hesh option fields as default if they don't exist yet
+		if (!get_user_meta( get_current_user_id(), $this->prefix.'hasInitalized', true) ) {
+			foreach ($this->userPrefrences as $id => $value) {
+				update_user_meta( get_current_user_id(), $this->prefix.$id, $value['default']);
+			}
+			update_user_meta( get_current_user_id(), $this->prefix.'hasInitalized', true);	
+		}
 	}
 
 	
@@ -209,10 +220,7 @@ class wp_html_editor_syntax {
 					type="checkbox"
 					value="true"
 					class="CodeMirror-settings__option"
-					<?php if (
-						(isset($current) && $current) || 
-						(!isset($current) && $default)
-					) echo 'checked'; ?>
+					<?php if ($current) echo 'checked'; ?>
 					/>
 			</label>
 		<?php else: ?>
@@ -234,10 +242,7 @@ class wp_html_editor_syntax {
 								value="true"
 								class="CodeMirror-settings__option"
 								<?php if (isset($description)) echo "aria-describedby=\"$id-description\"" ?>
-								<?php if (
-									(isset($current) && $current) || 
-									(!isset($current) && $default)
-								) echo 'checked'; ?>
+								<?php if ($current) echo 'checked'; ?>
 								/>
 							<?php echo $text; ?>
 						</label>
@@ -271,12 +276,7 @@ class wp_html_editor_syntax {
 					<?php foreach ($options as $option): ?>
 						<option 
 							value="<?php echo $option; ?>"
-							<?php 
-								if (
-									($current == $option) ||
-									(!$current && $default == $option)
-								) echo 'selected';
-							?>
+							<?php if ($current == $option) echo 'selected';?>
 							>
 							<?php echo ucfirst($option); ?>
 						</option>
@@ -298,12 +298,7 @@ class wp_html_editor_syntax {
 						<?php foreach ($options as $option): ?>
 							<option 
 								value="<?php echo $option; ?>"
-								<?php 
-									if (
-										($current == $option) ||
-										(!$current && $default == $option)
-									) echo 'selected';
-								?>
+								<?php if ($current == $option) echo 'selected';?>
 								>
 								<?php echo ucfirst($option); ?>
 							</option>
