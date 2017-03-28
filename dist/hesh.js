@@ -452,11 +452,11 @@
 		var selectionState = (getCookie('hesh_plugin_selection_state') || '0,0,0,0,0,0,0').split(',');
 		if (postID === selectionState[0]) {
 			editor.doc.setSelection(
-				{ line: selectionState[1], ch: selectionState[2] },
-				{ line: selectionState[3], ch: selectionState[4] },
+				{ line: +selectionState[1], ch: +selectionState[2] },
+				{ line: +selectionState[3], ch: +selectionState[4] },
 				{ scroll: false }
 			);
-			editor.scrollTo(selectionState[5], selectionState[6]);
+			editor.scrollTo(+selectionState[5], +selectionState[6]);
 		}
 	}
 

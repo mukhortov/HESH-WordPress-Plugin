@@ -81,7 +81,7 @@ class wp_html_editor_syntax {
 		);
 		// place all the userPrefrences into the heshOptions object
 		foreach ($this->userPrefrences as $id => $value) {
-			$heshOptions[$id] = $value['current'] ? $value['current'] : $value['default'];
+			$heshOptions[$id] = isset($value['current']) ? $value['current'] : $value['default'];
 			// error_log( $id . ': ' . $heshOptions[$id] . ' type: ' . gettype($heshOptions[$id]) ); // for debug
 		}
 		wp_localize_script(
@@ -210,8 +210,8 @@ class wp_html_editor_syntax {
 					value="true"
 					class="CodeMirror-settings__option"
 					<?php if (
-						(gettype($current) == 'boolean' && $current) || 
-						(gettype($current) != 'boolean' && $default)
+						(isset($current) && $current) || 
+						(!isset($current) && $default)
 					) echo 'checked'; ?>
 					/>
 			</label>
@@ -235,8 +235,8 @@ class wp_html_editor_syntax {
 								class="CodeMirror-settings__option"
 								<?php if (isset($description)) echo "aria-describedby=\"$id-description\"" ?>
 								<?php if (
-									(gettype($current) == 'boolean' && $current) || 
-									(gettype($current) != 'boolean' && $default)
+									(isset($current) && $current) || 
+									(!isset($current) && $default)
 								) echo 'checked'; ?>
 								/>
 							<?php echo $text; ?>
