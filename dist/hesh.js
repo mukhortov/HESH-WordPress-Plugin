@@ -7,7 +7,17 @@
  * @since    2.0.0
 */
 
-// console.log(window.heshOptions); // from wordpress php
+console.log(window.heshOptions); // from wordpress php
+
+/*
+ajaxUrl:"http://localhost:8888/wp-admin/admin-ajax.php"
+fontSize:"13"
+lineHeight:"1.5"
+lineNumbers:""
+lineWrapping:""
+tabSize:"4"
+theme:"mbo"
+*/
 
 (function (
 	document,
