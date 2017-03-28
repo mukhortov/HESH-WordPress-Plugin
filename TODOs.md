@@ -1,5 +1,5 @@
 # TODOs
-- reorganize the tags - only picks the top five
+- none?
 
 
 ## Testing
@@ -17,6 +17,7 @@
 
 ## TODO later:
 - add all these as enhancement requests
+- add theme examples to screenshots
 - store scroll position as well as cursor position
 - support `<!--nextpage-->` in shortcode parser
 - add fullscreen to plugin/theme editor

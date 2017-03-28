@@ -1,7 +1,7 @@
 === HTML Editor Syntax Highlighter ===
 Contributors: nixdns, arniebradfo, rraub, collinprice
 Donate link: https://www.paypal.me/mukhortov/5
-Tags: editor, html editor, text editor, text editor, theme editor, plugin editor, syntax, highlighting, highlighter, syntax highlighting, syntax highlighter, codemirror, codemirror.js, code, code highlighter, code coloring
+Tags: syntax highlighter, codemirror, text editor, code highlighter, code coloring, editor, html editor, theme editor, plugin editor, syntax, highlighting, highlighter, syntax highlighting, codemirror.js, code,
 Requires at least: 4.0.11
 Tested up to: 4.7.3
 Stable tag: 2.0.0
