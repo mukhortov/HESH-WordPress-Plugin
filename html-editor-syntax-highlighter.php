@@ -365,7 +365,7 @@ class wp_html_editor_syntax {
 								Created by 
 								<a href="http://www.bradford.digital" target="_blank">James Bradford</a> 
 								&amp; 
-								<a href="https://www.mukhortov.com/" target="_blank">Petr Mukhortov</a>.
+								<a href="http://www.mukhortov.com/" target="_blank">Petr Mukhortov</a>.
 							</small>
 						</p>
 					</footer>
