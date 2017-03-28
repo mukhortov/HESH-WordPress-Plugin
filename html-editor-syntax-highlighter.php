@@ -77,15 +77,11 @@ class wp_html_editor_syntax {
 		// this shows up in js as window.heshOptions
 		$heshOptions = array(
 			'ajaxUrl' => admin_url( 'admin-ajax.php' ),
-			// 'nonce' => wp_create_nonce( $this->formProcessName ) // TODO: use this instead of the hidden field?
 		);
-
-
 
 		// place all the userPrefrences into the heshOptions object
 		foreach ($this->userPrefrences as $id => $value) {
 			$heshOptions[$id] = $value['current'];
-			// error_log( $id . ': ' . $heshOptions[$id] . ' type: ' . gettype($heshOptions[$id]) ); // for debug
 		}
 		wp_localize_script(
 			'heshjs',        // for hesh.js
@@ -105,8 +101,6 @@ class wp_html_editor_syntax {
 			'theme' => array(
 				'title' => 'Theme',
 				'type' => 'select',
-				// http://stackoverflow.com/questions/18881693/how-to-import-external-json-and-display-in-php
-				// TODO: add this in without a file_get_contents()
 				'options' => json_decode(file_get_contents(dirname(__FILE__) . '/css.json'), true), 
 				'current' => get_user_meta( get_current_user_id(), $this->prefix.'theme' , true),
 				'default' => 'material',
@@ -147,25 +141,6 @@ class wp_html_editor_syntax {
 				'default' => 1.5,
 			),
 		);
-		// $this->addOns = array(
-		// 	'keyMap'=> array(
-		// 		'title' => 'Key Mapping',
-		//		'description' => 'choose a theme',
-		// 		'type' => 'select',
-		// 		'options' => array('none', 'emacs', 'sublime', 'vim'),
-		// 		'current' => get_user_meta( get_current_user_id(), $this->prefix.'keyMap' , true),
-		// 		'default' => 'none',
-		// 	),
-		// 	'styleActiveLine'=> array(),
-		// 	'matchBrackets'=> array(),
-		// 	'search'=> array(), // and replace
-		// 	'highlightSelectionMatches'=> array(),
-		// 	'styleSelectedText'=> array(), // ?
-		// 	'autoCloseBrackets'=> array(),
-		// 	'autoCloseTags'=> array(),
-		// 	'comment'=> array(), // continueComments?
-		// 	'foldCode'=> array(), // ?
-		// );
 
 		// Intalize all the hesh option fields as default if they don't exist yet
 		if (!get_user_meta( get_current_user_id(), $this->prefix.'hasInitalized', true) ) {
@@ -187,7 +162,6 @@ class wp_html_editor_syntax {
 				if ($setting === 'true') $setting = true;
 				if ($setting === 'false') $setting = false;
 				if (is_numeric($setting)) $setting = floatval($setting);
-				// error_log( $id . ': ' . $setting . ' type: ' . gettype($setting) ); // for debug
 				update_user_meta( get_current_user_id(), $this->prefix.$id, $setting);
 			}
 		}
@@ -317,7 +291,6 @@ class wp_html_editor_syntax {
 	}
 		
 	public function hesh_output_form() {
-		// ob_start();
 		?>
 			<div class="CodeMirror-settings closed" id="CodeMirror-settings" style="display:none;">
 				<form
@@ -339,7 +312,6 @@ class wp_html_editor_syntax {
 					<div class="form CodeMirror-settings__body">
 						<?php wp_nonce_field($this->formProcessName,$this->nonceSecretCode);?>
 						<input name="action" value="hesh_options_form" type="hidden">
-						<?php $i=0; while ($i < 1): ?>
 						<table class="form-table"><tbody>
 							<tr><td class="CodeMirror-settings__heading"><h1>
 								Addons
@@ -348,7 +320,6 @@ class wp_html_editor_syntax {
 								<th scope="row"><label>Coming Soon...</label></th>
 							</tr>
 						</tbody></table>
-						<?php $i++; endwhile; ?>
 					</div>
 					<footer class="CodeMirror-settings__footer CodeMirror-settings__docked">
 						<p class="CodeMirror-settings__foot-content CodeMirror-settings__feedback">
@@ -373,7 +344,6 @@ class wp_html_editor_syntax {
 				<div class="CodeMirror-settings__toggle" id="CodeMirror-settings__toggle"></div>
 			</div>
 		<?php 
-		// return ob_get_clean();
 	}
 
 }
