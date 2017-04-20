@@ -1,5 +1,16 @@
 # TODOs
-- none?
+- concationate all resources
+- Large white space appears after the editor window has been resized
+  - find repro steps
+- Active line isn't highlighted.
+  - add this highlighting module back in
+- When "full-height editor" mode is enabed the editor window shrinks into one line. GIF screencast
+  - find repro steps
+- "Add media" isn't working 
+- Insert link feature ins't working
+  - refactor js
+- Broken fullscreen mode with enabed "full-height editor" mode
+  - not broken, this is by design
 
 
 ## Testing
