@@ -1,5 +1,6 @@
 # TODOs
 - concationate all resources
+  - add minification test for localhost
 - Large white space appears after the editor window has been resized
   - find repro steps
 - Active line isn't highlighted.
