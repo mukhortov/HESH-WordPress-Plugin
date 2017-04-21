@@ -2,11 +2,12 @@
 
 var gulp = require('gulp');
 var livereload = require('gulp-livereload');
+var rename = require("gulp-rename");
 // TODO: add plumber
 
 
 var toJson = require('gulp-to-json');
-gulp.task('css-json', function () {
+gulp.task('build:css-json', function () {
     gulp.src('./node_modules/codemirror/theme/*.css')
         .pipe(toJson({
             filename: 'css.json',
@@ -16,19 +17,20 @@ gulp.task('css-json', function () {
         .pipe(gulp.dest('./.trash'));
     // del('trash/**');
 });
-
-
 var del = require('del');
+gulp.task('garbage-collect', function () {
+    del('./.trash/**');
+});
 gulp.task('clean', function () {
     del('./.trash/**');
+    del('./dist/**');
 });
 
 
 var less = require('gulp-less');
 var autoprefixer = require('gulp-autoprefixer');
 var combineMq = require('gulp-combine-mq');
-var cssnano = require('gulp-cssnano');
-gulp.task('less', function () {
+gulp.task('build:css', function () {
     return gulp.src('./src/*.less')
         .pipe(less({
             plugins: [ require('less-plugin-glob') ]
@@ -41,16 +43,27 @@ gulp.task('less', function () {
         .pipe(combineMq({
             beautify: true
         }))
+        .pipe(gulp.dest('./dist'))
+        .pipe(livereload());
+});
+var cssnano = require('gulp-cssnano');
+gulp.task('minify:css', function () {
+    return gulp.src('./dist/hesh.css')
         .pipe(cssnano())
+        .pipe(rename(function (path) { path.basename += '.min'; }))
         .pipe(gulp.dest('./dist'))
         .pipe(livereload());
 });
 
 
+
 var codemirrorPath = './node_modules/codemirror/';
-gulp.task('copy:codemirror', function () {
+var concat = require('gulp-concat');
+var uglify = require('gulp-uglify');
+gulp.task('build:js', function () {
     return gulp.src([
-        codemirrorPath + 'lib/codemirror.*',
+        // CodeMirror Core
+        codemirrorPath + 'lib/codemirror.js',
         // modes
         codemirrorPath + 'mode/xml/xml.js',
         codemirrorPath + 'mode/javascript/javascript.js',
@@ -60,14 +73,23 @@ gulp.task('copy:codemirror', function () {
         codemirrorPath + 'mode/php/php.js',
         './src/shortcode.js',
         './src/wordpresspost.js',
-        // wp stuff
-        './src/hesh.js',
-        codemirrorPath + 'theme/material.css',
+        // HESH
+        './src/hesh.js'
     ])
+        .pipe(concat('hesh.js'))
+        .pipe(gulp.dest('./dist'))
+        .pipe(uglify())
+        .pipe(rename( function (path) {path.basename += '.min'; } ))
         .pipe(gulp.dest('./dist'))
         .pipe(livereload());
 });
-
+gulp.task('minify:js', function () {
+    return gulp.src('./dist/hesh.js')
+        .pipe(uglify())
+        .pipe(rename(function (path) { path.basename += '.min'; }))
+        .pipe(gulp.dest('./dist'))
+        .pipe(livereload());
+});
 
 gulp.task('watch', function () {
     livereload.listen();
@@ -78,6 +100,8 @@ gulp.task('watch', function () {
 });
 
 
-gulp.task('copy:themes', ['css-json', 'clean']);
-gulp.task('build', ['less', 'copy:codemirror']);
+gulp.task('copy:themes', ['build:css-json', 'garbage-collect']);
+gulp.task('minify', ['minify:css', 'minify:js']);
+gulp.task('build', ['build:css', 'build:js', 'minify']);
+gulp.task('rebuild', ['clean', 'build']);
 gulp.task('default', ['build', 'watch']);
