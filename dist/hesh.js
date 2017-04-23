@@ -13570,6 +13570,19 @@ CodeMirror.defineMode("clike", function(config, parserConfig) {
 		editor.save();
 	}
 
+	// remap native WP function for adding media
+	function remapAddMedia() {
+		window.send_to_editor_wp = window.send_to_editor;
+		var send_to_editor = function (html) {
+			if (state.isActive() && window.wpActiveEditor === 'content') {
+				editor.replaceSelection(html);
+				editor.save();
+			} else {
+				window.send_to_editor_wp(html);
+			}
+		}
+		window.send_to_editor = send_to_editor;
+	}
 
 
 	function startEditor() {
@@ -13597,7 +13610,8 @@ CodeMirror.defineMode("clike", function(config, parserConfig) {
 			publishButton = document.getElementById('submit');
 		} else {
 			toolbar.addEventListener('mousedown', giveFocusToTextArea);
-			document.getElementById('insert-media-button').addEventListener('mousedown', giveFocusToTextArea);
+			// document.getElementById('insert-media-button').addEventListener('mousedown', giveFocusToTextArea);
+			remapAddMedia();
 			attachDragResizePostOrPage();
 			attachFullHeightToggle();
 			attachFullscreen();
