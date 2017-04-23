@@ -87,7 +87,7 @@
 		viewportMargin: 10,
 		extraKeys: {
 			'F11': function () {
-				toggleFullscreen();
+				toggleFullscreen(); 
 			},
 			'Esc': function () {
 				toggleFullscreen();

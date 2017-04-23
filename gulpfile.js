@@ -64,7 +64,7 @@ gulp.task('build:js', function () {
     return gulp.src([
         // CodeMirror Core
         codemirrorPath + 'lib/codemirror.js',
-        // modes
+        // Modes
         codemirrorPath + 'mode/xml/xml.js',
         codemirrorPath + 'mode/javascript/javascript.js',
         codemirrorPath + 'mode/css/css.js',
@@ -73,6 +73,8 @@ gulp.task('build:js', function () {
         codemirrorPath + 'mode/php/php.js',
         './src/shortcode.js',
         './src/wordpresspost.js',
+        // AddOns
+        codemirrorPath + 'addon/selection/active-line.js',
         // HESH
         './src/hesh.js'
     ])
