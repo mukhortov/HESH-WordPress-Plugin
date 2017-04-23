@@ -51,8 +51,7 @@ gulp.task('minify:css', function () {
     return gulp.src('./dist/hesh.css')
         .pipe(cssnano())
         .pipe(rename(function (path) { path.basename += '.min'; }))
-        .pipe(gulp.dest('./dist'))
-        .pipe(livereload());
+        .pipe(gulp.dest('./dist'));
 });
 
 
@@ -89,8 +88,7 @@ gulp.task('minify:js', function () {
     return gulp.src('./dist/hesh.js')
         .pipe(uglify())
         .pipe(rename(function (path) { path.basename += '.min'; }))
-        .pipe(gulp.dest('./dist'))
-        .pipe(livereload());
+        .pipe(gulp.dest('./dist'));
 });
 
 gulp.task('watch', function () {

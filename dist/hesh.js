@@ -13512,6 +13512,23 @@ CodeMirror.defineMode("clike", function(config, parserConfig) {
 		anchor += selection.anchor.ch;
 		editor.getTextArea().setSelectionRange(Math.min(anchor, head), Math.max(anchor, head));
 		editor.getTextArea().focus();
+		runTextAreaChangeDetection();
+	}
+
+	function runTextAreaChangeDetection() {
+		var currentValueLength = editor.getTextArea().value.length;
+		var checkForChanges = window.setInterval(function(){
+			// console.log(editor.getTextArea().value.length);
+			if (currentValueLength === editor.getTextArea().value.length) return;
+			window.clearInterval(checkForChanges);
+			returnFocusFromTextArea();
+		},10);
+		var clearCheckForChanges = function () {
+			window.clearInterval(checkForChanges);
+			editor.off('focus', clearCheckForChanges);
+			// console.log(editor.getTextArea().value);
+		};
+		editor.on('focus', clearCheckForChanges);
 	}
 
 	// Check if any edits were made to the textarea.value
@@ -13580,9 +13597,7 @@ CodeMirror.defineMode("clike", function(config, parserConfig) {
 			publishButton = document.getElementById('submit');
 		} else {
 			toolbar.addEventListener('mousedown', giveFocusToTextArea);
-			toolbar.addEventListener('click', function () {
-				window.setTimeout(returnFocusFromTextArea, 0);
-			});
+			document.getElementById('insert-media-button').addEventListener('mousedown', giveFocusToTextArea);
 			attachDragResizePostOrPage();
 			attachFullHeightToggle();
 			attachFullscreen();

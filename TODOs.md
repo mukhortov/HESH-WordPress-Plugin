@@ -1,9 +1,9 @@
 # TODOs
-- Active line isn't highlighted.
-  - add this highlighting module back in
-- "Add media" isn't working 
-- Insert link feature ins't working
+- "Add media" isn't working
+  - Insert link feature ins't working
   - refactor js
+    - when button click - focus textarea - add change event listner
+	- on change return focus to codemirror - remove event listner
 - When "full-height editor" mode is enabed the editor window shrinks into one line. GIF screencast
   - find repro steps
 - Large white space appears after the editor window has been resized
