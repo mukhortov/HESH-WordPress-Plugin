@@ -2,7 +2,7 @@
 
 var gulp = require('gulp');
 var livereload = require('gulp-livereload');
-var rename = require("gulp-rename");
+var rename = require('gulp-rename');
 // TODO: add plumber
 
 
