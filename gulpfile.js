@@ -79,9 +79,6 @@ gulp.task('build:js', function () {
     ])
         .pipe(concat('hesh.js'))
         .pipe(gulp.dest('./dist'))
-        .pipe(uglify())
-        .pipe(rename( function (path) {path.basename += '.min'; } ))
-        .pipe(gulp.dest('./dist'))
         .pipe(livereload());
 });
 gulp.task('minify:js', function () {

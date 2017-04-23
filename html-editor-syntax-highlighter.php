@@ -56,7 +56,7 @@ class wp_html_editor_syntax {
 		$plugData = get_plugin_data( __FILE__ ); // need this temporary var to support versions of php < 5.4
 		$ver = $plugData['Version'];
 		
-		$min = strpos($_SERVER['HTTP_HOST'], 'localhost') ? '' : '.min' ;
+		$min = strpos(home_url(), 'localhost') ? '' : '.min' ;
 		wp_enqueue_script( 'jquery');
 		wp_enqueue_script( 'heshjs', HESH_LIBS.'hesh'.$min.'.js', array('jquery', 'editor'), $ver, true );
 		wp_enqueue_style( 'heshcss', HESH_LIBS.'hesh'.$min.'.css', false, $ver );
