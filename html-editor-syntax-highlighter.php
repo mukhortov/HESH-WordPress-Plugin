@@ -42,7 +42,6 @@ class wp_html_editor_syntax {
 		add_action( 'admin_enqueue_scripts', array(&$this, 'hesh_admin_enqueue_scripts' ) );
 		add_action( 'wp_ajax_'.$this->formProcessName, array(&$this, 'hesh_options_form_process'));
 		add_action( 'admin_footer', array(&$this, 'hesh_output_form') );
-
 	}
 	
 	// Enqueues scripts and styles for hesh.js
@@ -57,22 +56,10 @@ class wp_html_editor_syntax {
 		$plugData = get_plugin_data( __FILE__ ); // need this temporary var to support versions of php < 5.4
 		$ver = $plugData['Version'];
 		
-		wp_enqueue_style( 'codemirror', HESH_LIBS.'codemirror.css', false, $ver );
-		wp_enqueue_style( 'material', HESH_LIBS.'material.css', false, $ver );
-		wp_enqueue_style( 'heshcss', HESH_LIBS.'hesh.css', false, $ver );
-		
-		wp_enqueue_script( 'codemirror', HESH_LIBS.'codemirror.js', false, $ver, true );
-		wp_enqueue_script( 'xml_cm', HESH_LIBS.'xml.js', array('codemirror'), $ver, true );
-		wp_enqueue_script( 'javascript_cm', HESH_LIBS.'javascript.js', array('codemirror'), $ver, true );
-		wp_enqueue_script( 'css_cm', HESH_LIBS.'css.js', array('codemirror'), $ver, true );
-		wp_enqueue_script( 'htmlmixed_cm', HESH_LIBS.'htmlmixed.js', array('codemirror', 'css_cm', 'javascript_cm', 'xml_cm'), $ver, true );
-		wp_enqueue_script( 'clike_cm', HESH_LIBS.'clike.js', array('codemirror'), $ver, true );
-		wp_enqueue_script( 'php_cm', HESH_LIBS.'php.js', array('codemirror', 'clike_cm', 'htmlmixed_cm'), $ver, true );
-		wp_enqueue_script( 'shortcode_cm', HESH_LIBS.'shortcode.js', array('codemirror'), $ver, true );
-		wp_enqueue_script( 'wordpresspost_cm', HESH_LIBS.'wordpresspost.js', array('codemirror', 'htmlmixed_cm', 'shortcode_cm'), $ver, true );
-		
+		$min = strpos(home_url(), 'localhost') ? '' : '.min' ;
 		wp_enqueue_script( 'jquery');
-		wp_enqueue_script( 'heshjs', HESH_LIBS.'hesh.js', array('codemirror', 'jquery', 'editor'), $ver, true );
+		wp_enqueue_script( 'heshjs', HESH_LIBS.'hesh'.$min.'.js', array('jquery', 'editor'), $ver, true );
+		wp_enqueue_style( 'heshcss', HESH_LIBS.'hesh'.$min.'.css', false, $ver );
 
 		// this shows up in js as window.heshOptions
 		$heshOptions = array(
