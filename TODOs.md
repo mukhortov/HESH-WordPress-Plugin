@@ -1,25 +1,23 @@
 # TODOs
-- "Add media" isn't working
-  - add gallery isn't working
-- When "full-height editor" mode is enabed the editor window shrinks into one line. GIF screencast
-  - find repro steps
-- Large white space appears after the editor window has been resized
-  - find repro steps
-- Broken fullscreen mode with enabed "full-height editor" mode
-  - not broken, this is by design
-
+- fix the general bugs
+- test in all browsers again
 
 ## Testing
 - general bugs
-    - none at the moment
+	- it tabs using spaces?
+		- select multiple lines as press tab - it will tab by one space
+	- in `full height mode` clicking an add tag button will scroll the editor to a random place
 - browsers
     - Safari - seems ok
     - FireFox (Mac) - seems ok
     - Chrome (Mac) - seems ok
     - FireFox (Win10) - seems ok
-    - Chrome (Win10) - seems ok
+    - Chrome (Win10) 
+		- the `content-resize-handle` is missing?
     - Edge - seems ok
     - IE 11 - seems ok
+- minor bugs
+	- switching from visual to text mode doesn't maintain scroll position due to codemirror re-initalizing
  
 
 ## TODO later:

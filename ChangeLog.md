@@ -1,14 +1,24 @@
 # Changelog
 
 ## 2.0.0
-* now adjusts to the _'Enable full-height editor and distraction-free functionality'_ setting
-* syntax highlighting on Theme and Plugin Editor pages
-* fixed bug: native wp editor buttons work on content - no longer overwrites with emulating buttons
+## New in 2.0.0-rc.9
+* The HESH editor now has parity with the standard WP text editor, including compatibility with the _'Enable full-height editor and distraction-free functionality'_ (The last option located under '_Screen Options_' tab at the top of the page).
+	* Behavior with full _'Enable full-height editor and distraction-free functionality' __enabled__:
+		* The fullscreen button enables '_distraction-free_' mode. All other controls on the screen fade away.
+		* The editor has a dynamic height based on its text content. This is the '_full height editor_'. The editor still has a min-height of 300px.
+		* The editor toolbar fixes to the top of the screen while scrolling down the editor's length.
+	* Behavior with full _'Enable full-height editor and distraction-free functionality' __disabled__:
+		* The fullscreen button puts the editor into the traditional fullscreen mode.
+		* The editor has a '_content resize handle_' in the bottom right. Dragging this will resize the editor's height with a min-height of 70px.
+		* The editor content vertically scrolls within the resizable height.
+* Syntax highlighting on Theme and Plugin Editor pages.
+	* Dynamically picks the right file type for highlighting.
+* Fixed bug: native wp editor buttons work on content. No longer overwrites with emulating buttons
 * __Settings:__
 	* added an extendable settings panel
 	* saves settings to WordPress user profile
 	* added more text customization settings
-* basically rewrote the whole codebase
+* Fixed some release bugs in [issue 24](https://github.com/mukhortov/HESH-WordPress-Plugin/issues/24)
 
 ## 1.7.2
 * fixed bug: pre v5.4 php was causing an error - `func_that_returns_array()['index']` syntax is [not allowed](http://php.net/manual/en/language.types.array.php#example-105)
