@@ -475,6 +475,20 @@
 	}
 
 
+	
+	// make wrapped text line up with the base indentation of the line
+	// https://codemirror.net/demo/indentwrap.html
+	function indentWrappedLine() {
+		var charWidth = editor.defaultCharWidth(), basePadding = 4;
+		editor.on("renderLine", function (cm, line, elt) {
+			var off = CodeMirror.countColumn(line.text, null, cm.getOption("tabSize")) * charWidth;
+			elt.style.textIndent = "-" + off + "px";
+			elt.style.paddingLeft = (basePadding + off) + "px";
+		});
+		editor.refresh();
+	}
+
+
 
 	// cursor & selection pairity between codemirror and the textarea
 	function giveFocusToTextArea() {
@@ -582,6 +596,8 @@
 		restoreSelectionState();
 		editor.on('cursorActivity', throttledRecordSelectionState);
 		editor.on('scroll', throttledRecordSelectionState);
+
+		indentWrappedLine();
 
 		if (state.isThemeOrPlugin) {
 			attachDragResizeThemeOrPlugin();
