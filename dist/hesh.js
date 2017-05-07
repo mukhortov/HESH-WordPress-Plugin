@@ -13560,7 +13560,8 @@ CodeMirror.defineMode("clike", function(config, parserConfig) {
 		// save the selection state and scroll state
 		var selectionStart = editor.getTextArea().selectionStart;
 		var selectionEnd = editor.getTextArea().selectionEnd;
-		var scrollPosition = editor.getScrollInfo();
+		var cmScrollPosition = editor.getScrollInfo();
+		var windowScrollPosition = { top: window.pageYOffset, left: window.pageXOffset }
 
 		// update codemirror with the new textarea.value
 		editor.doc.setValue(editor.getTextArea().value);
@@ -13589,7 +13590,8 @@ CodeMirror.defineMode("clike", function(config, parserConfig) {
 			{ line: endLine, ch: endCh },
 			{ scroll: false }
 		);
-		editor.scrollTo(scrollPosition.left, scrollPosition.top);
+		window.scrollTo(windowScrollPosition.left, windowScrollPosition.top);
+		editor.scrollTo(cmScrollPosition.left, cmScrollPosition.top);
 
 		editor.save();
 	}

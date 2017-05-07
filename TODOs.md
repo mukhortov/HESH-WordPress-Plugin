@@ -1,12 +1,8 @@
 # TODOs
-- fix the general bugs
 - test in all browsers again
 
 ## Testing
 - general bugs
-	- it tabs using spaces?
-		- select multiple lines as press tab - it will tab by one space
-	- in `full height mode` clicking an add tag button will scroll the editor to a random place
 - browsers
     - Safari - seems ok
     - FireFox (Mac) - seems ok
