@@ -68,11 +68,10 @@
 				self.previousSettingsPosition = position;
 			}, 0);
 			return position;
-		}
-	};
+		},
 
-	var fontSize = +heshOptions.fontSize;
-	var lineHeight = +heshOptions.lineHeight;
+		charWidth: 0
+	};
 
 	var options = {
 		mode: 'wordpresspost',
@@ -97,7 +96,7 @@
 			'Cmd-S': function () {
 				publishButton.click();
 			}
-		}
+		},
 	};
 
 	function updateOptions() {
@@ -314,20 +313,30 @@
 			editor.setOption('indentUnit', value); // indentUnit must always equal tabSize
 	}
 
-	function setFontSizeAndLineHeight() {
+	function setCharWidth() {
+		state.charWidth = editor.defaultCharWidth() * (heshOptions.fontSize/13);
+	}
+
+	function setFontSizeAndLineHeight(fontSize, lineHeight) {
 		scrollPanel.style.fontSize = fontSize + 'px';
+		heshOptions.fontSize = fontSize;
 		scrollPanel.style.lineHeight = lineHeight + 'em';
+		heshOptions.lineHeight = lineHeight;
+		setCharWidth();
 		editor.refresh();
 	}
 
 	function updateFontSize(event) {
-		fontSize = event.target.value;
+		var fontSize = event.target.value;
+		heshOptions.fontSize = fontSize;
 		scrollPanel.style.fontSize = fontSize + 'px';
+		setCharWidth();
 		editor.refresh();
 	}
 
 	function updateLineHeight(event) {
-		lineHeight = event.target.value;
+		var lineHeight = event.target.value;
+		heshOptions.lineHeight = lineHeight;
 		scrollPanel.style.lineHeight = lineHeight + 'em';
 		editor.refresh();
 	}
@@ -489,11 +498,11 @@
 		else style.appendChild(document.createTextNode(css));
 		head.appendChild(style);
 
-		var charWidth = editor.defaultCharWidth(), basePadding = 4;
+		var basePadding = 4;
 		editor.on('renderLine', function (cm, line, elt) {
-			var off = CodeMirror.countColumn(line.text, null, cm.getOption('tabSize')) * charWidth;
-			elt.style.textIndent = '-' + off + 'px';
-			elt.style.paddingLeft = (basePadding + off) + 'px';
+			var offSet = CodeMirror.countColumn(line.text, null, cm.getOption('tabSize')) * state.charWidth;
+			elt.style.textIndent = '-' + offSet + 'px';
+			elt.style.paddingLeft = (basePadding + offSet) + 'px';
 		});
 		editor.refresh();
 	}
@@ -609,8 +618,6 @@
 		editor.on('cursorActivity', throttledRecordSelectionState);
 		editor.on('scroll', throttledRecordSelectionState);
 
-		indentWrappedLine();
-
 		if (state.isThemeOrPlugin) {
 			attachDragResizeThemeOrPlugin();
 			publishButton = document.getElementById('submit');
@@ -623,7 +630,8 @@
 			attachFullscreen();
 		}
 		attachSettings();
-		setFontSizeAndLineHeight();
+		setFontSizeAndLineHeight(+heshOptions.fontSize, +heshOptions.lineHeight);
+		indentWrappedLine();
 	}
 
 	function stopEditor() {
