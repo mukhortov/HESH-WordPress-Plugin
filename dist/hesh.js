@@ -13100,7 +13100,6 @@ CodeMirror.defineMode("clike", function(config, parserConfig) {
 		mode: 'wordpresspost',
 		tabMode: 'indent',
 		matchBrackets: true,
-		indentUnit: 1,
 		indentWithTabs: true,
 		enterMode: 'keep',
 		autofocus: true,
@@ -13126,7 +13125,7 @@ CodeMirror.defineMode("clike", function(config, parserConfig) {
 	function updateOptions() {
 		options.theme = heshOptions.theme;
 		options.lineNumbers = !!heshOptions.lineNumbers;
-		options.tabSize = +heshOptions.tabSize;
+		options.tabSize = options.indentUnit = +heshOptions.tabSize;  // indentUnit must always equal tabSize
 		options.lineWrapping = !!heshOptions.lineWrapping;
 	}
 	
@@ -13329,9 +13328,12 @@ CodeMirror.defineMode("clike", function(config, parserConfig) {
 	function updateOption(event) {
 		var value = +event.target.value;
 		value = isNaN(value) ? event.target.value : value;
-		if (event.target.checked != null) value = event.target.checked;
+		if (event.target.checked != null) 
+			value = event.target.checked;
 		heshOptions[event.target.id] = value;
 		editor.setOption(event.target.id, value);
+		if(event.target.id === 'tabSize') // special case for tabSize
+			editor.setOption('indentUnit', value); // indentUnit must always equal tabSize
 	}
 
 	function setFontSizeAndLineHeight() {
@@ -13619,7 +13621,7 @@ CodeMirror.defineMode("clike", function(config, parserConfig) {
 		editor.on('cursorActivity', throttledRecordSelectionState);
 		editor.on('scroll', throttledRecordSelectionState);
 
-		indentWrappedLine();
+		// indentWrappedLine();
 
 		if (state.isThemeOrPlugin) {
 			attachDragResizeThemeOrPlugin();
