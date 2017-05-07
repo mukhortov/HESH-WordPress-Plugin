@@ -481,11 +481,19 @@
 	// make wrapped text line up with the base indentation of the line
 	// https://codemirror.net/demo/indentwrap.html
 	function indentWrappedLine() {
+		var css = '.CodeMirror pre > * { text-indent: 0px; }';
+		var head = document.head || document.getElementsByTagName('head')[0];
+		var style = document.createElement('style');
+		style.type = 'text/css';
+		if (style.styleSheet) style.styleSheet.cssText = css;
+		else style.appendChild(document.createTextNode(css));
+		head.appendChild(style);
+
 		var charWidth = editor.defaultCharWidth(), basePadding = 4;
-		editor.on("renderLine", function (cm, line, elt) {
-			var off = CodeMirror.countColumn(line.text, null, cm.getOption("tabSize")) * charWidth;
-			elt.style.textIndent = "-" + off + "px";
-			elt.style.paddingLeft = (basePadding + off) + "px";
+		editor.on('renderLine', function (cm, line, elt) {
+			var off = CodeMirror.countColumn(line.text, null, cm.getOption('tabSize')) * charWidth;
+			elt.style.textIndent = '-' + off + 'px';
+			elt.style.paddingLeft = (basePadding + off) + 'px';
 		});
 		editor.refresh();
 	}
@@ -599,7 +607,7 @@
 		editor.on('cursorActivity', throttledRecordSelectionState);
 		editor.on('scroll', throttledRecordSelectionState);
 
-		// indentWrappedLine();
+		indentWrappedLine();
 
 		if (state.isThemeOrPlugin) {
 			attachDragResizeThemeOrPlugin();
