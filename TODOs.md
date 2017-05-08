@@ -8,7 +8,7 @@
     - FireFox (Mac) - seems ok
     - Chrome (Mac) - seems ok
     - FireFox (Win10) - seems ok
-    - Chrome (Win10) 
+    - Chrome (Win10)
 		- the `content-resize-handle` is missing?
     - Edge - seems ok
     - IE 11 - seems ok
@@ -23,6 +23,7 @@
 - support `<!--nextpage-->` in shortcode parser
 - add fullscreen to plugin/theme editor
 - success/progress/failure ui for saving options
+- drag over line numbers to highlight lines
 - [autoformat](http://codemirror.net/2/lib/util/formatting.js)? [demo](http://codemirror.net/2/demo/formatting.html) - this was discontinued
 - addon/advanced options
 	- keymaps
