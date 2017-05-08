@@ -13090,17 +13090,15 @@ CodeMirror.defineMode("clike", function(config, parserConfig) {
 				self.previousSettingsPosition = position;
 			}, 0);
 			return position;
-		}
-	};
+		},
 
-	var fontSize = +heshOptions.fontSize;
-	var lineHeight = +heshOptions.lineHeight;
+		charWidth: 0
+	};
 
 	var options = {
 		mode: 'wordpresspost',
 		tabMode: 'indent',
 		matchBrackets: true,
-		indentUnit: 1,
 		indentWithTabs: true,
 		enterMode: 'keep',
 		autofocus: true,
@@ -13120,13 +13118,13 @@ CodeMirror.defineMode("clike", function(config, parserConfig) {
 			'Cmd-S': function () {
 				publishButton.click();
 			}
-		}
+		},
 	};
 
 	function updateOptions() {
 		options.theme = heshOptions.theme;
 		options.lineNumbers = !!heshOptions.lineNumbers;
-		options.tabSize = +heshOptions.tabSize;
+		options.tabSize = options.indentUnit = +heshOptions.tabSize;  // indentUnit must always equal tabSize
 		options.lineWrapping = !!heshOptions.lineWrapping;
 	}
 	
@@ -13329,25 +13327,38 @@ CodeMirror.defineMode("clike", function(config, parserConfig) {
 	function updateOption(event) {
 		var value = +event.target.value;
 		value = isNaN(value) ? event.target.value : value;
-		if (event.target.checked != null) value = event.target.checked;
+		if (event.target.checked != null) 
+			value = event.target.checked;
 		heshOptions[event.target.id] = value;
 		editor.setOption(event.target.id, value);
+		if(event.target.id === 'tabSize') // special case for tabSize
+			editor.setOption('indentUnit', value); // indentUnit must always equal tabSize
 	}
 
-	function setFontSizeAndLineHeight() {
+	function setCharWidth() {
+		state.charWidth = editor.defaultCharWidth() * (heshOptions.fontSize/13);
+	}
+
+	function setFontSizeAndLineHeight(fontSize, lineHeight) {
 		scrollPanel.style.fontSize = fontSize + 'px';
+		heshOptions.fontSize = fontSize;
 		scrollPanel.style.lineHeight = lineHeight + 'em';
+		heshOptions.lineHeight = lineHeight;
+		setCharWidth();
 		editor.refresh();
 	}
 
 	function updateFontSize(event) {
-		fontSize = event.target.value;
+		var fontSize = event.target.value;
+		heshOptions.fontSize = fontSize;
 		scrollPanel.style.fontSize = fontSize + 'px';
+		setCharWidth();
 		editor.refresh();
 	}
 
 	function updateLineHeight(event) {
-		lineHeight = event.target.value;
+		var lineHeight = event.target.value;
+		heshOptions.lineHeight = lineHeight;
 		scrollPanel.style.lineHeight = lineHeight + 'em';
 		editor.refresh();
 	}
@@ -13497,6 +13508,28 @@ CodeMirror.defineMode("clike", function(config, parserConfig) {
 	}
 
 
+	
+	// make wrapped text line up with the base indentation of the line
+	// https://codemirror.net/demo/indentwrap.html
+	function indentWrappedLine() {
+		var css = '.CodeMirror pre > * { text-indent: 0px; }';
+		var head = document.head || document.getElementsByTagName('head')[0];
+		var style = document.createElement('style');
+		style.type = 'text/css';
+		if (style.styleSheet) style.styleSheet.cssText = css;
+		else style.appendChild(document.createTextNode(css));
+		head.appendChild(style);
+
+		var basePadding = 4;
+		editor.on('renderLine', function (cm, line, elt) {
+			var offSet = CodeMirror.countColumn(line.text, null, cm.getOption('tabSize')) * state.charWidth;
+			elt.style.textIndent = '-' + offSet + 'px';
+			elt.style.paddingLeft = (basePadding + offSet) + 'px';
+		});
+		editor.refresh();
+	}
+
+
 
 	// cursor & selection pairity between codemirror and the textarea
 	function giveFocusToTextArea() {
@@ -13536,7 +13569,8 @@ CodeMirror.defineMode("clike", function(config, parserConfig) {
 		// save the selection state and scroll state
 		var selectionStart = editor.getTextArea().selectionStart;
 		var selectionEnd = editor.getTextArea().selectionEnd;
-		var scrollPosition = editor.getScrollInfo();
+		var cmScrollPosition = editor.getScrollInfo();
+		var windowScrollPosition = { top: window.pageYOffset, left: window.pageXOffset }
 
 		// update codemirror with the new textarea.value
 		editor.doc.setValue(editor.getTextArea().value);
@@ -13565,7 +13599,8 @@ CodeMirror.defineMode("clike", function(config, parserConfig) {
 			{ line: endLine, ch: endCh },
 			{ scroll: false }
 		);
-		editor.scrollTo(scrollPosition.left, scrollPosition.top);
+		window.scrollTo(windowScrollPosition.left, windowScrollPosition.top);
+		editor.scrollTo(cmScrollPosition.left, cmScrollPosition.top);
 
 		editor.save();
 	}
@@ -13617,7 +13652,8 @@ CodeMirror.defineMode("clike", function(config, parserConfig) {
 			attachFullscreen();
 		}
 		attachSettings();
-		setFontSizeAndLineHeight();
+		setFontSizeAndLineHeight(+heshOptions.fontSize, +heshOptions.lineHeight);
+		indentWrappedLine();
 	}
 
 	function stopEditor() {
