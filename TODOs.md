@@ -1,17 +1,21 @@
 # TODOs
-- test in all browsers again
+- release!
 
 ## Testing
 - general bugs
+	- none currently
 - browsers
     - Safari - seems ok
     - FireFox (Mac) - seems ok
     - Chrome (Mac) - seems ok
     - FireFox (Win10) - seems ok
-    - Chrome (Win10)
-		- the `content-resize-handle` is missing?
+    - Chrome (Win10) - seems ok
     - Edge - seems ok
-    - IE 11 - seems ok
+    - IE 11 - I'm going to give up on this one...
+		- the add a link button dosn't insert a link in the right place
+		- other things break periodically including:
+			- the scroll position is not maintained while adding content with buttons
+			- the sticky scroll toobar doesn't work in '_full height mode_'
 - minor bugs
 	- switching from visual to text mode doesn't maintain scroll position due to codemirror re-initalizing
  
