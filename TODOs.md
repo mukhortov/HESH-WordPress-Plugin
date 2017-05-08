@@ -8,10 +8,13 @@
     - FireFox (Mac) - seems ok
     - Chrome (Mac) - seems ok
     - FireFox (Win10) - seems ok
-    - Chrome (Win10)
-		- the `content-resize-handle` is missing?
+    - Chrome (Win10) - seems ok
     - Edge - seems ok
-    - IE 11 - seems ok
+    - IE 11 - I give up on these...
+		- insert a link is broken 
+		- other things break periodically, including:
+			- adding content with buttons doesn't restore scroll position
+			- changing to full height editor doesn't start the sticky toolbar
 - minor bugs
 	- switching from visual to text mode doesn't maintain scroll position due to codemirror re-initalizing
  
