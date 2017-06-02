@@ -22,6 +22,7 @@
 
 ## TODO later:
 - add all these as enhancement requests
+- don't give codemirror focus on _Add New_ page load
 - add theme examples to screenshots
 - store scroll position as well as cursor position
 - support `<!--nextpage-->` in shortcode parser
