@@ -13410,7 +13410,7 @@ CodeMirror.defineMode("clike", function(config, parserConfig) {
 
 	var throttledMatchTextAreaMarginTop = throttleAnimationFrame(matchTextAreaMarginTop);
 	function matchTextAreaMarginTop() {
-		editor.getWrapperElement().style.marginTop = editor.getTextArea().style.marginTop;
+		editor.getWrapperElement().style.marginTop = toolbar.offsetHeight + 'px';
 	}
 
 
