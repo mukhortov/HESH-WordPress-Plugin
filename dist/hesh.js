@@ -13109,7 +13109,7 @@ CodeMirror.defineMode("clike", function(config, parserConfig) {
 				toggleFullscreen(); 
 			},
 			'Esc': function () {
-				toggleFullscreen();
+				toggleFullscreen(true);
 			},
 			'Ctrl-S': function () {
 				publishButton.click();
@@ -13388,11 +13388,17 @@ CodeMirror.defineMode("clike", function(config, parserConfig) {
 		document.getElementById('cm_content_fullscreen').onclick = toggleFullscreen;
 	}
 
-	function toggleFullscreen() {
+	function toggleFullscreen(esc) {
+		esc = esc === true ? true : false;
+		console.log(esc);
 		if (state.isFullHeight()){
 			fullscreenBox.classList.remove(fullscreenClass);
 		} else {
-			fullscreenBox.classList.toggle(fullscreenClass);
+			if (!fullscreenBox.classList.contains(fullscreenClass) && !esc){
+				fullscreenBox.classList.add(fullscreenClass);
+			} else {
+				fullscreenBox.classList.remove(fullscreenClass);
+			}
 			editor.focus();
 		}
 	}
