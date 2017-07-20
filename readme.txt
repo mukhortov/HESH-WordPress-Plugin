@@ -2,9 +2,9 @@
 Contributors: nixdns, arniebradfo, rraub, collinprice
 Donate link: https://www.paypal.me/mukhortov/5
 Tags: syntax highlighter, codemirror, text editor, code highlighter, code coloring, editor, html editor, theme editor, plugin editor, syntax, highlighting, highlighter, syntax highlighting, codemirror.js, code,
-Requires at least: 4.0.11
-Tested up to: 4.7.3
-Stable tag: 2.0.0
+Requires at least: 4.0.15
+Tested up to: 4.8.0
+Stable tag: 2.0.1
 License: GPL-2.0
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
