@@ -307,7 +307,16 @@
 
 
 	.wp-editor-expand & {
-		min-height: 300px;
+		@min-height: 300px;
+		min-height: @min-height;
+		.CodeMirror-scroll{
+			@magic-hide-scroll-bar-height: 30px;
+			// these override CodeMirrors own native padding and negative margin
+			// CodeMirror uses this to hide the scrollbar on the bottom
+			// they are set to !important as well
+			padding-bottom: @min-height + @magic-hide-scroll-bar-height !important;
+			margin-bottom: -(@min-height + @magic-hide-scroll-bar-height) !important;
+		}
 	}
 
 
