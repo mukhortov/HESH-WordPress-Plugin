@@ -79,7 +79,6 @@
 		matchBrackets: true,
 		indentWithTabs: true,
 		enterMode: 'keep',
-		autofocus: true,
 		styleActiveLine: true,
 		electricChars: false,
 		viewportMargin: 10,
@@ -104,6 +103,7 @@
 		options.lineNumbers = !!heshOptions.lineNumbers;
 		options.tabSize = options.indentUnit = +heshOptions.tabSize;  // indentUnit must always equal tabSize
 		options.lineWrapping = !!heshOptions.lineWrapping;
+		options.autofocus = !!document.getElementById('title').value && document.getElementById('title').value.length > 0;
 	}
 	
 
