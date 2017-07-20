@@ -13101,7 +13101,6 @@ CodeMirror.defineMode("clike", function(config, parserConfig) {
 		matchBrackets: true,
 		indentWithTabs: true,
 		enterMode: 'keep',
-		autofocus: true,
 		styleActiveLine: true,
 		electricChars: false,
 		viewportMargin: 10,
@@ -13110,7 +13109,7 @@ CodeMirror.defineMode("clike", function(config, parserConfig) {
 				toggleFullscreen(); 
 			},
 			'Esc': function () {
-				toggleFullscreen();
+				toggleFullscreen(true);
 			},
 			'Ctrl-S': function () {
 				publishButton.click();
@@ -13126,6 +13125,7 @@ CodeMirror.defineMode("clike", function(config, parserConfig) {
 		options.lineNumbers = !!heshOptions.lineNumbers;
 		options.tabSize = options.indentUnit = +heshOptions.tabSize;  // indentUnit must always equal tabSize
 		options.lineWrapping = !!heshOptions.lineWrapping;
+		options.autofocus = !!document.getElementById('title').value && document.getElementById('title').value.length > 0;
 	}
 	
 
@@ -13388,11 +13388,17 @@ CodeMirror.defineMode("clike", function(config, parserConfig) {
 		document.getElementById('cm_content_fullscreen').onclick = toggleFullscreen;
 	}
 
-	function toggleFullscreen() {
+	function toggleFullscreen(esc) {
+		esc = esc === true ? true : false;
+		console.log(esc);
 		if (state.isFullHeight()){
 			fullscreenBox.classList.remove(fullscreenClass);
 		} else {
-			fullscreenBox.classList.toggle(fullscreenClass);
+			if (!fullscreenBox.classList.contains(fullscreenClass) && !esc){
+				fullscreenBox.classList.add(fullscreenClass);
+			} else {
+				fullscreenBox.classList.remove(fullscreenClass);
+			}
 			editor.focus();
 		}
 	}
@@ -13410,7 +13416,10 @@ CodeMirror.defineMode("clike", function(config, parserConfig) {
 
 	var throttledMatchTextAreaMarginTop = throttleAnimationFrame(matchTextAreaMarginTop);
 	function matchTextAreaMarginTop() {
-		editor.getWrapperElement().style.marginTop = editor.getTextArea().style.marginTop;
+		// editor.getWrapperElement().style.marginTop = editor.getTextArea().style.marginTop;
+		editor.getWrapperElement().style.marginTop = toolbar.offsetHeight + 'px';
+		
+		console.log(toolbar.offsetHeight);
 	}
 
 
