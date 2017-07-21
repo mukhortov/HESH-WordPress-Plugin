@@ -74,6 +74,8 @@ gulp.task('build:js', function () {
         './src/wordpresspost.js',
         // AddOns
         codemirrorPath + 'addon/selection/active-line.js',
+        codemirrorPath + 'addon/search/searchcursor.js',
+        codemirrorPath + 'addon/search/search.js',
         // HESH
         './src/hesh.js'
     ])

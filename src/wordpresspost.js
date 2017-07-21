@@ -64,7 +64,6 @@
 				}
 				state.token = shortcodeToken;
 			} else if (inText && /<!\-\-more|<!\-\-(noteaser|nextpage)\-\->?/.test(stream.current()) && !state.htmlmixedState.localState && style === 'comment') {
-				console.log(stream.current());
 				stream.backUp(stream.current().length);
 				state.token = moreToken;
 			}
