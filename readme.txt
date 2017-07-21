@@ -39,6 +39,12 @@ Everything except Internet Expolorer 10 and under. If you are using Internet Exp
 
 == Changelog ==
 
+= 2.0.1 =
+* fixed bug: #29 esc key weirdness
+* fixed bug: #30 don't steal editor focus from title on _'Add New Post'_
+* fixed bug: #43 scrollbar appears in middle of text editor
+* fixed bug: #45 toolbar can be too big
+
 = 2.0.0 =
 * now adjusts to the _'Enable full-height editor and distraction-free functionality'_ setting
 * syntax highlighting on Theme and Plugin Editor pages
