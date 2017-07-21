@@ -1,8 +1,10 @@
 # TODOs
-- fix bugs
 - add to FAQ
 	- about spell-check
 	- about IE
+- search
+- scrollbars
+- syntax highlighling for `<!--nextpage-->`
 
 ## Testing
 - general bugs

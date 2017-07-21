@@ -12877,7 +12877,8 @@ CodeMirror.defineMode("clike", function(config, parserConfig) {
 					state.shortcodeState = shortcodeMode.startState(htmlmixedMode.indent(state.htmlmixedState, ''));
 				}
 				state.token = shortcodeToken;
-			} else if (inText && /<!\-\-more|<!\-\-noteaser\-\->/.test(stream.current()) && !state.htmlmixedState.localState && style === 'comment') {
+			} else if (inText && /<!\-\-more|<!\-\-(noteaser|nextpage)\-\->?/.test(stream.current()) && !state.htmlmixedState.localState && style === 'comment') {
+				console.log(stream.current());
 				stream.backUp(stream.current().length);
 				state.token = moreToken;
 			}
@@ -12887,7 +12888,7 @@ CodeMirror.defineMode("clike", function(config, parserConfig) {
 		function moreToken (stream, state) {
 			if (stream.match('<!--more')) {
 				return 'meta';
-			} else if (stream.match('-->') || stream.match('<!--noteaser-->')) {
+			} else if (stream.match('-->') || stream.match('<!--noteaser-->') || stream.match('<!--nextpage-->')) {
 				state.token = htmlmixedToken;
 				return 'meta';
 			} else {
@@ -13390,7 +13391,6 @@ CodeMirror.defineMode("clike", function(config, parserConfig) {
 
 	function toggleFullscreen(esc) {
 		esc = esc === true ? true : false;
-		console.log(esc);
 		if (state.isFullHeight()){
 			fullscreenBox.classList.remove(fullscreenClass);
 		} else {
@@ -13416,10 +13416,7 @@ CodeMirror.defineMode("clike", function(config, parserConfig) {
 
 	var throttledMatchTextAreaMarginTop = throttleAnimationFrame(matchTextAreaMarginTop);
 	function matchTextAreaMarginTop() {
-		// editor.getWrapperElement().style.marginTop = editor.getTextArea().style.marginTop;
 		editor.getWrapperElement().style.marginTop = toolbar.offsetHeight + 'px';
-		
-		console.log(toolbar.offsetHeight);
 	}
 
 
