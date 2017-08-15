@@ -4,7 +4,7 @@
  * @link     http://arniebradfo.com/
  * @author   Petr Mukhortov
  * @link     http://mukhortov.com/
- * @since    2.0.0
+ * @since    2.0.2
 */
 
 // console.log(window.heshOptions); // from wordpress php
@@ -103,7 +103,9 @@
 		options.lineNumbers = !!heshOptions.lineNumbers;
 		options.tabSize = options.indentUnit = +heshOptions.tabSize;  // indentUnit must always equal tabSize
 		options.lineWrapping = !!heshOptions.lineWrapping;
-		options.autofocus = !!document.getElementById('title').value && document.getElementById('title').value.length > 0;
+		options.autofocus = document.getElementById('title') 
+			&& !!document.getElementById('title').value 
+			&& document.getElementById('title').value.length > 0;
 	}
 	
 

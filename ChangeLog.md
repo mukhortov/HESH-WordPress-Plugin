@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.0.2
+* fixed bug: #29 esc key weirdness
+
 ## 2.0.1
 * fixed bug: #29 esc key weirdness
 * fixed bug: #30 don't steal editor focus from title on _'Add New Post'_
