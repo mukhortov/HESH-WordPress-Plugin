@@ -1,7 +1,9 @@
 # Changelog
 
-## 2.0.2
-* fixed bug: #29 esc key weirdness
+## 2.1.0
+* added search #31
+* add highlighting for `<!--nextpage-->` #15 
+* fixed bug: #51 Theme and Plugin Editor not working
 
 ## 2.0.1
 * fixed bug: #29 esc key weirdness
