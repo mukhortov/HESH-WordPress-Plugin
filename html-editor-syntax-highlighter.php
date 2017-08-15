@@ -2,7 +2,11 @@
 
 
 /**
+<<<<<<< HEAD
  * @since              2.0.1
+=======
+ * @since              2.1.0
+>>>>>>> master
  * @package            HESH_plugin
  *
  * Plugin Name:        HTML Editor Syntax Highlighter
@@ -17,10 +21,17 @@
  * License URI:        http://www.gnu.org/licenses/gpl-2.0.txt
  * GitHub Branch:      master
  * GitHub Plugin URI:  https://github.com/mukhortov/HESH-WordPress-Plugin
+<<<<<<< HEAD
  * Version:            2.0.1
  * Requires at least:  4.0.15
  * Tested up to:       4.7.3
  * Stable tag:         2.0.1
+=======
+ * Version:            2.1.0
+ * Requires at least:  4.0.15
+ * Tested up to:       4.8.1
+ * Stable tag:         2.1.0
+>>>>>>> master
  **/
 
 // Check for required PHP version
