@@ -7,7 +7,7 @@ WordPress plugin that adds syntax highlighting in the Post & Page HTML text edit
 * Syntax highlighting in the Post/Page HTML editor
 * _NEW:_ Syntax highlighting in the Theme & Plugin editors
 * Syntax highlighting for WordPress shortcodes
-* Save your posts and pages pressing Ctrl+S (Cmd+S on Mac)
+* Save your posts and pages pressing `Ctrl+S` (`Cmd+S` on Mac)
 * Restore cursor position after page is reloaded
 * Huge Selection of themes and other customization options
 * Fullscreen mode: toggle with F11/Esc hotkeys
@@ -35,56 +35,56 @@ Don't manually edit the release branch. Only merge master into the release branc
 Paste this code in the editor to test out all the different syntax highlighting features.
 
 ```
-	<div>
-		[shortcode attribute="value" standAloneAttribute bool=true int=42 ]
-			[oneliner noquotes=stringvaluewithnospaces]
-			[self-closing-syntax html='<label class="name">Label</label>' /]
-			shortcode content 
-			<a href="#">nested html</a>
-			[[escapedshortcode]]
-			[ [brackets that-dont-count]]
-		[/shortcode]
-	</div>
+<div>
+	[shortcode attribute="value" standAloneAttribute bool=true int=42 ]
+		[oneliner noquotes=stringvaluewithnospaces]
+		[self-closing-syntax html='<label class="name">Label</label>' /]
+		shortcode content 
+		<a href="#">nested html</a>
+		[[escapedshortcode]]
+		[ [brackets that-dont-count]]
+	[/shortcode]
+</div>
 
-		a really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really long line that should wrap and indent properly
+	a really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really long line that should wrap and indent properly
 
 
-	<!--more WordPress More Tag Text --><!--noteaser-->
-	<!--HTML comment--><!--[shortcode]-->
+<!--more WordPress More Tag Text --><!--noteaser-->
+<!--HTML comment--><!--[shortcode]-->
 
-	ERRORS!
-	[/matchlessEndTag]<div class="right after error"></div>
-	[shortcode no_square_brackets='aa[<div here="whatever" adn=" ></div>]aaa']
-	[no/special|characters\in*shortcode^names or.attribute`names=error /]
+ERRORS!
+[/matchlessEndTag]<div class="right after error"></div>
+[shortcode no_square_brackets='aa[<div here="whatever" adn=" ></div>]aaa']
+[no/special|characters\in*shortcode^names or.attribute`names=error /]
 
-	&amp; &#xaA1; &#9; &error
-	<?php 
-		// this is meta highlighting
-		[shortcode] 
-		<div class="something"></div>
-		$var = 'value'; 
-	?>
+&amp; &#xaA1; &#9; &error
+<?php 
+	// this is meta highlighting
+	[shortcode] 
+	<div class="something"></div>
+	$var = 'value'; 
+?>
 
-	<div style=" width:200px; height:400px; ">styled div</div>
-	<style>
-		/* css comment */
-		#identifier, .class{
-			width:200px;
-			height:400px;
-		}
-		/* square brackets in css block */
-		element[attribute="value"]{ color:red; }
-	</style>
+<div style=" width:200px; height:400px; ">styled div</div>
+<style>
+	/* css comment */
+	#identifier, .class{
+		width:200px;
+		height:400px;
+	}
+	/* square brackets in css block */
+	element[attribute="value"]{ color:red; }
+</style>
 
-	<input onclick=" document.getElementById('identifier').style.width = 200px; "/>
-	<script>
-		// javascript comment
-		var obj = {
-			key: value,
-			keytwo: valuetwo,
-			array: ['valueone', 'valuetwo'] // square brackets in javascript block
-		};
-		document.getElementById('identifier').style.width = 200px;
-		var string = '</script' + '>'; // writing this straght out will break the mix
-	</script>
+<input onclick=" document.getElementById('identifier').style.width = 200px; "/>
+<script>
+	// javascript comment
+	var obj = {
+		key: value,
+		keytwo: valuetwo,
+		array: ['valueone', 'valuetwo'] // square brackets in javascript block
+	};
+	document.getElementById('identifier').style.width = 200px;
+	var string = '</script' + '>'; // writing this straght out will break the mix
+</script>
 ```
