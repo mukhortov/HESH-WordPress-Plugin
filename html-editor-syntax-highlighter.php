@@ -21,7 +21,7 @@
  * Requires at least:  4.0.15
  * Tested up to:       4.8.1
  * Stable tag:         2.2.0
- **/
+**/
 
 // Check for required PHP version
 if ( version_compare( PHP_VERSION, '5.2.17', '<' ) ) {
@@ -84,9 +84,10 @@ class wp_html_editor_syntax {
 	private $nonceSecretCode = 'secret-code';
 	private $prefix = 'hesh_';
 	private $userPrefrences; // added to the primary bar
-	private $addOns; // added to the advanced menu
 	public function hesh_set_options() {
 		$this->userPrefrences = array(
+
+			// PRIMARY OPTIONS // added in the primary settings bar
 			'theme' => array(
 				'title' => 'Theme',
 				'type' => 'select',
@@ -95,6 +96,7 @@ class wp_html_editor_syntax {
 				'options' => json_decode(file_get_contents(dirname(__FILE__) . '/css.json'), true), 
 				'current' => get_user_meta( get_current_user_id(), $this->prefix.'theme' , true),
 				'default' => 'material',
+				'set' => 'primary',
 			),
 			'tabSize' => array(
 				'title' => 'Indent',
@@ -102,20 +104,21 @@ class wp_html_editor_syntax {
 				'options' => range(1,6),
 				'current' => get_user_meta( get_current_user_id(), $this->prefix.'tabSize' , true),
 				'default' => 4,
+				'set' => 'primary',
 			),
 			'lineWrapping'=> array(
 				'title' => 'Line Wrap',
 				'type' => 'checkbox',
-				'text' => 'Wrap lines',
 				'current' => get_user_meta( get_current_user_id(), $this->prefix.'lineWrapping' , true),
 				'default' => true,
+				'set' => 'primary',
 			),
 			'lineNumbers'=> array(
 				'title' => 'Numbering',
 				'type' => 'checkbox',
-				'text' => 'Show line numbers',
 				'current' => get_user_meta( get_current_user_id(), $this->prefix.'lineNumbers' , true),
 				'default' => true,
+				'set' => 'primary',
 			),
 			'fontSize'=> array(
 				'title' => 'Font Size',
@@ -123,6 +126,7 @@ class wp_html_editor_syntax {
 				'options' => range(8,20),
 				'current' => get_user_meta( get_current_user_id(), $this->prefix.'fontSize' , true),
 				'default' => 13,
+				'set' => 'primary',
 			),
 			'lineHeight'=> array(
 				'title' => 'Line Height',
@@ -130,27 +134,77 @@ class wp_html_editor_syntax {
 				'options' => range(1,2,0.25),
 				'current' => get_user_meta( get_current_user_id(), $this->prefix.'lineHeight' , true),
 				'default' => 1.5,
+				'set' => 'primary',
+			),
+
+			// ADVANCED OPTIONS // added to the advanced dropdown
+			'matchBrackets'=> array(
+				'title' => 'Match Brackets',
+				'type' => 'checkbox',
+				'current' => get_user_meta( get_current_user_id(), $this->prefix.'matchBrackets' , true),
+				'default' => false,
+				'set' => 'advanced',
+			),
+			'matchTags'=> array(
+				'title' => 'Match Tags',
+				'type' => 'checkbox',
+				'current' => get_user_meta( get_current_user_id(), $this->prefix.'matchTags' , true),
+				'default' => false,
+				'set' => 'advanced',
+			),
+			'closeTag'=> array(
+				'title' => 'Auto Close Tags',
+				'type' => 'checkbox',
+				'current' => get_user_meta( get_current_user_id(), $this->prefix.'closeTag' , true),
+				'default' => false,
+				'set' => 'advanced',
+			),
+			'closeBrackets'=> array(
+				'title' => 'Auto Close Brackets',
+				'type' => 'checkbox',
+				'current' => get_user_meta( get_current_user_id(), $this->prefix.'closeBrackets' , true),
+				'default' => false,
+				'set' => 'advanced',
+			),
+			'emmet'=> array(
+				'title' => 'Emmet',
+				'type' => 'checkbox',
+				'current' => get_user_meta( get_current_user_id(), $this->prefix.'emmet' , true),
+				'default' => false,
+				'set' => 'advanced',
+			),
+			'foldCode'=> array(
+				'title' => 'Code Folding',
+				'type' => 'checkbox',
+				'current' => get_user_meta( get_current_user_id(), $this->prefix.'foldCode' , true),
+				'default' => false,
+				'set' => 'advanced',
+			),
+			'scrollbars'=> array(
+				'title' => 'Show Scrollbars',
+				'type' => 'checkbox',
+				'current' => get_user_meta( get_current_user_id(), $this->prefix.'scrollbars' , true),
+				'default' => false,
+				'set' => 'advanced',
+			),
+			'commenting'=> array(
+				'title' => 'Toggle Comment Shortcut',
+				'description' => 'Windows: <code>Ctrl+/</code> Mac: <code>Cmd+/</code>',
+				'type' => 'checkbox',
+				'current' => get_user_meta( get_current_user_id(), $this->prefix.'commenting' , true),
+				'default' => false,
+				'set' => 'advanced',
+			),
+			'keyMap'=> array(
+				'title' => 'Key Mapping',
+				'type' => 'radio',
+				'options' => array('none', 'emacs', 'sublime', 'vim'),
+				'current' => get_user_meta( get_current_user_id(), $this->prefix.'keyMap' , true),
+				'default' => 'none',
+				'set' => 'advanced',
 			),
 		);
-		// $this->addOns = array(
-		// 	'keyMap'=> array(
-		// 		'title' => 'Key Mapping',
-		//		'description' => 'choose a theme',
-		// 		'type' => 'select',
-		// 		'options' => array('none', 'emacs', 'sublime', 'vim'),
-		// 		'current' => get_user_meta( get_current_user_id(), $this->prefix.'keyMap' , true),
-		// 		'default' => 'none',
-		// 	),
-		// 	'styleActiveLine'=> array(),
-		// 	'matchBrackets'=> array(),
-		// 	'search'=> array(), // and replace
-		// 	'highlightSelectionMatches'=> array(),
-		// 	'styleSelectedText'=> array(), // ?
-		// 	'autoCloseBrackets'=> array(),
-		// 	'autoCloseTags'=> array(),
-		// 	'comment'=> array(), // continueComments?
-		// 	'foldCode'=> array(), // ?
-		// );
+
 
 		// Intalize all the hesh option fields as default if they don't exist yet
 		if (!get_user_meta( get_current_user_id(), $this->prefix.'hasInitalized', true) ) {
@@ -178,24 +232,23 @@ class wp_html_editor_syntax {
 		}
 	}
 
-	private function hesh_output_option($id, $config, $cm=false) {
+	private function hesh_output_option($id, $config) {
 		switch ($config['type']){
 			case 'select':
-				$this->hesh_output_select($id, $config, $cm);
+				$this->hesh_output_primary_select($id, $config);
 				break;
 			case 'checkbox':
-				$this->hesh_output_checkbox($id, $config, $cm);
+				$this->hesh_output_primary_toggle($id, $config);
 				break;
 		}
 	}
 
-	private function hesh_output_checkbox($id, $config, $cm=false) {
+	private function hesh_output_primary_toggle($id, $config) {
 		extract($config);
-		if ($cm): ?>
+		?>
 			<label 
 				class="CodeMirror-settings__button button button-small"
 				for="<?php echo $id; ?>"
-				<?php if (isset($description)) echo "title=\"$id-description\"" ?>
 				>
 				<?php echo $title; ?>
 				<input type="hidden" value="false"  name="<?php echo $id; ?>" />
@@ -206,51 +259,17 @@ class wp_html_editor_syntax {
 					value="true"
 					class="CodeMirror-settings__option"
 					<?php if ($current) echo 'checked'; ?>
-					/>
+				/>
 			</label>
-		<?php else: ?>
-			<tr>
-				<th scope="row">
-					<?php echo $title; ?>
-				</th>
-				<td>
-					<fieldset>
-						<legend class="screen-reader-text">
-							<span><?php echo $title; ?></span>
-						</legend>
-						<label for="<?php echo $id; ?>">
-							<input type="hidden" value="false"  name="<?php echo $id; ?>" />
-							<input 
-								name="<?php echo $id; ?>" 
-								id="<?php echo $id; ?>" 
-								type="checkbox"
-								value="true"
-								class="CodeMirror-settings__option"
-								<?php if (isset($description)) echo "aria-describedby=\"$id-description\"" ?>
-								<?php if ($current) echo 'checked'; ?>
-								/>
-							<?php echo $text; ?>
-						</label>
-						<?php if (isset($description)): ?>
-							<p class="description" 
-								id="<?php echo $id; ?>-description"
-								>
-								<?php echo $description; ?>
-							</p>
-						<?php endif; ?>
-					</fieldset>
-				</td>
-			</tr>
-		<?php endif;
+		<?php 
 	}
 	
-	private function hesh_output_select($id, $config, $cm=false) {
+	private function hesh_output_primary_select($id, $config) {
 		extract($config);
-		if ($cm): ?>
+		?>
 			<label 
 				class="CodeMirror-settings__button CodeMirror-settings__button--select button button-small"
 				for="<?php echo $id; ?>"
-				<?php if (isset($description)) echo "title=\"$id-description\"" ?>
 				>
 				<?php echo $title; ?>
 				<select 
@@ -268,43 +287,79 @@ class wp_html_editor_syntax {
 					<?php endforeach; ?>
 				</select>
 			</label>
-		<?php else: ?>
+		<?php
+	}
+
+	private function hesh_output_fieldset($title=false) {
+		if ($title): ?>
 			<tr>
 				<th scope="row">
-					<label for="<?php echo $id; ?>"><?php echo $title; ?></label>
+					<?php echo $title; ?>
 				</th>
-				<td>
-					<select 
-						id="<?php echo $id; ?>" 
-						name="<?php echo $id; ?>"
-						class="CodeMirror-settings__option"
-						<?php if (isset($description)) echo "aria-describedby=\"$id-description\"" ?>
-						>
-						<?php foreach ($options as $option): ?>
-							<option 
-								value="<?php echo $option; ?>"
-								<?php if ($current == $option) echo 'selected';?>
-								>
-								<?php echo ucfirst($option); ?>
-							</option>
-						<?php endforeach; ?>
-					</select>
-					<?php if (isset($description)): ?>
-						<p class="description" 
-							id="<?php echo $id; ?>-description"
-							>
-							<?php echo $description; ?>
-						</p>
-					<?php endif; ?>
-				</td>
+				<td><fieldset>
+		<?php else: ?>
+				</fieldset></td>
 			</tr>
 		<?php endif;
 	}
+
+	private function hesh_output_checkbox($id, $config) {
+		extract($config);
+		?>
+			<label 
+				for="<?php echo $id; ?>"
+				>
+				<input 
+					name="<?php echo $id; ?>" 
+					id="<?php echo $id; ?>" 
+					type="checkbox"
+					value="true"
+					<?php if ($current) echo 'checked'; ?>
+				/>
+			<?php echo $title; ?>
+			</label><br/>
+			<?php if (isset($description)): ?>
+				<p 
+					class="description CodeMirror-settings-advanced__description" 
+					id="<?php echo $id; ?>-description"
+					>
+					<?php echo $description; ?>
+				</p>
+			<?php endif; ?>
+		<?php
+	}
+
+	private function hesh_output_radio($id, $config) {
+		extract($config);
+		?>
+			<?php $this->hesh_output_fieldset('Key Bindings'); ?>
+
+				<?php foreach ($options as $option): ?>
+					<label>
+						<input 
+							type="radio" 
+							id="<?php echo $id; ?>" 
+							name="<?php echo $id; ?>"
+							value="<?php echo $option; ?>"
+							<?php if ($current == $option) echo 'checked'; ?>
+						/>
+						<span>
+							<?php echo ucfirst($option); ?>
+						</span>
+					</label><br/>
+
+				<?php endforeach; ?>
+
+			<?php $this->hesh_output_fieldset(); ?>
+								
+		<?php
+	}
+
 		
 	public function hesh_output_form() {
 		// ob_start();
 		?>
-			<div class="CodeMirror-settings closed" id="CodeMirror-settings" style="display:none;">
+			<div class="CodeMirror-settings open open-advanced" id="CodeMirror-settings" style="display:none;">
 				<form
 					action="<?php echo admin_url('admin-ajax.php');?>" 
 					method="post" 
@@ -314,26 +369,40 @@ class wp_html_editor_syntax {
 					<header class="CodeMirror-settings__header CodeMirror-settings__docked">
 						<?php
 							foreach ($this->userPrefrences as $id => $value) {
-								$this->hesh_output_option($id,$value,true);
+								if ( $value['set'] === 'advanced' ) continue;
+								$this->hesh_output_option($id,$value);
 							}
 						?>
-						<a class="CodeMirror-settings__toggle-advanced" 
+						<a 
+							class="CodeMirror-settings__toggle-advanced" 
 							id="CodeMirror-settings__toggle-advanced"
-							></a>
+						></a>
 					</header>
 					<div class="form CodeMirror-settings__body">
 						<?php wp_nonce_field($this->formProcessName,$this->nonceSecretCode);?>
 						<input name="action" value="hesh_options_form" type="hidden">
-						<?php $i=0; while ($i < 1): ?>
 						<table class="form-table"><tbody>
 							<tr><td class="CodeMirror-settings__heading"><h1>
-								Addons
+								Advanced Options
 							</h1></td></tr>
-							<tr>
-								<th scope="row"><label>Coming Soon...</label></th>
-							</tr>
+							<?php $this->hesh_output_fieldset('Highlighting'); ?>
+								<?php $this->hesh_output_checkbox('matchBrackets',$this->userPrefrences['matchBrackets']); ?>
+								<?php $this->hesh_output_checkbox('matchBrackets',$this->userPrefrences['matchTags']); ?>
+							<?php $this->hesh_output_fieldset(); ?>
+							<?php $this->hesh_output_fieldset('Auto Completion'); ?>
+								<?php $this->hesh_output_checkbox('closeTag',$this->userPrefrences['closeTag']); ?>
+								<?php $this->hesh_output_checkbox('closeBrackets',$this->userPrefrences['closeBrackets']); ?>
+								<?php $this->hesh_output_checkbox('emmet',$this->userPrefrences['emmet']); ?>
+							<?php $this->hesh_output_fieldset(); ?>
+							<?php $this->hesh_output_fieldset('Editor Tools'); ?>
+								<?php $this->hesh_output_checkbox('foldCode',$this->userPrefrences['foldCode']); ?>
+								<?php $this->hesh_output_checkbox('scrollbars',$this->userPrefrences['scrollbars']); ?>
+							<?php $this->hesh_output_fieldset(); ?>
+							<?php $this->hesh_output_fieldset('Commenting'); ?>
+								<?php $this->hesh_output_checkbox('commenting',$this->userPrefrences['commenting']); ?>
+							<?php $this->hesh_output_fieldset(); ?>
+							<?php $this->hesh_output_radio('keyMap',$this->userPrefrences['keyMap']); ?>
 						</tbody></table>
-						<?php $i++; endwhile; ?>
 					</div>
 					<footer class="CodeMirror-settings__footer CodeMirror-settings__docked">
 						<p class="CodeMirror-settings__foot-content CodeMirror-settings__feedback">
