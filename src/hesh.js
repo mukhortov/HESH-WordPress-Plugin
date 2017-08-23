@@ -80,6 +80,7 @@
 		indentWithTabs: true,
 		enterMode: 'keep',
 		styleActiveLine: true,
+		matchBrackets: true,
 		electricChars: false,
 		viewportMargin: 10,
 		extraKeys: {

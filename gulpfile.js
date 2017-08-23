@@ -76,6 +76,7 @@ gulp.task('build:js', function () {
         codemirrorPath + 'addon/selection/active-line.js',
         codemirrorPath + 'addon/search/searchcursor.js',
         codemirrorPath + 'addon/search/search.js',
+        codemirrorPath + 'addon/edit/matchbrackets.js',
         // HESH
         './src/hesh.js'
     ])
