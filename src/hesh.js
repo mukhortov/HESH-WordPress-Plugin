@@ -28,20 +28,20 @@
 	var toolbar = document.getElementById('ed_toolbar');
 	var target = document.getElementById('content') || document.getElementById('newcontent');
 	var tabText = document.getElementById('content-html');
-	var tabVisual = document.getElementById('content-tmce');
+	var tabsAll = document.getElementsByClassName('wp-switch-editor');
 	var publishButton = document.getElementById('save-post') || document.getElementById('publish');
 	var postID = document.getElementById('post_ID') != null ? document.getElementById('post_ID').value : 0;
 	var fullHeightToggle = document.getElementById('editor-expand-toggle');
 
 	var state = {
-		isVisualEnabled: document.getElementById('content-tmce') != null,
+		textTabHasSibilings: tabsAll.length > 1,
 		isThemeOrPlugin: document.getElementById('newcontent') != null,
 
 		isActive: function () {
 			return document.getElementsByClassName('CodeMirror')[0] != null;
 		},
 
-		isVisualActive: function () {
+		isTextTabSelected: function () {
 			return document.getElementsByClassName('tmce-active')[0] != null;
 		},
 
@@ -652,15 +652,19 @@
 	function initialise() {
 		if (state.isThemeOrPlugin) {
 			startEditor();
-		} else if (state.isVisualEnabled) {
+		} else if (state.textTabHasSibilings) {
 			tabText.addEventListener('click', function () {
 				window.setTimeout(startEditor, 0);
 			});
-			tabVisual.addEventListener('click', stopEditor);
-			if (!state.isVisualActive()) startEditor();
+			tabAll
+			for (var i = 0; i < tabsAll.length; i++) {
+				var tab = tabsAll[i];
+				if (tab.id = 'content-html') return; // its the "Text" tab
+				tab.addEventListener('click', stopEditor);
+			}
+			if (state.isTextTabSelected()) startEditor();
 		} else {
 			startEditor();
-			document.body.className += ' visual-editor-is-disabled';
 		}
 	}
 

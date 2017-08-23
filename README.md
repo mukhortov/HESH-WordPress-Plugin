@@ -49,7 +49,7 @@ Paste this code in the editor to test out all the different syntax highlighting 
 	a really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really long line that should wrap and indent properly
 
 
-<!--more WordPress More Tag Text --><!--noteaser-->
+<!--more WordPress More Tag Text --><!--noteaser--><!--nextpage-->
 <!--HTML comment--><!--[shortcode]-->
 
 ERRORS!
