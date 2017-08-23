@@ -1,6 +1,6 @@
 {
   "name": "codemirror-for-wp-editor",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "Syntax Highlighting in WordPress HTML Editor",
   "repository": {
     "type": "git",
