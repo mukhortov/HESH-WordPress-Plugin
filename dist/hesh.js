@@ -14246,7 +14246,7 @@ CodeMirror.defineMode("clike", function(config, parserConfig) {
 			});
 			for (var i = 0; i < tabsAll.length; i++) {
 				var tab = tabsAll[i];
-				if (tab.id = 'content-html') break; // its the "Text" tab
+				if (tab.id === 'content-html') continue; // its the "Text" tab
 				tab.addEventListener('click', stopEditor);
 			}
 			if (state.isTextTabSelected()) startEditor();
