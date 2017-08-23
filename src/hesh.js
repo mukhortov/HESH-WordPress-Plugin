@@ -42,7 +42,7 @@
 		},
 
 		isTextTabSelected: function () {
-			return document.getElementsByClassName('tmce-active')[0] != null;
+			return document.getElementsByClassName('html-active')[0] != null;
 		},
 
 		isFullHeight: function () {
@@ -603,8 +603,7 @@
 		};
 		window.send_to_editor = whichSendToEditor;
 	}
-
-
+	
 	function startEditor() {
 		if (state.isActive()) return;
 
@@ -656,10 +655,9 @@
 			tabText.addEventListener('click', function () {
 				window.setTimeout(startEditor, 0);
 			});
-			tabAll
 			for (var i = 0; i < tabsAll.length; i++) {
 				var tab = tabsAll[i];
-				if (tab.id = 'content-html') return; // its the "Text" tab
+				if (tab.id = 'content-html') break; // its the "Text" tab
 				tab.addEventListener('click', stopEditor);
 			}
 			if (state.isTextTabSelected()) startEditor();
