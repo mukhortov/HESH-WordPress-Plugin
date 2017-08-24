@@ -91,9 +91,7 @@ class wp_html_editor_syntax {
 			'theme' => array(
 				'title' => 'Theme',
 				'type' => 'select',
-				// http://stackoverflow.com/questions/18881693/how-to-import-external-json-and-display-in-php
-				// TODO: add this in without a file_get_contents()
-				'options' => json_decode(file_get_contents(dirname(__FILE__) . '/css.json'), true), 
+				'options' => array( '3024-day', '3024-night', 'abcdef', 'ambiance-mobile', 'ambiance', 'base16-dark', 'base16-light', 'bespin', 'blackboard', 'cobalt', 'colorforth', 'dracula', 'duotone-dark', 'duotone-light', 'eclipse', 'elegant', 'erlang-dark', 'hopscotch', 'icecoder', 'isotope', 'lesser-dark', 'liquibyte', 'material', 'mbo', 'mdn-like', 'midnight', 'monokai', 'neat', 'neo', 'night', 'panda-syntax', 'paraiso-dark', 'paraiso-light', 'pastel-on-dark', 'railscasts', 'rubyblue', 'seti', 'solarized', 'the-matrix', 'tomorrow-night-bright', 'tomorrow-night-eighties', 'ttcn', 'twilight', 'vibrant-ink', 'xq-dark', 'xq-light', 'yeti', 'zenburn'),
 				'current' => get_user_meta( get_current_user_id(), $this->prefix.'theme' , true),
 				'default' => 'material',
 				'set' => 'primary',
@@ -212,13 +210,6 @@ class wp_html_editor_syntax {
 				update_user_meta( get_current_user_id(), $this->prefix.$id, $value['default']);
 			// error_log( $id . ': ' . $value['current'] . ': ' . isset($value['current']) ); // for debug
 		}
-
-		// if (!get_user_meta( get_current_user_id(), $this->prefix.'hasInitalized', true) ) {
-		// 	foreach ($this->userPrefrences as $id => $value) {
-		// 		update_user_meta( get_current_user_id(), $this->prefix.$id, $value['default']);
-		// 	}
-		// 	update_user_meta( get_current_user_id(), $this->prefix.'hasInitalized', true);	
-		// }
 	}
 
 	

@@ -15,7 +15,6 @@ gulp.task('build:css-json', function () {
             strip: /.css/
         }))
         .pipe(gulp.dest('./.trash'));
-    // del('trash/**');
 });
 var del = require('del');
 gulp.task('garbage-collect', function () {
