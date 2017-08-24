@@ -207,12 +207,18 @@ class wp_html_editor_syntax {
 
 
 		// Intalize all the hesh option fields as default if they don't exist yet
-		if (!get_user_meta( get_current_user_id(), $this->prefix.'hasInitalized', true) ) {
-			foreach ($this->userPrefrences as $id => $value) {
+		foreach ($this->userPrefrences as $id => $value) {
+			if (!isset($value['current']) || trim($value['current'])==='')
 				update_user_meta( get_current_user_id(), $this->prefix.$id, $value['default']);
-			}
-			update_user_meta( get_current_user_id(), $this->prefix.'hasInitalized', true);	
+			// error_log( $id . ': ' . $value['current'] . ': ' . isset($value['current']) ); // for debug
 		}
+
+		// if (!get_user_meta( get_current_user_id(), $this->prefix.'hasInitalized', true) ) {
+		// 	foreach ($this->userPrefrences as $id => $value) {
+		// 		update_user_meta( get_current_user_id(), $this->prefix.$id, $value['default']);
+		// 	}
+		// 	update_user_meta( get_current_user_id(), $this->prefix.'hasInitalized', true);	
+		// }
 	}
 
 	
@@ -331,28 +337,24 @@ class wp_html_editor_syntax {
 
 	private function hesh_output_radio($id, $config) {
 		extract($config);
+		$this->hesh_output_fieldset('Key Bindings'); 
+		foreach ($options as $option): 
 		?>
-			<?php $this->hesh_output_fieldset('Key Bindings'); ?>
-
-				<?php foreach ($options as $option): ?>
-					<label>
-						<input 
-							type="radio" 
-							id="<?php echo $id; ?>" 
-							name="<?php echo $id; ?>"
-							value="<?php echo $option; ?>"
-							<?php if ($current == $option) echo 'checked'; ?>
-						/>
-						<span>
-							<?php echo ucfirst($option); ?>
-						</span>
-					</label><br/>
-
-				<?php endforeach; ?>
-
-			<?php $this->hesh_output_fieldset(); ?>
-								
-		<?php
+			<label>
+				<input 
+					type="radio" 
+					id="<?php echo $id; ?>" 
+					name="<?php echo $id; ?>"
+					value="<?php echo $option; ?>"
+					<?php if ($current == $option) echo 'checked'; ?>
+				/>
+				<span>
+					<?php echo ucfirst($option); ?>
+				</span>
+			</label><br/>
+		<?php 
+		endforeach; 
+		$this->hesh_output_fieldset(); 
 	}
 
 		
@@ -385,23 +387,31 @@ class wp_html_editor_syntax {
 							<tr><td class="CodeMirror-settings__heading"><h1>
 								Advanced Options
 							</h1></td></tr>
-							<?php $this->hesh_output_fieldset('Highlighting'); ?>
-								<?php $this->hesh_output_checkbox('matchBrackets',$this->userPrefrences['matchBrackets']); ?>
-								<?php $this->hesh_output_checkbox('matchBrackets',$this->userPrefrences['matchTags']); ?>
-							<?php $this->hesh_output_fieldset(); ?>
-							<?php $this->hesh_output_fieldset('Auto Completion'); ?>
-								<?php $this->hesh_output_checkbox('closeTag',$this->userPrefrences['closeTag']); ?>
-								<?php $this->hesh_output_checkbox('closeBrackets',$this->userPrefrences['closeBrackets']); ?>
-								<?php $this->hesh_output_checkbox('emmet',$this->userPrefrences['emmet']); ?>
-							<?php $this->hesh_output_fieldset(); ?>
-							<?php $this->hesh_output_fieldset('Editor Tools'); ?>
-								<?php $this->hesh_output_checkbox('foldCode',$this->userPrefrences['foldCode']); ?>
-								<?php $this->hesh_output_checkbox('scrollbars',$this->userPrefrences['scrollbars']); ?>
-							<?php $this->hesh_output_fieldset(); ?>
-							<?php $this->hesh_output_fieldset('Commenting'); ?>
-								<?php $this->hesh_output_checkbox('commenting',$this->userPrefrences['commenting']); ?>
-							<?php $this->hesh_output_fieldset(); ?>
-							<?php $this->hesh_output_radio('keyMap',$this->userPrefrences['keyMap']); ?>
+							<?php
+
+							$this->hesh_output_fieldset('Highlighting'); 
+								$this->hesh_output_checkbox('matchBrackets',$this->userPrefrences['matchBrackets']); 
+								$this->hesh_output_checkbox('matchBrackets',$this->userPrefrences['matchTags']); 
+							$this->hesh_output_fieldset(); 
+
+							$this->hesh_output_fieldset('Auto Completion'); 
+								$this->hesh_output_checkbox('closeTag',$this->userPrefrences['closeTag']); 
+								$this->hesh_output_checkbox('closeBrackets',$this->userPrefrences['closeBrackets']); 
+								$this->hesh_output_checkbox('emmet',$this->userPrefrences['emmet']); 
+							$this->hesh_output_fieldset(); 
+
+							$this->hesh_output_fieldset('Editor Tools'); 
+								$this->hesh_output_checkbox('foldCode',$this->userPrefrences['foldCode']); 
+								$this->hesh_output_checkbox('scrollbars',$this->userPrefrences['scrollbars']); 
+							$this->hesh_output_fieldset(); 
+
+							$this->hesh_output_fieldset('Commenting'); 
+								$this->hesh_output_checkbox('commenting',$this->userPrefrences['commenting']); 
+							$this->hesh_output_fieldset(); 
+
+							$this->hesh_output_radio('keyMap',$this->userPrefrences['keyMap']); 
+
+							?>
 						</tbody></table>
 					</div>
 					<footer class="CodeMirror-settings__footer CodeMirror-settings__docked">

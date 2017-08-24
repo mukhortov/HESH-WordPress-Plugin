@@ -1,17 +1,10 @@
 # TODOs
 - add to FAQ
 	- about spell-check
-	- about IE
-- search
-- scrollbars
+- test new initalization
 
 ## Testing
-- general bugs
-	- Quicktags toolbar can hide HESH settings if there are too many tags [#45](https://github.com/mukhortov/HESH-WordPress-Plugin/issues/45)
-    - Scrollbar appears in middle of text editor [#43](https://github.com/mukhortov/HESH-WordPress-Plugin/issues/43)
-    - Don't steal focus from Page Name after "Add New" page is clicked [#30](https://github.com/mukhortov/HESH-WordPress-Plugin/issues/30)
-    - `esc` functionality [#29](https://github.com/mukhortov/HESH-WordPress-Plugin/issues/29)
-    - Maintain scroll position when switching from Visual Editor to Text Editor [#42](https://github.com/mukhortov/HESH-WordPress-Plugin/issues/42)
+
 
 - browsers
     - Safari - seems ok

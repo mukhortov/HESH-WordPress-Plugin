@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.2.0
+* made tab management agnostic to tab count and names - #50
+
 ## 2.1.0
 * added search #31
 * add highlighting for `<!--nextpage-->` #15 
