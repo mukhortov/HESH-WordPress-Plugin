@@ -103,6 +103,7 @@ console.log(window.heshOptions); // from wordpress php
 		options.tabSize = options.indentUnit = +heshOptions.tabSize;  // indentUnit must always equal tabSize
 		options.lineWrapping = !!heshOptions.lineWrapping;
 		options.matchBrackets = !!heshOptions.matchBrackets;
+		options.matchTags = !!heshOptions.matchTags;
 		options.autofocus = document.getElementById('title') 
 			&& !!document.getElementById('title').value 
 			&& document.getElementById('title').value.length > 0;
@@ -270,7 +271,7 @@ console.log(window.heshOptions); // from wordpress php
 
 		// Adv Opts
 		settingsPanel.querySelector('#matchBrackets').addEventListener('change', updateOption);
-		
+		settingsPanel.querySelector('#matchTags').addEventListener('change', updateOption);
 	}
 
 	// toggle classes for settingsPanel state
