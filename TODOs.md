@@ -2,6 +2,7 @@
 - add to FAQ
 	- about spell-check
 - test new initalization
+- inspect secondary hidden checkbox
 
 ## Testing
 

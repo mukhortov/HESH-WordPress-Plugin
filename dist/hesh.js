@@ -13595,7 +13595,7 @@ CodeMirror.defineMode("clike", function(config, parserConfig) {
  * @since    2.2.0
 */
 
-// console.log(window.heshOptions); // from wordpress php
+console.log(window.heshOptions); // from wordpress php
 
 (function (
 	document,
@@ -13664,11 +13664,9 @@ CodeMirror.defineMode("clike", function(config, parserConfig) {
 	var options = {
 		mode: 'wordpresspost',
 		tabMode: 'indent',
-		matchBrackets: true,
 		indentWithTabs: true,
 		enterMode: 'keep',
 		styleActiveLine: true,
-		matchBrackets: true,
 		electricChars: false,
 		viewportMargin: 10,
 		extraKeys: {
@@ -13692,6 +13690,7 @@ CodeMirror.defineMode("clike", function(config, parserConfig) {
 		options.lineNumbers = !!heshOptions.lineNumbers;
 		options.tabSize = options.indentUnit = +heshOptions.tabSize;  // indentUnit must always equal tabSize
 		options.lineWrapping = !!heshOptions.lineWrapping;
+		options.matchBrackets = !!heshOptions.matchBrackets;
 		options.autofocus = document.getElementById('title') 
 			&& !!document.getElementById('title').value 
 			&& document.getElementById('title').value.length > 0;
@@ -13856,6 +13855,10 @@ CodeMirror.defineMode("clike", function(config, parserConfig) {
 		settingsPanel.querySelector('#lineNumbers').addEventListener('change', updateOption);
 		settingsPanel.querySelector('#fontSize').addEventListener('change', updateFontSize);
 		settingsPanel.querySelector('#lineHeight').addEventListener('change', updateLineHeight);
+
+		// Adv Opts
+		settingsPanel.querySelector('#matchBrackets').addEventListener('change', updateOption);
+		
 	}
 
 	// toggle classes for settingsPanel state

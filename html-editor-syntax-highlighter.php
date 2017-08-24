@@ -311,6 +311,7 @@ class wp_html_editor_syntax {
 					id="<?php echo $id; ?>" 
 					type="checkbox"
 					value="true"
+					class="CodeMirror-settings__option"
 					<?php if ($current) echo 'checked'; ?>
 				/>
 			<?php echo $title; ?>
@@ -337,6 +338,7 @@ class wp_html_editor_syntax {
 					id="<?php echo $id; ?>" 
 					name="<?php echo $id; ?>"
 					value="<?php echo $option; ?>"
+					class="CodeMirror-settings__option"
 					<?php if ($current == $option) echo 'checked'; ?>
 				/>
 				<span>
@@ -382,7 +384,7 @@ class wp_html_editor_syntax {
 
 							$this->hesh_output_fieldset('Highlighting'); 
 								$this->hesh_output_checkbox('matchBrackets',$this->userPrefrences['matchBrackets']); 
-								$this->hesh_output_checkbox('matchBrackets',$this->userPrefrences['matchTags']); 
+								$this->hesh_output_checkbox('matchTags',$this->userPrefrences['matchTags']); 
 							$this->hesh_output_fieldset(); 
 
 							$this->hesh_output_fieldset('Auto Completion'); 
