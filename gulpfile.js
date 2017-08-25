@@ -79,6 +79,7 @@ gulp.task('build:js', function () {
         codemirrorPath + 'addon/edit/matchbrackets.js',
         codemirrorPath + 'addon/edit/matchtags.js',
         codemirrorPath + 'addon/edit/closetag.js',
+        codemirrorPath + 'addon/edit/closebrackets.js',
         // HESH
         './src/hesh.js'
     ])
