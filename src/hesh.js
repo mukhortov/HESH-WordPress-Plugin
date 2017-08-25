@@ -103,7 +103,7 @@ console.log(window.heshOptions); // from wordpress php
 		options.tabSize = options.indentUnit = +heshOptions.tabSize;  // indentUnit must always equal tabSize
 		options.lineWrapping = !!heshOptions.lineWrapping;
 		options.matchBrackets = !!heshOptions.matchBrackets;
-		options.matchTags = !!heshOptions.matchTags;
+		options.matchTags = !!heshOptions.matchTags ? {bothTags:true} : false;
 		options.autofocus = document.getElementById('title') 
 			&& !!document.getElementById('title').value 
 			&& document.getElementById('title').value.length > 0;
@@ -261,17 +261,8 @@ console.log(window.heshOptions); // from wordpress php
 		for (var index = 0; index < options.length; index++) {
 			var option = options[index];
 			option.addEventListener('change', submitForm);
+			option.addEventListener('change', updateOption);
 		}
-		settingsPanel.querySelector('#theme').addEventListener('change', updateOption);
-		settingsPanel.querySelector('#tabSize').addEventListener('change', updateOption);
-		settingsPanel.querySelector('#lineWrapping').addEventListener('change', updateOption);
-		settingsPanel.querySelector('#lineNumbers').addEventListener('change', updateOption);
-		settingsPanel.querySelector('#fontSize').addEventListener('change', updateFontSize);
-		settingsPanel.querySelector('#lineHeight').addEventListener('change', updateLineHeight);
-
-		// Adv Opts
-		settingsPanel.querySelector('#matchBrackets').addEventListener('change', updateOption);
-		settingsPanel.querySelector('#matchTags').addEventListener('change', updateOption);
 	}
 
 	// toggle classes for settingsPanel state
@@ -306,7 +297,9 @@ console.log(window.heshOptions); // from wordpress php
 		}
 	}
 
-
+	function setCharWidth() {
+		state.charWidth = editor.defaultCharWidth() * (heshOptions.fontSize/13);
+	}
 
 	// set a codemirror option from an input.onchange event callback
 	function updateOption(event) {
@@ -314,14 +307,42 @@ console.log(window.heshOptions); // from wordpress php
 		value = isNaN(value) ? event.target.value : value;
 		if (event.target.checked != null) 
 			value = event.target.checked;
-		heshOptions[event.target.id] = value;
-		editor.setOption(event.target.id, value);
+		console.log(value);
+
+		switch (event.target.id) {
+			case 'fontSize':
+				var fontSize = event.target.value;
+				heshOptions.fontSize = fontSize;
+				scrollPanel.style.fontSize = fontSize + 'px';
+				setCharWidth();
+				editor.refresh();
+				break;
+
+			case 'lineHeight':
+				var lineHeight = event.target.value;
+				heshOptions.lineHeight = lineHeight;
+				scrollPanel.style.lineHeight = lineHeight + 'em';
+				editor.refresh();
+				break;
+
+			case 'matchTags':
+				heshOptions.matchTags = value ? {bothTags:true} : false;
+				editor.setOption(event.target.id, heshOptions.matchTags);
+				break;
+				
+			case 'tabSize':
+				editor.setOption('indentUnit', value); // indentUnit must always equal tabSize
+				// break; // fallthrough expected here
+
+			default:
+				heshOptions[event.target.id] = value;
+				editor.setOption(event.target.id, value);
+				break;
+		}
+
+
 		if(event.target.id === 'tabSize') // special case for tabSize
 			editor.setOption('indentUnit', value); // indentUnit must always equal tabSize
-	}
-
-	function setCharWidth() {
-		state.charWidth = editor.defaultCharWidth() * (heshOptions.fontSize/13);
 	}
 
 	function setFontSizeAndLineHeight(fontSize, lineHeight) {
@@ -333,21 +354,6 @@ console.log(window.heshOptions); // from wordpress php
 		editor.refresh();
 	}
 
-	function updateFontSize(event) {
-		var fontSize = event.target.value;
-		heshOptions.fontSize = fontSize;
-		scrollPanel.style.fontSize = fontSize + 'px';
-		setCharWidth();
-		editor.refresh();
-	}
-
-	function updateLineHeight(event) {
-		var lineHeight = event.target.value;
-		heshOptions.lineHeight = lineHeight;
-		scrollPanel.style.lineHeight = lineHeight + 'em';
-		editor.refresh();
-	}
-
 
 
 	// updates the user settings in the wordpress DB
@@ -356,7 +362,7 @@ console.log(window.heshOptions); // from wordpress php
 		// TODO: drop jQuery dependency
 		// console.log(formArray); // for debug
 		$.post(heshOptions.ajaxUrl, formArray, function (response) {
-			console.log(response); // for debug
+			// console.log(response); // for debug
 		});
 	}
 
