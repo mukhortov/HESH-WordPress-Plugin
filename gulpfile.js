@@ -78,6 +78,7 @@ gulp.task('build:js', function () {
         codemirrorPath + 'addon/fold/xml-fold.js',
         codemirrorPath + 'addon/edit/matchbrackets.js',
         codemirrorPath + 'addon/edit/matchtags.js',
+        codemirrorPath + 'addon/edit/closetag.js',
         // HESH
         './src/hesh.js'
     ])

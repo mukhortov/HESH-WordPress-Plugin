@@ -150,10 +150,10 @@ class wp_html_editor_syntax {
 				'default' => false,
 				'set' => 'advanced',
 			),
-			'closeTag'=> array(
+			'autoCloseTags'=> array(
 				'title' => 'Auto Close Tags',
 				'type' => 'checkbox',
-				'current' => get_user_meta( get_current_user_id(), $this->prefix.'closeTag' , true),
+				'current' => get_user_meta( get_current_user_id(), $this->prefix.'autoCloseTags' , true),
 				'default' => false,
 				'set' => 'advanced',
 			),
@@ -389,7 +389,7 @@ class wp_html_editor_syntax {
 							$this->hesh_output_fieldset(); 
 
 							$this->hesh_output_fieldset('Auto Completion'); 
-								$this->hesh_output_checkbox('closeTag',$this->userPrefrences['closeTag']); 
+								$this->hesh_output_checkbox('autoCloseTags',$this->userPrefrences['autoCloseTags']); 
 								$this->hesh_output_checkbox('closeBrackets',$this->userPrefrences['closeBrackets']); 
 								$this->hesh_output_checkbox('emmet',$this->userPrefrences['emmet']); 
 							$this->hesh_output_fieldset(); 

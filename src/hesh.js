@@ -103,6 +103,7 @@ console.log(window.heshOptions); // from wordpress php
 		options.tabSize = options.indentUnit = +heshOptions.tabSize;  // indentUnit must always equal tabSize
 		options.lineWrapping = !!heshOptions.lineWrapping;
 		options.matchBrackets = !!heshOptions.matchBrackets;
+		options.autoCloseTags = !!heshOptions.autoCloseTags;
 		options.matchTags = !!heshOptions.matchTags ? {bothTags:true} : false;
 		options.autofocus = document.getElementById('title') 
 			&& !!document.getElementById('title').value 
