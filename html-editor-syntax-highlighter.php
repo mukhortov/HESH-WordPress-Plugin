@@ -248,7 +248,7 @@ class wp_html_editor_syntax {
 				for="<?php echo $id; ?>"
 				>
 				<?php echo $title; ?>
-				<input type="hidden" value="false"  name="<?php echo $id; ?>" />
+				<input type="hidden" value="false" name="<?php echo $id; ?>" />
 				<input 
 					name="<?php echo $id; ?>" 
 					id="<?php echo $id; ?>" 
@@ -306,6 +306,7 @@ class wp_html_editor_syntax {
 			<label 
 				for="<?php echo $id; ?>"
 				>
+				<input type="hidden" value="false" name="<?php echo $id; ?>" />
 				<input 
 					name="<?php echo $id; ?>" 
 					id="<?php echo $id; ?>" 

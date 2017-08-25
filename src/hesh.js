@@ -307,7 +307,6 @@ console.log(window.heshOptions); // from wordpress php
 		value = isNaN(value) ? event.target.value : value;
 		if (event.target.checked != null) 
 			value = event.target.checked;
-		console.log(value);
 
 		switch (event.target.id) {
 			case 'fontSize':
@@ -339,10 +338,6 @@ console.log(window.heshOptions); // from wordpress php
 				editor.setOption(event.target.id, value);
 				break;
 		}
-
-
-		if(event.target.id === 'tabSize') // special case for tabSize
-			editor.setOption('indentUnit', value); // indentUnit must always equal tabSize
 	}
 
 	function setFontSizeAndLineHeight(fontSize, lineHeight) {
@@ -360,7 +355,7 @@ console.log(window.heshOptions); // from wordpress php
 	function submitForm() {
 		var formArray = $('#CodeMirror-settings__form').serializeArray();
 		// TODO: drop jQuery dependency
-		// console.log(formArray); // for debug
+		console.log(formArray); // for debug
 		$.post(heshOptions.ajaxUrl, formArray, function (response) {
 			// console.log(response); // for debug
 		});
