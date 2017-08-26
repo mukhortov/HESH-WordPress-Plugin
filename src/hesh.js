@@ -105,6 +105,8 @@ console.log(window.heshOptions); // from wordpress php
 		options.matchBrackets = !!heshOptions.matchBrackets;
 		options.autoCloseTags = !!heshOptions.autoCloseTags;
 		options.autoCloseBrackets = !!heshOptions.autoCloseBrackets;
+		options.foldGutter = !!heshOptions.foldGutter;
+		options.gutters = ['CodeMirror-linenumbers', 'CodeMirror-foldgutter'];
 		options.matchTags = !!heshOptions.matchTags ? {bothTags:true} : false;
 		options.autofocus = document.getElementById('title') 
 			&& !!document.getElementById('title').value 

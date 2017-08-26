@@ -60,8 +60,10 @@ var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
 gulp.task('build:js', function () {
     return gulp.src([
+
         // CodeMirror Core
         codemirrorPath + 'lib/codemirror.js',
+
         // Modes
         codemirrorPath + 'mode/xml/xml.js',
         codemirrorPath + 'mode/javascript/javascript.js',
@@ -71,15 +73,25 @@ gulp.task('build:js', function () {
         codemirrorPath + 'mode/php/php.js',
         './src/shortcode.js',
         './src/wordpresspost.js',
+
         // AddOns
         codemirrorPath + 'addon/selection/active-line.js',
         codemirrorPath + 'addon/search/searchcursor.js',
         codemirrorPath + 'addon/search/search.js',
+
+        codemirrorPath + 'addon/fold/foldcode.js',
+        codemirrorPath + 'addon/fold/foldgutter.js',
         codemirrorPath + 'addon/fold/xml-fold.js',
+        // codemirrorPath + 'addon/fold/brace-fold.js', // for JS
+        // codemirrorPath + 'addon/fold/comment-fold.js',
+        codemirrorPath + 'addon/fold/indent-fold.js',
+        
         codemirrorPath + 'addon/edit/matchbrackets.js',
         codemirrorPath + 'addon/edit/matchtags.js',
         codemirrorPath + 'addon/edit/closetag.js',
         codemirrorPath + 'addon/edit/closebrackets.js',
+
+        // ... and finally ...
         // HESH
         './src/hesh.js'
     ])
