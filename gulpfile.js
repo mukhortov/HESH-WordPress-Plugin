@@ -78,7 +78,9 @@ gulp.task('build:js', function () {
         codemirrorPath + 'addon/selection/active-line.js',
         codemirrorPath + 'addon/search/searchcursor.js',
         codemirrorPath + 'addon/search/search.js',
+        codemirrorPath + 'addon/dialog/dialog.js',        
         codemirrorPath + 'addon/scroll/simplescrollbars.js',
+        codemirrorPath + 'addon/comment/comment.js',
         
         codemirrorPath + 'addon/fold/foldcode.js',
         codemirrorPath + 'addon/fold/foldgutter.js',
@@ -91,6 +93,10 @@ gulp.task('build:js', function () {
         codemirrorPath + 'addon/edit/matchtags.js',
         codemirrorPath + 'addon/edit/closetag.js',
         codemirrorPath + 'addon/edit/closebrackets.js',
+
+        codemirrorPath + 'keymap/sublime.js',
+        codemirrorPath + 'keymap/emacs.js',
+        codemirrorPath + 'keymap/vim.js',
 
         // ... and finally ...
         // HESH

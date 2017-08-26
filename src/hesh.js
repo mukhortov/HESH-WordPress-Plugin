@@ -7,7 +7,7 @@
  * @since    2.2.0
 */
 
-// console.log(window.heshOptions); // from wordpress php
+console.log(window.heshOptions); // from wordpress php
 
 (function (
 	document,
@@ -109,6 +109,7 @@
 		options.autoCloseBrackets = !!heshOptions.autoCloseBrackets;
 		options.matchTags = !!heshOptions.matchTags ? {bothTags:true} : false;
 		options.scrollbarStyle = !!heshOptions.scrollbarStyle ? 'overlay' : null;
+		options.keyMap = heshOptions.keyMap;
 		options.autofocus = document.getElementById('title') 
 			&& !!document.getElementById('title').value 
 			&& document.getElementById('title').value.length > 0;
@@ -310,7 +311,7 @@
 	function updateOption(event) {
 		var value = +event.target.value;
 		value = isNaN(value) ? event.target.value : value;
-		if (event.target.checked != null) 
+		if (event.type === 'checkbox') 
 			value = event.target.checked;
 
 		switch (event.target.id) {
@@ -355,6 +356,9 @@
 			case 'lineNumbers':
 				if (value && !!heshOptions.foldGutter)
 					editor.setOption('gutters', ['CodeMirror-linenumbers', 'CodeMirror-foldgutter'] );
+			// case 'keyMap':
+			// 	stopEditor();
+			// 	startEditor();
 		}
 		
 	}

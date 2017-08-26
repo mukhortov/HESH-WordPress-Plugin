@@ -196,7 +196,7 @@ class wp_html_editor_syntax {
 			'keyMap'=> array(
 				'title' => 'Key Mapping',
 				'type' => 'radio',
-				'options' => array('none', 'emacs', 'sublime', 'vim'),
+				'options' => array('default', 'sublime', 'vim', 'emacs'),
 				'current' => get_user_meta( get_current_user_id(), $this->prefix.'keyMap' , true),
 				'default' => 'none',
 				'set' => 'advanced',

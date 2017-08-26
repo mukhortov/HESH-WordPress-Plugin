@@ -1,8 +1,13 @@
 # TODOs
 - add to FAQ
 	- about spell-check
-- test new initalization
-- inspect secondary hidden checkbox
+- test new initalization of new user
+- style scrollbars
+- style matchTags and matchBrackets
+- style dialog
+    - for search
+    - for vim input
+- browser test
 
 ## Testing
 
