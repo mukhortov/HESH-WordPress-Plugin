@@ -178,10 +178,10 @@ class wp_html_editor_syntax {
 				'default' => false,
 				'set' => 'advanced',
 			),
-			'scrollbars'=> array(
+			'scrollbarStyle'=> array(
 				'title' => 'Show Scrollbars',
 				'type' => 'checkbox',
-				'current' => get_user_meta( get_current_user_id(), $this->prefix.'scrollbars' , true),
+				'current' => get_user_meta( get_current_user_id(), $this->prefix.'scrollbarStyle' , true),
 				'default' => false,
 				'set' => 'advanced',
 			),
@@ -396,7 +396,7 @@ class wp_html_editor_syntax {
 
 							$this->hesh_output_fieldset('Editor Tools'); 
 								$this->hesh_output_checkbox('foldGutter',$this->userPrefrences['foldGutter']); 
-								$this->hesh_output_checkbox('scrollbars',$this->userPrefrences['scrollbars']); 
+								$this->hesh_output_checkbox('scrollbarStyle',$this->userPrefrences['scrollbarStyle']); 
 							$this->hesh_output_fieldset(); 
 
 							$this->hesh_output_fieldset('Commenting'); 

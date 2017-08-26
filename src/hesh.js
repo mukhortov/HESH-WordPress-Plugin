@@ -7,7 +7,7 @@
  * @since    2.2.0
 */
 
-console.log(window.heshOptions); // from wordpress php
+// console.log(window.heshOptions); // from wordpress php
 
 (function (
 	document,
@@ -108,6 +108,7 @@ console.log(window.heshOptions); // from wordpress php
 		options.autoCloseTags = !!heshOptions.autoCloseTags;
 		options.autoCloseBrackets = !!heshOptions.autoCloseBrackets;
 		options.matchTags = !!heshOptions.matchTags ? {bothTags:true} : false;
+		options.scrollbarStyle = !!heshOptions.scrollbarStyle ? 'overlay' : null;
 		options.autofocus = document.getElementById('title') 
 			&& !!document.getElementById('title').value 
 			&& document.getElementById('title').value.length > 0;
@@ -326,15 +327,21 @@ console.log(window.heshOptions); // from wordpress php
 				editor.refresh();
 				break;
 
-			case 'foldGutter':
-				editor.setOption('gutters', value?['CodeMirror-linenumbers', 'CodeMirror-foldgutter']:[] );
-
 			case 'matchTags':
 				heshOptions.matchTags = value;
-				editor.setOption(event.target.id, value ? {bothTags:true} : false);
+				editor.setOption('matchTags', value ? {bothTags:true} : false);
+				break;
+
+			case 'scrollbarStyle':
+				heshOptions.scrollbarStyle = value;
+				editor.setOption('scrollbarStyle', value ? 'overlay' : null);
 				break;
 				
-			case 'tabSize':
+			case 'foldGutter':
+				editor.setOption('gutters', value?['CodeMirror-linenumbers', 'CodeMirror-foldgutter']:[] );
+				// break; // fallthrough expected here
+
+				case 'tabSize':
 				editor.setOption('indentUnit', value); // indentUnit must always equal tabSize
 				// break; // fallthrough expected here
 
@@ -367,7 +374,7 @@ console.log(window.heshOptions); // from wordpress php
 	function submitForm() {
 		var formArray = $('#CodeMirror-settings__form').serializeArray();
 		// TODO: drop jQuery dependency
-		console.log(formArray); // for debug
+		// console.log(formArray); // for debug
 		$.post(heshOptions.ajaxUrl, formArray, function (response) {
 			// console.log(response); // for debug
 		});

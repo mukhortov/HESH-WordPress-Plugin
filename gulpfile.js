@@ -78,7 +78,8 @@ gulp.task('build:js', function () {
         codemirrorPath + 'addon/selection/active-line.js',
         codemirrorPath + 'addon/search/searchcursor.js',
         codemirrorPath + 'addon/search/search.js',
-
+        codemirrorPath + 'addon/scroll/simplescrollbars.js',
+        
         codemirrorPath + 'addon/fold/foldcode.js',
         codemirrorPath + 'addon/fold/foldgutter.js',
         codemirrorPath + 'addon/fold/xml-fold.js',
