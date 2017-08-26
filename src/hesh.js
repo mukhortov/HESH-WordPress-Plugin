@@ -100,13 +100,13 @@ console.log(window.heshOptions); // from wordpress php
 	function updateOptions() {
 		options.theme = heshOptions.theme;
 		options.lineNumbers = !!heshOptions.lineNumbers;
+		options.foldGutter = !!heshOptions.foldGutter;
+		options.gutters =  options.foldGutter ? ['CodeMirror-linenumbers', 'CodeMirror-foldgutter'] : [];;
 		options.tabSize = options.indentUnit = +heshOptions.tabSize;  // indentUnit must always equal tabSize
 		options.lineWrapping = !!heshOptions.lineWrapping;
 		options.matchBrackets = !!heshOptions.matchBrackets;
 		options.autoCloseTags = !!heshOptions.autoCloseTags;
 		options.autoCloseBrackets = !!heshOptions.autoCloseBrackets;
-		options.foldGutter = !!heshOptions.foldGutter;
-		options.gutters = ['CodeMirror-linenumbers', 'CodeMirror-foldgutter'];
 		options.matchTags = !!heshOptions.matchTags ? {bothTags:true} : false;
 		options.autofocus = document.getElementById('title') 
 			&& !!document.getElementById('title').value 
@@ -314,23 +314,24 @@ console.log(window.heshOptions); // from wordpress php
 
 		switch (event.target.id) {
 			case 'fontSize':
-				var fontSize = event.target.value;
-				heshOptions.fontSize = fontSize;
-				scrollPanel.style.fontSize = fontSize + 'px';
+				heshOptions.fontSize = value;
+				scrollPanel.style.fontSize = value + 'px';
 				setCharWidth();
 				editor.refresh();
 				break;
 
 			case 'lineHeight':
-				var lineHeight = event.target.value;
-				heshOptions.lineHeight = lineHeight;
-				scrollPanel.style.lineHeight = lineHeight + 'em';
+				heshOptions.lineHeight = value;
+				scrollPanel.style.lineHeight = value + 'em';
 				editor.refresh();
 				break;
 
+			case 'foldGutter':
+				editor.setOption('gutters', value?['CodeMirror-linenumbers', 'CodeMirror-foldgutter']:[] );
+
 			case 'matchTags':
-				heshOptions.matchTags = value ? {bothTags:true} : false;
-				editor.setOption(event.target.id, heshOptions.matchTags);
+				heshOptions.matchTags = value;
+				editor.setOption(event.target.id, value ? {bothTags:true} : false);
 				break;
 				
 			case 'tabSize':
@@ -342,6 +343,13 @@ console.log(window.heshOptions); // from wordpress php
 				editor.setOption(event.target.id, value);
 				break;
 		}
+
+		switch (event.target.id) { // clean up lap
+			case 'lineNumbers':
+				if (value && !!heshOptions.foldGutter)
+					editor.setOption('gutters', ['CodeMirror-linenumbers', 'CodeMirror-foldgutter'] );
+		}
+		
 	}
 
 	function setFontSizeAndLineHeight(fontSize, lineHeight) {
