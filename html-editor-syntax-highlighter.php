@@ -150,6 +150,13 @@ class wp_html_editor_syntax {
 				'default' => false,
 				'set' => 'advanced',
 			),
+			'highlightSelectionMatches'=> array(
+				'title' => 'Highlight Selection Matches',
+				'type' => 'checkbox',
+				'current' => get_user_meta( get_current_user_id(), $this->prefix.'highlightSelectionMatches' , true),
+				'default' => false,
+				'set' => 'advanced',
+			),
 			'autoCloseTags'=> array(
 				'title' => 'Auto Close Tags',
 				'type' => 'checkbox',
@@ -164,13 +171,13 @@ class wp_html_editor_syntax {
 				'default' => false,
 				'set' => 'advanced',
 			),
-			'emmet'=> array(
-				'title' => 'Emmet',
-				'type' => 'checkbox',
-				'current' => get_user_meta( get_current_user_id(), $this->prefix.'emmet' , true),
-				'default' => false,
-				'set' => 'advanced',
-			),
+			// 'emmet'=> array(
+			// 	'title' => 'Emmet',
+			// 	'type' => 'checkbox',
+			// 	'current' => get_user_meta( get_current_user_id(), $this->prefix.'emmet' , true),
+			// 	'default' => false,
+			// 	'set' => 'advanced',
+			// ),
 			'foldGutter'=> array(
 				'title' => 'Code Folding',
 				'type' => 'checkbox',
@@ -182,14 +189,6 @@ class wp_html_editor_syntax {
 				'title' => 'Show Scrollbars',
 				'type' => 'checkbox',
 				'current' => get_user_meta( get_current_user_id(), $this->prefix.'scrollbarStyle' , true),
-				'default' => false,
-				'set' => 'advanced',
-			),
-			'commenting'=> array(
-				'title' => 'Toggle Comment Shortcut',
-				'description' => 'Windows: <code>Ctrl+/</code> Mac: <code>Cmd+/</code>',
-				'type' => 'checkbox',
-				'current' => get_user_meta( get_current_user_id(), $this->prefix.'commenting' , true),
 				'default' => false,
 				'set' => 'advanced',
 			),
@@ -386,21 +385,18 @@ class wp_html_editor_syntax {
 							$this->hesh_output_fieldset('Highlighting'); 
 								$this->hesh_output_checkbox('matchBrackets',$this->userPrefrences['matchBrackets']); 
 								$this->hesh_output_checkbox('matchTags',$this->userPrefrences['matchTags']); 
+								$this->hesh_output_checkbox('highlightSelectionMatches',$this->userPrefrences['highlightSelectionMatches']); 
 							$this->hesh_output_fieldset(); 
-
+							
 							$this->hesh_output_fieldset('Auto Completion'); 
 								$this->hesh_output_checkbox('autoCloseTags',$this->userPrefrences['autoCloseTags']); 
 								$this->hesh_output_checkbox('autoCloseBrackets',$this->userPrefrences['autoCloseBrackets']); 
-								$this->hesh_output_checkbox('emmet',$this->userPrefrences['emmet']); 
+								// $this->hesh_output_checkbox('emmet',$this->userPrefrences['emmet']); 
 							$this->hesh_output_fieldset(); 
 
 							$this->hesh_output_fieldset('Editor Tools'); 
 								$this->hesh_output_checkbox('foldGutter',$this->userPrefrences['foldGutter']); 
 								$this->hesh_output_checkbox('scrollbarStyle',$this->userPrefrences['scrollbarStyle']); 
-							$this->hesh_output_fieldset(); 
-
-							$this->hesh_output_fieldset('Commenting'); 
-								$this->hesh_output_checkbox('commenting',$this->userPrefrences['commenting']); 
 							$this->hesh_output_fieldset(); 
 
 							$this->hesh_output_radio('keyMap',$this->userPrefrences['keyMap']); 

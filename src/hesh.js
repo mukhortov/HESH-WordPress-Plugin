@@ -80,6 +80,7 @@ console.log(window.heshOptions); // from wordpress php
 		enterMode: 'keep',
 		styleActiveLine: true,
 		electricChars: false,
+		showCursorWhenSelecting: true,
 		viewportMargin: 10,
 		extraKeys: {
 			'F11': function () {
@@ -101,12 +102,13 @@ console.log(window.heshOptions); // from wordpress php
 		options.theme = heshOptions.theme;
 		options.lineNumbers = !!heshOptions.lineNumbers;
 		options.foldGutter = !!heshOptions.foldGutter;
-		options.gutters =  options.foldGutter ? ['CodeMirror-linenumbers', 'CodeMirror-foldgutter'] : [];;
+		options.gutters =  options.foldGutter ? ['CodeMirror-linenumbers', 'CodeMirror-foldgutter'] : [];
 		options.tabSize = options.indentUnit = +heshOptions.tabSize;  // indentUnit must always equal tabSize
 		options.lineWrapping = !!heshOptions.lineWrapping;
 		options.matchBrackets = !!heshOptions.matchBrackets;
 		options.autoCloseTags = !!heshOptions.autoCloseTags;
 		options.autoCloseBrackets = !!heshOptions.autoCloseBrackets;
+		options.highlightSelectionMatches = !!heshOptions.highlightSelectionMatches;
 		options.matchTags = !!heshOptions.matchTags ? {bothTags:true} : false;
 		options.scrollbarStyle = !!heshOptions.scrollbarStyle ? 'overlay' : null;
 		options.keyMap = heshOptions.keyMap;
@@ -311,7 +313,7 @@ console.log(window.heshOptions); // from wordpress php
 	function updateOption(event) {
 		var value = +event.target.value;
 		value = isNaN(value) ? event.target.value : value;
-		if (event.type === 'checkbox') 
+		if (event.target.type === 'checkbox') 
 			value = event.target.checked;
 
 		switch (event.target.id) {
@@ -330,7 +332,7 @@ console.log(window.heshOptions); // from wordpress php
 
 			case 'matchTags':
 				heshOptions.matchTags = value;
-				editor.setOption('matchTags', value ? {bothTags:true} : false);
+				editor.setOption('matchTags', value ? {bothTags:true} : null);
 				break;
 
 			case 'scrollbarStyle':
@@ -342,7 +344,7 @@ console.log(window.heshOptions); // from wordpress php
 				editor.setOption('gutters', value?['CodeMirror-linenumbers', 'CodeMirror-foldgutter']:[] );
 				// break; // fallthrough expected here
 
-				case 'tabSize':
+			case 'tabSize':
 				editor.setOption('indentUnit', value); // indentUnit must always equal tabSize
 				// break; // fallthrough expected here
 
@@ -637,7 +639,7 @@ console.log(window.heshOptions); // from wordpress php
 		if (state.isActive()) return;
 
 		updateOptions();
-
+	  
 		// change the mode if on the theme/plugin editor page
 		if (state.isThemeOrPlugin) setFileType();
 

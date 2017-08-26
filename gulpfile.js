@@ -78,7 +78,7 @@ gulp.task('build:js', function () {
         codemirrorPath + 'addon/selection/active-line.js',
         codemirrorPath + 'addon/search/searchcursor.js',
         codemirrorPath + 'addon/search/search.js',
-        codemirrorPath + 'addon/dialog/dialog.js',        
+        codemirrorPath + 'addon/dialog/dialog.js',
         codemirrorPath + 'addon/scroll/simplescrollbars.js',
         codemirrorPath + 'addon/comment/comment.js',
         
@@ -91,6 +91,7 @@ gulp.task('build:js', function () {
         
         codemirrorPath + 'addon/edit/matchbrackets.js',
         codemirrorPath + 'addon/edit/matchtags.js',
+        codemirrorPath + 'addon/search/match-highlighter.js',  
         codemirrorPath + 'addon/edit/closetag.js',
         codemirrorPath + 'addon/edit/closebrackets.js',
 
