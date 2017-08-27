@@ -24,6 +24,7 @@ console.log(window.heshOptions); // from wordpress php
 	var editor;
 	var scrollPanel;
 	var settingsPanel = document.getElementById('CodeMirror-settings');
+	var dialogPanel;
 	var theForm = document.getElementById('CodeMirror-settings__form');
 	var toolbar = document.getElementById('ed_toolbar');
 	var target = document.getElementById('content') || document.getElementById('newcontent');
@@ -84,7 +85,7 @@ console.log(window.heshOptions); // from wordpress php
 		viewportMargin: 10,
 		extraKeys: {
 			'F11': function () {
-				toggleFullscreen(); 
+				toggleFullscreen();
 			},
 			'Esc': function () {
 				toggleFullscreen(true);
@@ -94,7 +95,7 @@ console.log(window.heshOptions); // from wordpress php
 			},
 			'Cmd-S': function () {
 				publishButton.click();
-			}
+			},
 		},
 	};
 
@@ -102,24 +103,24 @@ console.log(window.heshOptions); // from wordpress php
 		options.theme = heshOptions.theme;
 		options.lineNumbers = !!heshOptions.lineNumbers;
 		options.foldGutter = !!heshOptions.foldGutter;
-		options.gutters =  options.foldGutter ? ['CodeMirror-linenumbers', 'CodeMirror-foldgutter'] : [];
+		options.gutters = options.foldGutter ? ['CodeMirror-linenumbers', 'CodeMirror-foldgutter'] : [];
 		options.tabSize = options.indentUnit = +heshOptions.tabSize;  // indentUnit must always equal tabSize
 		options.lineWrapping = !!heshOptions.lineWrapping;
 		options.matchBrackets = !!heshOptions.matchBrackets;
 		options.autoCloseTags = !!heshOptions.autoCloseTags;
 		options.autoCloseBrackets = !!heshOptions.autoCloseBrackets;
 		options.highlightSelectionMatches = !!heshOptions.highlightSelectionMatches;
-		options.matchTags = !!heshOptions.matchTags ? {bothTags:true} : false;
+		options.matchTags = !!heshOptions.matchTags ? { bothTags: true } : false;
 		options.scrollbarStyle = !!heshOptions.scrollbarStyle ? 'overlay' : null;
 		options.keyMap = heshOptions.keyMap;
-		options.autofocus = document.getElementById('title') 
-			&& !!document.getElementById('title').value 
+		options.autofocus = document.getElementById('title')
+			&& !!document.getElementById('title').value
 			&& document.getElementById('title').value.length > 0;
 	}
-	
 
 
-	function throttleAnimationFrame (callback) {
+
+	function throttleAnimationFrame(callback) {
 		var wait = false;
 		return function () {
 			var context = this, args = arguments;
@@ -136,10 +137,11 @@ console.log(window.heshOptions); // from wordpress php
 	}
 
 
-	
+
 	function setSettingsPositionTopValues() {
-		for (var index = 0; index < settingsPanel.children.length; index++) {
-			var element = settingsPanel.children[index];
+		for (var i = -1; i < settingsPanel.children.length; i++) {
+			var element = i < 0 ? dialogPanel : settingsPanel.children[i];
+			if (element == null) continue;
 			element.style.position = '';
 			element.style.top = '';
 			element.style.left = '';
@@ -150,8 +152,9 @@ console.log(window.heshOptions); // from wordpress php
 
 	function setSettingsPositionMiddleValues() {
 		var toolbarRect = toolbar.getBoundingClientRect();
-		for (var index = 0; index < settingsPanel.children.length; index++) {
-			var element = settingsPanel.children[index];
+		for (var i = -1; i < settingsPanel.children.length; i++) {
+			var element = i < 0 ? dialogPanel : settingsPanel.children[i];
+			if (element == null) continue;
 			element.style.position = 'fixed';
 			element.style.top = toolbarRect.bottom + 'px';
 			element.style.right = (document.documentElement.getBoundingClientRect().width - toolbarRect.right) + 'px';
@@ -165,8 +168,9 @@ console.log(window.heshOptions); // from wordpress php
 	function setSettingsPositionBottomValues() {
 		var toolbarRect = toolbar.getBoundingClientRect();
 		var codeMirrorRect = editor.getWrapperElement().getBoundingClientRect();
-		for (var index = 0; index < settingsPanel.children.length; index++) {
-			var element = settingsPanel.children[index];
+		for (var i = -1; i < settingsPanel.children.length; i++) {
+			var element = i < 0 ? dialogPanel : settingsPanel.children[i];
+			if (element == null) continue;
 			element.style.position = 'absolute';
 			element.style.top = (codeMirrorRect.top - toolbarRect.bottom) * -1 + 'px';
 			element.style.left = '';
@@ -200,7 +204,7 @@ console.log(window.heshOptions); // from wordpress php
 
 
 	var isIE = !!navigator.userAgent.match(/Trident/ig);
-	
+
 	function updateFullHeightMaxHeight() {
 		if (!theForm) return;
 		var margin = 6; // arbitrary
@@ -255,6 +259,27 @@ console.log(window.heshOptions); // from wordpress php
 	}
 
 
+	function trackDialog(mutations) {
+		for (var i = 0; i < mutations.length; i++) {
+			var mutation = mutations[i];
+			// console.log(mutation);
+			if (mutation.addedNodes[0] && mutation.addedNodes[0].classList.contains('CodeMirror-dialog')){
+				dialogPanel = mutation.addedNodes[0];
+				var buttons = dialogPanel.getElementsByTagName('button');
+				for (var j = 0; j < buttons.length; j++) {
+					var button = buttons[j];
+					button.classList = 'button button-small';
+				}
+				console.log('put breakpoint here');
+			}
+			else{
+				dialogPanel = undefined;
+				continue;
+			}
+		}
+	}
+
+
 
 	// initalize the settings panel
 	function attachSettings() {
@@ -264,10 +289,13 @@ console.log(window.heshOptions); // from wordpress php
 		settingsPanel.querySelector('.CodeMirror-settings__toggle').addEventListener('click', toggleSettings);
 		settingsPanel.querySelector('.CodeMirror-settings__toggle-advanced').addEventListener('click', toggleSettings);
 
+		var observer = new MutationObserver(trackDialog);
+		observer.observe(editor.getWrapperElement(), { childList: true });
+		
 		// attach all the inputs to live update
 		var options = settingsPanel.querySelectorAll('.CodeMirror-settings__option');
-		for (var index = 0; index < options.length; index++) {
-			var option = options[index];
+		for (var i = 0; i < options.length; i++) {
+			var option = options[i];
 			option.addEventListener('change', submitForm);
 			option.addEventListener('change', updateOption);
 		}
@@ -306,14 +334,14 @@ console.log(window.heshOptions); // from wordpress php
 	}
 
 	function setCharWidth() {
-		state.charWidth = editor.defaultCharWidth() * (heshOptions.fontSize/13);
+		state.charWidth = editor.defaultCharWidth() * (heshOptions.fontSize / 13);
 	}
 
 	// set a codemirror option from an input.onchange event callback
 	function updateOption(event) {
 		var value = +event.target.value;
 		value = isNaN(value) ? event.target.value : value;
-		if (event.target.type === 'checkbox') 
+		if (event.target.type === 'checkbox')
 			value = event.target.checked;
 
 		switch (event.target.id) {
@@ -332,21 +360,21 @@ console.log(window.heshOptions); // from wordpress php
 
 			case 'matchTags':
 				heshOptions.matchTags = value;
-				editor.setOption('matchTags', value ? {bothTags:true} : null);
+				editor.setOption('matchTags', value ? { bothTags: true } : null);
 				break;
 
 			case 'scrollbarStyle':
 				heshOptions.scrollbarStyle = value;
 				editor.setOption('scrollbarStyle', value ? 'overlay' : null);
 				break;
-				
+
 			case 'foldGutter':
-				editor.setOption('gutters', value?['CodeMirror-linenumbers', 'CodeMirror-foldgutter']:[] );
-				// break; // fallthrough expected here
+				editor.setOption('gutters', value ? ['CodeMirror-linenumbers', 'CodeMirror-foldgutter'] : []);
+			// break; // fallthrough expected here
 
 			case 'tabSize':
 				editor.setOption('indentUnit', value); // indentUnit must always equal tabSize
-				// break; // fallthrough expected here
+			// break; // fallthrough expected here
 
 			default:
 				heshOptions[event.target.id] = value;
@@ -357,12 +385,12 @@ console.log(window.heshOptions); // from wordpress php
 		switch (event.target.id) { // clean up lap
 			case 'lineNumbers':
 				if (value && !!heshOptions.foldGutter)
-					editor.setOption('gutters', ['CodeMirror-linenumbers', 'CodeMirror-foldgutter'] );
+					editor.setOption('gutters', ['CodeMirror-linenumbers', 'CodeMirror-foldgutter']);
 			// case 'keyMap':
 			// 	stopEditor();
 			// 	startEditor();
 		}
-		
+
 	}
 
 	function setFontSizeAndLineHeight(fontSize, lineHeight) {
@@ -401,10 +429,10 @@ console.log(window.heshOptions); // from wordpress php
 
 	function toggleFullscreen(esc) {
 		esc = esc === true ? true : false;
-		if (state.isFullHeight()){
+		if (state.isFullHeight()) {
 			fullscreenBox.classList.remove(fullscreenClass);
 		} else {
-			if (!fullscreenBox.classList.contains(fullscreenClass) && !esc){
+			if (!fullscreenBox.classList.contains(fullscreenClass) && !esc) {
 				fullscreenBox.classList.add(fullscreenClass);
 			} else {
 				fullscreenBox.classList.remove(fullscreenClass);
@@ -524,7 +552,7 @@ console.log(window.heshOptions); // from wordpress php
 	}
 
 
-	
+
 	// make wrapped text line up with the base indentation of the line
 	// https://codemirror.net/demo/indentwrap.html
 	function indentWrappedLine() {
@@ -566,12 +594,12 @@ console.log(window.heshOptions); // from wordpress php
 
 	function runTextAreaChangeDetection() {
 		var currentValueLength = editor.getTextArea().value.length;
-		var checkForChanges = window.setInterval(function(){
+		var checkForChanges = window.setInterval(function () {
 			// console.log(editor.getTextArea().value.length);
 			if (currentValueLength === editor.getTextArea().value.length) return;
 			window.clearInterval(checkForChanges);
 			returnFocusFromTextArea();
-		},10);
+		}, 10);
 		var clearCheckForChanges = function () {
 			window.clearInterval(checkForChanges);
 			editor.off('focus', clearCheckForChanges);
@@ -634,12 +662,12 @@ console.log(window.heshOptions); // from wordpress php
 		};
 		window.send_to_editor = whichSendToEditor;
 	}
-	
+
 	function startEditor() {
 		if (state.isActive()) return;
 
 		updateOptions();
-	  
+
 		// change the mode if on the theme/plugin editor page
 		if (state.isThemeOrPlugin) setFileType();
 
@@ -712,4 +740,4 @@ console.log(window.heshOptions); // from wordpress php
 	window.CodeMirror,
 	window.jQuery,
 	window.heshOptions
-);
+	);

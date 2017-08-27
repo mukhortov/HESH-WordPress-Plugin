@@ -354,7 +354,7 @@ class wp_html_editor_syntax {
 	public function hesh_output_form() {
 		// ob_start();
 		?>
-			<div class="CodeMirror-settings open open-advanced" id="CodeMirror-settings" style="display:none;">
+			<div class="CodeMirror-settings closed" id="CodeMirror-settings" style="display:none;">
 				<form
 					action="<?php echo admin_url('admin-ajax.php');?>" 
 					method="post" 

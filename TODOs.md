@@ -1,13 +1,14 @@
 # TODOs
-- add to FAQ
-	- about spell-check
-- test new initalization of new user
-- style scrollbars
-- style matchTags and matchBrackets
 - style dialog
     - for search
     - for vim input
+- style scrollbars
+- add descriptions to adv options
+- test new initalization of new user
 - browser test
+- add to FAQ
+	- about spell-check
+
 
 ## Testing
 

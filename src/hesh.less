@@ -12,7 +12,7 @@
 @import (less) 'node_modules/codemirror/theme/*.css';
 @import (less) 'node_modules/codemirror/addon/fold/foldgutter.css';
 @import (less) 'node_modules/codemirror/addon/scroll/simplescrollbars.css';
-@import (less) 'node_modules/codemirror/addon/dialog/dialog.css';
+
 @z-index: 9;
 
 .CodeMirror {
@@ -35,18 +35,20 @@
 
 	@margin: 6px;
 	@padding: 12px;
+	@paddingSm: 4px;
 	@border-radius: 3px;
 	@border-color: #ddd;
 	@background-color: fade(white, 93%);
 	@transition-duration: 250ms;
 	@transition-easing: ease;
+	@foreground-color: #444;
 
 	&-settings{
 
-		color: #444;
+		color: @foreground-color;
 		height: 0;
 		width: 100%;
-		z-index: 9;
+		z-index: @z-index;
 		text-shadow: none;
 
 		&__toggle{
@@ -121,7 +123,7 @@
 			border-top-left-radius: @border-radius;
 			border-top-right-radius: @border-radius;
 			border: 1px solid @border-color;
-			padding: 4px;
+			padding: @paddingSm;
 			.media(padding-right);
 			border-bottom-left-radius: @border-radius;
 			border-bottom-right-radius: @border-radius;
@@ -302,10 +304,75 @@
 			cursor: pointer;
 			display: inline-block;
 			line-height: 35px - 10px;
-			padding: 0 4px;
+			padding: 0 @paddingSm;
 			vertical-align: middle;
 		}
 
+	}
+
+	&-dialog{
+		position: absolute;
+		left: 0; 
+		right: 0;
+		top: 0;
+
+		width: ~'calc(100% -' @margin*2 ~')';
+		.media(height, @docked-mobile-height, @docked-desktop-height);
+		margin: @margin;
+		box-sizing: border-box;
+		display: flex;
+		align-items: center;
+		z-index: @z-index + 3;
+
+		padding-left: @padding;
+		.media(padding-right);
+		
+		border-radius: @border-radius;
+		border: 1px solid @border-color;
+		color: @foreground-color;
+		background-color: white;  
+		
+		&:after{
+			position: absolute;
+			right: 0;
+			top: 0;
+			bottom: 0;
+			
+			content: '\f158';
+			font-family: dashicons;
+			.media(font-size, 28px, 20px);
+			.media(margin, 8px, 7px);
+			line-height: 1em;
+			cursor: pointer;
+		}
+
+		input {
+			border: none;
+			outline: none;
+			& ,&:focus{
+				box-shadow: none;
+			}
+			background: rgba(0,0,0,0.05);
+			color: inherit;
+			font-family: monospace;
+			margin: -1px @padding;
+			padding: 0 @padding;
+			align-self: stretch;
+			flex: 1 1 auto;
+		}
+		
+		button {
+			margin: 0 2px !important;
+			&:first-of-type {
+				margin-left: @padding !important;
+			}
+		}
+
+		span {
+			align-self: stretch;
+			display: flex;
+			align-items: center;
+		}
 	}
 
 
@@ -341,9 +408,7 @@
 		.media(margin-right, initial, 20px);
 		div{ margin-right: initial; }
 		p{ width: auto; }
-		&__toggle:after{
-
-		}
+		// &__toggle:after{}
 	}
 	&-vscrollbar{
 		display: none !important; // prevent second scrollbar
