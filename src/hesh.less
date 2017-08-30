@@ -44,7 +44,6 @@
 	@foreground-color: #444;
 
 	&-settings{
-
 		color: @foreground-color;
 		height: 0;
 		width: 100%;
@@ -151,8 +150,14 @@
 			justify-content: space-between;
 		}
 
+		&-advanced__description{ 
+			margin-left: 10px;
+			opacity: 0.6; 
+		}
+		
 		td&__heading{ // td& for specificity
 			padding: 0;
+			padding-bottom: 12px;
 		}
 
 		&__foot-content{
@@ -161,7 +166,7 @@
 		// &__feedback{}
 		// &__credits{}
 
-		// OPEN AND CLOSED STATES
+		// OPEN AND CLOSED STATES //
 		&__toggle, 
 		&__toggle-advanced, 
 		&__header, 
@@ -262,7 +267,7 @@
 			}
 		}
 
-		// BUTTON TYPES
+		// BUTTON TYPES //
 		&__button{
 			&:active{ transform: none !important; }
 			position: relative;

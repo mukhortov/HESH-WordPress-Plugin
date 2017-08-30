@@ -1,5 +1,4 @@
 # TODOs
-- add descriptions to adv options
 - test new initalization of new user
 - browser test
 - add to FAQ

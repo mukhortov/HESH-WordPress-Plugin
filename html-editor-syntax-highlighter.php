@@ -142,6 +142,7 @@ class wp_html_editor_syntax {
 				'current' => get_user_meta( get_current_user_id(), $this->prefix.'matchBrackets' , true),
 				'default' => false,
 				'set' => 'advanced',
+				'description' => 'highlight matching bracket pairs next to cursor',
 			),
 			'matchTags'=> array(
 				'title' => 'Match Tags',
@@ -149,6 +150,7 @@ class wp_html_editor_syntax {
 				'current' => get_user_meta( get_current_user_id(), $this->prefix.'matchTags' , true),
 				'default' => false,
 				'set' => 'advanced',
+				'description' => 'highlight matching html tag pairs (not shortcodes)',
 			),
 			'highlightSelectionMatches'=> array(
 				'title' => 'Highlight Selection Matches',
@@ -156,6 +158,7 @@ class wp_html_editor_syntax {
 				'current' => get_user_meta( get_current_user_id(), $this->prefix.'highlightSelectionMatches' , true),
 				'default' => false,
 				'set' => 'advanced',
+				'description' => 'highlight all instances of a currently selected word',
 			),
 			'autoCloseTags'=> array(
 				'title' => 'Auto Close Tags',
@@ -163,6 +166,7 @@ class wp_html_editor_syntax {
 				'current' => get_user_meta( get_current_user_id(), $this->prefix.'autoCloseTags' , true),
 				'default' => false,
 				'set' => 'advanced',
+				'description' => 'auto-close HTML tags when <code>></code> or <code>/</code> is typed',
 			),
 			'autoCloseBrackets'=> array(
 				'title' => 'Auto Close Brackets',
@@ -170,20 +174,15 @@ class wp_html_editor_syntax {
 				'current' => get_user_meta( get_current_user_id(), $this->prefix.'autoCloseBrackets' , true),
 				'default' => false,
 				'set' => 'advanced',
+				'description' => 'auto-close brackets and quotes when typed',
 			),
-			// 'emmet'=> array(
-			// 	'title' => 'Emmet',
-			// 	'type' => 'checkbox',
-			// 	'current' => get_user_meta( get_current_user_id(), $this->prefix.'emmet' , true),
-			// 	'default' => false,
-			// 	'set' => 'advanced',
-			// ),
 			'foldGutter'=> array(
 				'title' => 'Code Folding',
 				'type' => 'checkbox',
 				'current' => get_user_meta( get_current_user_id(), $this->prefix.'foldGutter' , true),
 				'default' => false,
 				'set' => 'advanced',
+				// 'description' => 'fold HTML code (not shortcodes)',
 			),
 			'scrollbarStyle'=> array(
 				'title' => 'Show Scrollbars',
@@ -315,15 +314,16 @@ class wp_html_editor_syntax {
 					<?php if ($current) echo 'checked'; ?>
 				/>
 			<?php echo $title; ?>
-			</label><br/>
+			</label>
 			<?php if (isset($description)): ?>
-				<p 
+				<small 
 					class="description CodeMirror-settings-advanced__description" 
 					id="<?php echo $id; ?>-description"
 					>
 					<?php echo $description; ?>
-				</p>
+				</small>
 			<?php endif; ?>
+			<br/>
 		<?php
 	}
 
@@ -377,9 +377,12 @@ class wp_html_editor_syntax {
 						<?php wp_nonce_field($this->formProcessName,$this->nonceSecretCode);?>
 						<input name="action" value="hesh_options_form" type="hidden">
 						<table class="form-table"><tbody>
-							<tr><td class="CodeMirror-settings__heading"><h1>
-								Advanced Options
-							</h1></td></tr>
+							<tr><td class="CodeMirror-settings__heading" colspan="2">
+								<h1>
+									Advanced Options
+								</h1>
+								<!-- <small>These features are experimental and may have bugs</small> -->
+							</td></tr>
 							<?php
 
 							$this->hesh_output_fieldset('Highlighting'); 
@@ -391,7 +394,6 @@ class wp_html_editor_syntax {
 							$this->hesh_output_fieldset('Auto Completion'); 
 								$this->hesh_output_checkbox('autoCloseTags',$this->userPrefrences['autoCloseTags']); 
 								$this->hesh_output_checkbox('autoCloseBrackets',$this->userPrefrences['autoCloseBrackets']); 
-								// $this->hesh_output_checkbox('emmet',$this->userPrefrences['emmet']); 
 							$this->hesh_output_fieldset(); 
 
 							$this->hesh_output_fieldset('Editor Tools'); 
@@ -409,7 +411,7 @@ class wp_html_editor_syntax {
 							<small>Leave a 
 								<a href="https://wordpress.org/support/plugin/html-editor-syntax-highlighter/reviews/#new-post" target="_blank">review</a>,
 								fork on
-								<a href="https://github.com/mukhortov/HESH-WordPress-Plugin/issues/new" target="_blank">Github</a>, 
+								<a href="https://github.com/mukhortov/HESH-WordPress-Plugin/" target="_blank">Github</a>, 
 								or submit a 
 								<a href="https://github.com/mukhortov/HESH-WordPress-Plugin/issues/new" target="_blank">bug report or enhancement request</a>. 
 							</small>
