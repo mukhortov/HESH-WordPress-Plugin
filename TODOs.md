@@ -1,8 +1,4 @@
 # TODOs
-- style dialog
-    - for search
-    - for vim input
-- style scrollbars
 - add descriptions to adv options
 - test new initalization of new user
 - browser test

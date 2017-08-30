@@ -21643,7 +21643,6 @@ console.log(window.heshOptions); // from wordpress php
 	function trackDialog(mutations) {
 		for (var i = 0; i < mutations.length; i++) {
 			var mutation = mutations[i];
-			// console.log(mutation);
 			if (mutation.addedNodes[0] && mutation.addedNodes[0].classList.contains('CodeMirror-dialog')){
 				dialogPanel = mutation.addedNodes[0];
 				var buttons = dialogPanel.getElementsByTagName('button');
@@ -21651,7 +21650,7 @@ console.log(window.heshOptions); // from wordpress php
 					var button = buttons[j];
 					button.classList = 'button button-small';
 				}
-				console.log('put breakpoint here');
+				// console.log('put breakpoint here');
 			}
 			else{
 				dialogPanel = undefined;
