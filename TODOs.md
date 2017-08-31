@@ -1,8 +1,12 @@
 # TODOs
-- test new initalization of new user
+- update layout on 1-2 column switch
+- load in visual 2col, switch to text, settings is in wrong place
+
 - browser test
 - add to FAQ
 	- about spell-check
+    - search & replace
+    - 
 
 
 ## Testing

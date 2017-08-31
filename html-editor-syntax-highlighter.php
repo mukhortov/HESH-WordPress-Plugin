@@ -91,7 +91,7 @@ class wp_html_editor_syntax {
 			'theme' => array(
 				'title' => 'Theme',
 				'type' => 'select',
-				'options' => array( '3024-day', '3024-night', 'abcdef', 'ambiance-mobile', 'ambiance', 'base16-dark', 'base16-light', 'bespin', 'blackboard', 'cobalt', 'colorforth', 'dracula', 'duotone-dark', 'duotone-light', 'eclipse', 'elegant', 'erlang-dark', 'hopscotch', 'icecoder', 'isotope', 'lesser-dark', 'liquibyte', 'material', 'mbo', 'mdn-like', 'midnight', 'monokai', 'neat', 'neo', 'night', 'panda-syntax', 'paraiso-dark', 'paraiso-light', 'pastel-on-dark', 'railscasts', 'rubyblue', 'seti', 'solarized', 'the-matrix', 'tomorrow-night-bright', 'tomorrow-night-eighties', 'ttcn', 'twilight', 'vibrant-ink', 'xq-dark', 'xq-light', 'yeti', 'zenburn'),
+				'options' => $this->cssThemes,
 				'current' => get_user_meta( get_current_user_id(), $this->prefix.'theme' , true),
 				'default' => 'material',
 				'set' => 'primary',
@@ -196,7 +196,7 @@ class wp_html_editor_syntax {
 				'type' => 'radio',
 				'options' => array('default', 'sublime', 'vim', 'emacs'),
 				'current' => get_user_meta( get_current_user_id(), $this->prefix.'keyMap' , true),
-				'default' => 'none',
+				'default' => 'default',
 				'set' => 'advanced',
 			),
 		);
@@ -313,16 +313,16 @@ class wp_html_editor_syntax {
 					class="CodeMirror-settings__option"
 					<?php if ($current) echo 'checked'; ?>
 				/>
-			<?php echo $title; ?>
-			</label>
-			<?php if (isset($description)): ?>
-				<small 
+				<?php echo $title; ?>
+				<?php if (isset($description)): ?>
+					<small 
 					class="description CodeMirror-settings-advanced__description" 
 					id="<?php echo $id; ?>-description"
 					>
 					<?php echo $description; ?>
 				</small>
-			<?php endif; ?>
+				<?php endif; ?>
+			</label>
 			<br/>
 		<?php
 	}
@@ -431,6 +431,58 @@ class wp_html_editor_syntax {
 		<?php 
 		// return ob_get_clean();
 	}
+
+	private $cssThemes = array( 
+		'default',
+		'3024-day',
+		'3024-night',
+		'abcdef',
+		'ambiance-mobile',
+		'ambiance',
+		'base16-dark',
+		'base16-light',
+		'bespin',
+		'blackboard',
+		'cobalt',
+		'colorforth',
+		'dracula',
+		'duotone-dark',
+		'duotone-light',
+		'eclipse',
+		'elegant',
+		'erlang-dark',
+		'hopscotch',
+		'icecoder',
+		'isotope',
+		'lesser-dark',
+		'liquibyte',
+		'material',
+		'mbo',
+		'mdn-like',
+		'midnight',
+		'monokai',
+		'neat',
+		'neo',
+		'night',
+		'panda-syntax',
+		'paraiso-dark',
+		'paraiso-light',
+		'pastel-on-dark',
+		'railscasts',
+		'rubyblue',
+		'seti',
+		'solarized',
+		'the-matrix',
+		'tomorrow-night-bright',
+		'tomorrow-night-eighties',
+		'ttcn',
+		'twilight',
+		'vibrant-ink',
+		'xq-dark',
+		'xq-light',
+		'yeti',
+		'zenburn'
+	);		  
 
 }
 
