@@ -2,9 +2,9 @@
 Contributors: nixdns, arniebradfo, rraub, collinprice
 Donate link: https://www.paypal.me/mukhortov/5
 Tags: syntax highlighter, codemirror, text editor, code highlighter, code coloring, editor, html editor, theme editor, plugin editor, syntax, highlighting, highlighter, syntax highlighting, codemirror.js, code,
-Requires at least: 4.0.11
-Tested up to: 4.7.3
-Stable tag: 2.0.0
+Requires at least: 4.0.15
+Tested up to: 4.8.1
+Stable tag: 2.2.0
 License: GPL-2.0
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -19,7 +19,7 @@ Add syntax highlighting in the WordPress Post & Page HTML text editor and the Th
 * Syntax highlighting in the Post/Page HTML editor
 * _NEW:_ Syntax highlighting in the Theme & Plugin editors
 * Syntax highlighting for WordPress shortcodes
-* Save your posts and pages pressing Ctrl+S (Cmd+S on Mac)
+* Save your posts and pages pressing `Ctrl+S` (`Cmd+S` on Mac)
 * Restore cursor position after page is reloaded
 * Huge Selection of themes and other customization options
 * Fullscreen mode: toggle with F11/Esc hotkeys
@@ -28,16 +28,31 @@ If you like the plugin, please [donate](https://www.paypal.me/mukhortov/5) and l
 
 If you would like to contribute to this plugin, view the [github repo](https://github.com/mukhortov/HESH-WordPress-Plugin).
 
-__Browser Support:__
-Everything except Internet Expolorer 10 and under. If you are using Internet Explorer you should get a [better browser](https://www.mozilla.org/en-US/firefox/new/).
+== Frequently Asked Questions ==
 
-== Installation ==
+= Does it work with Internet Explorer? =
+Not really... It is partially supported in IE 11. Known bugs are tracked [here](https://github.com/mukhortov/HESH-WordPress-Plugin/issues/41), but won't be fixed. Anything less that IE 10 isn't even supported by Microsoft anymore. If you are using Internet Explorer you should get a [better browser](https://www.mozilla.org/en-US/firefox/new/).
 
-1. Install HTML Editor Syntax Highlighter either via the WordPress.org plugin repository or by uploading the files to your server
-2. Activate the plugin on the 'Plugins' page
-3. Enjoy
+= How do I use Fullscreen? =
+The fullscreen button on the top right of the editor will do one of two things depending on the _"Enable full-height editor and distraction-free functionality"_ setting in your _"Screen Options"_ (in the top right of the editor page):
+* On: Toggles the "distraction free mode".
+* Off: Toggles the "fullscreen mode".
+
+= Can I search? =
+Yes! Use `Ctrl+F` (`Cmd+F` on Mac).
 
 == Changelog ==
+
+= 2.1.0 = 
+* added search
+* add highlighting for `<!--nextpage-->`
+* fixed bug: Theme and Plugin Editor not working
+
+= 2.0.1 =
+* fixed bug: esc key weirdness
+* fixed bug: don't steal editor focus from title on _'Add New Post'_
+* fixed bug: scrollbar appears in middle of text editor
+* fixed bug: toolbar can be too big
 
 = 2.0.0 =
 * now adjusts to the _'Enable full-height editor and distraction-free functionality'_ setting

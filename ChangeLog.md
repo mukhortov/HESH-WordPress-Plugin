@@ -1,7 +1,20 @@
 # Changelog
 
+## 2.2.0
+* made tab management agnostic to tab count and names - #50
+
+## 2.1.0
+* added search #31
+* add highlighting for `<!--nextpage-->` #15 
+* fixed bug: #51 Theme and Plugin Editor not working
+
+## 2.0.1
+* fixed bug: #29 esc key weirdness
+* fixed bug: #30 don't steal editor focus from title on _'Add New Post'_
+* fixed bug: #43 scrollbar appears in middle of text editor
+* fixed bug: #45 toolbar can be too big
+
 ## 2.0.0
-## New in 2.0.0-rc.9
 * The HESH editor now has parity with the standard WP text editor, including compatibility with the _'Enable full-height editor and distraction-free functionality'_ (The last option located under '_Screen Options_' tab at the top of the page).
 	* Behavior with full _'Enable full-height editor and distraction-free functionality' __enabled__:
 		* The fullscreen button enables '_distraction-free_' mode. All other controls on the screen fade away.

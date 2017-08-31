@@ -4,12 +4,15 @@
  * Author URI:   http://arniebradfo.com/
  * Author:       Peter Mukhortov
  * Author URI:   http://mukhortov.com/
- * Version:      2.0.0
-*/
+ * Version:      2.2.0
+**/
 
 // import all the themes css
 @import (less) 'node_modules/codemirror/lib/codemirror.css';
 @import (less) 'node_modules/codemirror/theme/*.css';
+@import (less) 'node_modules/codemirror/addon/fold/foldgutter.css';
+// @import (less) 'node_modules/codemirror/addon/scroll/simplescrollbars.css';
+
 @z-index: 9;
 
 .CodeMirror {
@@ -32,18 +35,19 @@
 
 	@margin: 6px;
 	@padding: 12px;
+	@paddingSm: 4px;
 	@border-radius: 3px;
 	@border-color: #ddd;
 	@background-color: fade(white, 93%);
 	@transition-duration: 250ms;
 	@transition-easing: ease;
+	@foreground-color: #444;
 
 	&-settings{
-
-		color: #444;
+		color: @foreground-color;
 		height: 0;
 		width: 100%;
-		z-index: 9;
+		z-index: @z-index;
 		text-shadow: none;
 
 		&__toggle{
@@ -118,7 +122,7 @@
 			border-top-left-radius: @border-radius;
 			border-top-right-radius: @border-radius;
 			border: 1px solid @border-color;
-			padding: 4px;
+			padding: @paddingSm;
 			.media(padding-right);
 			border-bottom-left-radius: @border-radius;
 			border-bottom-right-radius: @border-radius;
@@ -146,8 +150,14 @@
 			justify-content: space-between;
 		}
 
+		&-advanced__description{ 
+			margin-left: 10px;
+			opacity: 0.6; 
+		}
+		
 		td&__heading{ // td& for specificity
 			padding: 0;
+			padding-bottom: 12px;
 		}
 
 		&__foot-content{
@@ -156,7 +166,7 @@
 		// &__feedback{}
 		// &__credits{}
 
-		// OPEN AND CLOSED STATES
+		// OPEN AND CLOSED STATES //
 		&__toggle, 
 		&__toggle-advanced, 
 		&__header, 
@@ -257,7 +267,7 @@
 			}
 		}
 
-		// BUTTON TYPES
+		// BUTTON TYPES //
 		&__button{
 			&:active{ transform: none !important; }
 			position: relative;
@@ -299,15 +309,153 @@
 			cursor: pointer;
 			display: inline-block;
 			line-height: 35px - 10px;
-			padding: 0 4px;
+			padding: 0 @paddingSm;
 			vertical-align: middle;
 		}
 
 	}
 
+	// DIALOG //
+	&-dialog{
+		position: absolute;
+		left: 0; 
+		right: 0;
+		top: 0;
+
+		width: ~'calc(100% -' @margin*2 ~')';
+		.media(height, @docked-mobile-height, @docked-desktop-height);
+		margin: @margin;
+		box-sizing: border-box;
+		display: flex;
+		align-items: center;
+		z-index: @z-index + 3;
+
+		padding-left: @padding;
+		.media(padding-right);
+		
+		border-radius: @border-radius;
+		border: 1px solid @border-color;
+		color: @foreground-color;
+		background-color: white;  
+		
+		&:after{
+			position: absolute;
+			right: 0;
+			top: 0;
+			bottom: 0;
+			
+			content: '\f158';
+			font-family: dashicons;
+			.media(font-size, 28px, 20px);
+			.media(margin, 8px, 7px);
+			line-height: 1em;
+			cursor: pointer;
+		}
+
+		input {
+			border: none;
+			outline: none;
+			& ,&:focus{
+				box-shadow: none;
+			}
+			background: rgba(0,0,0,0.05);
+			color: inherit;
+			font-family: monospace;
+			margin: -1px @padding;
+			padding: 0 @padding;
+			align-self: stretch;
+			flex: 1 1 auto;
+		}
+		
+		button {
+			margin: 0 2px !important;
+			&:first-of-type {
+				margin-left: @padding !important;
+			}
+		}
+
+		span {
+			align-self: stretch;
+			display: flex;
+			align-items: center;
+		}
+	}
+
+	// SCROLLBARS //
+	&-overlayscroll{
+		.CodeMirror-scrollbar-filler, .CodeMirror-gutter-filler{
+			display: none !important;
+		}
+
+		@scrollbar-color: #f5f5f5;
+		@scrollbar-border-color: @border-color;
+		@thickness: 8px;
+		&-horizontal, &-vertical{
+			position: absolute;
+			z-index: 6;
+			transition: opacity 100ms linear;
+			opacity: 0.5;
+			&:hover{  opacity: 1;    }
+			&:active{ opacity: 0.75; }
+			div{
+				position: absolute;
+				background: transparent !important;
+				&:after{
+					content: '';
+					background-color: @scrollbar-color;
+					border: 1px solid @scrollbar-border-color;
+					border-radius: @thickness/2;
+					position: absolute;
+				}
+			}
+		}
+
+		&-horizontal{
+			bottom: 0; 
+			left: 0;
+			height: @thickness;
+			margin-bottom: @margin;
+			div {
+				top: 0;
+				bottom: 0;
+				&:after{
+					top: 0;
+					bottom: 0;
+					left: @margin;
+					right: @margin;
+				}
+			}
+		}
+
+		&-vertical{
+			right: 0; 
+			top: 0;
+			width: @thickness;
+			margin-right: @margin;
+			div{				
+				left: 0;
+				right: 0;
+				&:after{
+					left: 0;
+					right: 0;
+					.media(top, (@margin*2 + @docked-mobile-height), (@margin*2 + @docked-desktop-height));
+					bottom: @margin;
+				}
+			}
+		}
+	}
 
 	.wp-editor-expand & {
-		min-height: 300px;
+		@min-height: 300px;
+		min-height: @min-height;
+		.CodeMirror-scroll{
+			@magic-hide-scroll-bar-height: 30px;
+			// these override CodeMirrors own native padding and negative margin
+			// CodeMirror uses this to hide the scrollbar on the bottom
+			// they are set to !important as well
+			padding-bottom: @min-height + @magic-hide-scroll-bar-height !important;
+			margin-bottom: -(@min-height + @magic-hide-scroll-bar-height) !important;
+		}
 	}
 
 
@@ -329,6 +477,7 @@
 		.media(margin-right, initial, 20px);
 		div{ margin-right: initial; }
 		p{ width: auto; }
+		// &__toggle:after{}
 	}
 	&-vscrollbar{
 		display: none !important; // prevent second scrollbar
@@ -337,7 +486,7 @@
 		margin-right: -30px !important;
 	}
 	&-settings__toggle{
-		margin-right: @margin !important;
+		margin: @margin !important;
 	}
 }
 
@@ -370,6 +519,13 @@
 	#cm_content_fullscreen:before{
 		content:'\f506';
 	}
+}
+
+.cm-matchhighlight,
+.CodeMirror-matchingbracket,
+.CodeMirror-matchingtag
+{
+	background-color: rgba(0, 255, 175, 0.2);
 }
 
 #cm_content_fullscreen{

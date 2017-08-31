@@ -63,7 +63,7 @@
 					state.shortcodeState = shortcodeMode.startState(htmlmixedMode.indent(state.htmlmixedState, ''));
 				}
 				state.token = shortcodeToken;
-			} else if (inText && /<!\-\-more|<!\-\-noteaser\-\->/.test(stream.current()) && !state.htmlmixedState.localState && style === 'comment') {
+			} else if (inText && /<!\-\-more|<!\-\-(noteaser|nextpage)\-\->?/.test(stream.current()) && !state.htmlmixedState.localState && style === 'comment') {
 				stream.backUp(stream.current().length);
 				state.token = moreToken;
 			}
@@ -73,7 +73,7 @@
 		function moreToken (stream, state) {
 			if (stream.match('<!--more')) {
 				return 'meta';
-			} else if (stream.match('-->') || stream.match('<!--noteaser-->')) {
+			} else if (stream.match('-->') || stream.match('<!--noteaser-->') || stream.match('<!--nextpage-->')) {
 				state.token = htmlmixedToken;
 				return 'meta';
 			} else {
