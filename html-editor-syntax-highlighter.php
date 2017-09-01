@@ -433,6 +433,7 @@ class wp_html_editor_syntax {
 	}
 
 	private $cssThemes = array( 
+		'none',
 		'default',
 		'3024-day',
 		'3024-night',
@@ -482,7 +483,7 @@ class wp_html_editor_syntax {
 		'xq-light',
 		'yeti',
 		'zenburn'
-	);		  
+	);
 
 }
 
