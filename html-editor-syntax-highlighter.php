@@ -89,11 +89,7 @@ class wp_html_editor_syntax {
 			'theme' => array(
 				'title' => 'Theme',
 				'type' => 'select',
-<<<<<<< HEAD
-				'options' => json_decode(file_get_contents(dirname(__FILE__) . '/css.json'), true), 
-=======
 				'options' => $this->cssThemes,
->>>>>>> master
 				'current' => get_user_meta( get_current_user_id(), $this->prefix.'theme' , true),
 				'default' => 'material',
 				'set' => 'primary',
@@ -202,10 +198,6 @@ class wp_html_editor_syntax {
 				'set' => 'advanced',
 			),
 		);
-<<<<<<< HEAD
-=======
-
->>>>>>> master
 
 		// Intalize all the hesh option fields as default if they don't exist yet
 		foreach ($this->userPrefrences as $id => $value) {
