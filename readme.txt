@@ -4,7 +4,7 @@ Donate link: https://www.paypal.me/mukhortov/5
 Tags: syntax highlighter, codemirror, text editor, code highlighter, code coloring, editor, html editor, theme editor, plugin editor, syntax, highlighting, highlighter, syntax highlighting, codemirror.js, code,
 Requires at least: 4.0.15
 Tested up to: 4.8.1
-Stable tag: 2.1.0
+Stable tag: 2.2.0
 License: GPL-2.0
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -19,21 +19,17 @@ Add syntax highlighting in the WordPress Post & Page HTML text editor and the Th
 * Syntax highlighting in the Post/Page HTML editor
 * _NEW:_ Syntax highlighting in the Theme & Plugin editors
 * Syntax highlighting for WordPress shortcodes
-* Save your posts and pages pressing Ctrl+S (Cmd+S on Mac)
+* Save your posts and pages pressing `Ctrl+S` (`Cmd+S` on Mac)
 * Restore cursor position after page is reloaded
 * Huge Selection of themes and other customization options
 * Fullscreen mode: toggle with F11/Esc hotkeys
-
-If you like the plugin, please [donate](https://www.paypal.me/mukhortov/5) and leave a review :)
 
 If you would like to contribute to this plugin, view the [github repo](https://github.com/mukhortov/HESH-WordPress-Plugin).
 
 == Frequently Asked Questions ==
 
 = Does it work with Internet Explorer? =
-Not really... It is partially supported in IE 11. Known bugs are tracked [here](https://github.com/mukhortov/HESH-WordPress-Plugin/issues/41), but won't be fixed. 
-Anything less that IE 10 isn't even supported by Microsoft anymore. 
-If you are using Internet Explorer you should get a [better browser](https://www.mozilla.org/en-US/firefox/new/).
+Not really... It is partially supported in IE 11. Known bugs are tracked [here](https://github.com/mukhortov/HESH-WordPress-Plugin/issues/41), but won't be fixed. Anything less that IE 10 isn't even supported by Microsoft anymore. If you are using Internet Explorer you should get a [better browser](https://www.mozilla.org/en-US/firefox/new/).
 
 = How do I use Fullscreen? =
 The fullscreen button on the top right of the editor will do one of two things depending on the _"Enable full-height editor and distraction-free functionality"_ setting in your _"Screen Options"_ (in the top right of the editor page):
@@ -41,9 +37,19 @@ The fullscreen button on the top right of the editor will do one of two things d
 * Off: Toggles the "fullscreen mode".
 
 = Can I search? =
-Yes! Use `Ctrl + F` or `Cmd + F`.
+Yes! Seach with `Ctrl+F` (`Cmd+F` on Mac). Replace with `Ctrl+alt+F` (`Cmd+alt+F` on Mac).
 
 == Changelog ==
+
+= 2.2.0 = 
+* added search & replace with dialog
+* added highlighing options
+* added auto-close tags and brackets option
+* added code-folding option
+* added scrollbars option
+* added keyMap options
+* added _Default_ and _None_ themes
+* fixed bug: made tab management agnostic to tab count and names - #50
 
 = 2.1.0 = 
 * added search
