@@ -1,7 +1,7 @@
 # Changelog
 
 ## 2.2.1
-* reverted fix for #50
+* fixed bug: editor was not stopping when switching between visual editor and text. reverted fix for #50
 
 ## 2.2.0
 * added search & replace with dialog
