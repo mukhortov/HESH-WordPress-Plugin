@@ -6,7 +6,8 @@
 - add to FAQ
 	- about spell-check
     - search & replace
-    - 
+    - Reporting Bugs
+    
 
 
 ## Testing

@@ -24,8 +24,6 @@ Add syntax highlighting in the WordPress Post & Page HTML text editor and the Th
 * Huge Selection of themes and other customization options
 * Fullscreen mode: toggle with F11/Esc hotkeys
 
-If you like the plugin, please [donate](https://www.paypal.me/mukhortov/5) and leave a review :)
-
 If you would like to contribute to this plugin, view the [github repo](https://github.com/mukhortov/HESH-WordPress-Plugin).
 
 == Frequently Asked Questions ==
@@ -39,9 +37,19 @@ The fullscreen button on the top right of the editor will do one of two things d
 * Off: Toggles the "fullscreen mode".
 
 = Can I search? =
-Yes! Use `Ctrl+F` (`Cmd+F` on Mac).
+Yes! Seach with `Ctrl+F` (`Cmd+F` on Mac). Replace with `Ctrl+alt+F` (`Cmd+alt+F` on Mac).
 
 == Changelog ==
+
+= 2.2.0 = 
+* added search & replace with dialog
+* added highlighing options
+* added auto-close tags and brackets option
+* added code-folding option
+* added scrollbars option
+* added keyMap options
+* added _Default_ and _None_ themes
+* fixed bug: made tab management agnostic to tab count and names - #50
 
 = 2.1.0 = 
 * added search

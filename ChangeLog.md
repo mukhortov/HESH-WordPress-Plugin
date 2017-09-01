@@ -1,7 +1,14 @@
 # Changelog
 
 ## 2.2.0
-* made tab management agnostic to tab count and names - #50
+* added search & replace with dialog
+* added highlighing options
+* added auto-close tags and brackets option
+* added code-folding option
+* added scrollbars option
+* added keyMap options
+* added _Default_ and _None_ themes
+* fixed bug: made tab management agnostic to tab count and names - #50
 
 ## 2.1.0
 * added search #31
