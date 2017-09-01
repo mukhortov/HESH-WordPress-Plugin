@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.2.1
+* reverted fix for #50
+
 ## 2.2.0
 * added search & replace with dialog
 * added highlighing options
