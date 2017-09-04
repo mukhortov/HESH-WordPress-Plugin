@@ -14,7 +14,6 @@
   "homepage": "https://github.com/arniebradfo/HESH-WordPress-Plugin",
   "devDependencies": {
     "codemirror": "^5.23.0",
-    "del": "^2.2.2",
     "gulp": "^3.9.1",
     "gulp-autoprefixer": "^3.1.1",
     "gulp-combine-mq": "^0.4.0",
@@ -23,9 +22,9 @@
     "gulp-less": "^3.3.0",
     "gulp-livereload": "^3.8.1",
     "gulp-rename": "^1.2.2",
-    "gulp-to-json": "^1.0.1",
     "gulp-uglify": "^2.1.2",
     "jshint": "^2.9.4",
     "less-plugin-glob": "^2.0.0"
-  }
+  },
+  "dependencies": {}
 }

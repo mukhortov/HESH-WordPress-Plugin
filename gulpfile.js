@@ -3,28 +3,6 @@
 var gulp = require('gulp');
 var livereload = require('gulp-livereload');
 var rename = require('gulp-rename');
-// TODO: add plumber
-
-
-var toJson = require('gulp-to-json');
-gulp.task('build:css-json', function () {
-    gulp.src('./node_modules/codemirror/theme/*.css')
-        .pipe(toJson({
-            filename: 'css.json',
-            relative: true,
-            strip: /.css/
-        }))
-        .pipe(gulp.dest('./.trash'));
-});
-var del = require('del');
-gulp.task('garbage-collect', function () {
-    del('./.trash/**');
-});
-gulp.task('clean', function () {
-    del('./.trash/**');
-    del('./dist/**');
-});
-
 
 var less = require('gulp-less');
 var autoprefixer = require('gulp-autoprefixer');
@@ -101,7 +79,7 @@ gulp.task('build:js', function () {
 
         // ... and finally ...
         // HESH
-        './src/hesh.js'
+        './src/hesh.dev.js'
     ])
         .pipe(concat('hesh.js'))
         .pipe(gulp.dest('./dist'))
@@ -123,7 +101,6 @@ gulp.task('watch', function () {
 });
 
 
-gulp.task('copy:themes', ['build:css-json', 'garbage-collect']);
 gulp.task('minify', ['minify:css', 'minify:js']);
 gulp.task('build', ['build:css', 'build:js', 'minify']);
 gulp.task('rebuild', ['clean', 'build']);
