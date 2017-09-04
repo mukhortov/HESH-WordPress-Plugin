@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.2.2
+* fixed bug: github updater in production issue #52
+* updated Codemirror to latest release version
+
 ## 2.2.1
 * fixed bug: editor was not stopping when switching between visual editor and text. reverted fix for #50
 
