@@ -15,8 +15,6 @@
  * Author URI:         http://bradford.digital/
  * License:            GPL-2.0+
  * License URI:        http://www.gnu.org/licenses/gpl-2.0.txt
- * GitHub Branch:      master
- * GitHub Plugin URI:  https://github.com/mukhortov/HESH-WordPress-Plugin
  * Version:            2.2.2
  * Requires at least:  4.0.15
  * Tested up to:       4.8.1
