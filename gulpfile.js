@@ -8,7 +8,7 @@ var less = require('gulp-less');
 var autoprefixer = require('gulp-autoprefixer');
 var combineMq = require('gulp-combine-mq');
 gulp.task('build:css', function () {
-    return gulp.src('./src/*.less')
+    return gulp.src('./src/hesh.dev.less')
         .pipe(less({
             plugins: [ require('less-plugin-glob') ]
         }))
@@ -20,6 +20,7 @@ gulp.task('build:css', function () {
         .pipe(combineMq({
             beautify: true
         }))
+        .pipe(rename('hesh.css'))
         .pipe(gulp.dest('./dist'))
         .pipe(livereload());
 });
