@@ -7,7 +7,7 @@
  * @since    2.2.1
 */
 
-console.log(window.heshOptions); // from wordpress php
+// console.log(window.heshOptions); // from wordpress php
 
 (function (
 	document,
