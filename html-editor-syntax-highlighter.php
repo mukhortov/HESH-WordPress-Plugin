@@ -44,6 +44,15 @@ class wp_html_editor_syntax {
 		add_action( 'admin_footer', array(&$this, 'hesh_output_form') );
 	}
 	
+	// Validates WordPress version
+	public function validate_version($check_version){
+		$current_version = get_bloginfo('version');
+		if ($current_version >= $check_version) {
+			return true;
+		}
+		return false;
+	}
+	
 	// Enqueues scripts and styles for hesh.js
 	public function hesh_admin_enqueue_scripts () {
 		
