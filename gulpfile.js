@@ -41,7 +41,7 @@ gulp.task('build:js', function () {
     return gulp.src([
 
         // CodeMirror Core
-        codemirrorPath + 'lib/codemirror.js',
+        // codemirrorPath + 'lib/codemirror.js', // now a separate file
 
         // Modes
         codemirrorPath + 'mode/xml/xml.js',
@@ -86,8 +86,13 @@ gulp.task('build:js', function () {
         .pipe(gulp.dest('./dist'))
         .pipe(livereload());
 });
+gulp.task('copy:js', function () {
+    return gulp.src(codemirrorPath + 'lib/codemirror.js')
+        .pipe(uglify())
+        .pipe(gulp.dest('./dist'));
+});
 gulp.task('minify:js', function () {
-    return gulp.src('./dist/hesh.js')
+    return gulp.src(['./dist/hesh.js', './dist/codemirror.js'])
         .pipe(uglify())
         .pipe(rename(function (path) { path.basename += '.min'; }))
         .pipe(gulp.dest('./dist'));
@@ -103,6 +108,6 @@ gulp.task('watch', function () {
 
 
 gulp.task('minify', ['minify:css', 'minify:js']);
-gulp.task('build', ['build:css', 'build:js', 'minify']);
+gulp.task('build', ['build:css', 'build:js', 'copy:js', 'minify']);
 gulp.task('rebuild', ['clean', 'build']);
 gulp.task('default', ['build', 'watch']);

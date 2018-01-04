@@ -59,13 +59,8 @@ class wp_html_editor_syntax {
 		$min = strpos(home_url(), 'localhost') ? '' : '.min' ;
 		wp_enqueue_script( 'jquery');
 
-		$isWpFourNine = version_compare(get_bloginfo('version'), '4.9.0') >= 0;
-		error_log( $isWpFourNine );
-		if ( $isWpFourNine )
-			wp_enqueue_script( 'codemirror');
-		else
+		if ( !wp_script_is( 'codemirror', 'enqueued' ) )
 			wp_enqueue_script( 'codemirror', HESH_LIBS.'codemirror'.$min.'.js', false, $ver, true );
-
 
 		wp_enqueue_script( 'heshjs', HESH_LIBS.'hesh'.$min.'.js', array('jquery', 'editor', 'codemirror'), $ver, true );
 		wp_enqueue_style( 'heshcss', HESH_LIBS.'hesh'.$min.'.css', false, $ver );
