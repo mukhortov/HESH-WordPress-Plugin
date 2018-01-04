@@ -43,16 +43,7 @@ class wp_html_editor_syntax {
 		add_action( 'wp_ajax_'.$this->formProcessName, array(&$this, 'hesh_options_form_process'));
 		add_action( 'admin_footer', array(&$this, 'hesh_output_form') );
 	}
-	
-	// Validates WordPress version
-	public function validate_version($check_version){
-		$current_version = get_bloginfo('version');
-		if ($current_version >= $check_version) {
-			return true;
-		}
-		return false;
-	}
-	
+		
 	// Enqueues scripts and styles for hesh.js
 	public function hesh_admin_enqueue_scripts () {
 		
@@ -67,7 +58,16 @@ class wp_html_editor_syntax {
 		
 		$min = strpos(home_url(), 'localhost') ? '' : '.min' ;
 		wp_enqueue_script( 'jquery');
-		wp_enqueue_script( 'heshjs', HESH_LIBS.'hesh'.$min.'.js', array('jquery', 'editor'), $ver, true );
+
+		$isWpFourNine = version_compare(get_bloginfo('version'), '4.9.0') >= 0;
+		error_log( $isWpFourNine );
+		if ( $isWpFourNine )
+			wp_enqueue_script( 'codemirror');
+		else
+			wp_enqueue_script( 'codemirror', HESH_LIBS.'codemirror'.$min.'.js', false, $ver, true );
+
+
+		wp_enqueue_script( 'heshjs', HESH_LIBS.'hesh'.$min.'.js', array('jquery', 'editor', 'codemirror'), $ver, true );
 		wp_enqueue_style( 'heshcss', HESH_LIBS.'hesh'.$min.'.css', false, $ver );
 
 		// this shows up in js as window.heshOptions
@@ -218,7 +218,6 @@ class wp_html_editor_syntax {
 			// error_log( $id . ': ' . $value['current'] . ': ' . isset($value['current']) ); // for debug
 		}
 	}
-
 	
 	public function hesh_options_form_process() {
 		if (empty($_POST) || !wp_verify_nonce($_POST[$this->nonceSecretCode], $this->formProcessName)) {
@@ -358,7 +357,6 @@ class wp_html_editor_syntax {
 		endforeach; 
 		$this->hesh_output_fieldset(); 
 	}
-
 		
 	public function hesh_output_form() {
 		// ob_start();
