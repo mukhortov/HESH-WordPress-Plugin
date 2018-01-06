@@ -32,7 +32,6 @@ if ( preg_match( '#' . basename(__FILE__) . '#', $_SERVER['PHP_SELF'] ) ) {
 	die('You are not allowed to call this page directly.');
 }
 
-
 define( 'HESH_LIBS', plugins_url( '/dist/', __FILE__ ) );
 
 class wp_html_editor_syntax {
@@ -47,21 +46,31 @@ class wp_html_editor_syntax {
 	// Enqueues scripts and styles for hesh.js
 	public function hesh_admin_enqueue_scripts () {
 		
+		// Load only on certin pages
 		if (
 			!strstr($_SERVER['SCRIPT_NAME'], 'post.php') && 
 			!strstr($_SERVER['SCRIPT_NAME'], 'post-new.php') &&
 			!strstr($_SERVER['SCRIPT_NAME'], 'editor.php')
 		) return;
 		
+		// get the plugin version number for cache busting purposes
 		$plugData = get_plugin_data( __FILE__ ); // need this temporary var to support versions of php < 5.4
 		$ver = $plugData['Version'];
 		
+		// load minified version if not a localhost dev account
 		$min = strpos(home_url(), 'localhost') ? '' : '.min' ;
 		wp_enqueue_script( 'jquery');
 
-		if ( !wp_script_is( 'codemirror', 'enqueued' ) )
+		// dequeue the native WP-code editor
+		if (wp_script_is( 'code-editor', 'enqueued' )) wp_dequeue_script( 'code-editor' );
+		if (wp_style_is( 'code-editor', 'enqueued' )) wp_dequeue_style( 'code-editor' );
+		
+		// use native codemirror if its there
+		if (!wp_script_is( 'codemirror', 'enqueued' ))
 			wp_enqueue_script( 'codemirror', HESH_LIBS.'codemirror'.$min.'.js', false, $ver, true );
+		if (wp_style_is( 'codemirror', 'enqueued' )) wp_dequeue_style( 'codemirror' );
 
+		// enqueue hesh scripts
 		wp_enqueue_script( 'heshjs', HESH_LIBS.'hesh'.$min.'.js', array('jquery', 'editor', 'codemirror'), $ver, true );
 		wp_enqueue_style( 'heshcss', HESH_LIBS.'hesh'.$min.'.css', false, $ver );
 

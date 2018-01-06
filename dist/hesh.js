@@ -13022,4 +13022,4 @@ CodeMirror.registerHelper("fold", "indent", function(cm, start) {
 	window.CodeMirror,
 	window.jQuery,
 	window.heshOptions
-	);
+);

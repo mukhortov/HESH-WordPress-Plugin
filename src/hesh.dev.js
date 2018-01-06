@@ -736,4 +736,4 @@
 	window.CodeMirror,
 	window.jQuery,
 	window.heshOptions
-	);
+);
