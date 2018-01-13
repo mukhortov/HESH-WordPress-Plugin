@@ -61,17 +61,14 @@ class wp_html_editor_syntax {
 		$min = strpos(home_url(), 'localhost') ? '' : '.min' ;
 		wp_enqueue_script( 'jquery');
 
-		// dequeue the native WP-code editor
+		// dequeue the native WP code-editor and codemirror
 		if (wp_script_is( 'code-editor', 'enqueued' )) wp_dequeue_script( 'code-editor' );
 		if (wp_style_is( 'code-editor', 'enqueued' )) wp_dequeue_style( 'code-editor' );
-		
-		// use native codemirror if its there
-		if (!wp_script_is( 'codemirror', 'enqueued' ))
-			wp_enqueue_script( 'codemirror', HESH_LIBS.'codemirror'.$min.'.js', false, $ver, true );
+		if (wp_script_is( 'codemirror', 'enqueued' )) wp_dequeue_script( 'codemirror' );
 		if (wp_style_is( 'codemirror', 'enqueued' )) wp_dequeue_style( 'codemirror' );
 
 		// enqueue hesh scripts
-		wp_enqueue_script( 'heshjs', HESH_LIBS.'hesh'.$min.'.js', array('jquery', 'editor', 'codemirror'), $ver, true );
+		wp_enqueue_script( 'heshjs', HESH_LIBS.'hesh'.$min.'.js', array('jquery', 'editor'), $ver, true );
 		wp_enqueue_style( 'heshcss', HESH_LIBS.'hesh'.$min.'.css', false, $ver );
 
 		// this shows up in js as window.heshOptions
