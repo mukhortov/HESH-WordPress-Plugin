@@ -21782,7 +21782,7 @@ CodeMirror.registerHelper("fold", "indent", function(cm, start) {
  * @link     http://arniebradfo.com/
  * @author   Petr Mukhortov
  * @link     http://mukhortov.com/
- * @since    2.2.1
+ * @since    2.2.2
 */
 
 // console.log(window.heshOptions); // from wordpress php
@@ -22514,4 +22514,4 @@ CodeMirror.registerHelper("fold", "indent", function(cm, start) {
 	window.CodeMirror,
 	window.jQuery,
 	window.heshOptions
-	);
+);

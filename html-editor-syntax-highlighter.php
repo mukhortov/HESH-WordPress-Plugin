@@ -2,7 +2,7 @@
 
 
 /**
- * @since              2.2.2
+ * @since              2.2.3
  * @package            HESH_plugin
  *
  * Plugin Name:        HTML Editor Syntax Highlighter
@@ -15,10 +15,12 @@
  * Author URI:         http://bradford.digital/
  * License:            GPL-2.0+
  * License URI:        http://www.gnu.org/licenses/gpl-2.0.txt
- * Version:            2.2.2
+ * GitHub Branch:      master
+ * GitHub Plugin URI:  https://github.com/mukhortov/HESH-WordPress-Plugin
+ * Version:            2.2.3
  * Requires at least:  4.0.15
- * Tested up to:       4.8.1
- * Stable tag:         2.2.2
+ * Tested up to:       4.9.1
+ * Stable tag:         2.2.3
 **/
 
 // Check for required PHP version
@@ -30,7 +32,6 @@ if ( preg_match( '#' . basename(__FILE__) . '#', $_SERVER['PHP_SELF'] ) ) {
 	die('You are not allowed to call this page directly.');
 }
 
-
 define( 'HESH_LIBS', plugins_url( '/dist/', __FILE__ ) );
 
 class wp_html_editor_syntax {
@@ -41,21 +42,32 @@ class wp_html_editor_syntax {
 		add_action( 'wp_ajax_'.$this->formProcessName, array(&$this, 'hesh_options_form_process'));
 		add_action( 'admin_footer', array(&$this, 'hesh_output_form') );
 	}
-	
+		
 	// Enqueues scripts and styles for hesh.js
 	public function hesh_admin_enqueue_scripts () {
 		
+		// Load only on certin pages
 		if (
 			!strstr($_SERVER['SCRIPT_NAME'], 'post.php') && 
 			!strstr($_SERVER['SCRIPT_NAME'], 'post-new.php') &&
 			!strstr($_SERVER['SCRIPT_NAME'], 'editor.php')
 		) return;
 		
+		// get the plugin version number for cache busting purposes
 		$plugData = get_plugin_data( __FILE__ ); // need this temporary var to support versions of php < 5.4
 		$ver = $plugData['Version'];
 		
+		// load minified version if not a localhost dev account
 		$min = strpos(home_url(), 'localhost') ? '' : '.min' ;
 		wp_enqueue_script( 'jquery');
+
+		// dequeue the native WP code-editor and codemirror
+		if (wp_script_is( 'code-editor', 'enqueued' )) wp_dequeue_script( 'code-editor' );
+		if (wp_style_is( 'code-editor', 'enqueued' )) wp_dequeue_style( 'code-editor' );
+		if (wp_script_is( 'codemirror', 'enqueued' )) wp_dequeue_script( 'codemirror' );
+		if (wp_style_is( 'codemirror', 'enqueued' )) wp_dequeue_style( 'codemirror' );
+
+		// enqueue hesh scripts
 		wp_enqueue_script( 'heshjs', HESH_LIBS.'hesh'.$min.'.js', array('jquery', 'editor'), $ver, true );
 		wp_enqueue_style( 'heshcss', HESH_LIBS.'hesh'.$min.'.css', false, $ver );
 
@@ -204,7 +216,6 @@ class wp_html_editor_syntax {
 			// error_log( $id . ': ' . $value['current'] . ': ' . isset($value['current']) ); // for debug
 		}
 	}
-
 	
 	public function hesh_options_form_process() {
 		if (empty($_POST) || !wp_verify_nonce($_POST[$this->nonceSecretCode], $this->formProcessName)) {
@@ -343,7 +354,6 @@ class wp_html_editor_syntax {
 		endforeach; 
 		$this->hesh_output_fieldset(); 
 	}
-
 		
 	public function hesh_output_form() {
 		?>
