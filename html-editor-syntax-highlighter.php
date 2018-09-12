@@ -46,7 +46,7 @@ class wp_html_editor_syntax {
 	// Enqueues scripts and styles for hesh.js
 	public function hesh_admin_enqueue_scripts () {
 		
-		// Load only on certin pages
+		// Load only on certain pages
 		if (
 			!strstr($_SERVER['SCRIPT_NAME'], 'post.php') && 
 			!strstr($_SERVER['SCRIPT_NAME'], 'post-new.php') &&
@@ -64,12 +64,19 @@ class wp_html_editor_syntax {
 		// dequeue the native WP code-editor and codemirror
 		if (wp_script_is( 'code-editor', 'enqueued' )) wp_dequeue_script( 'code-editor' );
 		if (wp_style_is( 'code-editor', 'enqueued' )) wp_dequeue_style( 'code-editor' );
-		if (wp_script_is( 'codemirror', 'enqueued' )) wp_dequeue_script( 'codemirror' );
-		if (wp_style_is( 'codemirror', 'enqueued' )) wp_dequeue_style( 'codemirror' );
+
+		// TODO: fix this to use the native codemirror, or load ours on older WPs
+		// dequeing could break other plugins
+		// if (wp_script_is( 'codemirror', 'enqueued' )) wp_dequeue_script( 'codemirror' );
+		// if (wp_style_is( 'codemirror', 'enqueued' )) wp_dequeue_style( 'codemirror' );
+		if (!wp_script_is( 'codemirror', 'enqueued' )) 
+			wp_enqueue_script( 'codemirror', HESH_LIBS.'codemirror.js', false, $ver, true );
+		if (!wp_style_is( 'codemirror', 'enqueued' )) 
+			wp_enqueue_script( 'codemirror', HESH_LIBS.'codemirror.css', false, $ver );
 
 		// enqueue hesh scripts
-		wp_enqueue_script( 'heshjs', HESH_LIBS.'hesh'.$min.'.js', array('jquery', 'editor'), $ver, true );
-		wp_enqueue_style( 'heshcss', HESH_LIBS.'hesh'.$min.'.css', false, $ver );
+		wp_enqueue_script( 'heshjs', HESH_LIBS.'hesh'.$min.'.js', array('jquery', 'editor', 'codemirror'), $ver, true );
+		wp_enqueue_style( 'heshcss', HESH_LIBS.'hesh'.$min.'.css', array('codemirror'), $ver );
 
 		// this shows up in js as window.heshOptions
 		$heshOptions = array(

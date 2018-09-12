@@ -7,6 +7,17 @@ const combineMq = require('gulp-combine-mq')
 const cssnano = require('gulp-cssnano')
 const concat = require('gulp-concat')
 const uglify = require('gulp-uglify')
+const codemirrorPath = './node_modules/codemirror/'
+
+
+const moveCodeMirrorJsCore = () => {
+	return gulp.src(codemirrorPath + 'lib/codemirror.js')
+		.pipe(gulp.dest('./dist'))
+}
+const moveCodeMirrorCssCore = () => {
+	return gulp.src(codemirrorPath + 'lib/codemirror.css')
+		.pipe(gulp.dest('./dist'))
+}
 
 const buildCSS = () => {
     return gulp.src('./src/hesh.dev.less')
@@ -34,12 +45,12 @@ const minifyCSS = () => {
 }
 
 const buildJS = () => {
-    const codemirrorPath = './node_modules/codemirror/'
 
     return gulp.src([
 
         // CodeMirror Core
-        codemirrorPath + 'lib/codemirror.js',
+		// codemirrorPath + 'lib/codemirror.js', 
+		// leaving this out because WP has it natively now...
 
         // Modes
         codemirrorPath + 'mode/xml/xml.js',
@@ -100,8 +111,9 @@ const watch = () => {
     ], build)
 }
 
+const moveCodeMirrorCore = gulp.series(gulp.parallel(moveCodeMirrorJsCore, moveCodeMirrorCssCore))
 const minify = gulp.series(gulp.parallel(minifyCSS, minifyJS))
-const build = gulp.series(gulp.parallel(buildCSS, buildJS), minify)
+const build = gulp.series(gulp.parallel(buildCSS, buildJS), minify, moveCodeMirrorCore)
 
 gulp.task('build', build)
 gulp.task('default', gulp.series(build, watch))
