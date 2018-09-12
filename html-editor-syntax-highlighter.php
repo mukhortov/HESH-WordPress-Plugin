@@ -72,7 +72,7 @@ class wp_html_editor_syntax {
 		if (!wp_script_is( 'codemirror', 'enqueued' )) 
 			wp_enqueue_script( 'codemirror', HESH_LIBS.'codemirror.js', false, $ver, true );
 		if (!wp_style_is( 'codemirror', 'enqueued' )) 
-			wp_enqueue_script( 'codemirror', HESH_LIBS.'codemirror.css', false, $ver );
+			wp_enqueue_style( 'codemirror', HESH_LIBS.'codemirror.css', false, $ver );
 
 		// enqueue hesh scripts
 		wp_enqueue_script( 'heshjs', HESH_LIBS.'hesh'.$min.'.js', array('jquery', 'editor', 'codemirror'), $ver, true );
