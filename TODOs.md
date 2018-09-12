@@ -1,10 +1,7 @@
 # TODOs
-- reply to issues
-	- wp 
-	- github
-- make enhancement issues in github
-- update npm and dependecies
 - fix bad bugs
+	- Allow Multiple Instances of CodeMirror on a page
+	- 
 - user tracking
 	- give opt out checkbox
 - create release automation

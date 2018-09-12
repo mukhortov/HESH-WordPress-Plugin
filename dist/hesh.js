@@ -22486,10 +22486,7 @@ CodeMirror.registerHelper("fold", "indent", function(cm, start) {
 		isThemeOrPlugin: document.getElementById('newcontent') != null,
 
 		isActive: function () {
-			// TODO: this clashed with other implementations of codemirror on the page.
-			// we should look for or make some GUID
-			// or maybe set a boolean in this state?
-			return document.getElementsByClassName('CodeMirror')[0] != null;
+			return editor != null;
 		},
 
 		isVisualActive: function () {
@@ -23122,7 +23119,6 @@ CodeMirror.registerHelper("fold", "indent", function(cm, start) {
 
 		// start up codemirror
 		editor = CodeMirror.fromTextArea(target, options);
-		console.log(editor); // for debug
 		scrollPanel = editor.getWrapperElement().querySelector('.CodeMirror-code');
 		target.classList.add('CodeMirror-mirrored');
 
@@ -23153,7 +23149,7 @@ CodeMirror.registerHelper("fold", "indent", function(cm, start) {
 		if (!state.isActive()) return;
 		setSettingsPanelState('closed');
 		editor.toTextArea();
-		console.log(editor); // for debug		
+		editor = undefined; // unset editor, for state.isActive();
 	}
 
 
