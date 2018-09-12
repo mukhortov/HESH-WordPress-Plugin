@@ -1,13 +1,14 @@
-'use strict';
+const gulp = require('gulp')
+const livereload = require('gulp-livereload')
+const rename = require('gulp-rename')
+const less = require('gulp-less')
+const autoprefixer = require('gulp-autoprefixer')
+const combineMq = require('gulp-combine-mq')
+const cssnano = require('gulp-cssnano')
+const concat = require('gulp-concat')
+const uglify = require('gulp-uglify')
 
-var gulp = require('gulp');
-var livereload = require('gulp-livereload');
-var rename = require('gulp-rename');
-
-var less = require('gulp-less');
-var autoprefixer = require('gulp-autoprefixer');
-var combineMq = require('gulp-combine-mq');
-gulp.task('build:css', function () {
+const buildCSS = () => {
     return gulp.src('./src/hesh.dev.less')
         .pipe(less({
             plugins: [ require('less-plugin-glob') ]
@@ -22,22 +23,19 @@ gulp.task('build:css', function () {
         }))
         .pipe(rename('hesh.css'))
         .pipe(gulp.dest('./dist'))
-        .pipe(livereload());
-});
-var cssnano = require('gulp-cssnano');
-gulp.task('minify:css', function () {
+        .pipe(livereload())
+}
+
+const minifyCSS = () => {
     return gulp.src('./dist/hesh.css')
         .pipe(cssnano())
-        .pipe(rename(function (path) { path.basename += '.min'; }))
-        .pipe(gulp.dest('./dist'));
-});
+        .pipe(rename(path => path.basename += '.min'))
+        .pipe(gulp.dest('./dist'))
+}
 
+const buildJS = () => {
+    const codemirrorPath = './node_modules/codemirror/'
 
-
-var codemirrorPath = './node_modules/codemirror/';
-var concat = require('gulp-concat');
-var uglify = require('gulp-uglify');
-gulp.task('build:js', function () {
     return gulp.src([
 
         // CodeMirror Core
@@ -60,17 +58,17 @@ gulp.task('build:js', function () {
         codemirrorPath + 'addon/dialog/dialog.js',
         codemirrorPath + 'addon/scroll/simplescrollbars.js',
         codemirrorPath + 'addon/comment/comment.js',
-        
+
         codemirrorPath + 'addon/fold/foldcode.js',
         codemirrorPath + 'addon/fold/foldgutter.js',
         codemirrorPath + 'addon/fold/xml-fold.js',
         // codemirrorPath + 'addon/fold/brace-fold.js', // for JS
         // codemirrorPath + 'addon/fold/comment-fold.js',
         codemirrorPath + 'addon/fold/indent-fold.js',
-        
+
         codemirrorPath + 'addon/edit/matchbrackets.js',
         codemirrorPath + 'addon/edit/matchtags.js',
-        codemirrorPath + 'addon/search/match-highlighter.js',  
+        codemirrorPath + 'addon/search/match-highlighter.js',
         codemirrorPath + 'addon/edit/closetag.js',
         codemirrorPath + 'addon/edit/closebrackets.js',
 
@@ -80,30 +78,30 @@ gulp.task('build:js', function () {
 
         // ... and finally ...
         // HESH
-        './src/hesh.dev.js'
+        './src/hesh.dev.js',
     ])
         .pipe(concat('hesh.js'))
         .pipe(gulp.dest('./dist'))
-        .pipe(livereload());
-});
+        .pipe(livereload())
+}
 
-gulp.task('minify:js', function () {
-    return gulp.src(['./dist/hesh.js', './dist/codemirror.js'])
+const minifyJS = () => {
+    return gulp.src('./dist/hesh.js')
         .pipe(uglify())
-        .pipe(rename(function (path) { path.basename += '.min'; }))
-        .pipe(gulp.dest('./dist'));
-});
+        .pipe(rename(path => path.basename += '.min'))
+        .pipe(gulp.dest('./dist'))
+}
 
-gulp.task('watch', function () {
-    livereload.listen();
+const watch = () => {
+    livereload.listen()
     gulp.watch([
         './src/**/*',
-        './*.php'
-    ], ['build']);
-});
+        './*.php',
+    ], build)
+}
 
+const minify = gulp.series(gulp.parallel(minifyCSS, minifyJS))
+const build = gulp.series(gulp.parallel(buildCSS, buildJS), minify)
 
-gulp.task('minify', ['minify:css', 'minify:js']);
-gulp.task('build', ['build:css', 'build:js', 'minify']);
-gulp.task('rebuild', ['clean', 'build']);
-gulp.task('default', ['build', 'watch']);
+gulp.task('build', build)
+gulp.task('default', gulp.series(build, watch))
