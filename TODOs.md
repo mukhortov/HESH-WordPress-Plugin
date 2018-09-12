@@ -4,6 +4,7 @@
 	- 
 - user tracking
 	- give opt out checkbox
+- make default theme `default` for consistency with Wp native CM
 - create release automation
 - support gutenberg
 	- html block
