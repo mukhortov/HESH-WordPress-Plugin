@@ -34,7 +34,7 @@ Don't manually edit the release branch. Only merge master into the release branc
 
 Paste this code in the editor to test out all the different syntax highlighting features.
 
-```
+```HTML
 <div>
 	[shortcode attribute="value" standAloneAttribute bool=true int=42 ]
 		[oneliner noquotes=stringvaluewithnospaces]
@@ -48,22 +48,8 @@ Paste this code in the editor to test out all the different syntax highlighting 
 
 	a really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really long line that should wrap and indent properly
 
-
 <!--more WordPress More Tag Text --><!--noteaser--><!--nextpage-->
 <!--HTML comment--><!--[shortcode]-->
-
-ERRORS!
-[/matchlessEndTag]<div class="right after error"></div>
-[shortcode no_square_brackets='aa[<div here="whatever" adn=" ></div>]aaa']
-[no/special|characters\in*shortcode^names or.attribute`names=error /]
-
-&amp; &#xaA1; &#9; &error
-<?php 
-	// this is meta highlighting
-	[shortcode] 
-	<div class="something"></div>
-	$var = 'value'; 
-?>
 
 <div style=" width:200px; height:400px; ">styled div</div>
 <style>
@@ -87,4 +73,17 @@ ERRORS!
 	document.getElementById('identifier').style.width = 200px;
 	var string = '</script' + '>'; // writing this straght out will break the mix
 </script>
+
+ERRORS!
+[/matchlessEndTag]<div class="right after error"></div>
+[shortcode no_square_brackets='aa[<div here="whatever" adn=" ></div>]aaa']
+[no/special|characters\in*shortcode^names or.attribute`names=error /]
+
+&amp; &#xaA1; &#9; &error
+<?php 
+	// this is meta highlighting
+	[shortcode] 
+	<div class="something"></div>
+	$var = 'value'; 
+?>
 ```

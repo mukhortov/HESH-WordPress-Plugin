@@ -39,6 +39,9 @@
 		isThemeOrPlugin: document.getElementById('newcontent') != null,
 
 		isActive: function () {
+			// TODO: this clashed with other implementations of codemirror on the page.
+			// we should look for or make some GUID
+			// or maybe set a boolean in this state?
 			return document.getElementsByClassName('CodeMirror')[0] != null;
 		},
 
@@ -369,11 +372,11 @@
 
 			case 'foldGutter':
 				editor.setOption('gutters', value ? ['CodeMirror-linenumbers', 'CodeMirror-foldgutter'] : []);
-			// break; // fallthrough expected here
+				// break; // fallthrough expected here
 
 			case 'tabSize':
 				editor.setOption('indentUnit', value); // indentUnit must always equal tabSize
-			// break; // fallthrough expected here
+				// break; // fallthrough expected here
 
 			default:
 				heshOptions[event.target.id] = value;
@@ -672,6 +675,7 @@
 
 		// start up codemirror
 		editor = CodeMirror.fromTextArea(target, options);
+		console.log(editor); // for debug
 		scrollPanel = editor.getWrapperElement().querySelector('.CodeMirror-code');
 		target.classList.add('CodeMirror-mirrored');
 
@@ -702,6 +706,7 @@
 		if (!state.isActive()) return;
 		setSettingsPanelState('closed');
 		editor.toTextArea();
+		console.log(editor); // for debug		
 	}
 
 
@@ -721,6 +726,7 @@
 		}
 	}
 
+	// Start Up the App
 	if (document.readyState !== 'complete') {
 		if (window.addEventListener) window.addEventListener('load', initialise, false);
 		else if (window.attachEvent) window.attachEvent('onload', initialise);

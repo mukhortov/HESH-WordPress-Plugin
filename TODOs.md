@@ -1,18 +1,38 @@
 # TODOs
+- reply to issues
+	- wp 
+	- github
+- make enhancement issues in github
+- update npm and dependecies
+- fix bad bugs
+- user tracking
+	- give opt out checkbox
+- create release automation
+- support gutenberg
+	- html block
+	- shortcode backwards compat
+	- gutenberg block comment + json
+
+- new media
+	- logo
+	- description
+	- screenshots
+	- add to FAQ
+		- about spell-check
+		- search & replace
+		- Reporting Bugs
+- better, fewer themes
+
 - update layout on 1-2 column switch
 - load in visual 2col, switch to text, settings is in wrong place
+- drop jQuery dependency, needed now for form switch
 
 - browser test
-- add to FAQ
-	- about spell-check
-    - search & replace
-    - Reporting Bugs
     
 
 
 ## Testing
-
-
+- test new features
 - browsers
     - Safari - seems ok
     - FireFox (Mac) - seems ok
