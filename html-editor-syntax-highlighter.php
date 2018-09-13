@@ -64,8 +64,8 @@ class wp_html_editor_syntax {
 		// dequeue the native WP code-editor and codemirror
 		if (wp_script_is( 'code-editor', 'enqueued' )) wp_dequeue_script( 'code-editor' );
 		if (wp_style_is( 'code-editor', 'enqueued' )) wp_dequeue_style( 'code-editor' );
-		if (wp_script_is( 'codemirror', 'enqueued' )) wp_dequeue_script( 'codemirror' );
-		if (wp_style_is( 'codemirror', 'enqueued' )) wp_dequeue_style( 'codemirror' );
+		// if (wp_script_is( 'wp-codemirror', 'enqueued' )) wp_dequeue_script( 'wp-codemirror' );
+		// if (wp_style_is( 'wp-codemirror', 'enqueued' )) wp_dequeue_style( 'wp-codemirror' );
 
 		// enqueue hesh scripts
 		wp_enqueue_script( 'heshjs', HESH_LIBS.'hesh'.$min.'.js', array('jquery', 'editor'), $ver, true );
