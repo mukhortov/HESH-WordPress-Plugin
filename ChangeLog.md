@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.2.4
+* fixed bug: Allow Multiple Instances of CodeMirror on a page #71
+* fixed bug: js error when custom post type does not support 'editor' feature #62
+
+## 2.2.3
+* A patch for WP 4.9. No more double editors in theme/plugin editors.
+
 ## 2.2.2
 * fixed bug: github updater in production issue #52
 * updated Codemirror to latest release version

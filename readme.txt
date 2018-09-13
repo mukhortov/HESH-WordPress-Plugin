@@ -3,8 +3,8 @@ Contributors: nixdns, arniebradfo, rraub, collinprice
 Donate link: https://www.paypal.me/mukhortov/5
 Tags: syntax highlighter, codemirror, text editor, code highlighter, code coloring, editor, html editor, theme editor, plugin editor, syntax, highlighting, highlighter, syntax highlighting, codemirror.js, code,
 Requires at least: 4.0.15
-Tested up to: 4.9.1
-Stable tag: 2.2.3
+Tested up to: 4.9.8
+Stable tag: 2.2.4
 License: GPL-2.0
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -40,6 +40,13 @@ The fullscreen button on the top right of the editor will do one of two things d
 Yes! Seach with `Ctrl+F` (`Cmd+F` on Mac). Replace with `Ctrl+alt+F` (`Cmd+alt+F` on Mac).
 
 == Changelog ==
+
+= 2.2.4 =
+* fixed bug: Allow Multiple Instances of CodeMirror on a page #71
+* fixed bug: js error when custom post type does not support 'editor' feature #62
+
+= 2.2.3 =
+* A patch for WP 4.9. No more double editors in theme/plugin editors.
 
 = 2.2.2 =
 * fixed bug: github updater in production issue #52

@@ -1,6 +1,4 @@
 # TODOs
-- fix bad bugs
-	- 
 - create release automation, or at least document process, checklist?
 - support gutenberg
 	- html block
