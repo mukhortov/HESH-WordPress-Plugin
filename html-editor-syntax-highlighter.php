@@ -65,7 +65,10 @@ class wp_html_editor_syntax {
 		if (wp_script_is( 'code-editor', 'enqueued' )) wp_dequeue_script( 'code-editor' );
 		if (wp_style_is( 'code-editor', 'enqueued' )) wp_dequeue_style( 'code-editor' );
 
-		// enqueue codemirror core if it is not already included
+		// TODO: fix this to use the native codemirror, or load ours on older WPs
+		// dequeing could break other plugins
+		// if (wp_script_is( 'codemirror', 'enqueued' )) wp_dequeue_script( 'codemirror' );
+		// if (wp_style_is( 'codemirror', 'enqueued' )) wp_dequeue_style( 'codemirror' );
 		if (!wp_script_is( 'codemirror', 'enqueued' )) 
 			wp_enqueue_script( 'codemirror', HESH_LIBS.'codemirror.js', false, $ver, true );
 		if (!wp_style_is( 'codemirror', 'enqueued' )) 
