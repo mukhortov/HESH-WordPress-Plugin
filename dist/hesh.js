@@ -23063,7 +23063,7 @@ CodeMirror.registerHelper("fold", "indent", function(cm, start) {
 		var windowScrollPosition = { top: window.pageYOffset, left: window.pageXOffset }
 
 		// update codemirror with the new textarea.value
-		editor.doc.setValue(editor.getTextArea().value);
+		editor.doc.setValue(editor.getTextArea().value);f
 		editor.focus();
 
 		var startLine = 0, endLine = 0, currentLine = 0;
@@ -23111,6 +23111,7 @@ CodeMirror.registerHelper("fold", "indent", function(cm, start) {
 
 	function startEditor() {
 		if (state.isActive()) return;
+		if (target == null) return; // there is no textarea
 
 		updateOptions();
 

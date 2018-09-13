@@ -1,11 +1,7 @@
 # TODOs
 - fix bad bugs
-	- Allow Multiple Instances of CodeMirror on a page
 	- 
-- user tracking
-	- give opt out checkbox
-- make default theme `default` for consistency with Wp native CM
-- create release automation
+- create release automation, or at least document process, checklist?
 - support gutenberg
 	- html block
 	- shortcode backwards compat
@@ -24,6 +20,8 @@
 - update layout on 1-2 column switch
 - load in visual 2col, switch to text, settings is in wrong place
 - drop jQuery dependency, needed now for form switch
+- user tracking?
+	- give opt out checkbox?
 
 - browser test
     
