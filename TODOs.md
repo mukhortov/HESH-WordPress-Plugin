@@ -1,8 +1,15 @@
 # TODOs
 - support gutenberg
-	- html block
-	- shortcode backwards compat
-	- gutenberg block comment + json
+	- gutenberg Code Editor with just the current formater
+		- listen for switch to start up, button click or key code: `⇧⌥⌘M`
+		- startup simple version without exceptions to add content with buttons - similar to
+	- gutenberg block-comment+json xml-like
+	- [gutenberg HTML comment syntax](https://wordpress.org/gutenberg/handbook/language/#the-anatomy-of-a-serialized-block)
+	- make an example post with all blocks
+	- shortcode backwards compat: shortcode block w/ highlighting
+	- html block already works
+	- 
+
 - fewer but better themes
 - beautify dist css and js that are uncompressed?
 

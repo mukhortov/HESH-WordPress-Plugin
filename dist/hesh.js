@@ -22464,8 +22464,7 @@ CodeMirror.registerHelper("fold", "indent", function(cm, start) {
 	heshOptions
 ) {
 	'use strict';
-
-
+	console.log('HESH Running');
 
 	// ELEMENTS //
 	var editor;
@@ -22474,7 +22473,10 @@ CodeMirror.registerHelper("fold", "indent", function(cm, start) {
 	var dialogPanel;
 	var theForm = document.getElementById('CodeMirror-settings__form');
 	var toolbar = document.getElementById('ed_toolbar');
-	var target = document.getElementById('content') || document.getElementById('newcontent');
+	var target = 
+		document.getElementById('content') || 
+		document.getElementById('newcontent');
+		// || document.getElementsByClassName('editor-post-text-editor')[0]; // only in Code Editor mode?
 	var tabText = document.getElementById('content-html');
 	var tabVisual = document.getElementById('content-tmce');
 	var publishButton = document.getElementById('save-post') || document.getElementById('publish');
@@ -22483,7 +22485,8 @@ CodeMirror.registerHelper("fold", "indent", function(cm, start) {
 
 	var state = {
 		isVisualEnabled: document.getElementById('content-tmce') != null,
-		isThemeOrPlugin: document.getElementById('newcontent') != null,
+		isThemeOrPlugin: document.getElementById('newcontent') != null, 
+		isGutenberg: document.getElementsByClassName('gutenberg')[0] != null, 
 
 		isActive: function () {
 			return editor != null;
@@ -23111,7 +23114,10 @@ CodeMirror.registerHelper("fold", "indent", function(cm, start) {
 
 	function startEditor() {
 		if (state.isActive()) return;
+		if (state.isGutenberg)
+			target = document.getElementsByClassName('editor-post-text-editor')[0];
 		if (target == null) return; // there is no textarea
+		
 
 		updateOptions();
 
@@ -23156,6 +23162,8 @@ CodeMirror.registerHelper("fold", "indent", function(cm, start) {
 
 
 	function initialise() {
+		console.log(state.isGutenberg);
+		
 		if (state.isThemeOrPlugin) {
 			startEditor();
 		} else if (state.isVisualEnabled) {
