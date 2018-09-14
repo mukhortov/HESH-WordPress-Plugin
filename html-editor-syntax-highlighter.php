@@ -2,7 +2,7 @@
 
 
 /**
- * @since              2.2.3
+ * @since              2.2.4
  * @package            HESH_plugin
  *
  * Plugin Name:        HTML Editor Syntax Highlighter
@@ -17,10 +17,10 @@
  * License URI:        http://www.gnu.org/licenses/gpl-2.0.txt
  * GitHub Branch:      master
  * GitHub Plugin URI:  https://github.com/mukhortov/HESH-WordPress-Plugin
- * Version:            2.2.3
+ * Version:            2.2.4
  * Requires at least:  4.0.15
- * Tested up to:       4.9.1
- * Stable tag:         2.2.3
+ * Tested up to:       4.9.8
+ * Stable tag:         2.2.4
 **/
 
 // Check for required PHP version
@@ -64,8 +64,8 @@ class wp_html_editor_syntax {
 		// dequeue the native WP code-editor and codemirror
 		if (wp_script_is( 'code-editor', 'enqueued' )) wp_dequeue_script( 'code-editor' );
 		if (wp_style_is( 'code-editor', 'enqueued' )) wp_dequeue_style( 'code-editor' );
-		if (wp_script_is( 'codemirror', 'enqueued' )) wp_dequeue_script( 'codemirror' );
-		if (wp_style_is( 'codemirror', 'enqueued' )) wp_dequeue_style( 'codemirror' );
+		// if (wp_script_is( 'wp-codemirror', 'enqueued' )) wp_dequeue_script( 'wp-codemirror' );
+		// if (wp_style_is( 'wp-codemirror', 'enqueued' )) wp_dequeue_style( 'wp-codemirror' );
 
 		// enqueue hesh scripts
 		wp_enqueue_script( 'heshjs', HESH_LIBS.'hesh'.$min.'.js', array('jquery', 'editor'), $ver, true );
