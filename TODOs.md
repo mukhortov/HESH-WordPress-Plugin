@@ -1,9 +1,10 @@
 # TODOs
-- create release automation, or at least document process, checklist?
 - support gutenberg
 	- html block
 	- shortcode backwards compat
 	- gutenberg block comment + json
+- fewer but better themes
+- beautify dist css and js that are uncompressed?
 
 - new media
 	- logo
@@ -13,18 +14,16 @@
 		- about spell-check
 		- search & replace
 		- Reporting Bugs
-- better, fewer themes
 
+## Later...
 - update layout on 1-2 column switch
 - load in visual 2col, switch to text, settings is in wrong place
 - drop jQuery dependency, needed now for form switch
+- create release automation
 - user tracking?
 	- give opt out checkbox?
 
-- browser test
     
-
-
 ## Testing
 - test new features
 - browsers
@@ -37,7 +36,7 @@
     - IE 11 - Support dropped. Don't test
  
 
-## Links
+## Useful Links
 - process user settings
 	- [working with user metadata](https://developer.wordpress.org/plugins/users/working-with-user-metadata/)
 	- [update_user_meta()](https://codex.wordpress.org/Function_Reference/update_user_meta)
