@@ -23139,6 +23139,8 @@ CodeMirror.registerHelper("fold", "indent", function(cm, start) {
 		if (state.isThemeOrPlugin) {
 			attachDragResizeThemeOrPlugin();
 			publishButton = document.getElementById('submit');
+		} else if (state.isGutenberg) {
+			// 
 		} else {
 			toolbar.addEventListener('mousedown', giveFocusToTextArea);
 			// document.getElementById('insert-media-button').addEventListener('mousedown', giveFocusToTextArea);
@@ -23165,6 +23167,8 @@ CodeMirror.registerHelper("fold", "indent", function(cm, start) {
 		console.log(state.isGutenberg);
 		
 		if (state.isThemeOrPlugin) {
+			startEditor();
+		} else if (state.isGutenberg) {
 			startEditor();
 		} else if (state.isVisualEnabled) {
 			tabText.addEventListener('click', function () {
