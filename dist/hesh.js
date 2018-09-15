@@ -22464,7 +22464,7 @@ CodeMirror.registerHelper("fold", "indent", function(cm, start) {
 	heshOptions
 ) {
 	'use strict';
-	console.log('HESH Running');
+
 
 	// ELEMENTS //
 	var editor;
@@ -22478,15 +22478,14 @@ CodeMirror.registerHelper("fold", "indent", function(cm, start) {
 		document.getElementById('newcontent');
 		// || document.getElementsByClassName('editor-post-text-editor')[0]; // only in Code Editor mode?
 	var tabText = document.getElementById('content-html');
-	var tabVisual = document.getElementById('content-tmce');
-	var publishButton = document.getElementById('save-post') || document.getElementById('publish');
+	var tabVisual = document.getElementById('content-tmce');	
 	var postID = document.getElementById('post_ID') != null ? document.getElementById('post_ID').value : 0;
 	var fullHeightToggle = document.getElementById('editor-expand-toggle');
 
 	var state = {
 		isVisualEnabled: document.getElementById('content-tmce') != null,
 		isThemeOrPlugin: document.getElementById('newcontent') != null, 
-		isGutenberg: document.getElementsByClassName('gutenberg')[0] != null, 
+		isGutenberg: document.getElementsByClassName('gutenberg-editor-page')[0] != null, 
 
 		isActive: function () {
 			return editor != null;
@@ -22541,10 +22540,10 @@ CodeMirror.registerHelper("fold", "indent", function(cm, start) {
 				toggleFullscreen(true);
 			},
 			'Ctrl-S': function () {
-				publishButton.click();
+				savePostOrDraft();
 			},
 			'Cmd-S': function () {
-				publishButton.click();
+				savePostOrDraft();
 			},
 		},
 	};
@@ -22569,6 +22568,18 @@ CodeMirror.registerHelper("fold", "indent", function(cm, start) {
 	}
 
 
+	function savePostOrDraft() {
+		// TODO: doesn't work in gutenberg for some reason????
+		console.log('save HESH');
+		
+		var publishButton = 
+			document.getElementById('save-post') || 
+			document.getElementById('publish') ||
+			document.getElementById('submit'); // ||
+			// document.getElementById('editor-post-save-draft') ||
+			// document.getElementById('editor-post-publish-button');
+		publishButton.click();
+	}
 
 	function throttleAnimationFrame(callback) {
 		var wait = false;
@@ -23116,8 +23127,7 @@ CodeMirror.registerHelper("fold", "indent", function(cm, start) {
 		if (state.isActive()) return;
 		if (state.isGutenberg)
 			target = document.getElementsByClassName('editor-post-text-editor')[0];
-		if (target == null) return; // there is no textarea
-		
+		if (target == null) return; // there is no textarea		
 
 		updateOptions();
 
@@ -23138,9 +23148,8 @@ CodeMirror.registerHelper("fold", "indent", function(cm, start) {
 
 		if (state.isThemeOrPlugin) {
 			attachDragResizeThemeOrPlugin();
-			publishButton = document.getElementById('submit');
 		} else if (state.isGutenberg) {
-			// 
+			attachDragResizeThemeOrPlugin();
 		} else {
 			toolbar.addEventListener('mousedown', giveFocusToTextArea);
 			// document.getElementById('insert-media-button').addEventListener('mousedown', giveFocusToTextArea);
@@ -23163,19 +23172,19 @@ CodeMirror.registerHelper("fold", "indent", function(cm, start) {
 
 
 
-	function initialise() {
-		console.log(state.isGutenberg);
-		
+	function initialise() {		
 		if (state.isThemeOrPlugin) {
 			startEditor();
 		} else if (state.isGutenberg) {
 			startEditor();
+
 		} else if (state.isVisualEnabled) {
 			tabText.addEventListener('click', function () {
 				window.setTimeout(startEditor, 0);
 			});
 			tabVisual.addEventListener('click', stopEditor);
-			if (!state.isVisualActive()) startEditor();
+			if (!state.isVisualActive()) 
+				startEditor();
 		} else {
 			startEditor();
 			document.body.className += ' visual-editor-is-disabled';
