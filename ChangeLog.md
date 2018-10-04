@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.2.5
+* fixed bug: #75 removing `f` typo
+
 ## 2.2.4
 * fixed bug: Allow Multiple Instances of CodeMirror on a page #71
 * fixed bug: js error when custom post type does not support 'editor' feature #62

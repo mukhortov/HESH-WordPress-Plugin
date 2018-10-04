@@ -4,7 +4,7 @@
  * @link     http://arniebradfo.com/
  * @author   Petr Mukhortov
  * @link     http://mukhortov.com/
- * @since    2.2.4
+ * @since    2.2.5
 */
 
 // console.log(window.heshOptions); // from wordpress php
@@ -616,7 +616,7 @@
 		var windowScrollPosition = { top: window.pageYOffset, left: window.pageXOffset }
 
 		// update codemirror with the new textarea.value
-		editor.doc.setValue(editor.getTextArea().value);f
+		editor.doc.setValue(editor.getTextArea().value);
 		editor.focus();
 
 		var startLine = 0, endLine = 0, currentLine = 0;
