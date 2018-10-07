@@ -38,6 +38,7 @@ Don't manually edit the `release` branch. Only merge `master` into the `release`
 - Commit with the version number in the commit note: `updating to vX.X.X`.
 - Switch to the `release` branch.
 - Merge `master` into `release` with `git merge master`. Use `git mergetool` to delete (`d`) _"modified"_ files that the `release` does not need.
+- Commit the merge. note: `merge with master at vX.X.X`.
 - Push everything to github.
 - Test it one final time.
 - Create a new github relese at [Code > Releases > Draft New](https://github.com/mukhortov/HESH-WordPress-Plugin/releases/new): `vX.X.X @ Target:release`, Add relevant release notes from `ChangeLog.md`.
