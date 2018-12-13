@@ -3,16 +3,16 @@ Contributors: nixdns, arniebradfo, rraub, collinprice
 Donate link: https://www.paypal.me/mukhortov/5
 Tags: syntax highlighter, codemirror, text editor, code highlighter, code coloring, editor, html editor, theme editor, plugin editor, syntax, highlighting, highlighter, syntax highlighting, codemirror.js, code,
 Requires at least: 4.0.15
-Tested up to: 4.9.8
-Stable tag: 2.2.5
+Tested up to: 5.0.1
+Stable tag: 2.2.6
 License: GPL-2.0
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Add syntax highlighting to the all WordPress code editors using Codemirror.js
+Add syntax highlighting to the classic WordPress code editors using Codemirror.js
 
 == Description ==
 
-Add syntax highlighting in the WordPress Post & Page HTML text editor and the Theme & Plugin editors using Codemirror.js
+Add syntax highlighting in the Classic Post & Page HTML text editor and the Theme & Plugin editors using Codemirror.js (Gutenberg unsupported)
 
 = Features =
 
@@ -28,6 +28,9 @@ If you would like to contribute to this plugin, view the [github repo](https://g
 
 == Frequently Asked Questions ==
 
+= Does it work with Gutenberg? =
+No. 😞 [Maybe in the future?](https://github.com/mukhortov/HESH-WordPress-Plugin/issues/72) Since WordPress version 5.0, you'll have to download the [Classic Editor plugin](https://wordpress.org/plugins/classic-editor/) for this plugin to work.
+
 = Does it work with Internet Explorer? =
 Not really... It is partially supported in IE 11. Known bugs are tracked [here](https://github.com/mukhortov/HESH-WordPress-Plugin/issues/41), but won't be fixed. Anything less that IE 10 isn't even supported by Microsoft anymore. If you are using Internet Explorer you should get a [better browser](https://www.mozilla.org/en-US/firefox/new/).
 
@@ -37,9 +40,12 @@ The fullscreen button on the top right of the editor will do one of two things d
 * Off: Toggles the "fullscreen mode".
 
 = Can I search? =
-Yes! Seach with `Ctrl+F` (`Cmd+F` on Mac). Replace with `Ctrl+alt+F` (`Cmd+alt+F` on Mac).
+Yes! Search with `Ctrl+F` (`Cmd+F` on Mac). Replace with `Ctrl+alt+F` (`Cmd+alt+F` on Mac).
 
 == Changelog ==
+
+= 2.2.6 =
+* added Gutenberg information after the update to WordPress version 5.0
 
 = 2.2.5 =
 * fixed bug: #75 removing `f` typo
@@ -60,7 +66,7 @@ Yes! Seach with `Ctrl+F` (`Cmd+F` on Mac). Replace with `Ctrl+alt+F` (`Cmd+alt+F
 
 = 2.2.0 = 
 * added search & replace with dialog
-* added highlighing options
+* added highlighting options
 * added auto-close tags and brackets option
 * added code-folding option
 * added scrollbars option
@@ -104,7 +110,7 @@ Yes! Seach with `Ctrl+F` (`Cmd+F` on Mac). Replace with `Ctrl+alt+F` (`Cmd+alt+F
 * Ctrl-S / Cmd-S saving will now select "Save Draft" if the post has not been published yet
 * Switched to an [npm](https://www.npmjs.com/) and [grunt.js](http://gruntjs.com/) based build so new versions of CodeMirror can be applied easier
 * Updated CodeMirror to its latest version
-* Fixed FireFox bug: `<select>` dropdown would not display due to `::active` state `transform` property
+* Fixed FireFox bug: `<select>` drop-down would not display due to `::active` state `transform` property
 * Fixed bug: toolbar covering text at small screen width
 * Fixed bug: `switchEditors is undefined`
 * Updated Css for wp 4.5
