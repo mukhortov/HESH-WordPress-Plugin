@@ -19,7 +19,7 @@
 
 ## 2.2.0
 * added search & replace with dialog
-* added highlighing options
+* added highlighting options
 * added auto-close tags and brackets option
 * added code-folding option
 * added scrollbars option
@@ -47,7 +47,7 @@
 	* Behavior with full _'Enable full-height editor and distraction-free functionality' __disabled__:
 		* The fullscreen button puts the editor into the traditional fullscreen mode.
 		* The editor has a '_content resize handle_' in the bottom right. Dragging this will resize the editor's height with a min-height of 70px.
-		* The editor content vertically scrolls within the resizable height.
+		* The editor content vertically scrolls within the resize height.
 * Syntax highlighting on Theme and Plugin Editor pages.
 	* Dynamically picks the right file type for highlighting.
 * Fixed bug: native wp editor buttons work on content. No longer overwrites with emulating buttons
