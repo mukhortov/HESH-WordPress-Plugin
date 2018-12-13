@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.2.6
+* added Gutenberg information after the update to WordPress version 5.0
+
 ## 2.2.5
 * fixed bug: #75 removing `f` typo
 
