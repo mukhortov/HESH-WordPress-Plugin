@@ -18,6 +18,7 @@
 ) {
 	'use strict';
 
+	wp.data.subscribe(function(){console.log('data change')});
 
 	// ELEMENTS //
 	var editor;
@@ -38,7 +39,8 @@
 	var state = {
 		isVisualEnabled: document.getElementById('content-tmce') != null,
 		isThemeOrPlugin: document.getElementById('newcontent') != null, 
-		isGutenberg: document.getElementsByClassName('gutenberg-editor-page')[0] != null, 
+		isGutenberg: wp.data != null, // how good is this?
+		// isClassicEditor: document.getElementById('???') != null, // TODO: this
 
 		isActive: function () {
 			return editor != null;
@@ -46,6 +48,10 @@
 
 		isVisualActive: function () {
 			return document.getElementsByClassName('tmce-active')[0] != null;
+		},
+
+		isGutenbergVisualActive: function () {
+			return wp.data.select( 'core/edit-post' ).getEditorMode() === 'visual';
 		},
 
 		isFullHeight: function () {
@@ -725,12 +731,16 @@
 
 
 
-	function initialise() {		
+	function initialize() {		
+		console.log(state);
+		console.log(wp.data);
+		
 		if (state.isThemeOrPlugin) {
 			startEditor();
 		} else if (state.isGutenberg) {
 			startEditor();
-
+			console.log('is gutenberg');
+			
 		} else if (state.isVisualEnabled) {
 			tabText.addEventListener('click', function () {
 				window.setTimeout(startEditor, 0);
@@ -746,10 +756,10 @@
 
 	// Start Up the App
 	if (document.readyState !== 'complete') {
-		if (window.addEventListener) window.addEventListener('load', initialise, false);
-		else if (window.attachEvent) window.attachEvent('onload', initialise);
+		if (window.addEventListener) window.addEventListener('load', initialize, false);
+		else if (window.attachEvent) window.attachEvent('onload', initialize);
 	} else {
-		initialise();
+		initialize();
 	}
 
 

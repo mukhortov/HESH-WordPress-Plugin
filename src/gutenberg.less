@@ -1,17 +1,30 @@
-body.gutenberg-editor-page{
-
-	div.editor-post-title__block, 
-	div.editor-default-block-appender, 
-	div.editor-block-list__block {
-		max-width: initial;
+body.wp-admin{ // for specificity
+// @media (min-width: 1px) { // not quite !important, but close...
+	
+	// div.editor-post-title__block, 
+	// div.editor-default-block-appender, 
+	div.editor-post-title__block,
+	div.edit-post-text-editor
+	{
+		max-width: initial ;
 	}
-
+	
 	.edit-post-text-editor{
 		padding: 0;
+		
+		.edit-post-text-editor__toolbar{
+			position: static;
+			padding: 8px;
+			padding-left: 16px;
+			height: auto;
+		}
+		.edit-post-text-editor__body{
+			padding: 0;
+		}
+		
+		.editor-post-title__block textarea{
+			margin: 0;
+		}
 	}
-
-	.edit-post-text-editor .editor-post-title__block textarea{
-		margin: 0;
-	}
-
+	
 }
