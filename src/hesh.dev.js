@@ -19,6 +19,7 @@
 	'use strict';
 
 	wp.data.subscribe(function(){console.log('data change')});
+	// https://github.com/WordPress/gutenberg/issues/4674#issuecomment-404587928
 
 	// ELEMENTS //
 	var editor;
@@ -39,7 +40,6 @@
 	var state = {
 		isVisualEnabled: document.getElementById('content-tmce') != null,
 		isThemeOrPlugin: document.getElementById('newcontent') != null, 
-		isGutenberg: wp.data != null, // how good is this?
 		// isClassicEditor: document.getElementById('???') != null, // TODO: this
 
 		isActive: function () {
@@ -50,6 +50,8 @@
 			return document.getElementsByClassName('tmce-active')[0] != null;
 		},
 
+		// GUTENBERG
+		isGutenberg: wp.data != null, // how good is this?
 		isGutenbergVisualActive: function () {
 			return wp.data.select( 'core/edit-post' ).getEditorMode() === 'visual';
 		},
@@ -300,7 +302,7 @@
 
 
 
-	// initalize the settings panel
+	// initialize the settings panel
 	function attachSettings() {
 		// move the settingsPanel (produced in php) to inside the codemirror instance
 		editor.getWrapperElement().appendChild(settingsPanel);
@@ -594,7 +596,7 @@
 
 
 
-	// cursor & selection pairity between codemirror and the textarea
+	// cursor & selection parity between codemirror and the textarea
 	function giveFocusToTextArea() {
 		var selection = editor.doc.listSelections()[0];
 		var head, anchor, i;
@@ -686,7 +688,7 @@
 		if (state.isActive()) return;
 		if (state.isGutenberg)
 			target = document.getElementsByClassName('editor-post-text-editor')[0];
-		if (target == null) return; // there is no textarea		
+		if (target == null) return; // there is no textarea				
 
 		updateOptions();
 
@@ -699,7 +701,25 @@
 		target.classList.add('CodeMirror-mirrored');
 
 		// Save save all changes to the textarea.value
-		editor.on('change', function () { editor.save(); });
+		editor.on('change', function () { 
+			// editor.getTextArea().focus();
+			// window.setTimeout(function(){
+				editor.save(); 
+			// },10);
+			console.log(Object.keys(editor.getTextArea()).find(
+				function(prop) { return prop.startsWith("__reactEventHandlers"); }
+			  ));
+			var reactEventHandlers = Object.keys(editor.getTextArea()).find(
+				function(prop) { return prop.startsWith("__reactEventHandlers"); }
+			  )
+			  
+			var spoofEvent = {currentTarget:{value: editor.getTextArea().value}};
+			console.log(spoofEvent);
+			console.dir(editor.getTextArea()[reactEventHandlers]);
+			console.dir(editor.getTextArea()[reactEventHandlers].onChange(spoofEvent));
+			
+			// editor.getTextArea().dispatchEvent(new Event('change', { 'bubbles': true }));
+		});
 
 		restoreSelectionState();
 		editor.on('cursorActivity', throttledRecordSelectionState);
