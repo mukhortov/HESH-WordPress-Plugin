@@ -21,7 +21,7 @@ Please report any issues or suggestions.
 ### Building
 1. Clone the repo.
 2. Install [node.js](https://nodejs.org/) if you haven't already.
-3. Install the [gulp](http://gulpjs.com/) CLI globally if you havent already with `npm install -g gulp-cli`.
+3. Install the [gulp](http://gulpjs.com/) CLI globally if you haven't already with `npm install -g gulp-cli`.
 4. Run `npm install` on the project folder.
 5. Run `gulp build` to build the project.
 
@@ -38,9 +38,10 @@ Don't manually edit the `release` branch. Only merge `master` into the `release`
 - Commit with the version number in the commit note: `updating to vX.X.X`.
 - Switch to the `release` branch.
 - Merge `master` into `release` with `git merge master`. Use `git mergetool` to delete (`d`) _"modified"_ files that the `release` does not need.
+- Commit the merge. note: `merge with master at vX.X.X`.
 - Push everything to github.
 - Test it one final time.
-- Create a new github relese at [Code > Releases > Draft New](https://github.com/mukhortov/HESH-WordPress-Plugin/releases/new): `vX.X.X @ Target:release`, Add relevant release notes from `ChangeLog.md`.
+- Create a new github release at [Code > Releases > Draft New](https://github.com/mukhortov/HESH-WordPress-Plugin/releases/new): `vX.X.X @ Target:release`, Add relevant release notes from `ChangeLog.md`.
 - Close the github issues related to the release with a comment linking to the release page: _Fixed in [vX.X.X](https://github.com/mukhortov/HESH-WordPress-Plugin/releases/tag/vX.X.X)!_
 - [Publish to the WP Plugin Repo through SVN](https://developer.wordpress.org/plugins/wordpress-org/how-to-use-subversion/#editing-existing-files):
 	- Copy and paste the new version files from the git repo to the SVN repo `/trunk` (TODO: better way?).
@@ -93,7 +94,7 @@ Paste this code in the editor to test out all the different syntax highlighting 
 		array: ['valueone', 'valuetwo'] // square brackets in javascript block
 	};
 	document.getElementById('identifier').style.width = 200px;
-	var string = '</script' + '>'; // writing this straght out will break the mix
+	var string = '</script' + '>'; // writing this straight out will break the mix
 </script>
 
 ERRORS!
