@@ -38,7 +38,10 @@
     - Chrome (Win10) - seems ok
     - Edge - seems ok
     - IE 11 - Support dropped. Don't test
- 
+
+## CD from wordpress
+`cd wp-content/plugins/HESH-WordPress-Plugin/`
+
 
 ## Useful Links
 - process user settings
