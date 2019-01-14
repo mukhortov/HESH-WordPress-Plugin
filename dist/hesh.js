@@ -23300,26 +23300,6 @@ CodeMirror.registerHelper("fold", "indent", function(cm, start) {
 		editor.on('change', function () { 
 			editor.save(); 
 			wp.data.dispatch( 'core/editor' ).resetBlocks(wp.blocks.parse(editor.getTextArea().value))
-
-			// wp.data.dispatch('core/editor').refreshPost();
-
-			// editor.getTextArea().focus();
-			// window.setTimeout(function(){
-				editor.save(); 
-			// },10);
-			// console.log(Object.keys(editor.getTextArea()).find(
-			// 	function(prop) { return prop.startsWith("__reactEventHandlers"); }
-			//   ));
-			// var reactEventHandlers = Object.keys(editor.getTextArea()).find(
-			// 	function(prop) { return prop.startsWith("__reactEventHandlers"); }
-			//   )
-			  
-			// var spoofEvent = {currentTarget:{value: editor.getTextArea().value}};
-			// console.log(spoofEvent);
-			// console.dir(editor.getTextArea()[reactEventHandlers]);
-			// console.dir(editor.getTextArea()[reactEventHandlers].onChange(spoofEvent));
-			
-			// editor.getTextArea().dispatchEvent(new Event('change', { 'bubbles': true }));
 		});
 
 		restoreSelectionState();
