@@ -22614,9 +22614,6 @@ CodeMirror.registerHelper("fold", "indent", function(cm, start) {
 ) {
 	'use strict';
 
-	wp.data.subscribe(function(){console.log('data change')});
-	// https://github.com/WordPress/gutenberg/issues/4674#issuecomment-404587928
-
 	// ELEMENTS //
 	var editor;
 	var scrollPanel;
@@ -23088,9 +23085,9 @@ CodeMirror.registerHelper("fold", "indent", function(cm, start) {
 	}
 
 	// attaches a dragger to the bottom right of the theme/plugin editor to control editor height
-	function attachDragResizeThemeOrPlugin() {
-		var editorHeight = 500;
-		var minEditorHieght = 200;
+	function attachDragResizeThemeOrPlugin(editorHeight, minEditorHeight) {
+		// var editorHeight = 500;
+		// var minEditorHeight = 200;
 		editor.getWrapperElement().style.height = editorHeight + 'px';
 		var resizeHandle = document.createElement('div');
 		resizeHandle.className = 'hesh-content-resize-handle';
@@ -23101,7 +23098,7 @@ CodeMirror.registerHelper("fold", "indent", function(cm, start) {
 		var newHeight = editorHeight;
 		function changeCodemirrorHeight(event) {
 			newHeight = editorHeight + (event.pageY - yStartPosition);
-			editor.getWrapperElement().style.height = Math.max(minEditorHieght, newHeight) + 'px';
+			editor.getWrapperElement().style.height = Math.max(minEditorHeight, newHeight) + 'px';
 		}
 		document.getElementById('content-resize-handle').addEventListener('mousedown', function (event) {
 			yStartPosition = event.pageY;
@@ -23111,7 +23108,7 @@ CodeMirror.registerHelper("fold", "indent", function(cm, start) {
 		});
 		document.addEventListener('mouseup', function () {
 			isDragging = false;
-			editorHeight = Math.max(minEditorHieght, newHeight);
+			editorHeight = Math.max(minEditorHeight, newHeight);
 			document.removeEventListener('mousemove', changeCodemirrorHeight);
 			editor.refresh();
 		});
@@ -23297,19 +23294,28 @@ CodeMirror.registerHelper("fold", "indent", function(cm, start) {
 		target.classList.add('CodeMirror-mirrored');
 
 		// Save save all changes to the textarea.value
-		editor.on('change', function () { 
-			editor.save(); 
-			wp.data.dispatch( 'core/editor' ).resetBlocks(wp.blocks.parse(editor.getTextArea().value))
-		});
+		if (state.isGutenberg)
+			editor.on('blur', function () {
+				console.log('onblur');
+				
+				editor.save();
+				wp.data
+					.dispatch( 'core/editor' )
+					.resetBlocks(
+						wp.blocks.parse( editor.getTextArea().value )
+					);
+			});
+		else 
+			editor.on('change', function () { editor.save(); });
 
 		restoreSelectionState();
 		editor.on('cursorActivity', throttledRecordSelectionState);
 		editor.on('scroll', throttledRecordSelectionState);
 
 		if (state.isThemeOrPlugin) {
-			attachDragResizeThemeOrPlugin();
+			attachDragResizeThemeOrPlugin(500,200);
 		} else if (state.isGutenberg) {
-			attachDragResizeThemeOrPlugin();
+			attachDragResizeThemeOrPlugin(500,200);
 		} else {
 			toolbar.addEventListener('mousedown', giveFocusToTextArea);
 			// document.getElementById('insert-media-button').addEventListener('mousedown', giveFocusToTextArea);
@@ -23338,20 +23344,46 @@ CodeMirror.registerHelper("fold", "indent", function(cm, start) {
 		
 		if (state.isThemeOrPlugin) {
 			startEditor();
+
 		} else if (state.isGutenberg) {
-			startEditor();
 			console.log('is gutenberg');
+
+			var gutenbergVisualActive = state.isGutenbergVisualActive()
+			wp.data.subscribe( function () {
+				// https://github.com/WordPress/gutenberg/issues/4674#issuecomment-404587928
+				if (state.isGutenbergVisualActive() === gutenbergVisualActive) return;
+				
+				gutenbergVisualActive = state.isGutenbergVisualActive()
+				
+				if (gutenbergVisualActive) {
+					console.log('mode change to Visual')
+					stopEditor();
+				} else {
+					window.setTimeout(function () {
+						console.log('mode change to Code')
+						startEditor();
+					},0);
+				}
+
+			});
+
+			if (!gutenbergVisualActive)
+				startEditor();
 			
 		} else if (state.isVisualEnabled) {
+
 			tabText.addEventListener('click', function () {
 				window.setTimeout(startEditor, 0);
 			});
 			tabVisual.addEventListener('click', stopEditor);
 			if (!state.isVisualActive()) 
 				startEditor();
+
 		} else {
+
 			startEditor();
 			document.body.className += ' visual-editor-is-disabled';
+
 		}
 	}
 
