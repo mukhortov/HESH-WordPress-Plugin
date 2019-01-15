@@ -1,5 +1,4 @@
 # TODOs
-- handle gutenberg save methods
 - default editor heights
 - gutenberg mediaquery css
 - write about gutenberg in the FAQ

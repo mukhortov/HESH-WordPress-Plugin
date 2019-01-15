@@ -22723,16 +22723,22 @@ CodeMirror.registerHelper("fold", "indent", function(cm, start) {
 
 
 	function savePostOrDraft() {
-		// TODO: doesn't work in gutenberg for some reason????
-		console.log('save HESH');
+
+		if (state.isGutenberg) {
+			editor.save();
+			wp.data.dispatch( 'core/editor' ).resetBlocks( 
+				wp.blocks.parse( editor.getTextArea().value 
+			));
+			wp.data.dispatch( 'core/editor' ).savePost();
+
+		} else {
+			var publishButton = 
+				document.getElementById('save-post') || 
+				document.getElementById('publish') ||
+				document.getElementById('submit'); 
+			publishButton.click();
 		
-		var publishButton = 
-			document.getElementById('save-post') || 
-			document.getElementById('publish') ||
-			document.getElementById('submit'); // ||
-			// document.getElementById('editor-post-save-draft') ||
-			// document.getElementById('editor-post-publish-button');
-		publishButton.click();
+		}		
 	}
 
 	function throttleAnimationFrame(callback) {
@@ -23349,15 +23355,11 @@ CodeMirror.registerHelper("fold", "indent", function(cm, start) {
 
 
 
-	function initialize() {		
-		console.log(state);
-		console.log(wp.data);
-		
+	function initialize() {				
 		if (state.isThemeOrPlugin) {
 			startEditor();
 
 		} else if (state.isGutenberg) {
-			console.log('is gutenberg');
 
 			var gutenbergVisualActive = state.isGutenbergVisualActive()
 			wp.data.subscribe( function () {
