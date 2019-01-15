@@ -1,0 +1,64 @@
+/*
+
+    Name:       wordpress
+    Author:     James Bradford (http://github.com/arniebradfo)
+
+	Based on the codemirror material theme & Chrome Dev-tools dark theme
+
+*/
+.cm-s-wordpress {
+
+	@wpBlueBright_Color: rgb(0, 183, 255);
+	@wpBlueLight_Color: rgb(116, 212, 250);
+	@wpBlue_Color: rgb(0, 133, 186);
+	@wpBlueDark_Color: rgb(0, 106, 149);
+	@wpBlueDeep_Color:rgb(0, 93, 130);
+
+	@wpGrayDark_Color: rgb(35, 40, 45);
+	
+	&.CodeMirror {
+		background-color: lighten(@wpGrayDark_Color,3%);
+		color: rgba(233, 237, 237, 1);
+	}
+	.CodeMirror-gutters {
+		background: lighten(@wpGrayDark_Color,3%);
+		color: rgb(83,127,126);
+		color: darken(@wpBlueDeep_Color, 20%);
+		border: none;
+	}
+	.CodeMirror-guttermarker, .CodeMirror-guttermarker-subtle, .CodeMirror-linenumber { color: rgb(83, 109, 127); }
+	.CodeMirror-cursor { border-left: 1px solid #f8f8f0; }
+	div.CodeMirror-selected { background: rgba(255, 255, 255, 0.15); }
+	&.CodeMirror-focused div.CodeMirror-selected { background: rgba(255, 255, 255, 0.10); }
+	.CodeMirror-line::selection, .CodeMirror-line > span::selection, .CodeMirror-line > span > span::selection { background: rgba(255, 255, 255, 0.10); }
+	.CodeMirror-line::-moz-selection, .CodeMirror-line > span::-moz-selection, .CodeMirror-line > span > span::-moz-selection { background: rgba(255, 255, 255, 0.10); }
+
+	.CodeMirror-activeline-background { background: rgba(0, 0, 0, 0); }
+	.cm-keyword { color: rgba(199, 146, 234, 1); }
+	.cm-operator { color: rgb(187, 209, 209); }
+	.cm-variable-2 { color: #80CBC4; }
+	.cm-variable-3, .cm-type { color: #82B1FF; }
+	.cm-builtin { color: #DECB6B; }
+	.cm-atom { color: @wpBlueBright_Color; }
+	.cm-number { color: @wpBlueBright_Color; }
+	.cm-def { color: #DECB6B; }
+	.cm-string { color: rgb(250, 149, 109); }
+	.cm-string-2 { color: #80CBC4; }
+	.cm-comment { color: #546E7A; }
+	.cm-variable { color: #82B1FF; }
+	.cm-tag { color: #80CBC4; }
+	.cm-meta { color: #80CBC4; }
+	.cm-attribute { color: @wpBlueLight_Color; }
+	.cm-property { color: #80CBAE; }
+	.cm-qualifier { color: #DECB6B; }
+	.cm-variable-3, .cm-type { color: #DECB6B; }
+	.cm-tag { color: @wpBlueBright_Color }
+	.cm-error {
+		color: rgba(255, 255, 255, 1.0);
+		background-color: #EC5F67;
+	}
+	.CodeMirror-matchingbracket {
+		text-decoration: underline;
+		color: white !important;
+	}
+}

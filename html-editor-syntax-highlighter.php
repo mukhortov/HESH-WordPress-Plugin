@@ -103,7 +103,7 @@ class wp_html_editor_syntax {
 				'type' => 'select',
 				'options' => $this->cssThemes,
 				'current' => get_user_meta( get_current_user_id(), $this->prefix.'theme' , true),
-				'default' => 'material',
+				'default' => 'wordpress',
 				'set' => 'primary',
 			),
 			'tabSize' => array(
@@ -442,6 +442,7 @@ class wp_html_editor_syntax {
 
 	private $cssThemes = array( 
 		'none',
+		'wordpress',
 		'default',
 		'3024-day',
 		'3024-night',
@@ -453,6 +454,7 @@ class wp_html_editor_syntax {
 		'bespin',
 		'blackboard',
 		'cobalt',
+		'codepen',
 		'colorforth',
 		'dracula',
 		'duotone-dark',
