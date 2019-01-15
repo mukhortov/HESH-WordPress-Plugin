@@ -1,5 +1,4 @@
 # TODOs
-- gutenberg mediaquery css
 - write about gutenberg in the FAQ
 - add instructions to download the old editor
 - update supported number
