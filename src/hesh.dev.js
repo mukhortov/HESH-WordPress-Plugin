@@ -478,7 +478,7 @@
 
 
 	// copy the resize of the textarea in codemirror
-	function attachDragResizePostOrPage() {
+	function attachDragResizeCopier() {
 		document.getElementById('content-resize-handle').addEventListener('mousedown', function () {
 			document.addEventListener('mousemove', matchTextAreaHeight);
 		});
@@ -488,34 +488,52 @@
 		});
 	}
 
+
+
+	// DRAG RESIZE FUNCTIONS //
+
+	var isDragging = false;
+	var yStartPosition;
+	var newHeight;
+	var minEditorHeight = 200;
+	var editorHeight = 500;
+
+	function changeCodemirrorHeight(event) {
+		newHeight = editorHeight + (event.pageY - yStartPosition);
+		editor.getWrapperElement().style.height = Math.max(minEditorHeight, newHeight) + 'px';
+		console.log('changeCodemirrorHeight\n', editor.getWrapperElement().style.height)
+	}
+
+	function handleDragResize(event) {
+		console.log('handleDragResize')
+		yStartPosition = event.pageY;
+		isDragging = true;
+		document.addEventListener('mousemove', changeCodemirrorHeight);
+		document.addEventListener('mouseup', completeDragResize);
+		event.preventDefault();
+	}
+
+	function completeDragResize(event) {
+		console.log('completeDragResize')
+		isDragging = false;
+		editorHeight = Math.max(minEditorHeight, newHeight);
+		document.removeEventListener('mousemove', changeCodemirrorHeight);
+		editor.refresh();
+		document.removeEventListener('mouseup', completeDragResize);
+	}
+
 	// attaches a dragger to the bottom right of the theme/plugin editor to control editor height
-	function attachDragResizeThemeOrPlugin(editorHeight, minEditorHeight) {
-		// var editorHeight = 500;
-		// var minEditorHeight = 200;
+	function attachDragResize(editorHeightSet) {
+		console.log('attachDragResize')
+		editorHeight = editorHeightSet;
+		newHeight = editorHeight;
 		editor.getWrapperElement().style.height = editorHeight + 'px';
 		var resizeHandle = document.createElement('div');
 		resizeHandle.className = 'hesh-content-resize-handle';
 		resizeHandle.id = 'content-resize-handle';
 		editor.getWrapperElement().appendChild(resizeHandle);
-		var isDragging = false;
-		var yStartPosition;
-		var newHeight = editorHeight;
-		function changeCodemirrorHeight(event) {
-			newHeight = editorHeight + (event.pageY - yStartPosition);
-			editor.getWrapperElement().style.height = Math.max(minEditorHeight, newHeight) + 'px';
-		}
-		document.getElementById('content-resize-handle').addEventListener('mousedown', function (event) {
-			yStartPosition = event.pageY;
-			isDragging = true;
-			document.addEventListener('mousemove', changeCodemirrorHeight);
-			event.preventDefault();
-		});
-		document.addEventListener('mouseup', function () {
-			isDragging = false;
-			editorHeight = Math.max(minEditorHeight, newHeight);
-			document.removeEventListener('mousemove', changeCodemirrorHeight);
-			editor.refresh();
-		});
+
+		document.getElementById('content-resize-handle').addEventListener('mousedown', handleDragResize);
 	}
 
 
@@ -681,6 +699,8 @@
 		window.send_to_editor = whichSendToEditor;
 	}
 
+
+
 	function startEditor() {
 		if (state.isActive()) return;
 		if (state.isGutenberg)
@@ -700,14 +720,10 @@
 		// Save save all changes to the textarea.value
 		if (state.isGutenberg)
 			editor.on('blur', function () {
-				console.log('onblur');
-				
 				editor.save();
-				wp.data
-					.dispatch( 'core/editor' )
-					.resetBlocks(
-						wp.blocks.parse( editor.getTextArea().value )
-					);
+				wp.data.dispatch( 'core/editor' ).resetBlocks( 
+					wp.blocks.parse( editor.getTextArea().value 
+				));
 			});
 		else 
 			editor.on('change', function () { editor.save(); });
@@ -717,14 +733,14 @@
 		editor.on('scroll', throttledRecordSelectionState);
 
 		if (state.isThemeOrPlugin) {
-			attachDragResizeThemeOrPlugin(500,200);
+			attachDragResize(500);
 		} else if (state.isGutenberg) {
-			attachDragResizeThemeOrPlugin(500,200);
+			attachDragResize(500);
 		} else {
 			toolbar.addEventListener('mousedown', giveFocusToTextArea);
 			// document.getElementById('insert-media-button').addEventListener('mousedown', giveFocusToTextArea);
 			remapAddMedia();
-			attachDragResizePostOrPage();
+			attachDragResizeCopier();
 			attachFullHeightToggle();
 			attachFullscreen();
 		}

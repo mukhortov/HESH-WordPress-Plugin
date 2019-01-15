@@ -1,4 +1,7 @@
 # TODOs
+- handle gutenberg save methods
+- default editor heights
+- gutenberg mediaquery css
 - write about gutenberg in the FAQ
 - add instructions to download the old editor
 - update supported number
@@ -7,6 +10,7 @@
 	- html block
 	- shortcode backwards compat
 	- gutenberg block comment + json
+
 - fewer but better themes
 - beautify dist css and js that are uncompressed?
 
