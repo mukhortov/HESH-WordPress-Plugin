@@ -129,10 +129,7 @@
 	function savePostOrDraft() {
 
 		if (state.isGutenberg) {
-			editor.save();
-			wp.data.dispatch( 'core/editor' ).resetBlocks( 
-				wp.blocks.parse( editor.getTextArea().value 
-			));
+			persistGutenbergChanges();
 			wp.data.dispatch( 'core/editor' ).savePost();
 
 		} else {
@@ -700,7 +697,17 @@
 		window.send_to_editor = whichSendToEditor;
 	}
 
-
+	function persistGutenbergChanges() {
+		editor.save();
+		recordSelectionState();
+		wp.data.dispatch( 'core/editor' ).resetBlocks( 
+			wp.blocks.parse( editor.getTextArea().value 
+		));
+		editor.setValue(
+			wp.data.select( 'core/editor' ).getEditedPostContent()
+		);
+		restoreSelectionState();
+	}
 
 	function startEditor() {
 		if (state.isActive()) return;
@@ -720,12 +727,7 @@
 
 		// Save save all changes to the textarea.value
 		if (state.isGutenberg)
-			editor.on('blur', function () {
-				editor.save();
-				wp.data.dispatch( 'core/editor' ).resetBlocks( 
-					wp.blocks.parse( editor.getTextArea().value 
-				));
-			});
+			editor.on('blur', persistGutenbergChanges);
 		else 
 			editor.on('change', function () { editor.save(); });
 
@@ -734,9 +736,11 @@
 		editor.on('scroll', throttledRecordSelectionState);
 
 		if (state.isThemeOrPlugin) {
-			attachDragResize(500); // TODO: better default height
+			var height = window.innerHeight - editor.getWrapperElement().getBoundingClientRect().top - 100;
+			attachDragResize(height);
 		} else if (state.isGutenberg) {
-			attachDragResize(500); // TODO: better default height
+			var height = window.innerHeight - editor.getWrapperElement().getBoundingClientRect().top - 16;
+			attachDragResize(height);
 		} else {
 			toolbar.addEventListener('mousedown', giveFocusToTextArea);
 			// document.getElementById('insert-media-button').addEventListener('mousedown', giveFocusToTextArea);
