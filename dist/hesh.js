@@ -23097,11 +23097,9 @@ CodeMirror.registerHelper("fold", "indent", function(cm, start) {
 	function changeCodemirrorHeight(event) {
 		newHeight = editorHeight + (event.pageY - yStartPosition);
 		editor.getWrapperElement().style.height = Math.max(minEditorHeight, newHeight) + 'px';
-		console.log('changeCodemirrorHeight\n', editor.getWrapperElement().style.height)
 	}
 
 	function handleDragResize(event) {
-		console.log('handleDragResize')
 		yStartPosition = event.pageY;
 		isDragging = true;
 		document.addEventListener('mousemove', changeCodemirrorHeight);
@@ -23110,7 +23108,6 @@ CodeMirror.registerHelper("fold", "indent", function(cm, start) {
 	}
 
 	function completeDragResize(event) {
-		console.log('completeDragResize')
 		isDragging = false;
 		editorHeight = Math.max(minEditorHeight, newHeight);
 		document.removeEventListener('mousemove', changeCodemirrorHeight);
@@ -23120,7 +23117,6 @@ CodeMirror.registerHelper("fold", "indent", function(cm, start) {
 
 	// attaches a dragger to the bottom right of the theme/plugin editor to control editor height
 	function attachDragResize(editorHeightSet) {
-		console.log('attachDragResize')
 		editorHeight = editorHeightSet;
 		newHeight = editorHeight;
 		editor.getWrapperElement().style.height = editorHeight + 'px';
@@ -23128,7 +23124,6 @@ CodeMirror.registerHelper("fold", "indent", function(cm, start) {
 		resizeHandle.className = 'hesh-content-resize-handle';
 		resizeHandle.id = 'content-resize-handle';
 		editor.getWrapperElement().appendChild(resizeHandle);
-
 		document.getElementById('content-resize-handle').addEventListener('mousedown', handleDragResize);
 	}
 
@@ -23329,9 +23324,9 @@ CodeMirror.registerHelper("fold", "indent", function(cm, start) {
 		editor.on('scroll', throttledRecordSelectionState);
 
 		if (state.isThemeOrPlugin) {
-			attachDragResize(500);
+			attachDragResize(500); // TODO: better default height
 		} else if (state.isGutenberg) {
-			attachDragResize(500);
+			attachDragResize(500); // TODO: better default height
 		} else {
 			toolbar.addEventListener('mousedown', giveFocusToTextArea);
 			// document.getElementById('insert-media-button').addEventListener('mousedown', giveFocusToTextArea);
