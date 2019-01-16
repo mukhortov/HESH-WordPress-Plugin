@@ -7,8 +7,9 @@ const combineMq = require('gulp-combine-mq')
 const cssnano = require('gulp-cssnano')
 const concat = require('gulp-concat')
 const uglify = require('gulp-uglify')
+const cssbeautify = require('gulp-cssbeautify')
 
-const buildCSS = () => {
+const compileCSS = () => {
     return gulp.src('./src/hesh.dev.less')
         .pipe(less({
             plugins: [ require('less-plugin-glob') ]
@@ -20,6 +21,13 @@ const buildCSS = () => {
         }))
         .pipe(combineMq({
             beautify: true
+		}))
+		// .pipe(cssnano({
+		// 	discardComments: false
+		// }))
+		.pipe(cssbeautify({
+            indent: '  ',
+            autosemicolon: true
         }))
         .pipe(rename('hesh.css'))
         .pipe(gulp.dest('./dist'))
@@ -28,12 +36,16 @@ const buildCSS = () => {
 
 const minifyCSS = () => {
     return gulp.src('./dist/hesh.css')
-        .pipe(cssnano())
-        .pipe(rename(path => path.basename += '.min'))
+		.pipe(cssnano())
+		.pipe(cssbeautify({
+            indent: '  ',
+            autosemicolon: true
+        }))
+        // .pipe(rename(path => path.basename += '.min'))
         .pipe(gulp.dest('./dist'))
 }
 
-const buildJS = () => {
+const compileJS = () => {
     const codemirrorPath = './node_modules/codemirror/'
 
     return gulp.src([
@@ -88,7 +100,7 @@ const buildJS = () => {
 const minifyJS = () => {
     return gulp.src('./dist/hesh.js')
         .pipe(uglify())
-        .pipe(rename(path => path.basename += '.min'))
+        // .pipe(rename(path => path.basename += '.min'))
         .pipe(gulp.dest('./dist'))
 }
 
@@ -97,11 +109,15 @@ const watch = () => {
     gulp.watch([
         './src/**/*',
         './*.php',
-    ], build)
+    ], compile)
 }
 
-const minify = gulp.series(gulp.parallel(minifyCSS, minifyJS))
-const build = gulp.series(gulp.parallel(buildCSS, buildJS), minify)
+const compile = gulp.parallel(compileCSS, compileJS)
+const minify = gulp.parallel(minifyCSS, minifyJS)
+const build = gulp.series(compile, minify)
+const dev = gulp.series(compile, watch)
 
+gulp.task('compile', compile)
 gulp.task('build', build)
-gulp.task('default', gulp.series(build, watch))
+gulp.task('dev', dev)
+gulp.task('default', dev)

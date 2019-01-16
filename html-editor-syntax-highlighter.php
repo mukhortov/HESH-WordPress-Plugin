@@ -58,7 +58,8 @@ class wp_html_editor_syntax {
 		$ver = $plugData['Version'];
 		
 		// load minified version if not a localhost dev account
-		$min = strpos(home_url(), 'localhost') ? '' : '.min' ;
+		// $min = strpos(home_url(), 'localhost') ? '' : '.min' ; // no more...
+
 		wp_enqueue_script( 'jquery');
 
 		// dequeue the native WP code-editor and codemirror
@@ -68,8 +69,8 @@ class wp_html_editor_syntax {
 		// if (wp_style_is( 'wp-codemirror', 'enqueued' )) wp_dequeue_style( 'wp-codemirror' );
 
 		// enqueue hesh scripts
-		wp_enqueue_script( 'heshJs', HESH_LIBS.'hesh'.$min.'.js', array('jquery', 'editor'), $ver, true );
-		wp_enqueue_style( 'heshCss', HESH_LIBS.'hesh'.$min.'.css', false, $ver );
+		wp_enqueue_script( 'heshJs', HESH_LIBS.'hesh.js', array('jquery', 'editor'), $ver, true );
+		wp_enqueue_style( 'heshCss', HESH_LIBS.'hesh.css', false, $ver );
 
 		// this shows up in js as window.heshOptions
 		$heshOptions = array(
