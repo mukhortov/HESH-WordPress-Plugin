@@ -90,7 +90,7 @@ Paste this code in the editor to test out all the different syntax highlighting 
 	element[attribute="value"]{ color:red; }
 </style>
 
-<input onclick=" document.getElementById('identifier').style.width = 200px; "/>
+<input onclick=" document.getElementById('identifier').style.width = '200px'; "/>
 <script>
 	// javascript comment
 	var obj = {
@@ -98,7 +98,7 @@ Paste this code in the editor to test out all the different syntax highlighting 
 		keytwo: valuetwo,
 		array: ['valueone', 'valuetwo'] // square brackets in javascript block
 	};
-	document.getElementById('identifier').style.width = 200px;
+	document.getElementById('identifier').style.width = '200px';
 	var string = '</script' + '>'; // writing this straight out will break the mix
 </script>
 
