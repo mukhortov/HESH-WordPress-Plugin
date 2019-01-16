@@ -110,3 +110,45 @@ ERRORS!
 	$var = 'value'; 
 ?>
 ```
+
+For promotional text:
+
+```HTML
+<h1>HTML Editor Syntax Highlighter</h1>
+	
+<p class="description">
+	Add syntax highlighting to the Classic Text Editor, Gutenberg Code Editor, and Theme &amp; Plugin Editors. It also highlights [[shortcodes]] like HTML!
+	[shortcode attribute="value" standAloneAttribute bool=true int=42 /]
+</p>
+
+<div>
+	[shortcode ]
+		[oneliner html='<label class="name">Label</label>']
+		shortcode content 
+		<a href="#">nested html</a>
+		[[escapedshortcode]]
+	[/shortcode]
+</div>
+
+<!--more WordPress More Tag Text --><!--noteaser--><!--nextpage-->
+<!-- HTML comment --><!-- commented out [shortcode] -->
+
+<p>It works with inline CSS!</p>
+<style> /* css comment */
+	#identifier, .class, element[attribute="value"] {
+		width:  200px;
+		color:  rebeccapurple;
+	}
+</style>
+
+<p>It works with inline JavaScript Too!</p>
+<script> // javascript comment
+	var obj = {
+		key: value,
+		number: 200,
+		array: ['valueone', 'valuetwo'] 
+	};
+	document.getElementById('identifier').style.width = obj.number + 'px';
+</script>
+
+```
