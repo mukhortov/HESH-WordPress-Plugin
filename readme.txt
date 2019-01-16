@@ -3,16 +3,16 @@ Contributors: nixdns, arniebradfo, rraub, collinprice
 Donate link: https://www.paypal.me/mukhortov/5
 Tags: syntax highlighter, codemirror, text editor, code highlighter, code coloring, editor, html editor, gutenberg, code editor, theme editor, plugin editor, syntax, highlighting, highlighter, syntax highlighting, codemirror.js, code, 
 Requires at least: 4.0.15
-Tested up to: 5.0.1
-Stable tag: 2.2.6
+Tested up to: 5.0.3
+Stable tag: 2.3.0
 License: GPL-2.0
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Add syntax highlighting to the classic WordPress code editors using Codemirror.js
+Add syntax highlighting to WordPress code editors using CodeMirror.js
 
 == Description ==
 
-Add syntax highlighting in the Classic Post & Page HTML text editor, Gutenberg Code Editor, and Theme & Plugin editors using Codemirror.js
+Add syntax highlighting in the Classic Post & Page HTML text editor, Gutenberg Code Editor, and Theme & Plugin editors using CodeMirror.js
 
 = Features =
 
@@ -56,7 +56,7 @@ Yes! Search with `Ctrl+F` (`Cmd+F` on Mac). Replace with `Ctrl+alt+F` (`Cmd+alt+
 * Updated FAQ with Gutenberg info.
 * Changed build steps to only export one `.css` and `.js` file
 
-= 2.2.6 =
+= 2.3.0 =
 * added Gutenberg information after the update to WordPress version 5.0
 
 = 2.2.5 =
