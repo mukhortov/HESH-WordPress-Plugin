@@ -1,6 +1,10 @@
-![alt text](https://raw.githubusercontent.com/mukhortov/HESH-WordPress-Plugin/blob/master/assets/icon.svg]
-
-# HTML Editor Syntax Highlighter
+<h1 align="center">
+    <br/>
+    <img width="256" src="https://raw.githubusercontent.com/mukhortov/HESH-WordPress-Plugin/master/assets/icon.svg?sanitize=true" alt="<W/>">
+    <br/>
+    <br/>
+	HTML Editor Syntax Highlighter
+</h1>
 
 WordPress plugin that adds syntax highlighting in the Post & Page HTML text editor and the Theme & Plugin editors using [Codemirror.js](http://codemirror.net/)
 
