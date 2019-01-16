@@ -4,7 +4,7 @@
 
 # HTML Editor Syntax Highlighter
 
-WordPress plugin that adds syntax highlighting in the Post & Page HTML text editor and the Theme & Plugin editors using [Codemirror.js](http://codemirror.net/)
+Add syntax highlighting in the Classic Post & Page HTML text editor, Gutenberg Code Editor, and Theme & Plugin editors using [Codemirror.js](http://codemirror.net/)
 
 ## Features
 

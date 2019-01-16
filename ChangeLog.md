@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.3.0
+* Support for Gutenberg Code Editor!
+* Added new themes: Codepen and Wordpress (which is now the default).
+* Created new screenshots for the plugin page.
+* New Logo based on `<W/>`.
+* Updated FAQ with Gutenberg info.
+* Changed build steps to only export one `.css` and `.js` file
+
 ## 2.2.6
 * added Gutenberg information after the update to WordPress version 5.0
 
