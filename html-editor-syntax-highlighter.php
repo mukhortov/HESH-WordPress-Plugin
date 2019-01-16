@@ -2,7 +2,7 @@
 
 
 /**
- * @since              2.2.6
+ * @since              2.3.0
  * @package            HESH_plugin
  *
  * Plugin Name:        HTML Editor Syntax Highlighter
@@ -17,10 +17,10 @@
  * License URI:        http://www.gnu.org/licenses/gpl-2.0.txt
  * GitHub Branch:      master
  * GitHub Plugin URI:  https://github.com/mukhortov/HESH-WordPress-Plugin
- * Version:            2.2.6
+ * Version:            2.3.0
  * Requires at least:  4.0.15
- * Tested up to:       5.0.1
- * Stable tag:         2.2.6
+ * Tested up to:       5.0.3
+ * Stable tag:         2.3.0
 **/
 
 // Check for required PHP version
@@ -43,10 +43,10 @@ class wp_html_editor_syntax {
 		add_action( 'admin_footer', array(&$this, 'hesh_output_form') );
 	}
 		
-	// Enqueues scripts and styles for hesh.js
+	// Enqueued scripts and styles for hesh.js
 	public function hesh_admin_enqueue_scripts () {
 		
-		// Load only on certin pages
+		// Load only on certain pages
 		if (
 			!strstr($_SERVER['SCRIPT_NAME'], 'post.php') && 
 			!strstr($_SERVER['SCRIPT_NAME'], 'post-new.php') &&
@@ -58,7 +58,8 @@ class wp_html_editor_syntax {
 		$ver = $plugData['Version'];
 		
 		// load minified version if not a localhost dev account
-		$min = strpos(home_url(), 'localhost') ? '' : '.min' ;
+		// $min = strpos(home_url(), 'localhost') ? '' : '.min' ; // no more...
+
 		wp_enqueue_script( 'jquery');
 
 		// dequeue the native WP code-editor and codemirror
@@ -68,20 +69,20 @@ class wp_html_editor_syntax {
 		// if (wp_style_is( 'wp-codemirror', 'enqueued' )) wp_dequeue_style( 'wp-codemirror' );
 
 		// enqueue hesh scripts
-		wp_enqueue_script( 'heshjs', HESH_LIBS.'hesh'.$min.'.js', array('jquery', 'editor'), $ver, true );
-		wp_enqueue_style( 'heshcss', HESH_LIBS.'hesh'.$min.'.css', false, $ver );
+		wp_enqueue_script( 'heshJs', HESH_LIBS.'hesh.js', array('jquery', 'editor'), $ver, true );
+		wp_enqueue_style( 'heshCss', HESH_LIBS.'hesh.css', false, $ver );
 
 		// this shows up in js as window.heshOptions
 		$heshOptions = array(
 			'ajaxUrl' => admin_url( 'admin-ajax.php' ),
 		);
 
-		// place all the userPrefrences into the heshOptions object
-		foreach ($this->userPrefrences as $id => $value) {
+		// place all the userPreferences into the heshOptions object
+		foreach ($this->userPreferences as $id => $value) {
 			$heshOptions[$id] = $value['current'];
 		}
 		wp_localize_script(
-			'heshjs',        // for hesh.js
+			'heshJs',        // for hesh.js
 			'heshOptions',   // the object name, shows up in js as window.heshOptions
 			$heshOptions     // the php object to translate to js
 		);
@@ -91,9 +92,9 @@ class wp_html_editor_syntax {
 	private $formProcessName = 'hesh_options_form';
 	private $nonceSecretCode = 'secret-code';
 	private $prefix = 'hesh_';
-	private $userPrefrences; // added to the primary bar
+	private $userPreferences; // added to the primary bar
 	public function hesh_set_options() {
-		$this->userPrefrences = array(
+		$this->userPreferences = array(
 
 			// PRIMARY OPTIONS // added in the primary settings bar
 			'theme' => array(
@@ -101,7 +102,7 @@ class wp_html_editor_syntax {
 				'type' => 'select',
 				'options' => $this->cssThemes,
 				'current' => get_user_meta( get_current_user_id(), $this->prefix.'theme' , true),
-				'default' => 'material',
+				'default' => 'wordpress',
 				'set' => 'primary',
 			),
 			'tabSize' => array(
@@ -209,8 +210,9 @@ class wp_html_editor_syntax {
 			),
 		);
 
-		// Intalize all the hesh option fields as default if they don't exist yet
-		foreach ($this->userPrefrences as $id => $value) {
+
+		// Initialize all the hesh option fields as default if they don't exist yet
+		foreach ($this->userPreferences as $id => $value) {
 			if (!isset($value['current']) || trim($value['current'])==='')
 				update_user_meta( get_current_user_id(), $this->prefix.$id, $value['default']);
 			// error_log( $id . ': ' . $value['current'] . ': ' . isset($value['current']) ); // for debug
@@ -222,7 +224,7 @@ class wp_html_editor_syntax {
 			error_log('The nonce did not verify.');
 			wp_die();
 		} else {
-			foreach ($this->userPrefrences as $id => $value) {
+			foreach ($this->userPreferences as $id => $value) {
 				$setting = $_POST[$id];
 				if ($setting === 'true') $setting = true;
 				if ($setting === 'false') $setting = false;
@@ -366,7 +368,7 @@ class wp_html_editor_syntax {
 					>
 					<header class="CodeMirror-settings__header CodeMirror-settings__docked">
 						<?php
-							foreach ($this->userPrefrences as $id => $value) {
+							foreach ($this->userPreferences as $id => $value) {
 								if ( $value['set'] === 'advanced' ) continue;
 								$this->hesh_output_option($id,$value);
 							}
@@ -389,22 +391,22 @@ class wp_html_editor_syntax {
 							<?php
 
 							$this->hesh_output_fieldset('Highlighting'); 
-								$this->hesh_output_checkbox('matchBrackets',$this->userPrefrences['matchBrackets']); 
-								$this->hesh_output_checkbox('matchTags',$this->userPrefrences['matchTags']); 
-								$this->hesh_output_checkbox('highlightSelectionMatches',$this->userPrefrences['highlightSelectionMatches']); 
+								$this->hesh_output_checkbox('matchBrackets',$this->userPreferences['matchBrackets']); 
+								$this->hesh_output_checkbox('matchTags',$this->userPreferences['matchTags']); 
+								$this->hesh_output_checkbox('highlightSelectionMatches',$this->userPreferences['highlightSelectionMatches']); 
 							$this->hesh_output_fieldset(); 
 							
 							$this->hesh_output_fieldset('Auto Completion'); 
-								$this->hesh_output_checkbox('autoCloseTags',$this->userPrefrences['autoCloseTags']); 
-								$this->hesh_output_checkbox('autoCloseBrackets',$this->userPrefrences['autoCloseBrackets']); 
+								$this->hesh_output_checkbox('autoCloseTags',$this->userPreferences['autoCloseTags']); 
+								$this->hesh_output_checkbox('autoCloseBrackets',$this->userPreferences['autoCloseBrackets']); 
 							$this->hesh_output_fieldset(); 
 
 							$this->hesh_output_fieldset('Editor Tools'); 
-								$this->hesh_output_checkbox('foldGutter',$this->userPrefrences['foldGutter']); 
-								$this->hesh_output_checkbox('scrollbarStyle',$this->userPrefrences['scrollbarStyle']); 
+								$this->hesh_output_checkbox('foldGutter',$this->userPreferences['foldGutter']); 
+								$this->hesh_output_checkbox('scrollbarStyle',$this->userPreferences['scrollbarStyle']); 
 							$this->hesh_output_fieldset(); 
 
-							$this->hesh_output_radio('keyMap',$this->userPrefrences['keyMap']); 
+							$this->hesh_output_radio('keyMap',$this->userPreferences['keyMap']); 
 
 							?>
 						</tbody></table>
@@ -436,6 +438,7 @@ class wp_html_editor_syntax {
 
 	private $cssThemes = array( 
 		'none',
+		'wordpress',
 		'default',
 		'3024-day',
 		'3024-night',
@@ -447,6 +450,7 @@ class wp_html_editor_syntax {
 		'bespin',
 		'blackboard',
 		'cobalt',
+		'codepen',
 		'colorforth',
 		'dracula',
 		'duotone-dark',
