@@ -37,6 +37,7 @@ const compileCSS = () => {
 const minifyCSS = () => {
     return gulp.src('./dist/hesh.css')
 		.pipe(cssnano())
+		// we beautify afterward so the file is editable in the WP Plugin Editor
 		.pipe(cssbeautify({
             indent: '  ',
             autosemicolon: true

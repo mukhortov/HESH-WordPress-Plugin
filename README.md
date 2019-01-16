@@ -1,3 +1,5 @@
+![alt text](https://raw.githubusercontent.com/mukhortov/HESH-WordPress-Plugin/blob/master/assets/icon.svg]
+
 # HTML Editor Syntax Highlighter
 
 WordPress plugin that adds syntax highlighting in the Post & Page HTML text editor and the Theme & Plugin editors using [Codemirror.js](http://codemirror.net/)
@@ -5,7 +7,8 @@ WordPress plugin that adds syntax highlighting in the Post & Page HTML text edit
 ## Features
 
 * Syntax highlighting in the Post/Page HTML editor
-* _NEW:_ Syntax highlighting in the Theme & Plugin editors
+* _NEW:_ Syntax highlighting in the Gutenberg Code Editor
+* Syntax highlighting in the Theme & Plugin editors
 * Syntax highlighting for WordPress shortcodes
 * Save your posts and pages pressing `Ctrl+S` (`Cmd+S` on Mac)
 * Restore cursor position after page is reloaded
