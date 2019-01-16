@@ -1,5 +1,5 @@
 <p align="center">
-    <img width="256" src="https://raw.githubusercontent.com/mukhortov/HESH-WordPress-Plugin/gutenberg/assets/icon.svg?sanitize=true" alt="<W/>">
+    <img width="256" src="https://raw.githubusercontent.com/mukhortov/HESH-WordPress-Plugin/master/assets/icon.svg?sanitize=true" alt="<W/>">
 </p>
 
 # HTML Editor Syntax Highlighter
