@@ -4,7 +4,7 @@
  * @link     http://bradford.digital/
  * @author   Petr Mukhortov
  * @link     http://mukhortov.com/
- * @since    2.3.0
+ * @since    2.3.1
 */
 
 // console.log(window.heshOptions); // from wordpress php

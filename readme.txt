@@ -4,7 +4,7 @@ Donate link: https://www.paypal.me/mukhortov/5
 Tags: syntax highlighter, codemirror, text editor, code highlighter, code coloring, editor, html editor, gutenberg, code editor, theme editor, plugin editor, syntax, highlighting, highlighter, syntax highlighting, codemirror.js, code, 
 Requires at least: 4.0.15
 Tested up to: 5.0.3
-Stable tag: 2.3.0
+Stable tag: 2.3.1
 License: GPL-2.0
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -47,6 +47,10 @@ The fullscreen button on the top right of the editor will do one of two things d
 Yes! Search with `Ctrl+F` (`Cmd+F` on Mac). Replace with `Ctrl+alt+F` (`Cmd+alt+F` on Mac).
 
 == Changelog ==
+
+= 2.3.1 =
+* Fixing JS error in issue #81 _(Hopefully?)_
+* Updating authorship so James can get a job. Will revert to Petr Later...
 
 = 2.3.0 =
 * Support for Gutenberg Code Editor!

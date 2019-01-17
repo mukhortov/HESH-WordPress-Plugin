@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.3.1
+* Fixing JS error in issue #81 _(Hopefully?)_
+* Updating authorship so James can get a job. Will revert to Petr Later...
+
 ## 2.3.0
 * Support for Gutenberg Code Editor!
 * Added new themes: Codepen and Wordpress (which is now the default).
