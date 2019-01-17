@@ -2,25 +2,25 @@
 
 
 /**
- * @since              2.3.0
+ * @since              2.3.1
  * @package            HESH_plugin
  *
  * Plugin Name:        HTML Editor Syntax Highlighter
  * Plugin URI:         http://wordpress.org/extend/plugins/html-editor-syntax-highlighter/
  * Description:        Add syntax highlighting to the all WordPress code editors using Codemirror.js
  * Text Domain:        html-editor-syntax-highlighter
- * Author:             Petr Mukhortov
- * Author URI:         http://mukhortov.com/
  * Author:             James Bradford
  * Author URI:         http://bradford.digital/
+ * Author:             Petr Mukhortov
+ * Author URI:         http://mukhortov.com/
  * License:            GPL-2.0+
  * License URI:        http://www.gnu.org/licenses/gpl-2.0.txt
  * GitHub Branch:      master
  * GitHub Plugin URI:  https://github.com/mukhortov/HESH-WordPress-Plugin
- * Version:            2.3.0
+ * Version:            2.3.1
  * Requires at least:  4.0.15
  * Tested up to:       5.0.3
- * Stable tag:         2.3.0
+ * Stable tag:         2.3.1
 **/
 
 // Check for required PHP version
