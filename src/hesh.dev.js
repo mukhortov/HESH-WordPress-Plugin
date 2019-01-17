@@ -48,9 +48,10 @@
 		},
 
 		// GUTENBERG
-		isGutenberg: wp.data != null, // how good is this?
+		isGutenberg: (wp.data && wp.data.select( 'core/edit-post' )) != null, // How good is this, still?
 		isGutenbergVisualActive: function () {
 			return wp.data.select( 'core/edit-post' ).getEditorMode() === 'visual';
+			// TODO: issue #81 is cause by above line?
 		},
 
 		isFullHeight: function () {
@@ -305,6 +306,7 @@
 	// initialize the settings panel
 	function attachSettings() {
 		// move the settingsPanel (produced in php) to inside the codemirror instance
+		// TODO: issue #80 is related to this?
 		editor.getWrapperElement().appendChild(settingsPanel);
 		settingsPanel.style.display = 'block';
 		settingsPanel.querySelector('.CodeMirror-settings__toggle').addEventListener('click', toggleSettings);
@@ -777,13 +779,9 @@
 				gutenbergVisualActive = state.isGutenbergVisualActive()
 				
 				if (gutenbergVisualActive) {
-					console.log('mode change to Visual')
 					stopEditor();
 				} else {
-					window.setTimeout(function () {
-						console.log('mode change to Code')
-						startEditor();
-					},0);
+					window.setTimeout(startEditor, 0);
 				}
 
 			});
