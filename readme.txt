@@ -60,7 +60,7 @@ Yes! Search with `Ctrl+F` (`Cmd+F` on Mac). Replace with `Ctrl+alt+F` (`Cmd+alt+
 * Updated FAQ with Gutenberg info.
 * Changed build steps to only export one `.css` and `.js` file
 
-= 2.3.0 =
+= 2.2.6 =
 * added Gutenberg information after the update to WordPress version 5.0
 
 = 2.2.5 =
