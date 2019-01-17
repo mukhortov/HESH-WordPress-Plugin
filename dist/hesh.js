@@ -13145,7 +13145,7 @@ CodeMirror.defineMode("clike", function(config, parserConfig) {
  * @name         CodeMirror Shortcode Mode
  * @description  WordPress shortcode syntax highlighting for CodeMirror
  * @author       James Bradford
- * @link         http://arniebradfo.com
+ * @link         http://bradford.digital
  * @license      MIT
  *
  * derived from the CodeMirror xml mode
@@ -13447,7 +13447,7 @@ CodeMirror.defineMode("clike", function(config, parserConfig) {
  * @name         CodeMirror WordPress Post Editor Mode
  * @description  Combines htmlmixed with the WordPress' shortcode syntax for use in the WordPress post text editor
  * @author       James Bradford
- * @link         http://arniebradfo.com
+ * @link         http://bradford.digital
  * @license      MIT
  *
  * derived from the CodeMirror htmlmixed mode
@@ -22597,7 +22597,7 @@ CodeMirror.registerHelper("fold", "indent", function(cm, start) {
 /**
  * @name     HTML Editor Syntax Highlighter
  * @author   James Bradford
- * @link     http://arniebradfo.com/
+ * @link     http://bradford.digital/
  * @author   Petr Mukhortov
  * @link     http://mukhortov.com/
  * @since    2.3.0

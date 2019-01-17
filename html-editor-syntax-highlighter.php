@@ -9,10 +9,10 @@
  * Plugin URI:         http://wordpress.org/extend/plugins/html-editor-syntax-highlighter/
  * Description:        Add syntax highlighting to the all WordPress code editors using Codemirror.js
  * Text Domain:        html-editor-syntax-highlighter
- * Author:             Petr Mukhortov
- * Author URI:         http://mukhortov.com/
  * Author:             James Bradford
  * Author URI:         http://bradford.digital/
+ * Author:             Petr Mukhortov
+ * Author URI:         http://mukhortov.com/
  * License:            GPL-2.0+
  * License URI:        http://www.gnu.org/licenses/gpl-2.0.txt
  * GitHub Branch:      master

@@ -4,7 +4,7 @@
  * @name         CodeMirror Shortcode Mode
  * @description  WordPress shortcode syntax highlighting for CodeMirror
  * @author       James Bradford
- * @link         http://arniebradfo.com
+ * @link         http://bradford.digital
  * @license      MIT
  *
  * derived from the CodeMirror xml mode

@@ -4,7 +4,7 @@
  * @name         CodeMirror WordPress Post Editor Mode
  * @description  Combines htmlmixed with the WordPress' shortcode syntax for use in the WordPress post text editor
  * @author       James Bradford
- * @link         http://arniebradfo.com
+ * @link         http://bradford.digital
  * @license      MIT
  *
  * derived from the CodeMirror htmlmixed mode

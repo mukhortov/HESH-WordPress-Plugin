@@ -1,7 +1,7 @@
 /**
  * @name     HTML Editor Syntax Highlighter
  * @author   James Bradford
- * @link     http://arniebradfo.com/
+ * @link     http://bradford.digital/
  * @author   Petr Mukhortov
  * @link     http://mukhortov.com/
  * @since    2.3.0
