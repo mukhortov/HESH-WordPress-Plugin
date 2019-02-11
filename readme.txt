@@ -22,7 +22,7 @@ Add syntax highlighting in the Classic Post & Page HTML text editor, Gutenberg C
 * Syntax highlighting for WordPress shortcodes
 * Save your posts and pages pressing `Ctrl+S` (`Cmd+S` on Mac)
 * Restore cursor position after page is reloaded
-* Huge Selection of themes and other customization options
+* Huge selection of themes and other customization options
 * Fullscreen mode: toggle with F11/Esc hotkeys
 
 If you would like to contribute to this plugin, view the [github repo](https://github.com/mukhortov/HESH-WordPress-Plugin).
