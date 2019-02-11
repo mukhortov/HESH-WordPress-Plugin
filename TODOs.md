@@ -1,5 +1,12 @@
 # TODOs
 - update supported number
+- more automated release
+	- dist folder
+- FAQ
+	- about autop and removep
+	- about gutenberg support
+	- formatting - disable visual editor
+	- Alternatives...
 
 - support gutenberg
 	- html block
