@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.3.2
+* added a seventh screenshot
+* X - updated FAQ
+
 ## 2.3.1
 * Fixing JS error in issue #81 _(Hopefully?)_
 * Updating authorship so James can get a job. Will revert to Petr Later...
