@@ -1,7 +1,7 @@
 # Changelog
 
 ## 2.3.3
-* removed `smartindent` because its annoying
+* removed [`smartIndent`](https://codemirror.net/doc/manual.html#option_smartIndent) because its annoying
 
 ## 2.3.2
 * added a seventh screenshot

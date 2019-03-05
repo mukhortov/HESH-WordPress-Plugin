@@ -108,9 +108,16 @@ const minifyJS = () => {
 const watch = () => {
     livereload.listen()
     gulp.watch([
-        './src/**/*',
         './*.php',
-    ], compile)
+	])
+	gulp.watch([
+        './src/**/*.css',
+        './src/**/*.less',
+	], compileCSS)
+	gulp.watch([
+        './src/**/*.js',
+        './*.php',
+    ], compileJS)
 }
 
 const compile = gulp.parallel(compileCSS, compileJS)
