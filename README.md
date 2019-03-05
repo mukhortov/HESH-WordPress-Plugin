@@ -9,13 +9,13 @@ Add syntax highlighting in the Classic Post & Page HTML text editor, Gutenberg C
 ## Features
 
 * Syntax highlighting in the Post/Page HTML editor
-* _NEW:_ Syntax highlighting in the Gutenberg Code Editor
+* _NEW:_ Syntax highlighting in the Gutenberg _Code Editor_ (not _Visual Editor_)
 * Syntax highlighting in the Theme & Plugin editors
-* Syntax highlighting for WordPress shortcodes
+* Syntax highlighting for WordPress `[shortcodes/]`
 * Save your posts and pages pressing `Ctrl+S` (`Cmd+S` on Mac)
 * Restore cursor position after page is reloaded
 * Huge selection of themes and other customization options
-* Fullscreen mode: toggle with F11/Esc hotkeys
+* Fullscreen mode: toggle with `F11`/`Esc` hotkeys
 
 If you are not a developer, please use the [HTML Editor Syntax Highlighter plugin page](http://wordpress.org/plugins/html-editor-syntax-highlighter/) on WordPress.org to download and install it. You can also download the latest release from [here](https://github.com/mukhortov/HESH-WordPress-Plugin/releases).
 
