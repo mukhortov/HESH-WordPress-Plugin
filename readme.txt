@@ -3,8 +3,8 @@ Contributors: nixdns, arniebradfo, rraub, collinprice
 Donate link: https://www.paypal.me/mukhortov/5
 Tags: syntax highlighter, codemirror, text editor, code highlighter, code coloring, editor, html editor, gutenberg, code editor, theme editor, plugin editor, syntax, highlighting, highlighter, syntax highlighting, codemirror.js, code, 
 Requires at least: 4.0.15
-Tested up to: 5.0.3
-Stable tag: 2.3.1
+Tested up to: 5.1.0
+Stable tag: 2.3.2
 License: GPL-2.0
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -119,6 +119,12 @@ __Not really...__ It is partially supported in IE 11. Known bugs are tracked [he
 
 
 == Changelog ==
+
+= 2.3.2 =
+* added a seventh screenshot
+* removed [`smartIndent`](https://codemirror.net/doc/manual.html#option_smartIndent) because its annoying
+* fixed gulp watch task
+* updated FAQ
 
 = 2.3.1 =
 * Fixing JS error in issue #81 _(Hopefully?)_
