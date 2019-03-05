@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.3.3
+* removed `smartindent` because its annoying
+
 ## 2.3.2
 * added a seventh screenshot
 * X - updated FAQ

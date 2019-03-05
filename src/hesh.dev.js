@@ -86,6 +86,7 @@
 		mode: 'wordpresspost',
 		tabMode: 'indent',
 		indentWithTabs: true,
+		smartIndent: false,
 		enterMode: 'keep',
 		styleActiveLine: true,
 		electricChars: false,
