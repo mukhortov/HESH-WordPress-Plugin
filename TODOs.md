@@ -1,12 +1,4 @@
 # TODOs
-- FAQ
-	- about `wpautop`
-		- suggest TinyMCE Advanced
-		- formatting - disable visual editor
-	- disable the visual editor
-	- gutenberg support
-	- keybindings are wrong
-	- spell-check
 - update codemirror to `5.44`
 - update supported number
 
