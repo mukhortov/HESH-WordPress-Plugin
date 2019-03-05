@@ -1,39 +1,45 @@
 # TODOs
+- FAQ
+	- about `wpautop`
+		- suggest TinyMCE Advanced
+		- formatting - disable visual editor
+	- disable the visual editor
+	- gutenberg support
+	- keybindings are wrong
+	- spell-check
+- update codemirror to `5.44`
 - update supported number
+
+
+## TODO Later...
+- Options for `wpautop`?
+	- __TinyMCE Advanced:__ has an option to _Keep paragraph tags_
+		- this option disables `wpautop` content filter and re-implements it in js
+		- search for `noAutop` in _mce/wptadv/plugin.js_
+		- this causes other problems [apparently](https://wordpress.org/support/topic/plugin-tinymce-advanced-stop-removing-the-ltpgt-and-ltbr-gt-tags-cant-add-html-comments/#topic-1449977-replies)
+	- __Gutenberg__ maybe use the gutenberg js version of [`autop`](https://wordpress.org/gutenberg/handbook/designers-developers/developers/packages/packages-autop/) js in conjunction with the disabling the pp `wpautop` content filter
+- Formatting HTML
+	- [html tidy](http://www.html-tidy.org/) is [included](http://php.net/manual/en/tidy.examples.basic.php) in some php apparently
+	- [js beautify](https://github.com/beautify-web/js-beautify) is what [vs code uses](https://code.visualstudio.com/docs/languages/html#_formatting)
+	- replace shortcode `[brackets][/brackets]` with `<@brackets @></@brackets @>`, beautify, and then replace them back.
+	- test on [beautifier.io](https://beautifier.io/)
+	- beautify for gutenberg-html-comment-json could run selectively in comment blocks as a separate operation
 - more automated release
 	- dist folder
-- FAQ
-	- about autop and removep
-	- about gutenberg support
-	- formatting - disable visual editor
-	- Alternatives...
-
+- full height and distraction free functionality matching is confusing
 - support gutenberg
 	- html block
 	- shortcode backwards compat
 	- gutenberg block comment + json
-
 - fewer but better themes
 - beautify dist css and js that are uncompressed?
-
-- new media
-	- logo
-	- description
-	- screenshots
-	- add to FAQ
-		- about spell-check
-		- search & replace
-		- Reporting Bugs
-
-## Later...
 - update layout on 1-2 column switch
 - load in visual 2col, switch to text, settings is in wrong place
 - drop jQuery dependency, needed now for form switch
-- create release automation
 - user tracking?
 	- give opt out checkbox?
 
-    
+
 ## Testing
 - test new features
 - browsers
@@ -44,6 +50,7 @@
     - Chrome (Win10) - seems ok
     - Edge - seems ok
     - IE 11 - Support dropped. Don't test
+
 
 ## CD from wordpress
 `cd wp-content/plugins/HESH-WordPress-Plugin/`

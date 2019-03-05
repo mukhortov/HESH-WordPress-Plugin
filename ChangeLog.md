@@ -1,11 +1,10 @@
 # Changelog
 
-## 2.3.3
-* removed [`smartIndent`](https://codemirror.net/doc/manual.html#option_smartIndent) because its annoying
-
 ## 2.3.2
 * added a seventh screenshot
-* X - updated FAQ
+* removed [`smartIndent`](https://codemirror.net/doc/manual.html#option_smartIndent) because its annoying
+* fixed gulp watch task
+* updated FAQ
 
 ## 2.3.1
 * Fixing JS error in issue #81 _(Hopefully?)_
