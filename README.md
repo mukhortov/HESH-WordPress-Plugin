@@ -46,9 +46,17 @@ Don't manually edit the `release` branch. Only merge `master` into the `release`
 - Commit the merge. note: `merge with master at vX.X.X`.
 - Push everything to github.
 - Test it one final time.
-- Create a new github release at [Code > Releases > Draft New](https://github.com/arniebradfo/Transitions/releases/new): `vX.X.X @ Target:release`, Add relevant release notes from `ChangeLog.md`.
-- Close the github issues related to the release with a comment linking to the release page: _Fixed in [vX.X.X](https://github.com/arniebradfo/Transitions/releases/tag/vX.X.X)!_
-- TODO: Publish to the WP Theme Repo through SVN
+- Create a new github release at [Code > Releases > Draft New](https://github.com/mukhortov/HESH-WordPress-Plugin/releases/new): `vX.X.X @ Target:release`, Add relevant release notes from `ChangeLog.md`.
+- Close the github issues related to the release with a comment linking to the release page: _Fixed in [vX.X.X](https://github.com/mukhortov/HESH-WordPress-Plugin/releases/tag/vX.X.X)!_
+- [Publish to the WP Plugin Repo through SVN](https://developer.wordpress.org/plugins/wordpress-org/how-to-use-subversion/#editing-existing-files):
+	- Copy and paste the new version files from the git repo to the SVN repo `/trunk` (TODO: better way?).
+	- Run `svn stat` and/or `svn diff` on the SVN repo and make sure the changes look correct.
+	- Run `svn ci -m "committing version X.X.X to trunk"`.
+	- Run `svn cp trunk tags/X.X.X` to make a tagged copy in the tags folder.
+	- Run `svn ci -m "tagging version X.X.X"` and release the new version to the world.
+	- Check to make sure WP updates the plugin.
+	- Cheers! have a drink.
+- Over the next 1-2weeks, watch the [plugin support page](https://wordpress.org/support/plugin/html-editor-syntax-highlighter) to see if there are major bugs or if everyone hates something.
 
 ## Sample Text for testing
 Paste this code in the editor to test out all the different syntax highlighting features.
