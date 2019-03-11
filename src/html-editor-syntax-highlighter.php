@@ -5,7 +5,7 @@
  * @since              0.0.1
  * @package            HESH_plugin
  *
- * Plugin Name:        HTML Editor Syntax Highlighter - DEV
+ * Plugin Name:        HTML Editor Syntax Highlighter !DEV!
  * Plugin URI:         http://wordpress.org/extend/plugins/html-editor-syntax-highlighter/
  * Description:        Add syntax highlighting to the all WordPress code editors using Codemirror.js
  * Text Domain:        html-editor-syntax-highlighter
@@ -32,7 +32,7 @@ if ( preg_match( '#' . basename(__FILE__) . '#', $_SERVER['PHP_SELF'] ) ) {
 	die('You are not allowed to call this page directly.');
 }
 
-define( 'HESH_LIBS', plugins_url( '/dist/', __FILE__ ) );
+define( 'HESH_LIBS', plugins_url( '/', __FILE__ ) );
 
 class wp_html_editor_syntax {
 	

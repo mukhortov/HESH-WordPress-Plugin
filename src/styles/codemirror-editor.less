@@ -1,20 +1,5 @@
-/*!
- * Plugin Name:  HTML Editor Syntax Highlighter
- * Author:       James Bradford
- * Author URI:   http://bradford.digital/
- * Author:       Peter Mukhortov
- * Author URI:   http://mukhortov.com/
- * Version:      2.3.2
-**/
-
-// import all the themes css
-@import (less) 'node_modules/codemirror/lib/codemirror.css';
-@import (less) 'node_modules/codemirror/theme/*.css';
-@import (less) 'theme/*.less';
-@import (less) 'node_modules/codemirror/addon/fold/foldgutter.css';
-// @import (less) 'node_modules/codemirror/addon/scroll/simplescrollbars.css';
-
 @z-index: 9;
+
 
 .CodeMirror {
 
@@ -495,36 +480,6 @@
 }
 
 
-// FULLSCREEN
-.heshFullscreen {
-	z-index: 99999;
-	position: fixed !important;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	height: 100%;
-	background: #fff;
-	padding: 2% 2% 0;
-
-	.CodeMirror {
-		border: 1px solid #ccc;
-		// border-radius: 0 0 4px 4px; // removing fixes setting animation bug
-		height: 85% !important;
-		@media screen and (max-height: 550px) {
-			height: 75% !important;
-		}
-	}
-	#ed_toolbar {
-		border: 1px solid #ccc;
-		border-bottom: 0;
-		border-radius: 4px 4px 0 0;
-	}
-	#cm_content_fullscreen:before{
-		content:'\f506';
-	}
-}
-
 .cm-matchhighlight,
 .CodeMirror-matchingbracket,
 .CodeMirror-matchingtag
@@ -543,7 +498,3 @@
 #ed_toolbar{
 	z-index: @z-index + 1;
 }
-
-
-@import (less) 'theme-or-plugin.less';
-@import (less) 'gutenberg.less';
