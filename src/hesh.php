@@ -17,10 +17,10 @@
  * License URI:        http://www.gnu.org/licenses/gpl-2.0.txt
  * GitHub Branch:      master
  * GitHub Plugin URI:  https://github.com/mukhortov/HESH-WordPress-Plugin
- * Version:            2.3.2
+ * Version:            2.3.3
  * Requires at least:  4.0.15
  * Tested up to:       5.1.0
- * Stable tag:         2.3.2
+ * Stable tag:         2.3.3
 **/
 
 // Check for required PHP version

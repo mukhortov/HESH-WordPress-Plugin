@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.3.3
+* Updated Release process
+* Fix bug: #80 Only activate on pages where the editor will run
+* Added UX survey notice.
+
 ## 2.3.2
 * added a seventh screenshot
 * removed [`smartIndent`](https://codemirror.net/doc/manual.html#option_smartIndent) because its annoying
