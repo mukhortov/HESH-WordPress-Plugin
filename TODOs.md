@@ -1,24 +1,4 @@
 # TODOs
-- more automated release
-	- dist folder
-	- update release notes
-	- assets are manually copies over
-	- build readme.txt?
-- beautify dist css and js that are uncompressed?
-- only initialize on correct page...
-- add link to survey
-	- in quick settings bar
-	- in nag notification
-	- in full settings bottom bar
-	- in the WP Readme
-	- on the Github Readme
-	- Pinned in the Support
-	- link in open github issues
-- Nag notification
-	- __A new version of the HTML Editor Syntax Highlighter Is Coming!__
-	- Please take this 5min user experience survey, and share your opinion to help shape new features in the v3.0 update. 
-	- [TAKE THE SURVEY](https://goo.gl/forms/xvaHgd7sZEbBbFAL2)
-
 
 ## TODO Later...
 - full height and distraction free functionality matching is confusing

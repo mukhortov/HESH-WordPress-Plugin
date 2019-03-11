@@ -154,14 +154,14 @@ const buildReadMeTxt = () => {
 
 const clean = () => {
 	return del([ 
-		dist + '/[^.]*', // anything that is not .hidden
+		dist + '/[^.]*.*', // anything that is not .hidden
 	],{ force: true });
 }
 
 const watch = () => {
     livereload.listen()
     gulp.watch([
-        './*.php',
+        './src/*.php',
 	], copyPluginFiles)
 	gulp.watch([
         './src/**/*.css',
