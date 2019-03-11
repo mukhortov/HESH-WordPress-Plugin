@@ -117,6 +117,7 @@
 		options.matchBrackets = !!heshOptions.matchBrackets;
 		options.autoCloseTags = !!heshOptions.autoCloseTags;
 		options.autoCloseBrackets = !!heshOptions.autoCloseBrackets;
+		options.surveyNoticeDismissed = !!heshOptions.surveyNoticeDismissed;
 		options.highlightSelectionMatches = !!heshOptions.highlightSelectionMatches;
 		options.matchTags = !!heshOptions.matchTags ? { bothTags: true } : false;
 		options.scrollbarStyle = !!heshOptions.scrollbarStyle ? 'overlay' : null;
@@ -144,6 +145,7 @@
 	}
 
 	function throttleAnimationFrame(callback) {
+		// Not sure this does what I think it does...
 		var wait = false;
 		return function () {
 			var context = this, args = arguments;
@@ -314,6 +316,15 @@
 
 		var observer = new MutationObserver(trackDialog);
 		observer.observe(editor.getWrapperElement(), { childList: true });
+
+		// Attach surveyNotice dismiss listener
+		var noticeDismissButton = document.querySelector('.notice-hesh .notice-dismiss');
+		if (noticeDismissButton)
+			noticeDismissButton.addEventListener('click', function() {
+				var surveyNoticeDismissed = document.getElementById('surveyNoticeDismissed')
+				if (surveyNoticeDismissed) surveyNoticeDismissed.value = true;
+				submitForm();
+			});		
 		
 		// attach all the inputs to live update
 		var options = settingsPanel.querySelectorAll('.CodeMirror-settings__option');
