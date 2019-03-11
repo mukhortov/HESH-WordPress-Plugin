@@ -1,35 +1,33 @@
 # TODOs
-- update codemirror to `5.44`
-- update supported number
+- more automated release
+	- dist folder
+	- update release notes
+- beautify dist css and js that are uncompressed?
+- only initialize on correct page...
+- add link to survey
+	- in quick settings bar
+	- in nag notification
+	- in full settings bottom bar
+	- in the WP Readme
+	- on the Github Readme
+	- Pinned in the Support
+	- link in open github issues
+- Nag notification
+	- __A new version of the HTML Editor Syntax Highlighter Is Coming!__
+	- Please take this 5min user experience survey, and share your opinion to help shape new features in the v 3.0 update. 
+	- [TAKE THE SURVEY](https://goo.gl/forms/xvaHgd7sZEbBbFAL2)
 
 
 ## TODO Later...
-- Options for `wpautop`?
-	- __TinyMCE Advanced:__ has an option to _Keep paragraph tags_
-		- this option disables `wpautop` content filter and re-implements it in js
-		- search for `noAutop` in _mce/wptadv/plugin.js_
-		- this causes other problems [apparently](https://wordpress.org/support/topic/plugin-tinymce-advanced-stop-removing-the-ltpgt-and-ltbr-gt-tags-cant-add-html-comments/#topic-1449977-replies)
-	- __Gutenberg__ maybe use the gutenberg js version of [`autop`](https://wordpress.org/gutenberg/handbook/designers-developers/developers/packages/packages-autop/) js in conjunction with the disabling the pp `wpautop` content filter
-- Formatting HTML
-	- [html tidy](http://www.html-tidy.org/) is [included](http://php.net/manual/en/tidy.examples.basic.php) in some php apparently
-	- [js beautify](https://github.com/beautify-web/js-beautify) is what [vs code uses](https://code.visualstudio.com/docs/languages/html#_formatting)
-	- replace shortcode `[brackets][/brackets]` with `<@brackets @></@brackets @>`, beautify, and then replace them back.
-	- test on [beautifier.io](https://beautifier.io/)
-	- beautify for gutenberg-html-comment-json could run selectively in comment blocks as a separate operation
-- more automated release
-	- dist folder
 - full height and distraction free functionality matching is confusing
 - support gutenberg
 	- html block
 	- shortcode backwards compat
 	- gutenberg block comment + json
 - fewer but better themes
-- beautify dist css and js that are uncompressed?
 - update layout on 1-2 column switch
 - load in visual 2col, switch to text, settings is in wrong place
 - drop jQuery dependency, needed now for form switch
-- user tracking?
-	- give opt out checkbox?
 
 
 ## Testing
