@@ -4,7 +4,7 @@ Donate link: https://www.paypal.me/mukhortov/5
 Tags: syntax highlighter, codemirror, text editor, code highlighter, code coloring, editor, html editor, gutenberg, code editor, theme editor, plugin editor, syntax, highlighting, highlighter, syntax highlighting, codemirror.js, code, 
 Requires at least: 4.0.15
 Tested up to: 5.1.0
-Stable tag: 2.3.2
+Stable tag: 2.3.3
 License: GPL-2.0
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -26,6 +26,9 @@ Add syntax highlighting in the Classic Post & Page HTML text editor, Gutenberg C
 * Fullscreen mode: toggle with `F11`/`Esc` hotkeys
 
 If you would like to contribute to this plugin, view the [github repo](https://github.com/mukhortov/HESH-WordPress-Plugin).
+
+If you're a regular user of this plugin, please consider taking a short [User Experience Survey](https://goo.gl/forms/xvaHgd7sZEbBbFAL2) to provide feedback that will help shape the new version 3.0.
+
 
 == Frequently Asked Questions ==
 
@@ -119,6 +122,11 @@ __Not really...__ It is partially supported in IE 11. Known bugs are tracked [he
 
 
 == Changelog ==
+
+= 2.3.3 =
+* Updated Release process
+* Fix bug: #80 Only activate on pages where the editor will run
+* Added UX survey notice.
 
 = 2.3.2 =
 * added a seventh screenshot
