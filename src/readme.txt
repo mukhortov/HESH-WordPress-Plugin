@@ -27,6 +27,9 @@ Add syntax highlighting in the Classic Post & Page HTML text editor, Gutenberg C
 
 If you would like to contribute to this plugin, view the [github repo](https://github.com/mukhortov/HESH-WordPress-Plugin).
 
+If you're a regular user of this plugin, please consider taking a short [User Experience Survey](https://goo.gl/forms/xvaHgd7sZEbBbFAL2) to provide feedback that will help shape the new version 3.0.
+
+
 == Frequently Asked Questions ==
 
 
