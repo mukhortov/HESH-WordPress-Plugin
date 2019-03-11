@@ -17,13 +17,13 @@ Add syntax highlighting in the Classic Post & Page HTML text editor, Gutenberg C
 = Features =
 
 * Syntax highlighting in the Post/Page HTML editor
-* _NEW:_ Syntax highlighting in the Gutenberg Code Editor
+* _NEW:_ Syntax highlighting in the Gutenberg _Code Editor_ (not _Visual Editor_)
 * Syntax highlighting in the Theme & Plugin editors
-* Syntax highlighting for WordPress shortcodes
+* Syntax highlighting for WordPress `[shortcodes/]`
 * Save your posts and pages pressing `Ctrl+S` (`Cmd+S` on Mac)
 * Restore cursor position after page is reloaded
 * Huge selection of themes and other customization options
-* Fullscreen mode: toggle with F11/Esc hotkeys
+* Fullscreen mode: toggle with `F11`/`Esc` hotkeys
 
 If you would like to contribute to this plugin, view the [github repo](https://github.com/mukhortov/HESH-WordPress-Plugin).
 
@@ -32,9 +32,9 @@ If you would like to contribute to this plugin, view the [github repo](https://g
 
 = Does it work with Gutenberg? =
 
-__Yes!__ _Partially..._ Since version 2.3.0, it works with the Gutenberg _Code Editor_, but only the _Code Editor_, not the _Visual Editor_. Press `Ctrl+Shift+Alt+M`/`Cmd+Shift+Alt+M` to switch between the _Visual Editor_ and the _Code Editor_.
+__Yes!__ _Partially..._ Since version 2.3.0, it works with the Gutenberg _Code Editor_, but only the _Code Editor_, not the _Visual Editor_. Press `Ctrl+Shift+Alt+M` / `Cmd+Shift+Alt+M` to switch between the _Visual Editor_ and the _Code Editor_.
 
-It __does not__ work with blocks in th Gutenberg _Visual Editor_. This means it __does not__ highlight code in:
+It __does not__ work with blocks in the Gutenberg _Visual Editor_. This means it __does not__ highlight code in:
 * The _Edit as HTML_ section of every block
 * The _Custom HTML_ block
 * The _Shortcode_ block
@@ -43,45 +43,45 @@ See the last screenshot for a visual example.
 It may work with other code related parts of Gutenberg in the future. [Track the progress here.](https://github.com/mukhortov/HESH-WordPress-Plugin/issues/72)
 
 
-= I want the Classic Editor Back =
+= I want the Classic Editor back! =
 
 Since WordPress version 5.0, Gutenberg is the default editor. If you want this plugin to work the way it used to, you'll have to download the [Classic Editor plugin](https://wordpress.org/plugins/classic-editor/).
 
 
 = Can I search and/or replace? =
 
-__WINDOWS / MAC : Function__
-`Ctrl-F` / `Cmd-F` : _Start searching_
-`Ctrl-G` / `Cmd-G` : _Find next_
-`Shift-Ctrl-G` / `Shift-Cmd-G` : _Find previous_
-`Shift-Ctrl-F` / `Cmd-Opt-F` : _Replace_
-`Shift-Ctrl-R` / `Shift-Cmd-Opt-F` : _Replace all_
-`Alt-F` : _Persistent search_ (dialog doesn't auto-close, `Enter` to find next, `Shift-Enter` to find previous)
-`Alt-G` : _Jump to line_
+__Function: WINDOWS / MAC__
+__Start searching:__   `Ctrl-F` / `Cmd-F`
+__Find next:__         `Ctrl-G` / `Cmd-G`
+__Find previous:__     `Shift-Ctrl-G` / `Shift-Cmd-G`
+__Replace:__           `Shift-Ctrl-F` / `Cmd-Opt-F`
+__Replace all:__       `Shift-Ctrl-R` / `Shift-Cmd-Opt-F`
+__Persistent search:__ `Alt-F` (dialog doesn't auto-close, `Enter` to find next, `Shift-Enter` to find previous)
+__Jump to line:__      `Alt-G` 
 
 
-= Why are `<p>` and `<br/>` tags are being removed? =
+= Why are p and br tags are being removed? =
 
 Wordpress has a feature called the _['auto p'](https://codex.wordpress.org/Function_Reference/wpautop)_ filter which:
 
->_"Changes double line-breaks in the text into HTML paragraphs."_
+> "Changes double line-breaks in the text into HTML paragraphs."
 
 For example, _auto p_ will take some standard post content like this:
 
-```html
+`
 Some long text
 that has many lines.
 
 And paragraphs in it.
-```
+`
 
 and turn it into something like this:
 
-```html
+`
 <p>Some long text<br/>
 that has many lines</p>
 <p>And paragraphs in it.</p>
-```
+`
 
 Like your little brother, it thinks it’s helping, even if it isn’t.
 
@@ -92,7 +92,7 @@ __What can I do about it?__
 You can read more about this issues this may cause in this [support thread](https://wordpress.org/support/topic/tags-being-stripped-in-classic-block-content-after-wp-upgrade/).
 
 
-= Why is my code is being reformatting when I switch to the _Visual Editor_ and back? =
+= Why is my code is being reformatting when I switch to the Visual Editor and back? =
 
 The WordPress _Visual Editor_ needs to reformat code in order to function correctly. This is not something that this plugin can fix. __You can disable the Visual Editor entirely__ by going to: _Users_ > _Your Profile_ > _Visual Editor: check 'Disable the visual editor when writing'_.
 

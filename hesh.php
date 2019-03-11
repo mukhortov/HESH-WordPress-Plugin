@@ -5,7 +5,7 @@
  * @since              0.0.1
  * @package            HESH_plugin
  *
- * Plugin Name:        HTML Editor Syntax Highlighter
+ * Plugin Name:        HTML Editor Syntax Highlighter 
  * Plugin URI:         http://wordpress.org/extend/plugins/html-editor-syntax-highlighter/
  * Description:        Add syntax highlighting to the all WordPress code editors using Codemirror.js
  * Text Domain:        html-editor-syntax-highlighter
@@ -32,7 +32,7 @@ if ( preg_match( '#' . basename(__FILE__) . '#', $_SERVER['PHP_SELF'] ) ) {
 	die('You are not allowed to call this page directly.');
 }
 
-define( 'HESH_LIBS', plugins_url( '/dist/', __FILE__ ) );
+define( 'HESH_LIBS', plugins_url( '/', __FILE__ ) );
 
 class wp_html_editor_syntax {
 	
@@ -75,11 +75,13 @@ class wp_html_editor_syntax {
 		// this shows up in js as window.heshOptions
 		$heshOptions = array(
 			'ajaxUrl' => admin_url( 'admin-ajax.php' ),
+			// 'nonce' => wp_create_nonce( $this->formProcessName ) // TODO: use this instead of the hidden field?
 		);
 
 		// place all the userPreferences into the heshOptions object
 		foreach ($this->userPreferences as $id => $value) {
 			$heshOptions[$id] = $value['current'];
+			// error_log( $id . ': ' . $heshOptions[$id] . ' type: ' . gettype($heshOptions[$id]) ); // for debug
 		}
 		wp_localize_script(
 			'heshJs',        // for hesh.js
@@ -229,6 +231,7 @@ class wp_html_editor_syntax {
 				if ($setting === 'true') $setting = true;
 				if ($setting === 'false') $setting = false;
 				if (is_numeric($setting)) $setting = floatval($setting);
+				// error_log( $id . ': ' . $setting . ' type: ' . gettype($setting) ); // for debug
 				update_user_meta( get_current_user_id(), $this->prefix.$id, $setting);
 			}
 		}
@@ -358,6 +361,7 @@ class wp_html_editor_syntax {
 	}
 		
 	public function hesh_output_form() {
+		// ob_start();
 		?>
 			<div class="CodeMirror-settings closed" id="CodeMirror-settings" style="display:none;">
 				<form
@@ -434,6 +438,7 @@ class wp_html_editor_syntax {
 				<div class="CodeMirror-settings__toggle" id="CodeMirror-settings__toggle"></div>
 			</div>
 		<?php 
+		// return ob_get_clean();
 	}
 
 	private $cssThemes = array( 

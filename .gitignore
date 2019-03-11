@@ -1,13 +1,1 @@
-node_modules
-*.map
 .DS_Store
-.trash
-resources
-dist
-.jshintrc
-*.md
-gulpfile.js
-package.json
-.vscode
-src
-mockups
