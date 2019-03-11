@@ -38,12 +38,11 @@ Don't manually edit the `release` branch. Only merge `master` into the `release`
 - Switch to `master` branch.
 - Add a description of the release in `readme.txt` & `ChangeLog.md`.
 - Update all version numbers including the _Stable Tag_.
-- Update WP _tested up to_ in both places: readme.txt and php.
-- Recompile with `gulp build`.
-- Commit with the version number in the commit note: `updating to vX.X.X`.
-- Switch to the `release` branch.
-- Merge `master` into `release` with `git merge master`. Use `git mergetool` to delete (`d`) _"modified"_ files that the `release` does not need.
-- Commit the merge. note: `merge with master at vX.X.X`.
+- Update WP _Tested up to:_ in both places: `readme.txt` and `hesh.php`.
+- Commit with the version number in the commit note: `compiling to vX.X.X`.
+- Recompile with `gulp package`.
+- In the parallel `release` branch dist folder 
+- Commit onto `release` with the version number in the commit note: `updating to vX.X.X`.
 - Push everything to github.
 - Test it one final time.
 - Create a new github release at [Code > Releases > Draft New](https://github.com/mukhortov/HESH-WordPress-Plugin/releases/new): `vX.X.X @ Target:release`, Add relevant release notes from `ChangeLog.md`.
@@ -51,6 +50,7 @@ Don't manually edit the `release` branch. Only merge `master` into the `release`
 - [Publish to the WP Plugin Repo through SVN](https://developer.wordpress.org/plugins/wordpress-org/how-to-use-subversion/#editing-existing-files):
 	- Copy and paste the new version files from the git repo to the SVN repo `/trunk` (TODO: better way?).
 	- Run `svn stat` and/or `svn diff` on the SVN repo and make sure the changes look correct.
+	- Run `svn add` or `svn delete` 
 	- Run `svn ci -m "committing version X.X.X to trunk"`.
 	- Run `svn cp trunk tags/X.X.X` to make a tagged copy in the tags folder.
 	- Run `svn ci -m "tagging version X.X.X"` and release the new version to the world.
