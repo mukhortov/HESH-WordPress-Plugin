@@ -138,7 +138,7 @@ const removeDevTitle = () => {
 		dist+'/*.php', 
 		dist+'/readme.txt'
 	])
-		// .pipe(replace('!DEV!', ''))
+		.pipe(replace('!DEV!', ''))
 		.pipe(gulp.dest(dist))
 }
 
