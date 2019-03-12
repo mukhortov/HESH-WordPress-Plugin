@@ -5,7 +5,7 @@
  * @since              0.0.1
  * @package            HESH_plugin
  *
- * Plugin Name:        HTML Editor Syntax Highlighter !DEV!
+ * Plugin Name:        HTML Editor Syntax Highlighter 
  * Plugin URI:         http://wordpress.org/extend/plugins/html-editor-syntax-highlighter/
  * Description:        Add syntax highlighting to the all WordPress code editors using Codemirror.js
  * Text Domain:        html-editor-syntax-highlighter
