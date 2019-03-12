@@ -5,7 +5,7 @@
  * @since              0.0.1
  * @package            HESH_plugin
  *
- * Plugin Name:        HTML Editor Syntax Highlighter 
+ * Plugin Name:        HTML Editor Syntax Highlighter !DEV!
  * Plugin URI:         http://wordpress.org/extend/plugins/html-editor-syntax-highlighter/
  * Description:        Add syntax highlighting to the all WordPress code editors using Codemirror.js
  * Text Domain:        html-editor-syntax-highlighter
@@ -17,10 +17,10 @@
  * License URI:        http://www.gnu.org/licenses/gpl-2.0.txt
  * GitHub Branch:      master
  * GitHub Plugin URI:  https://github.com/mukhortov/HESH-WordPress-Plugin
- * Version:            2.3.3
+ * Version:            2.3.4
  * Requires at least:  4.0.15
  * Tested up to:       5.1.0
- * Stable tag:         2.3.3
+ * Stable tag:         2.3.4
 **/
 
 // Check for required PHP version
@@ -102,11 +102,11 @@ class Wp_Html_Editor_Syntax_Highlighter {
 		$this->userPreferences = array(
 
 			// HIDDEN OPTIONS // added in the primary settings bar
-			'surveyNoticeDismissed' => array(
+			'surveyNoticeDismissedB' => array(
 				'title' => 'UX Survey Notice Dismissed',
 				'type' => 'hidden',
 				// 'current' => false, // reset for debug
-				'current' => get_user_meta( get_current_user_id(), $this->prefix.'surveyNoticeDismissed' , true),
+				'current' => get_user_meta( get_current_user_id(), $this->prefix.'surveyNoticeDismissedB' , true),
 				'default' => false,
 				'set' => 'hidden',
 			),
@@ -421,7 +421,7 @@ class Wp_Html_Editor_Syntax_Highlighter {
 								<!-- <small>These features are experimental and may have bugs</small> -->
 								<small>
 									<strong>HELP!</strong>
-									Please consider taking a short <a href="<?php echo $this->$surveyLink; ?>" target="_blank" >User Experience Survey</a> 
+									Please consider taking a short <a href="<?php echo $this->surveyLink; ?>" target="_blank" >User Experience Survey</a> 
 									to provide feedback that will help shape the new version 3.0 of this plugin.
 								</small>
 								</td></tr>
@@ -452,7 +452,7 @@ class Wp_Html_Editor_Syntax_Highlighter {
 						<p class="CodeMirror-settings__foot-content CodeMirror-settings__feedback">
 							<small>
 								Provide
-								<a href="<?php echo $this->$surveyLink; ?>" target="_blank" >feedback</a>,
+								<a href="<?php echo $this->surveyLink; ?>" target="_blank" >feedback</a>,
 								Leave a 
 								<a href="https://wordpress.org/support/plugin/html-editor-syntax-highlighter/reviews/#new-post" target="_blank">review</a>,
 								fork on
@@ -478,7 +478,7 @@ class Wp_Html_Editor_Syntax_Highlighter {
 	}
 
 	public function display_survey_notice() {
-		if ( $this->userPreferences['surveyNoticeDismissed']['current'] ) return;
+		if ( $this->userPreferences['surveyNoticeDismissedB']['current'] ) return;
 		// https://codex.wordpress.org/Plugin_API/Action_Reference/admin_notices
 		?>
 		<div class="notice notice-info is-dismissible notice-hesh">
@@ -489,7 +489,7 @@ class Wp_Html_Editor_Syntax_Highlighter {
 				Please take this 5 minute user experience survey, and share your opinion to help shape new features in the v3.0 update. 
 				A survey link is also available in the <em>Advanced Options</em>.
 				<br/><br/>
-				<a href="<?php echo $this->$surveyLink; ?>" target="_blank" class="button button-primary">Take the UX Survey</a>
+				<a href="<?php echo $this->surveyLink; ?>" target="_blank" class="button button-primary">Take the UX Survey</a>
 			</p>
 		</div>
 		<?php

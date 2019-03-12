@@ -4,7 +4,7 @@ Donate link: https://www.paypal.me/mukhortov/5
 Tags: syntax highlighter, codemirror, text editor, code highlighter, code coloring, editor, html editor, gutenberg, code editor, theme editor, plugin editor, syntax, highlighting, highlighter, syntax highlighting, codemirror.js, code, 
 Requires at least: 4.0.15
 Tested up to: 5.1.0
-Stable tag: 2.3.3
+Stable tag: 2.3.4
 License: GPL-2.0
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
