@@ -115,7 +115,7 @@ const minifyJS = () => {
 const copyPluginFiles = () => {
 	return gulp.src([
 		'./src/*.php', 
-		'./src/README.txt'
+		'./src/readme.txt'
 	])
 		.pipe(gulp.dest(dist))
 		.pipe(livereload())
@@ -136,9 +136,9 @@ const copyAssets = () => {
 const removeDevTitle = () => {
 	return gulp.src([
 		dist+'/*.php', 
-		dist+'/README.txt'
+		dist+'/readme.txt'
 	])
-		.pipe(replace('!DEV!', ''))
+		// .pipe(replace('!DEV!', ''))
 		.pipe(gulp.dest(dist))
 }
 

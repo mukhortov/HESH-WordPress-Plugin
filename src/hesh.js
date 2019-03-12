@@ -117,7 +117,7 @@
 		options.matchBrackets = !!heshOptions.matchBrackets;
 		options.autoCloseTags = !!heshOptions.autoCloseTags;
 		options.autoCloseBrackets = !!heshOptions.autoCloseBrackets;
-		options.surveyNoticeDismissed = !!heshOptions.surveyNoticeDismissed;
+		options.surveyNoticeDismissedB = !!heshOptions.surveyNoticeDismissedB;
 		options.highlightSelectionMatches = !!heshOptions.highlightSelectionMatches;
 		options.matchTags = !!heshOptions.matchTags ? { bothTags: true } : false;
 		options.scrollbarStyle = !!heshOptions.scrollbarStyle ? 'overlay' : null;
@@ -321,8 +321,8 @@
 		var noticeDismissButton = document.querySelector('.notice-hesh .notice-dismiss');
 		if (noticeDismissButton)
 			noticeDismissButton.addEventListener('click', function() {
-				var surveyNoticeDismissed = document.getElementById('surveyNoticeDismissed')
-				if (surveyNoticeDismissed) surveyNoticeDismissed.value = true;
+				var surveyNoticeDismissedB = document.getElementById('surveyNoticeDismissedB')
+				if (surveyNoticeDismissedB) surveyNoticeDismissedB.value = true;
 				submitForm();
 			});		
 		
