@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.4.0
+* updating a major number so I can review downloads more accurately.
+* reorganized the codebase
+* Reverting the name-change of `hesh.php`
+This name-change of `html-editor-syntax-highlighter.php` to `hesh.php` caused the plugin to deactivate itself because the php file was missing. Reverting the name-change of `hesh.php` will cause this all over again, but hey.
+
 ## 2.3.5
 * remove Github Updater headers
 * testing WP update Process
