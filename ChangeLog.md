@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.3.5
+* remove Github Updater headers
+* testing WP update Process
+
+## 2.3.4
+* fixing typo `$this->$surveyLink` to `$this->surveyLink`
+
 ## 2.3.3
 * Updated Release process
 * Fix bug: #80 Only activate on pages where the editor will run
