@@ -8,7 +8,7 @@
  * Plugin Name:        HTML Editor Syntax Highlighter !DEV!
  * Plugin URI:         http://wordpress.org/extend/plugins/html-editor-syntax-highlighter/
  * Description:        Add syntax highlighting to the all WordPress code editors using Codemirror.js
- * Text Domain:        hesh
+ * Text Domain:        html-editor-syntax-highlighter
  * Author:             James Bradford
  * Author URI:         http://bradford.digital/
  * Author:             Petr Mukhortov
