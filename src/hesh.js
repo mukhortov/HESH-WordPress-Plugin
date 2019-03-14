@@ -331,7 +331,7 @@
 		var noticeDismissButton = document.querySelector('.notice-hesh .notice-dismiss');		
 		if (!noticeDismissButton) return;
 		noticeDismissButton.addEventListener('click', function() {
-			var surveyNoticeDismissedB = document.getElementById('surveyNoticeDismissedB')
+			var surveyNoticeDismissedB = theForm.elements['surveyNoticeDismissedB']
 			if (surveyNoticeDismissedB) surveyNoticeDismissedB.value = true;
 			submitForm();
 		});	
@@ -442,7 +442,7 @@
 
 	// updates the user settings in the wordpress DB
 	function submitForm() {
-		var formArray = $('#CodeMirror-settings__form').serializeArray();
+		var formArray = $(theForm).serializeArray();
 		// TODO: drop jQuery dependency
 		// console.log(formArray); // for debug
 		$.post(heshOptions.ajaxUrl, formArray, function (response) {
