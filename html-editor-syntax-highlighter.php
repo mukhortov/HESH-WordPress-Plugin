@@ -6,7 +6,7 @@
  * Author URI:         http://bradford.digital/
  * Author:             Petr Mukhortov
  * Author URI:         http://mukhortov.com/
- * Version:            2.4.0
+ * Version:            2.4.1
  * 
  * @package            HESH_plugin
 **/
@@ -85,7 +85,7 @@ class Wp_Html_Editor_Syntax_Highlighter {
 	private $formProcessName = 'hesh_options_form';
 	private $nonceSecretCode = 'secret-code';
 	private $prefix = 'hesh_';
-	private $userPreferences; // added to the primary bar
+	private $userPreferences = array(); // added to the primary bar
 	public function hesh_set_options() {
 		$this->userPreferences = array(
 
@@ -466,7 +466,7 @@ class Wp_Html_Editor_Syntax_Highlighter {
 	}
 
 	public function display_survey_notice() {
-		if ( $this->userPreferences['surveyNoticeDismissedB']['current'] ) return;
+		if ( $this->userPreferences['surveyNoticeDismissedB']['current'] ) return; // TODO: this line
 		// https://codex.wordpress.org/Plugin_API/Action_Reference/admin_notices
 		?>
 		<div class="notice notice-info is-dismissible notice-hesh">

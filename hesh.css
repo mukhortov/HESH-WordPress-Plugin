@@ -1842,59 +1842,6 @@ span.CodeMirror-selectedtext {
   color: #faf8f5!important;
 }
 
-.cm-s-elegant span.cm-atom,.cm-s-elegant span.cm-number,.cm-s-elegant span.cm-string {
-  color: #762;
-}
-
-.cm-s-elegant span.cm-comment {
-  color: #262;
-  font-style: italic;
-  line-height: 1em;
-}
-
-.cm-s-elegant span.cm-meta {
-  color: #555;
-  font-style: italic;
-  line-height: 1em;
-}
-
-.cm-s-elegant span.cm-variable {
-  color: #000;
-}
-
-.cm-s-elegant span.cm-variable-2 {
-  color: #b11;
-}
-
-.cm-s-elegant span.cm-qualifier {
-  color: #555;
-}
-
-.cm-s-elegant span.cm-keyword {
-  color: #730;
-}
-
-.cm-s-elegant span.cm-builtin {
-  color: #30a;
-}
-
-.cm-s-elegant span.cm-link {
-  color: #762;
-}
-
-.cm-s-elegant span.cm-error {
-  background-color: #fdd;
-}
-
-.cm-s-elegant .CodeMirror-activeline-background {
-  background: #e8f2ff;
-}
-
-.cm-s-elegant .CodeMirror-matchingbracket {
-  outline: 1px solid grey;
-  color: #000!important;
-}
-
 .cm-s-eclipse span.cm-meta {
   color: #ff1717;
 }
@@ -1974,6 +1921,59 @@ span.CodeMirror-selectedtext {
 }
 
 .cm-s-eclipse .CodeMirror-matchingbracket {
+  outline: 1px solid grey;
+  color: #000!important;
+}
+
+.cm-s-elegant span.cm-atom,.cm-s-elegant span.cm-number,.cm-s-elegant span.cm-string {
+  color: #762;
+}
+
+.cm-s-elegant span.cm-comment {
+  color: #262;
+  font-style: italic;
+  line-height: 1em;
+}
+
+.cm-s-elegant span.cm-meta {
+  color: #555;
+  font-style: italic;
+  line-height: 1em;
+}
+
+.cm-s-elegant span.cm-variable {
+  color: #000;
+}
+
+.cm-s-elegant span.cm-variable-2 {
+  color: #b11;
+}
+
+.cm-s-elegant span.cm-qualifier {
+  color: #555;
+}
+
+.cm-s-elegant span.cm-keyword {
+  color: #730;
+}
+
+.cm-s-elegant span.cm-builtin {
+  color: #30a;
+}
+
+.cm-s-elegant span.cm-link {
+  color: #762;
+}
+
+.cm-s-elegant span.cm-error {
+  background-color: #fdd;
+}
+
+.cm-s-elegant .CodeMirror-activeline-background {
+  background: #e8f2ff;
+}
+
+.cm-s-elegant .CodeMirror-matchingbracket {
   outline: 1px solid grey;
   color: #000!important;
 }
@@ -2375,86 +2375,6 @@ span.CodeMirror-selectedtext {
   background: #000;
 }
 
-.cm-s-isotope.CodeMirror {
-  background: #000;
-  color: #e0e0e0;
-}
-
-.cm-s-isotope div.CodeMirror-selected {
-  background: #404040!important;
-}
-
-.cm-s-isotope .CodeMirror-gutters {
-  background: #000;
-  border-right: 0;
-}
-
-.cm-s-isotope .CodeMirror-linenumber {
-  color: gray;
-}
-
-.cm-s-isotope .CodeMirror-cursor {
-  border-left: 1px solid silver!important;
-}
-
-.cm-s-isotope span.cm-comment {
-  color: #30f;
-}
-
-.cm-s-isotope span.cm-atom,.cm-s-isotope span.cm-number {
-  color: #c0f;
-}
-
-.cm-s-isotope span.cm-attribute,.cm-s-isotope span.cm-property {
-  color: #3f0;
-}
-
-.cm-s-isotope span.cm-keyword {
-  color: red;
-}
-
-.cm-s-isotope span.cm-string {
-  color: #f09;
-}
-
-.cm-s-isotope span.cm-variable {
-  color: #3f0;
-}
-
-.cm-s-isotope span.cm-variable-2 {
-  color: #06f;
-}
-
-.cm-s-isotope span.cm-def {
-  color: #f90;
-}
-
-.cm-s-isotope span.cm-error {
-  background: red;
-  color: silver;
-}
-
-.cm-s-isotope span.cm-bracket {
-  color: #e0e0e0;
-}
-
-.cm-s-isotope span.cm-tag {
-  color: red;
-}
-
-.cm-s-isotope span.cm-link {
-  color: #c0f;
-}
-
-.cm-s-isotope .CodeMirror-matchingbracket {
-  text-decoration: underline;
-  color: #fff!important;
-}
-
-.cm-s-isotope .CodeMirror-activeline-background {
-  background: #202020;
-}
-
 .cm-s-idea span.cm-meta {
   color: olive;
 }
@@ -2536,6 +2456,86 @@ span.CodeMirror-selectedtext {
 .CodeMirror-hints.idea .CodeMirror-hint-active {
   background-color: #a2b8c9!important;
   color: #5c6065!important;
+}
+
+.cm-s-isotope.CodeMirror {
+  background: #000;
+  color: #e0e0e0;
+}
+
+.cm-s-isotope div.CodeMirror-selected {
+  background: #404040!important;
+}
+
+.cm-s-isotope .CodeMirror-gutters {
+  background: #000;
+  border-right: 0;
+}
+
+.cm-s-isotope .CodeMirror-linenumber {
+  color: gray;
+}
+
+.cm-s-isotope .CodeMirror-cursor {
+  border-left: 1px solid silver!important;
+}
+
+.cm-s-isotope span.cm-comment {
+  color: #30f;
+}
+
+.cm-s-isotope span.cm-atom,.cm-s-isotope span.cm-number {
+  color: #c0f;
+}
+
+.cm-s-isotope span.cm-attribute,.cm-s-isotope span.cm-property {
+  color: #3f0;
+}
+
+.cm-s-isotope span.cm-keyword {
+  color: red;
+}
+
+.cm-s-isotope span.cm-string {
+  color: #f09;
+}
+
+.cm-s-isotope span.cm-variable {
+  color: #3f0;
+}
+
+.cm-s-isotope span.cm-variable-2 {
+  color: #06f;
+}
+
+.cm-s-isotope span.cm-def {
+  color: #f90;
+}
+
+.cm-s-isotope span.cm-error {
+  background: red;
+  color: silver;
+}
+
+.cm-s-isotope span.cm-bracket {
+  color: #e0e0e0;
+}
+
+.cm-s-isotope span.cm-tag {
+  color: red;
+}
+
+.cm-s-isotope span.cm-link {
+  color: #c0f;
+}
+
+.cm-s-isotope .CodeMirror-matchingbracket {
+  text-decoration: underline;
+  color: #fff!important;
+}
+
+.cm-s-isotope .CodeMirror-activeline-background {
+  background: #202020;
 }
 
 .cm-s-lesser-dark {
@@ -3939,98 +3939,6 @@ div.cm-s-mdn-like span.CodeMirror-matchingbracket {
   color: #fff!important;
 }
 
-.cm-s-panda-syntax {
-  background: #292a2b;
-  color: #e6e6e6;
-  line-height: 1.5;
-  font-family: Operator Mono,Source Sans Pro,Menlo,Monaco,Consolas,Courier New,monospace;
-}
-
-.cm-s-panda-syntax .CodeMirror-cursor {
-  border-color: #ff2c6d;
-}
-
-.cm-s-panda-syntax .CodeMirror-activeline-background {
-  background: rgba(99,123,156,.1);
-}
-
-.cm-s-panda-syntax .CodeMirror-selected {
-  background: #fff;
-}
-
-.cm-s-panda-syntax .cm-comment {
-  font-style: italic;
-  color: #676b79;
-}
-
-.cm-s-panda-syntax .cm-operator {
-  color: #f3f3f3;
-}
-
-.cm-s-panda-syntax .cm-string {
-  color: #19f9d8;
-}
-
-.cm-s-panda-syntax .cm-string-2 {
-  color: #ffb86c;
-}
-
-.cm-s-panda-syntax .cm-tag {
-  color: #ff2c6d;
-}
-
-.cm-s-panda-syntax .cm-meta {
-  color: #b084eb;
-}
-
-.cm-s-panda-syntax .cm-number {
-  color: #ffb86c;
-}
-
-.cm-s-panda-syntax .cm-atom {
-  color: #ff2c6d;
-}
-
-.cm-s-panda-syntax .cm-keyword {
-  color: #ff75b5;
-}
-
-.cm-s-panda-syntax .cm-variable {
-  color: #ffb86c;
-}
-
-.cm-s-panda-syntax .cm-type,.cm-s-panda-syntax .cm-variable-2,.cm-s-panda-syntax .cm-variable-3 {
-  color: #ff9ac1;
-}
-
-.cm-s-panda-syntax .cm-def {
-  color: #e6e6e6;
-}
-
-.cm-s-panda-syntax .cm-property {
-  color: #f3f3f3;
-}
-
-.cm-s-panda-syntax .cm-attribute,.cm-s-panda-syntax .cm-unit {
-  color: #ffb86c;
-}
-
-.cm-s-panda-syntax .CodeMirror-matchingbracket {
-  border-bottom: 1px dotted #19f9d8;
-  padding-bottom: 2px;
-  color: #e6e6e6;
-}
-
-.cm-s-panda-syntax .CodeMirror-gutters {
-  background: #292a2b;
-  border-right-color: hsla(0,0%,100%,.1);
-}
-
-.cm-s-panda-syntax .CodeMirror-linenumber {
-  color: #e6e6e6;
-  opacity: .6;
-}
-
 .cm-s-paraiso-dark.CodeMirror {
   background: #2f1e2e;
   color: #b9b6b0;
@@ -4213,6 +4121,98 @@ div.cm-s-mdn-like span.CodeMirror-matchingbracket {
 .cm-s-paraiso-light .CodeMirror-matchingbracket {
   text-decoration: underline;
   color: #fff!important;
+}
+
+.cm-s-panda-syntax {
+  background: #292a2b;
+  color: #e6e6e6;
+  line-height: 1.5;
+  font-family: Operator Mono,Source Sans Pro,Menlo,Monaco,Consolas,Courier New,monospace;
+}
+
+.cm-s-panda-syntax .CodeMirror-cursor {
+  border-color: #ff2c6d;
+}
+
+.cm-s-panda-syntax .CodeMirror-activeline-background {
+  background: rgba(99,123,156,.1);
+}
+
+.cm-s-panda-syntax .CodeMirror-selected {
+  background: #fff;
+}
+
+.cm-s-panda-syntax .cm-comment {
+  font-style: italic;
+  color: #676b79;
+}
+
+.cm-s-panda-syntax .cm-operator {
+  color: #f3f3f3;
+}
+
+.cm-s-panda-syntax .cm-string {
+  color: #19f9d8;
+}
+
+.cm-s-panda-syntax .cm-string-2 {
+  color: #ffb86c;
+}
+
+.cm-s-panda-syntax .cm-tag {
+  color: #ff2c6d;
+}
+
+.cm-s-panda-syntax .cm-meta {
+  color: #b084eb;
+}
+
+.cm-s-panda-syntax .cm-number {
+  color: #ffb86c;
+}
+
+.cm-s-panda-syntax .cm-atom {
+  color: #ff2c6d;
+}
+
+.cm-s-panda-syntax .cm-keyword {
+  color: #ff75b5;
+}
+
+.cm-s-panda-syntax .cm-variable {
+  color: #ffb86c;
+}
+
+.cm-s-panda-syntax .cm-type,.cm-s-panda-syntax .cm-variable-2,.cm-s-panda-syntax .cm-variable-3 {
+  color: #ff9ac1;
+}
+
+.cm-s-panda-syntax .cm-def {
+  color: #e6e6e6;
+}
+
+.cm-s-panda-syntax .cm-property {
+  color: #f3f3f3;
+}
+
+.cm-s-panda-syntax .cm-attribute,.cm-s-panda-syntax .cm-unit {
+  color: #ffb86c;
+}
+
+.cm-s-panda-syntax .CodeMirror-matchingbracket {
+  border-bottom: 1px dotted #19f9d8;
+  padding-bottom: 2px;
+  color: #e6e6e6;
+}
+
+.cm-s-panda-syntax .CodeMirror-gutters {
+  background: #292a2b;
+  border-right-color: hsla(0,0%,100%,.1);
+}
+
+.cm-s-panda-syntax .CodeMirror-linenumber {
+  color: #e6e6e6;
+  opacity: .6;
 }
 
 .cm-s-pastel-on-dark.CodeMirror {
