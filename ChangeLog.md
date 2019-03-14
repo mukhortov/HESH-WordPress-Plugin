@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.4.1
+* fixed bug: notification would not dismiss if the visual editor was open
+* fix bug: Setting Form can now submit from memory, not just when the dom is in the page.
+
 ## 2.4.0
 * updating a major number so I can review downloads more accurately.
 * reorganized the codebase

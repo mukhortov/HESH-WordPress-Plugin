@@ -4,7 +4,7 @@ Donate link: https://www.paypal.me/mukhortov/5
 Tags: syntax highlighter, codemirror, text editor, code highlighter, code coloring, editor, html editor, gutenberg, code editor, theme editor, plugin editor, syntax, highlighting, highlighter, syntax highlighting, codemirror.js, code, 
 Requires at least: 4.0
 Tested up to: 5.1.1
-Stable tag: 2.4.0
+Stable tag: 2.4.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -123,13 +123,17 @@ __Not really...__ It is partially supported in IE 11. Known bugs are tracked [he
 
 == Changelog ==
 
+= 2.4.1 =
+* fixed bug: notification would not dismiss if the visual editor was open
+* fix bug: Setting Form can now submit from memory, not just when the dom is in the page.
+
 = 2.4.0 =
 * updating a major number so I can review downloads more accurately.
 * reorganized the codebase
 * Reverting the name-change of `hesh.php`
 This name-change of `html-editor-syntax-highlighter.php` to `hesh.php` caused the plugin to deactivate itself because the php file was missing. Reverting the name-change of `hesh.php` will cause this all over again, but hey.
 
-= 2.4.0 =
+= 2.3.5 =
 * remove Github Updater headers
 * testing WP update Process
 

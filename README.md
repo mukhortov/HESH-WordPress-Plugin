@@ -54,7 +54,6 @@ Don't manually edit the `release` branch. Only merge `master` into the `release`
 - [Publish to the WP Plugin Repo through SVN](https://developer.wordpress.org/plugins/wordpress-org/how-to-use-subversion/#editing-existing-files):
 	- Copy and paste the new version files from the git repo to the SVN repo `/trunk` (TODO: better way?).
 	- Run `svn stat` and/or `svn diff` on the SVN repo and make sure the changes look correct.
-	- Run `svn add` or `svn delete` 
 	- Run `svn ci -m "committing version X.X.X to trunk"`.
 	- Run `svn cp trunk tags/X.X.X` to make a tagged copy in the tags folder.
 	- Run `svn ci -m "tagging version X.X.X"` and release the new version to the world.
