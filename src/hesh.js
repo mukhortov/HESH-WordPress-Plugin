@@ -316,15 +316,6 @@
 
 		var observer = new MutationObserver(trackDialog);
 		observer.observe(editor.getWrapperElement(), { childList: true });
-
-		// Attach surveyNotice dismiss listener
-		var noticeDismissButton = document.querySelector('.notice-hesh .notice-dismiss');
-		if (noticeDismissButton)
-			noticeDismissButton.addEventListener('click', function() {
-				var surveyNoticeDismissedB = document.getElementById('surveyNoticeDismissedB')
-				if (surveyNoticeDismissedB) surveyNoticeDismissedB.value = true;
-				submitForm();
-			});		
 		
 		// attach all the inputs to live update
 		var options = settingsPanel.querySelectorAll('.CodeMirror-settings__option');
@@ -333,6 +324,17 @@
 			option.addEventListener('change', submitForm);
 			option.addEventListener('change', updateOption);
 		}
+	}
+
+	// Attach noticeDismissButton dismiss listener
+	function attachNoticeDismiss() {
+		var noticeDismissButton = document.querySelector('.notice-hesh .notice-dismiss');		
+		if (!noticeDismissButton) return;
+		noticeDismissButton.addEventListener('click', function() {
+			var surveyNoticeDismissedB = document.getElementById('surveyNoticeDismissedB')
+			if (surveyNoticeDismissedB) surveyNoticeDismissedB.value = true;
+			submitForm();
+		});	
 	}
 
 	// toggle classes for settingsPanel state
@@ -776,7 +778,9 @@
 
 
 
-	function initialize() {				
+	function initialize() {		
+		attachNoticeDismiss();
+		
 		if (state.isThemeOrPlugin) {
 			startEditor();
 
