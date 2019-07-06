@@ -1,40 +1,44 @@
 {
-  "name": "html-editor-syntax-highlighter",
-  "version": "2.4.1",
-  "description": "Syntax Highlighting in WordPress HTML Editor",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/arniebradfo/HESH-WordPress-Plugin.git"
-  },
-  "author": "Peter Mukhortov (http://mukhortov.com)",
-  "contributors": [
-    "James Bradford (http://bradford.digital/)"
-  ],
-  "license": "GPL-2.0",
-  "bugs": {
-    "url": "https://github.com/arniebradfo/HESH-WordPress-Plugin/issues"
-  },
-  "homepage": "http://wordpress.org/plugins/html-editor-syntax-highlighter/",
-  "devDependencies": {
-    "codemirror": "^5.44.0",
-    "del": "^4.0.0",
-    "gulp": "^4.0.0",
-    "gulp-autoprefixer": "^6.0.0",
-    "gulp-combine-mq": "^0.4.0",
-    "gulp-concat": "^2.6.1",
-    "gulp-cssbeautify": "^1.0.1",
-    "gulp-cssnano": "^2.1.3",
-    "gulp-less": "^4.0.1",
-    "gulp-livereload": "^4.0.1",
-    "gulp-rename": "^1.4.0",
-    "gulp-replace": "^1.0.0",
-    "gulp-uglify": "^3.0.2",
-    "jshint": "^2.10.1",
-    "less-plugin-glob": "^3.0.0"
-  },
-  "dependencies": {},
-  "scripts": {
-    "build": "gulp build",
-    "watch": "gulp"
-  }
+	"name": "html-editor-syntax-highlighter",
+	"version": "2.4.1",
+	"description": "Syntax Highlighting in WordPress HTML Editor",
+	"license": "GPL-2.0",
+	"author": "Peter Mukhortov (http://mukhortov.com)",
+	"contributors": [
+		"James Bradford (http://bradford.digital/)"
+	],
+	"homepage": "http://wordpress.org/plugins/html-editor-syntax-highlighter/",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/arniebradfo/HESH-WordPress-Plugin.git"
+	},
+	"bugs": {
+		"url": "https://github.com/arniebradfo/HESH-WordPress-Plugin/issues"
+	},
+	"browserslist": [
+		"defaults"
+	],
+	"dependencies": {
+		"codemirror": "^5.48.0",
+		"del": "^5.0.0",
+		"gulp": "^4.0.2",
+		"gulp-autoprefixer": "^6.1.0",
+		"gulp-combine-mq": "^0.4.0",
+		"gulp-concat": "^2.6.1",
+		"gulp-cssbeautify": "^1.0.1",
+		"gulp-cssnano": "^2.1.3",
+		"gulp-less": "^4.0.1",
+		"gulp-livereload": "^4.0.1",
+		"gulp-rename": "^1.4.0",
+		"gulp-replace": "^1.0.0",
+		"gulp-uglify": "^3.0.2",
+		"less-plugin-glob": "^3.0.0"
+	},
+	"devDependencies": {
+		"jshint": "^2.10.2"
+	},
+	"scripts": {
+		"build": "gulp build",
+		"watch": "gulp"
+	}
 }

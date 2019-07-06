@@ -14,107 +14,106 @@ var replace = require('gulp-replace');
 const dist = '../HESH-WordPress-Plugin-dist';
 
 const compileCSS = () => {
-    return gulp.src('./src/hesh.less')
-        .pipe(less({
-            plugins: [ require('less-plugin-glob') ]
-        }))
-        .pipe(autoprefixer({
-            browsers: ['last 2 versions'],
-            flexbox: 'no-2009'
-            // cascade: false
-        }))
-        .pipe(combineMq({
-            beautify: true
+	return gulp.src('./src/hesh.less')
+		.pipe(less({
+			plugins: [require('less-plugin-glob')]
+		}))
+		.pipe(autoprefixer({
+			flexbox: 'no-2009'
+			// cascade: false
+		}))
+		.pipe(combineMq({
+			beautify: true
 		}))
 		// .pipe(cssnano({
 		// 	discardComments: false
 		// }))
 		.pipe(cssbeautify({
-            indent: '  ',
-            autosemicolon: true
-        }))
-        // .pipe(rename('hesh.css'))
-        .pipe(gulp.dest(dist))
-        .pipe(livereload())
+			indent: '  ',
+			autosemicolon: true
+		}))
+		// .pipe(rename('hesh.css'))
+		.pipe(gulp.dest(dist))
+		.pipe(livereload())
 }
 
 const minifyCSS = () => {
-    return gulp.src(dist+'/hesh.css')
+	return gulp.src(dist + '/hesh.css')
 		.pipe(cssnano())
 		// we beautify afterward so the file is editable in the WP Plugin Editor
 		.pipe(cssbeautify({
-            indent: '  ',
-            autosemicolon: true
-        }))
-        // .pipe(rename(path => path.basename += '.min'))
-        .pipe(gulp.dest(dist))
+			indent: '  ',
+			autosemicolon: true
+		}))
+		// .pipe(rename(path => path.basename += '.min'))
+		.pipe(gulp.dest(dist))
 }
 
 const compileJS = () => {
-    const codemirrorPath = './node_modules/codemirror/'
-    const customModesPath = './src/modes/'
+	const codemirrorPath = './node_modules/codemirror/'
+	const customModesPath = './src/modes/'
 
-    return gulp.src([
+	return gulp.src([
 
-        // CodeMirror Core
-        codemirrorPath + 'lib/codemirror.js',
+		// CodeMirror Core
+		codemirrorPath + 'lib/codemirror.js',
 
-        // Modes
-        codemirrorPath + 'mode/xml/xml.js',
-        codemirrorPath + 'mode/javascript/javascript.js',
-        codemirrorPath + 'mode/css/css.js',
-        codemirrorPath + 'mode/htmlmixed/htmlmixed.js',
-        codemirrorPath + 'mode/clike/clike.js',
+		// Modes
+		codemirrorPath + 'mode/xml/xml.js',
+		codemirrorPath + 'mode/javascript/javascript.js',
+		codemirrorPath + 'mode/css/css.js',
+		codemirrorPath + 'mode/htmlmixed/htmlmixed.js',
+		codemirrorPath + 'mode/clike/clike.js',
 		codemirrorPath + 'mode/php/php.js',
-		
+
 		// Custom Modes
-        customModesPath + 'shortcode.js',
-        customModesPath + 'wordpresspost.js',
+		customModesPath + 'shortcode.js',
+		customModesPath + 'wordpresspost.js',
 
-        // AddOns
-        codemirrorPath + 'addon/selection/active-line.js',
-        codemirrorPath + 'addon/search/searchcursor.js',
-        codemirrorPath + 'addon/search/search.js',
-        codemirrorPath + 'addon/dialog/dialog.js',
-        codemirrorPath + 'addon/scroll/simplescrollbars.js',
-        codemirrorPath + 'addon/comment/comment.js',
+		// AddOns
+		codemirrorPath + 'addon/selection/active-line.js',
+		codemirrorPath + 'addon/search/searchcursor.js',
+		codemirrorPath + 'addon/search/search.js',
+		codemirrorPath + 'addon/dialog/dialog.js',
+		codemirrorPath + 'addon/scroll/simplescrollbars.js',
+		codemirrorPath + 'addon/comment/comment.js',
 
-        codemirrorPath + 'addon/fold/foldcode.js',
-        codemirrorPath + 'addon/fold/foldgutter.js',
-        codemirrorPath + 'addon/fold/xml-fold.js',
-        // codemirrorPath + 'addon/fold/brace-fold.js', // for JS
-        // codemirrorPath + 'addon/fold/comment-fold.js',
-        codemirrorPath + 'addon/fold/indent-fold.js',
+		codemirrorPath + 'addon/fold/foldcode.js',
+		codemirrorPath + 'addon/fold/foldgutter.js',
+		codemirrorPath + 'addon/fold/xml-fold.js',
+		// codemirrorPath + 'addon/fold/brace-fold.js', // for JS
+		// codemirrorPath + 'addon/fold/comment-fold.js',
+		codemirrorPath + 'addon/fold/indent-fold.js',
 
-        codemirrorPath + 'addon/edit/matchbrackets.js',
-        codemirrorPath + 'addon/edit/matchtags.js',
-        codemirrorPath + 'addon/search/match-highlighter.js',
-        codemirrorPath + 'addon/edit/closetag.js',
-        codemirrorPath + 'addon/edit/closebrackets.js',
+		codemirrorPath + 'addon/edit/matchbrackets.js',
+		codemirrorPath + 'addon/edit/matchtags.js',
+		codemirrorPath + 'addon/search/match-highlighter.js',
+		codemirrorPath + 'addon/edit/closetag.js',
+		codemirrorPath + 'addon/edit/closebrackets.js',
 
-        codemirrorPath + 'keymap/sublime.js',
-        codemirrorPath + 'keymap/emacs.js',
-        codemirrorPath + 'keymap/vim.js',
+		codemirrorPath + 'keymap/sublime.js',
+		codemirrorPath + 'keymap/emacs.js',
+		codemirrorPath + 'keymap/vim.js',
 
-        // ... and finally ...
-        // HESH
-        './src/hesh.js',
-    ])
-        .pipe(concat('hesh.js'))
-        .pipe(gulp.dest(dist))
-        .pipe(livereload())
+		// ... and finally ...
+		// HESH
+		'./src/hesh.js',
+	])
+		.pipe(concat('hesh.js'))
+		.pipe(gulp.dest(dist))
+		.pipe(livereload())
 }
 
 const minifyJS = () => {
-    return gulp.src(dist+'/hesh.js')
-        .pipe(uglify())
-        // .pipe(rename(path => path.basename += '.min'))
-        .pipe(gulp.dest(dist))
+	return gulp.src(dist + '/hesh.js')
+		.pipe(uglify())
+		// .pipe(rename(path => path.basename += '.min'))
+		.pipe(gulp.dest(dist))
 }
 
 const copyPluginFiles = () => {
 	return gulp.src([
-		'./src/*.php', 
+		'./src/*.php',
 		'./src/readme.txt'
 	])
 		.pipe(gulp.dest(dist))
@@ -130,13 +129,13 @@ const copyAssets = () => {
 		'./assets/icon.svg',
 		'./assets/screenshot-*',
 	])
-		.pipe(gulp.dest(dist+'/assets'))
+		.pipe(gulp.dest(dist + '/assets'))
 }
 
 const removeDevTitle = () => {
 	return gulp.src([
-		dist+'/*.php', 
-		dist+'/readme.txt'
+		dist + '/*.php',
+		dist + '/readme.txt'
 	])
 		.pipe(replace('!DEV!', ''))
 		.pipe(gulp.dest(dist))
@@ -153,23 +152,23 @@ const buildReadMeTxt = () => {
 }
 
 const clean = () => {
-	return del([ 
+	return del([
 		dist + '/[^.]*.*', // anything that is not .hidden
-	],{ force: true });
+	], { force: true });
 }
 
 const watch = () => {
-    livereload.listen()
-    gulp.watch([
-        './src/*.php',
+	livereload.listen()
+	gulp.watch([
+		'./src/*.php',
 	], copyPluginFiles)
 	gulp.watch([
-        './src/**/*.css',
-        './src/**/*.less',
+		'./src/**/*.css',
+		'./src/**/*.less',
 	], compileCSS)
 	gulp.watch([
-        './src/**/*.js'
-    ], compileJS)
+		'./src/**/*.js'
+	], compileJS)
 }
 
 const compile = gulp.parallel(compileCSS, compileJS, copyPluginFiles)
