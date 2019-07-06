@@ -37,7 +37,7 @@ class Wp_Html_Editor_Syntax_Highlighter {
 
 		add_action( 'admin_enqueue_scripts', array(&$this, 'hesh_admin_enqueue_scripts' ) );
 		add_action( 'admin_footer', array(&$this, 'hesh_output_form') );
-		add_action( 'admin_notices', array(&$this, 'display_survey_notice' ));
+		// add_action( 'admin_notices', array(&$this, 'display_survey_notice' ));
 	}
 		
 	// Enqueued scripts and styles for hesh.js
@@ -406,12 +406,14 @@ class Wp_Html_Editor_Syntax_Highlighter {
 								<h1>
 									Advanced Options
 								</h1>
+								<?php /*
 								<!-- <small>These features are experimental and may have bugs</small> -->
-								<small>
+								<!-- <small>
 									<strong>HELP!</strong>
 									Please consider taking a short <a href="<?php echo $this->surveyLink; ?>" target="_blank" >User Experience Survey</a> 
 									to provide feedback that will help shape the new version 3.0 of this plugin.
-								</small>
+								</small> -->
+								*/ ?>
 								</td></tr>
 							<?php
 
@@ -439,8 +441,7 @@ class Wp_Html_Editor_Syntax_Highlighter {
 					<footer class="CodeMirror-settings__footer CodeMirror-settings__docked">
 						<p class="CodeMirror-settings__foot-content CodeMirror-settings__feedback">
 							<small>
-								Provide
-								<a href="<?php echo $this->surveyLink; ?>" target="_blank" >feedback</a>,
+								<?php /* Provide a href="<?php echo $this->surveyLink; ?>" target="_blank" >feedback</a>, */ ?>
 								Leave a 
 								<a href="https://wordpress.org/support/plugin/html-editor-syntax-highlighter/reviews/#new-post" target="_blank">review</a>,
 								fork on
@@ -465,8 +466,9 @@ class Wp_Html_Editor_Syntax_Highlighter {
 		// return ob_get_clean();
 	}
 
-	public function display_survey_notice() {
-		if ( $this->userPreferences['surveyNoticeDismissedB']['current'] ) return; // TODO: this line
+	/* // not currently being used
+	public function display_survey_notice() { 
+		if ( $this->userPreferences['surveyNoticeDismissedB']['current'] ) return;
 		// https://codex.wordpress.org/Plugin_API/Action_Reference/admin_notices
 		?>
 		<div class="notice notice-info is-dismissible notice-hesh">
@@ -481,7 +483,7 @@ class Wp_Html_Editor_Syntax_Highlighter {
 			</p>
 		</div>
 		<?php
-	}
+	} */
 
 	private $cssThemes = array( 
 		'none',
