@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.4.2
+* removing survey notice
+
 ## 2.4.1
 * fixed bug: notification would not dismiss if the visual editor was open
 * fix bug: Setting Form can now submit from memory, not just when the dom is in the page.

@@ -6,7 +6,7 @@
  * Author URI:         http://bradford.digital/
  * Author:             Petr Mukhortov
  * Author URI:         http://mukhortov.com/
- * Version:            2.4.1
+ * Version:            2.4.2
  * 
  * @package            HESH_plugin
 **/
