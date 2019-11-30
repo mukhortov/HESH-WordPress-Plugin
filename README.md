@@ -33,6 +33,7 @@ Please report any issues or suggestions.
 3. Install the [gulp](http://gulpjs.com/) CLI globally if you haven't already with `npm install -g gulp-cli`.
 4. Run `npm install` on the project folder.
 5. Run `gulp build` to build the project.
+6. Apparently `gulp v4.x` will not work with `node v12` so you might neet to downgrade to `node v11`!?
 
 Running `gulp` will build the project and run it in a watch state. Making any changes to files will automatically rebuild the project. Install the [LiveReload](https://chrome.google.com/webstore/detail/livereload/jnihajbhpnppcggbcgedagnkighmdlei) chrome browser extension and the page will reload when the project rebuilds.
 
