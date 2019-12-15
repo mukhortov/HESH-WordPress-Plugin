@@ -17,7 +17,7 @@ Add syntax highlighting in the Classic Post & Page HTML text editor, Gutenberg C
 * Huge selection of themes and other customization options
 * Fullscreen mode: toggle with `F11`/`Esc` hotkeys
 
-If you are not a developer, please use the [HTML Editor Syntax Highlighter plugin page](http://wordpress.org/plugins/html-editor-syntax-highlighter/) on WordPress.org to download and install it. You can also download the latest release from [here](https://github.com/mukhortov/HESH-WordPress-Plugin/releases).
+If you are not a developer, please use the [HTML Editor Syntax Highlighter plugin page](https://wordpress.org/plugins/html-editor-syntax-highlighter/) on WordPress.org to download and install it. You can also download the latest release from [here](https://github.com/mukhortov/HESH-WordPress-Plugin/releases).
 
 ## Please Provide Your Feedback
 If you're a regular user of this plugin, please consider taking a short [User Experience Survey](https://goo.gl/forms/xvaHgd7sZEbBbFAL2) to provide feedback that will help shape the new version 3.0.
