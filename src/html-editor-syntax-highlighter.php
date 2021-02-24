@@ -507,6 +507,8 @@ class Wp_Html_Editor_Syntax_Highlighter {
 		'eclipse',
 		'elegant',
 		'erlang-dark',
+		'github',
+		'github-light',
 		'hopscotch',
 		'icecoder',
 		'isotope',
