@@ -19,7 +19,7 @@
 		"defaults"
 	],
 	"dependencies": {
-		"codemirror": "^5.49.2",
+		"codemirror": "^5.58.2",
 		"del": "^5.1.0",
 		"gulp": "^4.0.2",
 		"gulp-autoprefixer": "^7.0.1",
