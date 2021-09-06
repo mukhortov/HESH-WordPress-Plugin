@@ -42,9 +42,9 @@ Don't manually edit the `release` branch. Only merge `master` into the `release`
 - Switch to `master` branch
 - Add a description of the release in `readme.txt` & `ChangeLog.md`
 - Update all version numbers including the _Stable Tag_
-- Update WP _Tested up to:_ in both places: `readme.txt` and `hesh.php`
-- Commit with the version number in the commit note: `compiling to vX.X.X`
+- Update WP _Tested up to:_ in `readme.txt`
 - Recompile with `gulp package`
+- Commit with the version number in the commit note: `compiling to vX.X.X`
 - In the parallel `release` branch dist folder
 - Commit onto `release` with the version number in the commit note: `updating to vX.X.X`.
 - Push everything to github
