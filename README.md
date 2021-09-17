@@ -52,6 +52,7 @@ Don't manually edit the `release` branch. Only merge `master` into the `release`
 - Create a new github release at [Code > Releases > Draft New](https://github.com/mukhortov/HESH-WordPress-Plugin/releases/new): `vX.X.X @ Target:release`, Add relevant release notes from `ChangeLog.md`
 - Close the github issues related to the release with a comment linking to the release page: _Fixed in [vX.X.X](https://github.com/mukhortov/HESH-WordPress-Plugin/releases/tag/vX.X.X)!_
 - [Publish to the WP Plugin Repo through SVN](https://developer.wordpress.org/plugins/wordpress-org/how-to-use-subversion/#editing-existing-files):
+    - Clone the svn repo if you haven't already: `svn co https://plugins.svn.wordpress.org/html-editor-syntax-highlighter/`
 	- Copy and paste the new version files from the git repo to the SVN repo `/trunk` (TODO: better way?)
 	- Run `svn stat` and/or `svn diff` on the SVN repo and make sure the changes look correct
 	- Run `svn ci -m "committing version X.X.X to trunk"`
