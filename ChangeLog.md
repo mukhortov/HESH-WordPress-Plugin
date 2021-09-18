@@ -1,5 +1,7 @@
 # Changelog
 
+## 2.4.4
+* Added about 15 new themes
 
 ## 2.4.3
 * Updated css for wordpress v5.8
