@@ -20,7 +20,7 @@
 	],
 	"dependencies": {
 		"codemirror": "^5.62.3",
-    "codemirror-github-light": "^0.4.2",
+		"codemirror-github-light": "^0.4.2",
 		"codemirror-theme-github": "^1.0.0",
 		"del": "^6.0.0",
 		"gulp": "^4.0.2",
