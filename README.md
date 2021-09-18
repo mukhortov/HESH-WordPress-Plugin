@@ -33,34 +33,34 @@ Please report any issues or suggestions.
 3. Install the [gulp](http://gulpjs.com/) CLI globally if you haven't already with `npm install -g gulp-cli`.
 4. Run `npm install` on the project folder.
 5. Run `gulp build` to build the project.
-6. Apparently `gulp v4.x` will not work with `node v12` so you might neet to downgrade to `node v11`!?
 
 Running `gulp` will build the project and run it in a watch state. Making any changes to files will automatically rebuild the project. Install the [LiveReload](https://chrome.google.com/webstore/detail/livereload/jnihajbhpnppcggbcgedagnkighmdlei) chrome browser extension and the page will reload when the project rebuilds.
 
 ### Release Process
-Don't manually edit the `release` branch. Only merge `master` into the `release` branch to update it.
-- Test it. (TODO: add a general test process).
-- Switch to `master` branch.
-- Add a description of the release in `readme.txt` & `ChangeLog.md`.
-- Update all version numbers including the _Stable Tag_.
-- Update WP _Tested up to:_ in both places: `readme.txt` and `hesh.php`.
-- Commit with the version number in the commit note: `compiling to vX.X.X`.
-- Recompile with `gulp package`.
-- In the parallel `release` branch dist folder 
+Don't manually edit the `release` branch. Only merge `master` into the `release` branch to update it
+- Test it. (TODO: add a general test process)
+- Switch to `master` branch
+- Add a description of the release in `readme.txt` & `ChangeLog.md`
+- Update all version numbers including the _Stable Tag_
+- Update WP _Tested up to:_ in `readme.txt`
+- Recompile with `gulp package`
+- Commit with the version number in the commit note: `compiling to vX.X.X`
+- In the parallel `release` branch dist folder
 - Commit onto `release` with the version number in the commit note: `updating to vX.X.X`.
-- Push everything to github.
-- Test it one final time.
-- Create a new github release at [Code > Releases > Draft New](https://github.com/mukhortov/HESH-WordPress-Plugin/releases/new): `vX.X.X @ Target:release`, Add relevant release notes from `ChangeLog.md`.
+- Push everything to github
+- Test it one final time
+- Create a new github release at [Code > Releases > Draft New](https://github.com/mukhortov/HESH-WordPress-Plugin/releases/new): `vX.X.X @ Target:release`, Add relevant release notes from `ChangeLog.md`
 - Close the github issues related to the release with a comment linking to the release page: _Fixed in [vX.X.X](https://github.com/mukhortov/HESH-WordPress-Plugin/releases/tag/vX.X.X)!_
 - [Publish to the WP Plugin Repo through SVN](https://developer.wordpress.org/plugins/wordpress-org/how-to-use-subversion/#editing-existing-files):
-	- Copy and paste the new version files from the git repo to the SVN repo `/trunk` (TODO: better way?).
-	- Run `svn stat` and/or `svn diff` on the SVN repo and make sure the changes look correct.
-	- Run `svn ci -m "committing version X.X.X to trunk"`.
-	- Run `svn cp trunk tags/X.X.X` to make a tagged copy in the tags folder.
-	- Run `svn ci -m "tagging version X.X.X"` and release the new version to the world.
-	- Check to make sure WP updates the plugin.
-	- Cheers! have a drink.
-- Over the next 1-2weeks, watch the [plugin support page](https://wordpress.org/support/plugin/html-editor-syntax-highlighter) to see if there are major bugs or if everyone hates something.
+    - Clone the svn repo if you haven't already: `svn co https://plugins.svn.wordpress.org/html-editor-syntax-highlighter/`
+	- Copy and paste the new version files from the git repo to the SVN repo `/trunk` (TODO: better way?)
+	- Run `svn stat` and/or `svn diff` on the SVN repo and make sure the changes look correct
+	- Run `svn ci -m "committing version X.X.X to trunk"`
+	- Run `svn cp trunk tags/X.X.X` to make a tagged copy in the tags folder
+	- Run `svn ci -m "tagging version X.X.X"` and release the new version to the world
+	- Check to make sure WP updates the plugin
+	- Cheers! have a drink
+- Over the next 1-2weeks, watch the [plugin support page](https://wordpress.org/support/plugin/html-editor-syntax-highlighter) to see if there are major bugs or if everyone hates something
 
 ## Sample Text for testing
 Paste this code in the editor to test out all the different syntax highlighting features.

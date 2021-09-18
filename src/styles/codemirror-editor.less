@@ -260,6 +260,9 @@
 		&__button{
 			&:active{ transform: none !important; }
 			position: relative;
+			&.button.button-small{
+				margin: 2px 0;
+			}
 			select, input{
 				display: block;
 				position: absolute;
@@ -284,13 +287,11 @@
 			}
 			&--select{
 				&:after{
-					content: '\f140';
-					font-family: dashicons;
-					vertical-align: top;
+					content: "\f140";
+					font: normal 20px/1 dashicons;
+					margin-top: -0.2em;
+					vertical-align: middle;
 					display: inline-block;
-					.media(font-size, 20px, 16px);
-					margin: 0 -5px -4px;
-					.media(margin-top, -2px, 0);
 				}
 			}
 		}

@@ -3,8 +3,8 @@ Contributors: nixdns, arniebradfo, rraub, collinprice
 Donate link: https://www.paypal.me/mukhortov/5
 Tags: syntax highlighter, codemirror, text editor, code highlighter, code coloring, editor, html editor, gutenberg, code editor, theme editor, plugin editor, syntax, highlighting, highlighter, syntax highlighting, codemirror.js, code, 
 Requires at least: 4.0
-Tested up to: 5.2.2
-Stable tag: 2.4.2
+Tested up to: 5.8.0
+Stable tag: 2.4.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -46,12 +46,12 @@ See the last screenshot for a visual example.
 It may work with other code related parts of Gutenberg in the future. [Track the progress here.](https://github.com/mukhortov/HESH-WordPress-Plugin/issues/72)
 
 
-= I want the Classic Editor back! =
+= How do I get the Classic Editor back!? =
 
 Since WordPress version 5.0, Gutenberg is the default editor. If you want this plugin to work the way it used to, you'll have to download the [Classic Editor plugin](https://wordpress.org/plugins/classic-editor/).
 
 
-= Can I search and/or replace? =
+= Can I search and replace? =
 
 __Function: WINDOWS / MAC__
 __Start searching:__   `Ctrl-F` / `Cmd-F`
@@ -122,6 +122,9 @@ __Not really...__ It is partially supported in IE 11. Known bugs are tracked [he
 
 
 == Changelog ==
+
+= 2.4.3 =
+* Updated css for wordpress v5.8
 
 = 2.4.2 =
 * removing survey notice
@@ -349,5 +352,4 @@ Initial release.
 2. Quick Settings Panel.
 3. Advanced Settings Panel.
 4. Syntax highlighting in the Theme/Plugin editor.
-5. Syntax highlighting in the Gutenberg Code Editor.
-6. Example code highlighting.
+5. Example code highlighting.

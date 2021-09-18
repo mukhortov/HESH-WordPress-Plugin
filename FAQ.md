@@ -14,12 +14,12 @@ See the last screenshot for a visual example.
 It may work with other code related parts of Gutenberg in the future. [Track the progress here.](https://github.com/mukhortov/HESH-WordPress-Plugin/issues/72)
 
 
-## I want the Classic Editor back!
+## How do I get the Classic Editor back!?
 
 Since WordPress version 5.0, Gutenberg is the default editor. If you want this plugin to work the way it used to, you'll have to download the [Classic Editor plugin](https://wordpress.org/plugins/classic-editor/).
 
 
-## Can I search and/or replace? 
+## Can I search and replace? 
 
 __Function: WINDOWS / MAC__
 __Start searching:__   `Ctrl-F` / `Cmd-F`

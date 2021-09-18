@@ -4,7 +4,7 @@ const livereload = require('gulp-livereload')
 const rename = require('gulp-rename')
 const less = require('gulp-less')
 const autoprefixer = require('gulp-autoprefixer')
-const combineMq = require('gulp-combine-mq')
+// const combineMq = require('gulp-combine-mq') // error with fs.js primordial something
 const cssnano = require('gulp-cssnano')
 const concat = require('gulp-concat')
 const uglify = require('gulp-uglify')
@@ -22,9 +22,9 @@ const compileCSS = () => {
 			flexbox: 'no-2009'
 			// cascade: false
 		}))
-		.pipe(combineMq({
-			beautify: true
-		}))
+		// .pipe(combineMq({
+		// 	beautify: true
+		// }))
 		// .pipe(cssnano({
 		// 	discardComments: false
 		// }))

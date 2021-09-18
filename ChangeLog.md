@@ -1,5 +1,9 @@
 # Changelog
 
+
+## 2.4.3
+* Updated css for wordpress v5.8
+
 ## 2.4.2
 * removing survey notice
 

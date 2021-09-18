@@ -24,18 +24,18 @@
 	var dialogPanel;
 	var theForm = document.getElementById('CodeMirror-settings__form');
 	var toolbar = document.getElementById('ed_toolbar');
-	var target = 
-		document.getElementById('content') || 
+	var target =
+		document.getElementById('content') ||
 		document.getElementById('newcontent');
-		// || document.getElementsByClassName('editor-post-text-editor')[0]; // only in Code Editor mode?
+	// || document.getElementsByClassName('editor-post-text-editor')[0]; // only in Code Editor mode?
 	var tabText = document.getElementById('content-html');
-	var tabVisual = document.getElementById('content-tmce');	
+	var tabVisual = document.getElementById('content-tmce');
 	var postID = document.getElementById('post_ID') != null ? document.getElementById('post_ID').value : 0;
 	var fullHeightToggle = document.getElementById('editor-expand-toggle');
 
 	var state = {
 		isVisualEnabled: document.getElementById('content-tmce') != null,
-		isThemeOrPlugin: document.getElementById('newcontent') != null, 
+		isThemeOrPlugin: document.getElementById('newcontent') != null,
 		// isClassicEditor: document.getElementById('???') != null, // TODO: this
 
 		isActive: function () {
@@ -47,9 +47,9 @@
 		},
 
 		// GUTENBERG
-		isGutenberg: (wp.data && wp.data.select( 'core/edit-post' )) != null, // How good is this, still?
+		isGutenberg: (wp.data && wp.data.select('core/edit-post')) != null, // How good is this, still?
 		isGutenbergVisualActive: function () {
-			return wp.data.select( 'core/edit-post' ).getEditorMode() === 'visual';
+			return wp.data.select('core/edit-post').getEditorMode() === 'visual';
 			// TODO: issue #81 is cause by above line?
 		},
 
@@ -132,16 +132,16 @@
 
 		if (state.isGutenberg) {
 			persistGutenbergChanges();
-			wp.data.dispatch( 'core/editor' ).savePost();
+			wp.data.dispatch('core/editor').savePost();
 
 		} else {
-			var publishButton = 
-				document.getElementById('save-post') || 
+			var publishButton =
+				document.getElementById('save-post') ||
 				document.getElementById('publish') ||
-				document.getElementById('submit'); 
+				document.getElementById('submit');
 			publishButton.click();
-		
-		}		
+
+		}
 	}
 
 	function throttleAnimationFrame(callback) {
@@ -287,7 +287,7 @@
 	function trackDialog(mutations) {
 		for (var i = 0; i < mutations.length; i++) {
 			var mutation = mutations[i];
-			if (mutation.addedNodes[0] && mutation.addedNodes[0].classList.contains('CodeMirror-dialog')){
+			if (mutation.addedNodes[0] && mutation.addedNodes[0].classList.contains('CodeMirror-dialog')) {
 				dialogPanel = mutation.addedNodes[0];
 				var buttons = dialogPanel.getElementsByTagName('button');
 				for (var j = 0; j < buttons.length; j++) {
@@ -296,7 +296,7 @@
 				}
 				// console.log('put breakpoint here');
 			}
-			else{
+			else {
 				dialogPanel = undefined;
 				continue;
 			}
@@ -316,7 +316,7 @@
 
 		var observer = new MutationObserver(trackDialog);
 		observer.observe(editor.getWrapperElement(), { childList: true });
-		
+
 		// attach all the inputs to live update
 		var options = settingsPanel.querySelectorAll('.CodeMirror-settings__option');
 		for (var i = 0; i < options.length; i++) {
@@ -328,13 +328,13 @@
 
 	// Attach noticeDismissButton dismiss listener
 	function attachNoticeDismiss() {
-		var noticeDismissButton = document.querySelector('.notice-hesh .notice-dismiss');		
+		var noticeDismissButton = document.querySelector('.notice-hesh .notice-dismiss');
 		if (!noticeDismissButton) return;
-		noticeDismissButton.addEventListener('click', function() {
+		noticeDismissButton.addEventListener('click', function () {
 			var surveyNoticeDismissedB = theForm.elements['surveyNoticeDismissedB']
 			if (surveyNoticeDismissedB) surveyNoticeDismissedB.value = true;
 			submitForm();
-		});	
+		});
 	}
 
 	// toggle classes for settingsPanel state
@@ -406,11 +406,11 @@
 
 			case 'foldGutter':
 				editor.setOption('gutters', value ? ['CodeMirror-linenumbers', 'CodeMirror-foldgutter'] : []);
-				// break; // fallthrough expected here
+			// break; // fallthrough expected here
 
 			case 'tabSize':
 				editor.setOption('indentUnit', value); // indentUnit must always equal tabSize
-				// break; // fallthrough expected here
+			// break; // fallthrough expected here
 
 			default:
 				heshOptions[event.target.id] = value;
@@ -508,7 +508,7 @@
 
 
 
-	// DRAG RESIZE FUNCTIONS //
+	//#region DRAG RESIZE FUNCTIONS //
 
 	var isDragging = false;
 	var yStartPosition;
@@ -549,6 +549,8 @@
 		document.getElementById('content-resize-handle').addEventListener('mousedown', handleDragResize);
 	}
 
+	//#endregion //
+
 
 
 	function setFileType() {
@@ -567,7 +569,7 @@
 	}
 
 
-
+	//#region Selection State //
 	function getCookie(name) {
 		var value = '; ' + document.cookie;
 		var parts = value.split('; ' + name + '=');
@@ -599,7 +601,7 @@
 			scrollPosition.left + ',' +
 			scrollPosition.top;
 	}
-
+	//#endregion
 
 
 	// make wrapped text line up with the base indentation of the line
@@ -623,6 +625,7 @@
 	}
 
 
+	//#region maintiain sync with textarea //
 
 	// cursor & selection parity between codemirror and the textarea
 	function giveFocusToTextArea() {
@@ -698,6 +701,8 @@
 		editor.save();
 	}
 
+	//#endregion
+
 	// remap native WP function for adding media
 	function remapAddMedia() {
 		var oldSendToEditor = window.send_to_editor;
@@ -715,11 +720,11 @@
 	function persistGutenbergChanges() {
 		editor.save();
 		recordSelectionState();
-		wp.data.dispatch( 'core/editor' ).resetBlocks( 
-			wp.blocks.parse( editor.getTextArea().value 
-		));
+		wp.data.dispatch('core/editor').resetBlocks(
+			wp.blocks.parse(editor.getTextArea().value
+			));
 		editor.setValue(
-			wp.data.select( 'core/editor' ).getEditedPostContent()
+			wp.data.select('core/editor').getEditedPostContent()
 		);
 		restoreSelectionState();
 	}
@@ -743,7 +748,7 @@
 		// Save save all changes to the textarea.value
 		if (state.isGutenberg)
 			editor.on('blur', persistGutenbergChanges);
-		else 
+		else
 			editor.on('change', function () { editor.save(); });
 
 		restoreSelectionState();
@@ -778,21 +783,21 @@
 
 
 
-	function initialize() {		
+	function initialize() {
 		attachNoticeDismiss();
-		
+
 		if (state.isThemeOrPlugin) {
 			startEditor();
 
 		} else if (state.isGutenberg) {
 
 			var gutenbergVisualActive = state.isGutenbergVisualActive()
-			wp.data.subscribe( function () {
+			wp.data.subscribe(function () {
 				// https://github.com/WordPress/gutenberg/issues/4674#issuecomment-404587928
 				if (state.isGutenbergVisualActive() === gutenbergVisualActive) return;
-				
+
 				gutenbergVisualActive = state.isGutenbergVisualActive()
-				
+
 				if (gutenbergVisualActive) {
 					stopEditor();
 				} else {
@@ -803,14 +808,14 @@
 
 			if (!gutenbergVisualActive)
 				startEditor();
-			
+
 		} else if (state.isVisualEnabled) {
 
 			tabText.addEventListener('click', function () {
 				window.setTimeout(startEditor, 0);
 			});
 			tabVisual.addEventListener('click', stopEditor);
-			if (!state.isVisualActive()) 
+			if (!state.isVisualActive())
 				startEditor();
 
 		} else {
