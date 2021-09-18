@@ -516,8 +516,6 @@ class Wp_Html_Editor_Syntax_Highlighter {
 		'erlang-dark',
 		'gruvbox-dark',
 		'github', // from npm
-		'github-light', // from npm // SUCKS
-		'github-dark', // from npm // SUCKS
 		'hopscotch',
 		'icecoder',
 		'idea',
