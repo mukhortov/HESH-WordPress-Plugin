@@ -485,43 +485,61 @@ class Wp_Html_Editor_Syntax_Highlighter {
 		<?php
 	} */
 
+	// to get a list of theme names: `cd node_modules/codemirror/theme/` then run `ls > css-themes.txt`
 	private $cssThemes = array( 
-		'none',
-		'wordpress',
-		'default',
-		'3024-day',
-		'3024-night',
+		'none', // special
+		'wordpress', // custom
+		'default', // special
+		
+		// node_modules/codemirror/theme/
+		'3024-day', // SUCKS
+		'3024-night', //?? 
+		'abbott',
 		'abcdef',
-		'ambiance-mobile',
+		'ambiance-mobile',// BROKEN
 		'ambiance',
+		'ayu-dark',
+		'ayu-mirage',
 		'base16-dark',
 		'base16-light',
 		'bespin',
 		'blackboard',
 		'cobalt',
-		'codepen',
+		'codepen', // custom
 		'colorforth',
+		'darcula',
 		'dracula',
 		'duotone-dark',
 		'duotone-light',
 		'eclipse',
 		'elegant',
 		'erlang-dark',
-		'github',
-		'github-light',
+		'gruvbox-dark',
+		'github', // from npm
+		'github-light', // from npm // SUCKS
+		'github-dark', // from npm // SUCKS
 		'hopscotch',
 		'icecoder',
+		'idea',
 		'isotope',
+		'juejin',
 		'lesser-dark',
 		'liquibyte',
+		'lucario',
+		'material-darker',
+		'material-ocean',
+		'material-palenight',
 		'material',
 		'mbo',
 		'mdn-like',
 		'midnight',
 		'monokai',
-		'neat',
+		'moxer',
+		'neat', // SUCKS
 		'neo',
 		'night',
+		'nord',
+		'oceanic-next',
 		'panda-syntax',
 		'paraiso-dark',
 		'paraiso-light',
@@ -529,7 +547,9 @@ class Wp_Html_Editor_Syntax_Highlighter {
 		'railscasts',
 		'rubyblue',
 		'seti',
+		'shadowfox',
 		'solarized',
+		'ssms', // SUCKS
 		'the-matrix',
 		'tomorrow-night-bright',
 		'tomorrow-night-eighties',
@@ -537,8 +557,9 @@ class Wp_Html_Editor_Syntax_Highlighter {
 		'twilight',
 		'vibrant-ink',
 		'xq-dark',
-		'xq-light',
+		'xq-light', // SUCKS, that yellow...
 		'yeti',
+		'yonce',
 		'zenburn'
 	);
 
