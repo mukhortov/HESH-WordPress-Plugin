@@ -6,6 +6,14 @@
 
 Add syntax highlighting in the Classic Post & Page HTML text editor, Gutenberg Code Editor, and Theme & Plugin editors using [Codemirror.js](http://codemirror.net/)
 
+## Status: Unmaintained
+I don't use wordpress anymore and don't have the time to maintain this code. It still appears to work with the most recent version of wordpress (v6.1). I you would like to contribute, send [me](https://github.com/arniebradfo) a message.
+
+### v3 WPcode
+There was a v3 in the works that uses the Monaco code editor rather than CodeMirror. Its on [github as WPcode](https://github.com/arniebradfo/wp-code), but I don't have time for that either.
+
+---
+
 ## Features
 
 * Syntax highlighting in the Post/Page HTML editor
