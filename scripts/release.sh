@@ -18,7 +18,7 @@
 #
 # The version is read from the plugin header. It must match HESH_VERSION, the readme Stable tag and
 # package.json, have a "= X.Y.Z =" entry in readme.txt, and be newer than the latest release.
-# A development version like 3.0.0-dev is never released.
+# A pre-release version like 3.0.0-dev or 3.0.0-beta.1 is never released.
 # A target that already has this version is skipped, so after a failure the script can simply be re-run.
 #
 # WordPress.org asks for your username and then your SVN password (generate it on your
@@ -108,9 +108,9 @@ const_version=$(sed -n "s/.*define( *'HESH_VERSION', *'\([^']*\)'.*/\1/p" "$MAIN
 stable_tag=$(sed -n 's/^Stable tag:[[:space:]]*\([^[:space:]]*\).*/\1/p' "$README_FILE" | head -1)
 package_version=$(node -p 'require("./package.json").version')
 
-# master carries a development version (X.Y.Z-dev) between releases
+# master carries a pre-release version (X.Y.Z-dev) between releases
 if printf '%s' "$version" | grep -Eq '^[0-9]+\.[0-9]+\.[0-9]+-'; then
-	step "Nothing to release: $version is a development version"
+	step "Pre-release version $version, nothing to release"
 	exit 0
 fi
 printf '%s' "$version" | grep -Eq '^[0-9]+\.[0-9]+\.[0-9]+$' || die "Version '$version' in $MAIN_FILE is not X.Y.Z"

@@ -94,8 +94,8 @@ Before a release, check:
 Releases are built from `master`. Don't edit the `release` branch or the WordPress.org SVN repository by hand: the release script keeps both in step with `master`.
 
 **1. Prepare the version**, in a pull request like any other change:
-- Test it (see [Testing](#testing) and [Testing locally](#testing-locally)).
-- Bump the version everywhere: `Version:` and `HESH_VERSION` in `html-editor-syntax-highlighter.php`, `Stable tag:` in `readme.txt`, and `version` in `package.json`. Between releases `master` carries a development version like `3.0.0-dev`, which never releases.
+- Test it (see [Testing locally](#testing-locally)).
+- Bump the version everywhere: `Version:` and `HESH_VERSION` in `html-editor-syntax-highlighter.php`, `Stable tag:` in `readme.txt`, and `version` in `package.json`.
 - Add a `= X.Y.Z =` entry to the changelog in `readme.txt`, and a `## X.Y.Z` entry to `ChangeLog.md` (it becomes the GitHub release notes).
 - Update _Tested up to_ in `readme.txt`, and _Requires at least_ / _Requires PHP_ in both `readme.txt` and the plugin header if they change.
 
