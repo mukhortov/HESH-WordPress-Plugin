@@ -202,10 +202,29 @@ test.describe( 'Classic editor Text tab', () => {
 		expect( Math.abs( editorHeight - textarea ) ).toBeLessThan( 2 );
 	} );
 
-	test( 'saves with Ctrl+S and restores the cursor after reloading', async ( {
+	test( 'saves with Ctrl+S during an autosave, once, and restores the cursor', async ( {
 		page,
 	} ) => {
 		await openClassicEditor( page );
+		// Leaving the title of a new post starts an autosave, and WordPress
+		// ignores clicks on the save buttons until it is done. Make it slow.
+		const ajax = '**/wp-admin/admin-ajax.php';
+		await page.route( ajax, async ( route ) => {
+			await new Promise( ( resolve ) => setTimeout( resolve, 3000 ) );
+			await route.continue().catch( () => {} );
+		} );
+		const saves: string[] = [];
+		page.on( 'request', ( request ) => {
+			if (
+				request.method() === 'POST' &&
+				new URL( request.url() ).pathname.endsWith(
+					'/wp-admin/post.php'
+				)
+			) {
+				saves.push( request.url() );
+			}
+		} );
+
 		await page.fill( '#title', 'Classic test' );
 		await codeMirror( page, editor ).click();
 		await page.keyboard.type( '<p>Saved from CodeMirror</p>' );
@@ -215,24 +234,19 @@ test.describe( 'Classic editor Text tab', () => {
 				( document.getElementById( 'content' ) as HTMLTextAreaElement )
 					.selectionStart
 		);
+		await expect( page.locator( '#save-post' ) ).toHaveClass( /disabled/ );
 
-		// like an autosave in progress (filling in the title of a new post starts
-		// one): WordPress ignores clicks on the save buttons until it is done
-		await page.evaluate( () => {
-			const buttons = document.querySelectorAll( '#save-post, #publish' );
-			buttons.forEach( ( button ) => button.classList.add( 'disabled' ) );
-			setTimeout(
-				() =>
-					buttons.forEach( ( button ) =>
-						button.classList.remove( 'disabled' )
-					),
-				1500
-			);
-		} );
+		// pressed twice while waiting, saved once
 		await Promise.all( [
 			page.waitForURL( /post\.php\?post=\d+&action=edit/ ),
-			page.keyboard.press( 'ControlOrMeta+s' ),
+			( async () => {
+				await page.keyboard.press( 'ControlOrMeta+s' );
+				await page.keyboard.press( 'ControlOrMeta+s' );
+			} )(),
 		] );
+		expect( saves ).toHaveLength( 1 );
+
+		await page.unroute( ajax );
 		await openClassicEditor( page, page.url() );
 		expect( await textareaValue( page ) ).toBe(
 			'<p>Saved from CodeMirror</p>'

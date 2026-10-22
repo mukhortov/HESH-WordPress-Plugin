@@ -22,9 +22,16 @@ import { attachTextareaFacade, type Facade } from './textarea-facade';
 import './index.scss';
 import '../settings/settings.scss';
 
+// the part of jQuery used to hear WordPress's autosave events
+interface JQueryEvents {
+	one: ( events: string, handler: () => void ) => void;
+	off: ( events: string, handler: () => void ) => void;
+}
+
 declare global {
 	interface Window {
 		wpActiveEditor?: string;
+		jQuery?: ( element: Document ) => JQueryEvents;
 	}
 }
 
@@ -37,15 +44,8 @@ function postId(): number {
 	return Number( field?.value ) || getConfig().postId;
 }
 
-// WordPress ignores clicks on the save buttons while an autosave runs (they
-// get the `disabled` class, for up to 5 seconds), so click once it is done.
-function clickWhenEnabled( button: HTMLElement, deadline: number ): void {
-	if ( ! button.classList.contains( 'disabled' ) || Date.now() > deadline ) {
-		button.click();
-	} else {
-		setTimeout( () => clickWhenEnabled( button, deadline ), 100 );
-	}
-}
+// a save waiting for an autosave to finish, so that pressing Ctrl+S again saves once
+let waitingToSave = false;
 
 // Ctrl/Cmd+S: Save Draft for drafts, otherwise Update or Publish
 function savePost(): boolean {
@@ -57,9 +57,27 @@ function savePost(): boolean {
 			( element ) =>
 				element && ! element.disabled && element.offsetParent !== null
 		);
-	if ( button ) {
-		clickWhenEnabled( button, Date.now() + 10000 );
+	if ( ! button || waitingToSave ) {
+		return true;
 	}
+	if ( ! button.classList.contains( 'disabled' ) ) {
+		button.click();
+		return true;
+	}
+	// WordPress ignores clicks on the save buttons during an autosave (leaving
+	// the title of a new post starts one), so click once it has finished
+	waitingToSave = true;
+	const saveButton: HTMLElement = button;
+	const $document = window.jQuery?.( document );
+	function save() {
+		clearTimeout( fallback );
+		$document?.off( 'autosave-enable-buttons', save );
+		waitingToSave = false;
+		saveButton.click();
+	}
+	$document?.one( 'autosave-enable-buttons', save );
+	// autosave.js enables the buttons after 5 seconds at the latest
+	const fallback = setTimeout( save, 6000 );
 	return true;
 }
 
