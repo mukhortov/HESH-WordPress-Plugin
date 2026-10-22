@@ -4,9 +4,10 @@
  */
 import { __ } from '@wordpress/i18n';
 import { keymap, EditorView } from '@codemirror/view';
-import { Prec } from '@codemirror/state';
+import { EditorSelection, Prec } from '@codemirror/state';
 import { searchPanelOpen } from '@codemirror/search';
 import { createEditor, type Editor } from '../editor/editor';
+import { minimalChange } from '../editor/diff';
 import {
 	rememberSelection,
 	restoreSelection,
@@ -36,6 +37,16 @@ function postId(): number {
 	return Number( field?.value ) || getConfig().postId;
 }
 
+// WordPress ignores clicks on the save buttons while an autosave runs (they
+// get the `disabled` class, for up to 5 seconds), so click once it is done.
+function clickWhenEnabled( button: HTMLElement, deadline: number ): void {
+	if ( ! button.classList.contains( 'disabled' ) || Date.now() > deadline ) {
+		button.click();
+	} else {
+		setTimeout( () => clickWhenEnabled( button, deadline ), 100 );
+	}
+}
+
 // Ctrl/Cmd+S: Save Draft for drafts, otherwise Update or Publish
 function savePost(): boolean {
 	const button = [ 'save-post', 'publish', 'submit' ]
@@ -46,7 +57,9 @@ function savePost(): boolean {
 			( element ) =>
 				element && ! element.disabled && element.offsetParent !== null
 		);
-	button?.click();
+	if ( button ) {
+		clickWhenEnabled( button, Date.now() + 10000 );
+	}
 	return true;
 }
 
@@ -121,9 +134,10 @@ async function start(): Promise< void > {
 
 	let facade: Facade | undefined;
 	const id = postId();
+	const doc = textarea.value;
 	editor = await createEditor( {
 		parent: container,
-		doc: textarea.value,
+		doc,
 		settings: getSettings(),
 		extensions: [
 			Prec.high(
@@ -161,6 +175,24 @@ async function start(): Promise< void > {
 		],
 	} );
 	const { view } = editor;
+
+	// The textarea kept working while the theme and keymap loaded: bring in what
+	// was typed, inserted or restored there, and carry on where the cursor was.
+	const hadFocus = textarea.ownerDocument.activeElement === textarea;
+	const typed = textarea.value;
+	if ( typed !== doc ) {
+		view.dispatch( { changes: minimalChange( doc, typed ) } );
+	}
+	if ( hadFocus ) {
+		const length = view.state.doc.length;
+		view.dispatch( {
+			selection: EditorSelection.single(
+				Math.min( textarea.selectionStart, length ),
+				Math.min( textarea.selectionEnd, length )
+			),
+			scrollIntoView: true,
+		} );
+	}
 
 	try {
 		// changes written to the textarea while the Visual tab is open come from TinyMCE, not the user
@@ -216,6 +248,10 @@ async function start(): Promise< void > {
 		editor?.applySettings( state.settings );
 	} );
 
+	if ( hadFocus ) {
+		view.focus();
+		return;
+	}
 	restoreSelection( view, id );
 	// carry on typing straight away when coming back to a post, like 2.x
 	const title = document.getElementById( 'title' ) as HTMLInputElement | null;

@@ -3,7 +3,7 @@
 ## 3.0.0 (in development)
 * Rewritten in TypeScript on CodeMirror 6, built with `@wordpress/scripts`. HTML, CSS and JavaScript come from `@codemirror/lang-html`; shortcodes from a small Lezer grammar mixed into HTML with `parseMixed`.
 * Block editor _Code Editor_: every change is written to the post with `editEntityRecord` as you type, changes made outside the editor (toolbar undo, saving) are brought in, and undo stays inside CodeMirror. Works with the WordPress 6.5 (`.edit-post-text-editor`) and 6.6+ (`.editor-text-editor`) markup.
-* Classic editor Text tab: CodeMirror reads and writes the post textarea, so Quicktags buttons, the link dialog, Add Media, the Visual tab, autosave and word count keep working. `Ctrl+S`/`Cmd+S` saves, `F11` toggles fullscreen.
+* Classic editor Text tab: CodeMirror reads and writes the post textarea, so Quicktags buttons, the link dialog, Add Media, the Visual tab, autosave and word count keep working. `Ctrl+S`/`Cmd+S` saves, waiting for an autosave in progress to finish (2.x did nothing then), and `F11` toggles fullscreen.
 * The Theme & Plugin file editors keep WordPress's own code editor (CodeMirror 5 with linting) instead of being replaced.
 * 13 themes, including the custom WordPress theme. Removed themes map to `wordpress` (dark) or `default` (light).
 * VS Code key bindings replace Sublime Text. Vim, Emacs and the themes other than the default ones load on demand.

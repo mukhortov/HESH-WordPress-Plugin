@@ -9,7 +9,7 @@ defined( 'WP_UNINSTALL_PLUGIN' ) || exit;
 
 delete_metadata( 'user', 0, 'hesh_settings', '', true );
 
-// 2.x settings of users who never opened the editor after updating
-foreach ( array( 'theme', 'tabSize', 'lineWrapping', 'lineNumbers', 'fontSize', 'lineHeight', 'matchBrackets', 'matchTags', 'highlightSelectionMatches', 'autoCloseTags', 'autoCloseBrackets', 'foldGutter', 'scrollbarStyle', 'keyMap' ) as $hesh_key ) {
+// 2.x settings, and the 2.x survey notice state, of users who never opened the editor after updating
+foreach ( array( 'theme', 'tabSize', 'lineWrapping', 'lineNumbers', 'fontSize', 'lineHeight', 'matchBrackets', 'matchTags', 'highlightSelectionMatches', 'autoCloseTags', 'autoCloseBrackets', 'foldGutter', 'scrollbarStyle', 'keyMap', 'surveyNoticeDismissedB' ) as $hesh_key ) {
 	delete_metadata( 'user', 0, 'hesh_' . $hesh_key, '', true );
 }

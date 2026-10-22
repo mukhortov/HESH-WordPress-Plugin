@@ -35,6 +35,28 @@ add_action(
 	1
 );
 
+// No block editor welcome guide: it opens over the editor on a new site.
+add_action(
+	'init',
+	function () {
+		$key         = $GLOBALS['wpdb']->get_blog_prefix() . 'persisted_preferences';
+		$preferences = get_user_meta( 1, $key, true );
+		$preferences = is_array( $preferences ) ? $preferences : array();
+		$changed     = false;
+		// the post editor's scope, and the shared one newer versions use
+		foreach ( array( 'core/edit-post', 'core' ) as $scope ) {
+			if ( ! isset( $preferences[ $scope ]['welcomeGuide'] ) || false !== $preferences[ $scope ]['welcomeGuide'] ) {
+				$preferences[ $scope ]['welcomeGuide'] = false;
+				$changed                               = true;
+			}
+		}
+		if ( $changed ) {
+			$preferences['_modified'] = gmdate( 'c' );
+			update_user_meta( 1, $key, $preferences );
+		}
+	}
+);
+
 // Pages use the Classic editor, like with the Classic Editor plugin; posts use the block editor.
 add_filter(
 	'use_block_editor_for_post_type',

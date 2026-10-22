@@ -21,21 +21,14 @@ export interface TestState {
 	phpVersion: string;
 }
 
-/**
- * The user's hesh_* meta and the site's versions, from the e2e mu-plugin.
- * @param page
- */
+// The user's hesh_* meta and the site's versions, from the e2e mu-plugin.
 export function getState( page: Page ): Promise< TestState > {
 	return page.evaluate( () =>
 		wp.apiFetch< TestState >( { path: '/hesh-e2e/v1/state' } )
 	);
 }
 
-/**
- * Saves settings the way the settings panel does.
- * @param page
- * @param settings
- */
+// Saves settings the way the settings panel does.
 export async function saveSettings(
 	page: Page,
 	settings: Record< string, unknown >
@@ -56,11 +49,7 @@ export function acceptDialogs( page: Page ) {
 	page.on( 'dialog', ( dialog ) => dialog.accept() );
 }
 
-/**
- * Opens a block editor post, without the welcome guide.
- * @param page
- * @param path
- */
+// Opens a block editor post, without the welcome guide.
 export async function openBlockEditor(
 	page: Page,
 	path = '/wp-admin/post-new.php'
@@ -71,17 +60,21 @@ export async function openBlockEditor(
 		wp.data?.select( 'core/editor' )?.getCurrentPostId()
 	);
 	await page.evaluate( () => {
-		wp.data
-			.dispatch( 'core/preferences' )
-			.set( 'core/edit-post', 'welcomeGuide', false );
+		// the post editor's scope, and the shared one newer versions use
+		for ( const scope of [ 'core/edit-post', 'core' ] ) {
+			wp.data
+				.dispatch( 'core/preferences' )
+				.set( scope, 'welcomeGuide', false );
+		}
 	} );
+	const guide = page.locator( '.components-modal__screen-overlay' );
+	if ( await guide.count() ) {
+		await page.keyboard.press( 'Escape' );
+	}
+	await expect( guide ).toHaveCount( 0 );
 }
 
-/**
- * Switches the block editor between `visual` and `text` (code) mode, WordPress 6.5 and later.
- * @param page
- * @param mode
- */
+// Switches the block editor between `visual` and `text` (code) mode, WordPress 6.5 and later.
 export async function setEditorMode( page: Page, mode: 'visual' | 'text' ) {
 	await page.evaluate( ( nextMode ) => {
 		const editor = wp.data.dispatch( 'core/editor' );
@@ -98,11 +91,7 @@ export function editedContent( page: Page ): Promise< string > {
 	);
 }
 
-/**
- * Replaces the post content from outside CodeMirror, like core's code editor textarea.
- * @param page
- * @param content
- */
+// Replaces the post content from outside CodeMirror, like core's code editor textarea.
 export async function setPostContent( page: Page, content: string ) {
 	await page.evaluate( ( nextContent ) => {
 		const editor = wp.data.select( 'core/editor' );
@@ -124,23 +113,14 @@ export async function setPostContent( page: Page, content: string ) {
 export const codeMirror = ( page: Page, scope: string ) =>
 	page.locator( `${ scope } .cm-content` );
 
-/**
- * Text of the visible CodeMirror lines.
- * @param page
- * @param scope
- */
+// Text of the visible CodeMirror lines.
 export async function codeMirrorText( page: Page, scope: string ) {
 	return (
 		await page.locator( `${ scope } .cm-line` ).allTextContents()
 	).join( '\n' );
 }
 
-/**
- * Colour of the first highlighted token with this text.
- * @param page
- * @param scope
- * @param text
- */
+// Colour of the first highlighted token with this text.
 export async function tokenColor( page: Page, scope: string, text: string ) {
 	const token = page
 		.locator( `${ scope } .cm-line span`, {

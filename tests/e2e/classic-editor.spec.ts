@@ -65,6 +65,43 @@ test.describe( 'Classic editor Text tab', () => {
 		);
 	} );
 
+	test( 'keeps text typed into the textarea while CodeMirror loads', async ( {
+		page,
+	} ) => {
+		// CodeMirror waits for the Vim keymap chunk, hold it back
+		await saveSettings( page, { keyMap: 'vim' } );
+		await page.route( '**/build/keymap-vim.js*', async ( route ) => {
+			await new Promise( ( resolve ) => setTimeout( resolve, 6000 ) );
+			await route.continue();
+		} );
+		await page.goto( '/wp-admin/post-new.php?post_type=page' );
+		if ( await page.locator( '#wp-content-wrap.tmce-active' ).count() ) {
+			await page.click( '#content-html' );
+		}
+		await expect( page.locator( editor ) ).toHaveCount( 0 );
+		await page.locator( '#content' ).click();
+		await page.keyboard.type( 'typed while loading' );
+
+		await expect( codeMirror( page, editor ) ).toBeVisible();
+		expect( await codeMirrorText( page, editor ) ).toBe(
+			'typed while loading'
+		);
+		expect( await textareaValue( page ) ).toBe( 'typed while loading' );
+		expect( await submittedValue( page ) ).toBe( 'typed while loading' );
+		// the cursor carries over, and CodeMirror has the focus
+		await expect( codeMirror( page, editor ) ).toBeFocused();
+		expect(
+			await page.evaluate(
+				() =>
+					(
+						document.getElementById(
+							'content'
+						) as HTMLTextAreaElement
+					 ).selectionStart
+			)
+		).toBe( 'typed while loading'.length );
+	} );
+
 	test( 'Quicktags buttons work on the CodeMirror selection', async ( {
 		page,
 	} ) => {
@@ -179,6 +216,19 @@ test.describe( 'Classic editor Text tab', () => {
 					.selectionStart
 		);
 
+		// like an autosave in progress (filling in the title of a new post starts
+		// one): WordPress ignores clicks on the save buttons until it is done
+		await page.evaluate( () => {
+			const buttons = document.querySelectorAll( '#save-post, #publish' );
+			buttons.forEach( ( button ) => button.classList.add( 'disabled' ) );
+			setTimeout(
+				() =>
+					buttons.forEach( ( button ) =>
+						button.classList.remove( 'disabled' )
+					),
+				1500
+			);
+		} );
 		await Promise.all( [
 			page.waitForURL( /post\.php\?post=\d+&action=edit/ ),
 			page.keyboard.press( 'ControlOrMeta+s' ),

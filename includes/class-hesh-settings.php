@@ -36,6 +36,12 @@ class HESH_Settings {
 	);
 
 	/**
+	 * User meta of 2.x that is deleted without being carried over: the dismissed
+	 * state of the UX survey notice (2.3.3 to 2.4.1).
+	 */
+	const OBSOLETE_KEYS = array( 'surveyNoticeDismissedB' );
+
+	/**
 	 * 2.x CodeMirror 5 themes that have a 3.0 counterpart. Other light themes
 	 * become `default`, other dark themes the `wordpress` theme.
 	 */
@@ -179,6 +185,10 @@ class HESH_Settings {
 	 * @param int $user_id User ID.
 	 */
 	public static function migrate( $user_id ) {
+		foreach ( self::OBSOLETE_KEYS as $key ) {
+			delete_user_meta( $user_id, 'hesh_' . $key );
+		}
+
 		$legacy = array();
 		foreach ( self::LEGACY_KEYS as $key ) {
 			if ( metadata_exists( 'user', $user_id, 'hesh_' . $key ) ) {

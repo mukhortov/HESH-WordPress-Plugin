@@ -131,6 +131,74 @@ test.describe( 'block editor Code Editor', () => {
 		);
 	} );
 
+	test( 'Backspace deletes an empty pair only with Auto-close brackets on', async ( {
+		page,
+	} ) => {
+		await setEditorMode( page, 'text' );
+		await codeMirror( page, editor ).click();
+		await page.keyboard.type( '<a href=""' );
+		await page.keyboard.press( 'ArrowLeft' );
+		await page.keyboard.press( 'Backspace' );
+		await expect.poll( () => editedContent( page ) ).toBe( '<a href="' );
+
+		await page
+			.getByRole( 'button', { name: 'Code editor settings' } )
+			.click();
+		await page.getByLabel( 'Auto-close brackets and quotes' ).check();
+		await codeMirror( page, editor ).click();
+		await page.keyboard.press( 'ControlOrMeta+a' );
+		await page.keyboard.press( 'Backspace' );
+		await page.keyboard.type( '<a href="' );
+		await expect.poll( () => editedContent( page ) ).toBe( '<a href=""' );
+		await page.keyboard.press( 'Backspace' );
+		await expect.poll( () => editedContent( page ) ).toBe( '<a href=' );
+	} );
+
+	test( 'undo in the search panel leaves the post alone', async ( {
+		page,
+	} ) => {
+		await setEditorMode( page, 'text' );
+		await codeMirror( page, editor ).click();
+		await page.keyboard.type( '<p>one</p>' );
+		await page.waitForTimeout( 600 ); // a separate undo step
+		await page.keyboard.type( ' two' );
+		await expect
+			.poll( () => editedContent( page ) )
+			.toBe( '<p>one</p> two' );
+
+		await page.keyboard.press( 'ControlOrMeta+f' );
+		const search = page.locator(
+			`${ editor } .cm-search input[name="search"]`
+		);
+		await expect( search ).toBeFocused();
+		await page.keyboard.type( 'onx' );
+		await page.keyboard.press( 'ControlOrMeta+z' );
+		// the search field undid its own typing, the post did not change
+		await expect( search ).not.toHaveValue( 'onx' );
+		expect( await editedContent( page ) ).toBe( '<p>one</p> two' );
+	} );
+
+	test( 'keeps text typed into the textarea while CodeMirror loads', async ( {
+		page,
+	} ) => {
+		// CodeMirror waits for the Vim keymap chunk, hold it back
+		await saveSettings( page, { keyMap: 'vim' } );
+		await page.route( '**/build/keymap-vim.js*', async ( route ) => {
+			await new Promise( ( resolve ) => setTimeout( resolve, 6000 ) );
+			await route.continue();
+		} );
+		await openBlockEditor( page );
+		await setEditorMode( page, 'text' );
+		await page.locator( 'textarea.editor-post-text-editor' ).click();
+		await page.keyboard.type( 'typed while loading' );
+
+		await expect( codeMirror( page, editor ) ).toBeVisible();
+		await expect( codeMirror( page, editor ) ).toHaveText(
+			'typed while loading'
+		);
+		expect( await editedContent( page ) ).toBe( 'typed while loading' );
+	} );
+
 	test( 'starts when a post opens in code view, and saves with Ctrl+S', async ( {
 		page,
 	} ) => {
@@ -203,6 +271,7 @@ test.describe( 'block editor Code Editor', () => {
 					fontSize: '16',
 					lineHeight: '1.25',
 					scrollbarStyle: '1',
+					surveyNoticeDismissedB: '1',
 				},
 			} )
 		);

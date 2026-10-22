@@ -5,7 +5,7 @@
 import domReady from '@wordpress/dom-ready';
 import { dispatch, select, subscribe } from '@wordpress/data';
 import { Annotation, Transaction } from '@codemirror/state';
-import { EditorView } from '@codemirror/view';
+import { EditorView, ViewPlugin } from '@codemirror/view';
 import { createEditor, type Editor } from '../editor/editor';
 import { minimalChange } from '../editor/diff';
 import {
@@ -168,18 +168,24 @@ const pushChanges = EditorView.updateListener.of( ( update ) => {
 } );
 
 // CodeMirror keeps its own undo history, so the block editor's undo and redo
-// shortcuts must not also revert the post. An observer, because CodeMirror
-// skips its event handlers once its keymap has handled the key.
-const keepUndoInCodeMirror = EditorView.domEventObservers( {
-	keydown( event ) {
-		const key = event.key.toLowerCase();
-		if (
-			( event.ctrlKey || event.metaKey ) &&
-			( key === 'z' || key === 'y' )
-		) {
+// shortcuts must not also revert the post. The listener is on the whole editor,
+// panels included (search, Vim's command line), and outside CodeMirror's own
+// handlers, which stop once its keymap has handled a key.
+function isUndoOrRedo( event: KeyboardEvent ): boolean {
+	const key = event.key.toLowerCase();
+	return ( event.ctrlKey || event.metaKey ) && ( key === 'z' || key === 'y' );
+}
+
+const keepUndoInCodeMirror = ViewPlugin.define( ( view ) => {
+	const stopUndo = ( event: KeyboardEvent ) => {
+		if ( isUndoOrRedo( event ) ) {
 			event.stopPropagation();
 		}
-	},
+	};
+	view.dom.addEventListener( 'keydown', stopUndo );
+	return {
+		destroy: () => view.dom.removeEventListener( 'keydown', stopUndo ),
+	};
 } );
 
 function mountSettings(

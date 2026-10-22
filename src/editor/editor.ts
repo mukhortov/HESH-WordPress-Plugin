@@ -19,6 +19,7 @@ import {
 	keymap,
 	lineNumbers,
 	type DecorationSet,
+	type KeyBinding,
 	type ViewUpdate,
 } from '@codemirror/view';
 import {
@@ -79,6 +80,8 @@ const compartments = {
 
 type Part = keyof typeof compartments;
 
+const noCloseBrackets: Extension = [];
+
 interface Loaded {
 	theme: Extension;
 	keyMap: Extension;
@@ -110,7 +113,9 @@ function parts(
 			'.cm-scroller': { lineHeight: String( settings.lineHeight ) },
 		} ),
 		matchBrackets: settings.matchBrackets ? bracketMatching() : [],
-		closeBrackets: settings.autoCloseBrackets ? closeBrackets() : [],
+		closeBrackets: settings.autoCloseBrackets
+			? closeBrackets()
+			: noCloseBrackets,
 		selectionMatches: settings.highlightSelectionMatches
 			? highlightSelectionMatches()
 			: [],
@@ -140,6 +145,18 @@ async function load( settings: Settings ): Promise< Loaded > {
 	] );
 	return { theme, keyMap };
 }
+
+// Backspace between an empty pair deletes both brackets, but only while Auto-close
+// brackets is on: the command itself doesn't check. It keeps its place in the
+// keymap, so the optional keymaps still come first.
+const closeBracketsKeys: KeyBinding[] = closeBracketsKeymap.map(
+	( binding ) => ( {
+		...binding,
+		run: ( view ) =>
+			compartments.closeBrackets.get( view.state ) !== noCloseBrackets &&
+			( binding.run?.( view ) ?? false ),
+	} )
+);
 
 const baseTheme = EditorView.baseTheme( {
 	'.cm-scroller': {
@@ -174,7 +191,7 @@ export async function createEditor(
 					// keep the previous line's indentation, 2.x had smart indent switched off
 					{ key: 'Enter', run: insertNewlineKeepIndent },
 					{ key: 'Tab', run: insertTab, shift: indentLess },
-					...closeBracketsKeymap,
+					...closeBracketsKeys,
 					...defaultKeymap,
 					...searchKeymap,
 					...historyKeymap,
