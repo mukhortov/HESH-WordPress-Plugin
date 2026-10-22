@@ -66,30 +66,47 @@ Before a release, check:
 - [Plugin Check](https://wordpress.org/plugins/plugin-check/) (**Tools → Plugin Check**, all categories), which should report no errors.
 
 ### Release Process
-Don't manually edit the `release` branch. Only merge `master` into the `release` branch to update it
-- Test it (see [Testing locally](#testing-locally))
-- Switch to `master` branch
-- Add a description of the release in `readme.txt` & `ChangeLog.md`
-- Update all version numbers: `Version:` and `HESH_VERSION` in `html-editor-syntax-highlighter.php`, `Stable tag:` in `readme.txt`, and `version` in `package.json`
-- Update WP _Tested up to:_ in `readme.txt`, and _Requires at least_ / _Requires PHP_ in both `readme.txt` and the plugin header if they change
-- Recompile with `npm run package`
-- Commit with the version number in the commit note: `compiling to vX.X.X`
-- In the parallel `release` branch dist folder
-- Commit onto `release` with the version number in the commit note: `updating to vX.X.X`.
-- Push everything to github
-- Test it one final time
-- Create a new github release at [Code > Releases > Draft New](https://github.com/mukhortov/HESH-WordPress-Plugin/releases/new): `vX.X.X @ Target:release`, Add relevant release notes from `ChangeLog.md`
-- Close the github issues related to the release with a comment linking to the release page: _Fixed in [vX.X.X](https://github.com/mukhortov/HESH-WordPress-Plugin/releases/tag/vX.X.X)!_
-- [Publish to the WP Plugin Repo through SVN](https://developer.wordpress.org/plugins/wordpress-org/how-to-use-subversion/#editing-existing-files):
-    - Clone the svn repo if you haven't already: `svn co https://plugins.svn.wordpress.org/html-editor-syntax-highlighter/`
-	- Copy and paste the new version files from the git repo to the SVN repo `/trunk` (TODO: better way?)
-	- Run `svn stat` and/or `svn diff` on the SVN repo and make sure the changes look correct
-	- Run `svn ci -m "committing version X.X.X to trunk"`
-	- Run `svn cp trunk tags/X.X.X` to make a tagged copy in the tags folder
-	- Run `svn ci -m "tagging version X.X.X"` and release the new version to the world
-	- Check to make sure WP updates the plugin
-	- Cheers! have a drink
-- Over the next 1-2 weeks, watch the [plugin support page](https://wordpress.org/support/plugin/html-editor-syntax-highlighter) to see if there are major bugs or if everyone hates something
+Releases are built from `master`. Don't edit the `release` branch or the WordPress.org SVN repository by hand: the release script keeps both in step with `master`.
+
+**1. Prepare the version**, in a pull request like any other change:
+- Test it (see [Testing locally](#testing-locally)).
+- Bump the version everywhere: `Version:` and `HESH_VERSION` in `src/html-editor-syntax-highlighter.php`, `Stable tag:` in `src/readme.txt`, and `version` in `package.json`.
+- Add a `= X.Y.Z =` entry to the changelog in `src/readme.txt`, and a `## X.Y.Z` entry to `ChangeLog.md` (it becomes the GitHub release notes).
+- Update _Tested up to_ in `src/readme.txt`, and _Requires at least_ / _Requires PHP_ in both `src/readme.txt` and the plugin header if they change.
+
+**2. Merge it.** The [Release workflow](.github/workflows/release.yml) runs on every push to `master` and releases when the version in the plugin header hasn't been released yet:
+- **GitHub:** commits the build to the `release` branch ("updating to vX.Y.Z"), tags `vX.Y.Z` and creates the GitHub release.
+- **WordPress.org:** commits the build to SVN `trunk` and `tags/X.Y.Z`, plus any changed banners, icons and screenshots from `assets/`.
+
+Pushes that don't change the version release nothing. To release to only one place, or to preview a release, use **Actions → Release → Run workflow** (dry run is on by default).
+
+One-time setup: add your WordPress.org username and SVN password as repository secrets. Generate the SVN password on your WordPress.org profile under **Account & Security → SVN credentials**. Each command asks for the value:
+
+```bash
+gh secret set SVN_USERNAME
+```
+
+```bash
+gh secret set SVN_PASSWORD
+```
+
+**Or release from your computer** with the same script the workflow uses. Check out an up-to-date `master` first:
+
+```bash
+scripts/release.sh
+```
+
+- `scripts/release.sh github` or `scripts/release.sh wordpress` releases to only one place.
+- It checks the version numbers and changelog, builds the plugin, shows what it will publish and asks you to confirm.
+- For WordPress.org it asks for your username and then your SVN password.
+- `--dry-run` shows what would be published without publishing; `--assets` also uploads changed banners, icons and screenshots; `--help` lists every option.
+- Needs Node.js, the [GitHub CLI](https://cli.github.com/) (logged in) for GitHub, and Subversion 1.10 or later for WordPress.org.
+- A place that already has the version is skipped, so after a failure you can run it again.
+
+**3. After the release**
+- Close the GitHub issues it fixes with a comment like _Fixed in [vX.Y.Z](https://github.com/mukhortov/HESH-WordPress-Plugin/releases/tag/vX.Y.Z)!_
+- Check that the [plugin page](https://wordpress.org/plugins/html-editor-syntax-highlighter/) shows the new version (usually within a few minutes).
+- Over the next 1-2 weeks, watch the [plugin support page](https://wordpress.org/support/plugin/html-editor-syntax-highlighter) for bug reports.
 
 ## Sample Text for testing
 Paste this code in the editor to test out all the different syntax highlighting features.
