@@ -4,54 +4,75 @@
 
 # HTML Editor Syntax Highlighter
 
-Add syntax highlighting in the Classic Post & Page HTML text editor, Gutenberg Code Editor, and Theme & Plugin editors using [Codemirror.js](http://codemirror.net/)
+Adds syntax highlighting to the WordPress code editors using [CodeMirror](https://codemirror.net/5/): the Classic editor's Text (Code) tab, the block editor's _Code Editor_, and the Theme & Plugin file editors.
 
-## Status: Unmaintained
-I don't use wordpress anymore and don't have the time to maintain this code. It still appears to work with the most recent version of wordpress (v6.1). I you would like to contribute, send [me](https://github.com/arniebradfo) a message.
+## Status
 
-### v3 WPcode
-There was a v3 in the works that uses the Monaco code editor rather than CodeMirror. Its on [github as WPcode](https://github.com/arniebradfo/wp-code), but I don't have time for that either.
+Maintained by [Peter Mukhortov](https://github.com/mukhortov). Version 2.5.0 supports WordPress 6.5 to 7.1 and PHP 7.4 or later.
+
+The plugin was created by Peter Mukhortov and James Bradford ([@arniebradfo](https://github.com/arniebradfo)). James no longer works on the plugin, so please send questions, bug reports and pull requests to [this repository](https://github.com/mukhortov/HESH-WordPress-Plugin/issues) rather than to him.
+
+### Roadmap
+- **2.5.x**: compatibility and security fixes for current WordPress, on the existing CodeMirror 5 code.
+- **3.0**: a rewrite in TypeScript on CodeMirror 6, built with `@wordpress/scripts` and covered by automated tests.
+
+An earlier v3 experiment based on the Monaco editor ([WPcode](https://github.com/arniebradfo/wp-code)) is no longer being developed.
 
 ---
 
 ## Features
 
-* Syntax highlighting in the Post/Page HTML editor
-* _NEW:_ Syntax highlighting in the Gutenberg _Code Editor_ (not _Visual Editor_)
-* Syntax highlighting in the Theme & Plugin editors
+* Syntax highlighting in the Classic editor's Text (Code) tab for posts and pages
+* Syntax highlighting in the block editor's _Code Editor_ (not the _Visual Editor_)
+* Syntax highlighting in the Theme & Plugin file editors
 * Syntax highlighting for WordPress `[shortcodes/]`
-* Save your posts and pages pressing `Ctrl+S` (`Cmd+S` on Mac)
-* Restore cursor position after page is reloaded
-* Huge selection of themes and other customization options
-* Fullscreen mode: toggle with `F11`/`Esc` hotkeys
+* Save your post with `Ctrl+S` (`Cmd+S` on Mac)
+* Restores the cursor position after the page reloads
+* A large selection of themes and other customization options
+* Fullscreen mode in the Classic editor: toggle with `F11`/`Esc`
 
-If you are not a developer, please use the [HTML Editor Syntax Highlighter plugin page](http://wordpress.org/plugins/html-editor-syntax-highlighter/) on WordPress.org to download and install it. You can also download the latest release from [here](https://github.com/mukhortov/HESH-WordPress-Plugin/releases).
+## Installation
 
-## Please Provide Your Feedback
-If you're a regular user of this plugin, please consider taking a short [User Experience Survey](https://goo.gl/forms/xvaHgd7sZEbBbFAL2) to provide feedback that will help shape the new version 3.0.
+If you are not a developer, install the plugin from **Plugins → Add New Plugin** in WordPress, or from its [page on WordPress.org](https://wordpress.org/plugins/html-editor-syntax-highlighter/). Releases are also published on [GitHub](https://github.com/mukhortov/HESH-WordPress-Plugin/releases).
 
+Requires WordPress 6.5 or later and PHP 7.4 or later.
 
 ## Contributing
 
-Please report any issues or suggestions.
+Report bugs and suggestions in [GitHub issues](https://github.com/mukhortov/HESH-WordPress-Plugin/issues). Pull requests are welcome.
 
 ### Building
 1. Clone the repo.
-2. Install [node.js](https://nodejs.org/) if you haven't already.
-3. Install the [gulp](http://gulpjs.com/) CLI globally if you haven't already with `npm install -g gulp-cli`.
-4. Run `npm install` on the project folder.
-5. Run `gulp build` to build the project.
+2. Install [Node.js](https://nodejs.org/).
+3. Run `npm install` in the project folder.
+4. Run `npm run build` to build the plugin. It writes to `../HESH-WordPress-Plugin-dist` by default; set `HESH_DIST=/some/path` to build somewhere else.
 
-Running `gulp` will build the project and run it in a watch state. Making any changes to files will automatically rebuild the project. Install the [LiveReload](https://chrome.google.com/webstore/detail/livereload/jnihajbhpnppcggbcgedagnkighmdlei) chrome browser extension and the page will reload when the project rebuilds.
+`npm start` builds the plugin and rebuilds it on every change. With the [LiveReload](https://chrome.google.com/webstore/detail/livereload/jnihajbhpnppcggbcgedagnkighmdlei) browser extension, the page reloads after each rebuild.
+
+Gulp runs from the project's own dependencies, so you don't need a global `gulp-cli`; `npx gulp <task>` works too.
+
+### Testing locally
+[WordPress Playground](https://wordpress.org/playground/) runs WordPress with only Node.js, no PHP or Docker needed. After building, start a site with the built plugin installed and activated, already logged in as admin:
+
+```bash
+npx @wp-playground/cli@latest start --path=../HESH-WordPress-Plugin-dist --wp=6.5 --php=7.4 --reset
+```
+
+Change `--wp` and `--php` to test other versions (`--wp=latest` for the current release), and keep `--reset` so the site is rebuilt with them. Check the versions under **Tools → Site Health → Info**.
+
+Before a release, check:
+- the block editor's _Code Editor_ (switching modes, saving, undo), the Classic editor's Text (Code) tab (with the [Classic Editor](https://wordpress.org/plugins/classic-editor/) plugin), and the Theme & Plugin file editors;
+- the oldest and the newest supported WordPress versions;
+- [Plugin Check](https://wordpress.org/plugins/plugin-check/) (**Tools → Plugin Check**, all categories), which should report no errors.
 
 ### Release Process
 Don't manually edit the `release` branch. Only merge `master` into the `release` branch to update it
-- Test it. (TODO: add a general test process)
+- Test it (see [Testing locally](#testing-locally))
 - Switch to `master` branch
 - Add a description of the release in `readme.txt` & `ChangeLog.md`
-- Update all version numbers including the _Stable Tag_
-- Update WP _Tested up to:_ in `readme.txt`
-- Recompile with `gulp package`
+- Update all version numbers: `Version:` and `HESH_VERSION` in `html-editor-syntax-highlighter.php`, `Stable tag:` in `readme.txt`, and `version` in `package.json`
+- Update WP _Tested up to:_ in `readme.txt`, and _Requires at least_ / _Requires PHP_ in both `readme.txt` and the plugin header if they change
+- Recompile with `npm run package`
 - Commit with the version number in the commit note: `compiling to vX.X.X`
 - In the parallel `release` branch dist folder
 - Commit onto `release` with the version number in the commit note: `updating to vX.X.X`.
@@ -68,7 +89,7 @@ Don't manually edit the `release` branch. Only merge `master` into the `release`
 	- Run `svn ci -m "tagging version X.X.X"` and release the new version to the world
 	- Check to make sure WP updates the plugin
 	- Cheers! have a drink
-- Over the next 1-2weeks, watch the [plugin support page](https://wordpress.org/support/plugin/html-editor-syntax-highlighter) to see if there are major bugs or if everyone hates something
+- Over the next 1-2 weeks, watch the [plugin support page](https://wordpress.org/support/plugin/html-editor-syntax-highlighter) to see if there are major bugs or if everyone hates something
 
 ## Sample Text for testing
 Paste this code in the editor to test out all the different syntax highlighting features.

@@ -1,19 +1,19 @@
 {
 	"name": "html-editor-syntax-highlighter",
-	"version": "2.4.4",
+	"version": "2.5.0",
 	"description": "Syntax Highlighting in WordPress HTML Editor",
 	"license": "GPL-2.0",
-	"author": "Peter Mukhortov (http://mukhortov.com)",
+	"author": "Peter Mukhortov (https://mukhortov.com)",
 	"contributors": [
 		"James Bradford (http://bradford.digital/)"
 	],
-	"homepage": "http://wordpress.org/plugins/html-editor-syntax-highlighter/",
+	"homepage": "https://wordpress.org/plugins/html-editor-syntax-highlighter/",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/arniebradfo/HESH-WordPress-Plugin.git"
+		"url": "https://github.com/mukhortov/HESH-WordPress-Plugin.git"
 	},
 	"bugs": {
-		"url": "https://github.com/arniebradfo/HESH-WordPress-Plugin/issues"
+		"url": "https://github.com/mukhortov/HESH-WordPress-Plugin/issues"
 	},
 	"browserslist": [
 		"defaults"

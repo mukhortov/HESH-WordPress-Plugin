@@ -1,5 +1,20 @@
 # Changelog
 
+## 2.5.0
+* Tested with WordPress 7.1. Now requires WordPress 6.5 or later and PHP 7.4 or later.
+* Fixed: in the Gutenberg _Code Editor_, changes were lost when switching back to the _Visual Editor_ with the keyboard shortcut. Changes are now saved as you type, the same way the core code editor does it.
+* Fixed: the highlighter did not start when a post opened directly in the Gutenberg _Code Editor_.
+* Fixed: undoing with the Gutenberg toolbar, or content changed by saving, now shows up in the _Code Editor_.
+* Fixed: Gutenberg _Code Editor_ layout styles for the `.editor-text-editor` markup in WordPress 6.6 and later.
+* Fixed: turning off Line Wrap or Numbering did not stay off after reloading the page ([#88](https://github.com/mukhortov/HESH-WordPress-Plugin/issues/88)).
+* Fixed: the editor failed to start the first time a user opened it.
+* Fixed: JavaScript error in the Theme & Plugin editors. The built-in WordPress code editor is now switched off with the `wp_code_editor_settings` filter instead of being dequeued.
+* Fixed: duplicate element IDs in the Key Bindings options ([#90](https://github.com/mukhortov/HESH-WordPress-Plugin/issues/90)).
+* Security: settings are validated against their allowed values before they are saved, and all output is escaped.
+* The settings panel can now be translated.
+* Only loads on the post, theme and plugin editor screens.
+* Removed the old UX survey code.
+
 ## 2.4.4
 * Added about 15 new themes
 
@@ -39,7 +54,7 @@ This name-change of `html-editor-syntax-highlighter.php` to `hesh.php` caused th
 
 ## 2.3.1
 * Fixing JS error in issue #81 _(Hopefully?)_
-* Updating authorship so James can get a job. Will revert to Petr Later...
+* Updating authorship so James can get a job. Will revert to Peter Later...
 
 ## 2.3.0
 * Support for Gutenberg Code Editor!

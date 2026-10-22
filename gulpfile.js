@@ -11,7 +11,8 @@ const uglify = require('gulp-uglify')
 const cssbeautify = require('gulp-cssbeautify')
 var replace = require('gulp-replace');
 
-const dist = '../HESH-WordPress-Plugin-dist';
+// override with HESH_DIST=/some/path to build somewhere other than the sibling release checkout
+const dist = process.env.HESH_DIST || '../HESH-WordPress-Plugin-dist';
 
 const compileCSS = () => {
 	return gulp.src('./src/hesh.less')
