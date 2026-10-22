@@ -4,19 +4,28 @@
 
 # HTML Editor Syntax Highlighter
 
-Adds syntax highlighting to the WordPress code editors using [CodeMirror](https://codemirror.net/5/): the Classic editor's Text (Code) tab, the block editor's _Code Editor_, and the Theme & Plugin file editors.
+Adds syntax highlighting to the WordPress code editors using [CodeMirror 6](https://codemirror.net/): the Classic editor's Text (Code) tab and the block editor's _Code Editor_, with highlighting for WordPress `[shortcodes]`.
 
 ## Status
 
-Maintained by [Peter Mukhortov](https://github.com/mukhortov). Version 2.5.0 supports WordPress 6.5 to 7.1 and PHP 7.4 or later.
+Maintained by [Peter Mukhortov](https://github.com/mukhortov). Version 2.5.0, the current release, supports WordPress 6.5 to 7.1 and PHP 7.4 or later. The `master` branch is version 3.0, in development.
 
 The plugin was created by Peter Mukhortov and James Bradford ([@arniebradfo](https://github.com/arniebradfo)). James no longer works on the plugin, so please send questions, bug reports and pull requests to [this repository](https://github.com/mukhortov/HESH-WordPress-Plugin/issues) rather than to him.
 
 ### Roadmap
-- **2.5.x**: compatibility and security fixes for current WordPress, on the existing CodeMirror 5 code.
-- **3.0**: a rewrite in TypeScript on CodeMirror 6, built with `@wordpress/scripts` and covered by automated tests.
+- **2.5.x**: compatibility and security fixes for current WordPress, on the CodeMirror 5 code in the `release` branch.
+- **3.0** (`master`): a rewrite in TypeScript on CodeMirror 6, built with `@wordpress/scripts` and covered by automated tests.
+- **3.x**: the _Custom HTML_ and _Shortcode_ blocks, the site editor, autocompletion.
 
 An earlier v3 experiment based on the Monaco editor ([WPcode](https://github.com/arniebradfo/wp-code)) is no longer being developed.
+
+### What changes in 3.0
+- CodeMirror 6 replaces CodeMirror 5. Shortcodes are parsed by a small [Lezer](https://lezer.codemirror.net/) grammar, with HTML, CSS and JavaScript parsed around them.
+- The Theme & Plugin file editors keep WordPress's built-in code editor, which has linting and follows the profile's syntax highlighting option. 2.x replaced it.
+- 13 themes instead of 60. Settings that used a removed theme move to `wordpress` (dark themes) or `default` (light themes).
+- _VS Code_ key bindings replace _Sublime Text_. _Vim_ and _Emacs_ are still there. Themes and key bindings load only when used.
+- _Match brackets_ also highlights matching HTML tags, so _Match tags_ is gone. CodeMirror 6 uses the browser's scrollbars, so _Show scrollbars_ is gone.
+- Settings are stored in one `hesh_settings` user meta, saved through the REST API. The 2.x `hesh_*` user meta moves into it the first time each user opens the editor.
 
 ---
 
@@ -24,12 +33,13 @@ An earlier v3 experiment based on the Monaco editor ([WPcode](https://github.com
 
 * Syntax highlighting in the Classic editor's Text (Code) tab for posts and pages
 * Syntax highlighting in the block editor's _Code Editor_ (not the _Visual Editor_)
-* Syntax highlighting in the Theme & Plugin file editors
-* Syntax highlighting for WordPress `[shortcodes/]`
+* Syntax highlighting for WordPress `[shortcodes]`, `[[escaped]]` shortcodes and `<!--more-->` tags, with closing shortcodes that have no opening tag marked
+* Search and replace (`Ctrl+F` / `Cmd+F`), code folding, bracket and tag matching, auto-closing tags and brackets
+* Default, VS Code, Vim and Emacs key bindings
 * Save your post with `Ctrl+S` (`Cmd+S` on Mac)
 * Restores the cursor position after the page reloads
-* A large selection of themes and other customization options
-* Fullscreen mode in the Classic editor: toggle with `F11`/`Esc`
+* 13 themes and other settings, saved per user
+* Fullscreen mode in the Classic editor: toggle with `F11`/`Esc` (when the full-height editor is off)
 
 ## Installation
 
@@ -41,38 +51,53 @@ Requires WordPress 6.5 or later and PHP 7.4 or later.
 
 Report bugs and suggestions in [GitHub issues](https://github.com/mukhortov/HESH-WordPress-Plugin/issues). Pull requests are welcome.
 
+### Project layout
+- `html-editor-syntax-highlighter.php`, `includes/`, `uninstall.php`: the PHP side. `includes/settings-schema.json` is the settings schema, shared by the PHP meta registration and the TypeScript settings.
+- `src/lang-shortcode/`: the shortcode grammar (`shortcode.grammar`, compiled with `lezer-generator`), its tokenizer, and the language that mixes it with HTML.
+- `src/editor/`: the CodeMirror setup shared by both editors, themes and key bindings.
+- `src/block-editor/`, `src/classic-editor/`: the two editor screens.
+- `src/settings/`: settings, the settings panel (`@wordpress/components`) and saving.
+- `tests/e2e/`: Playwright tests, run against WordPress Playground.
+
 ### Building
 1. Clone the repo.
-2. Install [Node.js](https://nodejs.org/).
+2. Install [Node.js](https://nodejs.org/) 22 or later.
 3. Run `npm install` in the project folder.
-4. Run `npm run build` to build the plugin. It writes to `../HESH-WordPress-Plugin-dist` by default; set `HESH_DIST=/some/path` to build somewhere else.
+4. Run `npm run build` to compile `src/` into `build/`.
 
-`npm start` builds the plugin and rebuilds it on every change. With the [LiveReload](https://chrome.google.com/webstore/detail/livereload/jnihajbhpnppcggbcgedagnkighmdlei) browser extension, the page reloads after each rebuild.
+`npm start` rebuilds on every change. `npm run package` builds and copies only the files the plugin ships with into `dist/html-editor-syntax-highlighter`; set `HESH_DIST=/some/path` to package somewhere else. Hidden files in the target folder, like a `.git` folder, are kept.
 
-Gulp runs from the project's own dependencies, so you don't need a global `gulp-cli`; `npx gulp <task>` works too.
+WordPress packages (`@wordpress/element`, `@wordpress/components`, ...) are not bundled: the build lists them in `build/*.asset.php`, and the plugin loads them from WordPress.
+
+### Testing
+- `npm test`: type check (`tsc --noEmit`, strict) and unit tests (Vitest), including the shortcode parser on the [sample text](#sample-text-for-testing) below.
+- `npm run lint`: ESLint and Stylelint with the WordPress rules.
+- `npm run test:e2e`: Playwright tests of the block editor and the Classic editor, on WordPress 6.5 with PHP 7.4 and on the latest WordPress with PHP 8.3. Run `npm run package` first. The first run downloads WordPress; install the browser once with `npx playwright install chromium`. `HESH_E2E_SITES=6.5 npm run test:e2e` runs one site.
+
+The end-to-end tests start [WordPress Playground](https://wordpress.org/playground/) sites with `tests/e2e/server.mjs`, which needs only Node.js: no PHP or Docker. `tests/e2e/mu-plugins/hesh-e2e.php` logs the admin in, switches pages to the Classic editor and adds a few test-only REST routes.
 
 ### Testing locally
-[WordPress Playground](https://wordpress.org/playground/) runs WordPress with only Node.js, no PHP or Docker needed. After building, start a site with the built plugin installed and activated, already logged in as admin:
+After `npm run package`, start a site with the plugin installed and activated, already logged in as admin:
 
 ```bash
-npx @wp-playground/cli@latest start --path=../HESH-WordPress-Plugin-dist --wp=6.5 --php=7.4 --reset
+npm run playground
 ```
 
-Change `--wp` and `--php` to test other versions (`--wp=latest` for the current release), and keep `--reset` so the site is rebuilt with them. Check the versions under **Tools → Site Health → Info**.
+That runs `wp-playground-cli start --path=dist/html-editor-syntax-highlighter --wp=6.5 --php=7.4 --reset`. Run it with other `--wp` and `--php` versions (`--wp=latest` for the current release), and keep `--reset` so the site is rebuilt with them. Check the versions under **Tools → Site Health → Info**. Playground keeps the site in `~/.wordpress-playground/sites`.
 
 Before a release, check:
-- the block editor's _Code Editor_ (switching modes, saving, undo), the Classic editor's Text (Code) tab (with the [Classic Editor](https://wordpress.org/plugins/classic-editor/) plugin), and the Theme & Plugin file editors;
+- the block editor's _Code Editor_ (switching modes, saving, undo, settings) and the Classic editor's Text (Code) tab (with the [Classic Editor](https://wordpress.org/plugins/classic-editor/) plugin: Quicktags buttons, Add Media, the Visual tab);
 - the oldest and the newest supported WordPress versions;
-- [Plugin Check](https://wordpress.org/plugins/plugin-check/) (**Tools → Plugin Check**, all categories), which should report no errors.
+- [Plugin Check](https://wordpress.org/plugins/plugin-check/) (**Tools → Plugin Check**, all categories), which should report no errors. CI runs it on every pull request.
 
 ### Release Process
 Don't manually edit the `release` branch. Only merge `master` into the `release` branch to update it
-- Test it (see [Testing locally](#testing-locally))
+- Test it (see [Testing](#testing) and [Testing locally](#testing-locally))
 - Switch to `master` branch
 - Add a description of the release in `readme.txt` & `ChangeLog.md`
 - Update all version numbers: `Version:` and `HESH_VERSION` in `html-editor-syntax-highlighter.php`, `Stable tag:` in `readme.txt`, and `version` in `package.json`
 - Update WP _Tested up to:_ in `readme.txt`, and _Requires at least_ / _Requires PHP_ in both `readme.txt` and the plugin header if they change
-- Recompile with `npm run package`
+- Package into the parallel `release` branch checkout with `HESH_DIST=../HESH-WordPress-Plugin-dist npm run package`
 - Commit with the version number in the commit note: `compiling to vX.X.X`
 - In the parallel `release` branch dist folder
 - Commit onto `release` with the version number in the commit note: `updating to vX.X.X`.
@@ -83,6 +108,7 @@ Don't manually edit the `release` branch. Only merge `master` into the `release`
 - [Publish to the WP Plugin Repo through SVN](https://developer.wordpress.org/plugins/wordpress-org/how-to-use-subversion/#editing-existing-files):
     - Clone the svn repo if you haven't already: `svn co https://plugins.svn.wordpress.org/html-editor-syntax-highlighter/`
 	- Copy and paste the new version files from the git repo to the SVN repo `/trunk` (TODO: better way?)
+	- Copy the banners, icons and screenshots from `assets/` to the SVN repo's top-level `/assets` folder if they changed (the plugin package no longer includes them)
 	- Run `svn stat` and/or `svn diff` on the SVN repo and make sure the changes look correct
 	- Run `svn ci -m "committing version X.X.X to trunk"`
 	- Run `svn cp trunk tags/X.X.X` to make a tagged copy in the tags folder

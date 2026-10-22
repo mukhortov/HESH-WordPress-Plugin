@@ -1,0 +1,96 @@
+<?php
+/**
+ * Test helpers, loaded only in the end-to-end test site.
+ *
+ * @package HESH_plugin
+ */
+
+// Stay on the WordPress version under test: new sites have major core
+// updates switched on, and WP-Cron would update the site mid-run.
+add_filter( 'automatic_updater_disabled', '__return_true' );
+
+// The admin is always logged in. The cookies are also set for the current
+// request, which auth_redirect() checks before anything else runs. (The auth
+// cookie is only sent to /wp-admin, the logged-in cookie everywhere.)
+add_action(
+	'plugins_loaded',
+	function () {
+		if ( wp_validate_auth_cookie( '', 'logged_in' ) ) {
+			return;
+		}
+		add_action(
+			'set_auth_cookie',
+			function ( $cookie ) {
+				$_COOKIE[ AUTH_COOKIE ] = $cookie;
+			}
+		);
+		add_action(
+			'set_logged_in_cookie',
+			function ( $cookie ) {
+				$_COOKIE[ LOGGED_IN_COOKIE ] = $cookie;
+			}
+		);
+		wp_set_auth_cookie( 1, true );
+	},
+	1
+);
+
+// Pages use the Classic editor, like with the Classic Editor plugin; posts use the block editor.
+add_filter(
+	'use_block_editor_for_post_type',
+	function ( $use_block_editor, $post_type ) {
+		return 'page' === $post_type ? false : $use_block_editor;
+	},
+	10,
+	2
+);
+
+add_action(
+	'rest_api_init',
+	function () {
+		$can = function () {
+			return current_user_can( 'edit_posts' );
+		};
+
+		// Replaces the user's settings with 2.x settings, to test the migration.
+		register_rest_route(
+			'hesh-e2e/v1',
+			'/legacy-settings',
+			array(
+				'methods'             => 'POST',
+				'permission_callback' => $can,
+				'callback'            => function ( WP_REST_Request $request ) {
+					$user_id = get_current_user_id();
+					delete_user_meta( $user_id, 'hesh_settings' );
+					foreach ( $request->get_json_params() as $key => $value ) {
+						update_user_meta( $user_id, 'hesh_' . $key, $value );
+					}
+					return array( 'ok' => true );
+				},
+			)
+		);
+
+		// All of the user's hesh_* meta, and the WordPress version.
+		register_rest_route(
+			'hesh-e2e/v1',
+			'/state',
+			array(
+				'methods'             => 'GET',
+				'permission_callback' => $can,
+				'callback'            => function () {
+					$meta = array();
+					foreach ( get_user_meta( get_current_user_id() ) as $key => $values ) {
+						if ( 0 === strpos( $key, 'hesh_' ) ) {
+							$meta[ $key ] = maybe_unserialize( $values[0] );
+						}
+					}
+					return array(
+						'meta'      => $meta,
+						'wpVersion' => get_bloginfo( 'version' ),
+						'phpVersion' => PHP_VERSION,
+					);
+				},
+			)
+		);
+	}
+);

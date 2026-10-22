@@ -5,26 +5,27 @@ Tags: syntax highlighter, codemirror, text editor, code highlighter, code colori
 Requires at least: 6.5
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 2.5.0
+Stable tag: 3.0.0-dev
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Add syntax highlighting to WordPress code editors using CodeMirror.js
+Syntax highlighting for the Classic editor's Text tab and the block editor's Code Editor, shortcodes included, using CodeMirror.
 
 == Description ==
 
-Add syntax highlighting in the Classic Post & Page HTML text editor, Gutenberg Code Editor, and Theme & Plugin editors using CodeMirror.js
+Add syntax highlighting to the Classic editor's Text (Code) tab and the block editor's _Code Editor_ using CodeMirror 6. HTML, inline CSS and JavaScript, and WordPress shortcodes are all highlighted.
 
 = Features =
 
-* Syntax highlighting in the Post/Page HTML editor
-* _NEW:_ Syntax highlighting in the Gutenberg _Code Editor_ (not _Visual Editor_)
-* Syntax highlighting in the Theme & Plugin editors
-* Syntax highlighting for WordPress `[shortcodes/]`
-* Save your posts and pages pressing `Ctrl+S` (`Cmd+S` on Mac)
-* Restore cursor position after page is reloaded
-* Huge selection of themes and other customization options
-* Fullscreen mode: toggle with `F11`/`Esc` hotkeys
+* Syntax highlighting in the Classic editor's Text (Code) tab for posts and pages
+* Syntax highlighting in the block editor's _Code Editor_ (not the _Visual Editor_)
+* Syntax highlighting for WordPress `[shortcodes]`, `[[escaped]]` shortcodes and `<!--more-->` tags
+* Search and replace, code folding, bracket and tag matching, auto-closing tags and brackets
+* Default, VS Code, Vim and Emacs key bindings
+* Save your posts and pages by pressing `Ctrl+S` (`Cmd+S` on Mac)
+* Restores the cursor position after the page reloads
+* 13 themes and other settings, saved for each user
+* Fullscreen mode in the Classic editor: toggle with `F11`/`Esc`
 
 If you would like to contribute to this plugin, view the [github repo](https://github.com/mukhortov/HESH-WordPress-Plugin).
 
@@ -52,14 +53,18 @@ Since WordPress version 5.0, Gutenberg is the default editor. If you want this p
 
 = Can I search and replace? =
 
+Yes. `Ctrl+F` / `Cmd+F` opens the search panel, which also replaces.
+
 __Function: WINDOWS / MAC__
-__Start searching:__   `Ctrl-F` / `Cmd-F`
-__Find next:__         `Ctrl-G` / `Cmd-G`
-__Find previous:__     `Shift-Ctrl-G` / `Shift-Cmd-G`
-__Replace:__           `Shift-Ctrl-F` / `Cmd-Opt-F`
-__Replace all:__       `Shift-Ctrl-R` / `Shift-Cmd-Opt-F`
-__Persistent search:__ `Alt-F` (dialog doesn't auto-close, `Enter` to find next, `Shift-Enter` to find previous)
-__Jump to line:__      `Alt-G` 
+__Search and replace:__     `Ctrl+F` / `Cmd+F`
+__Find next:__              `Ctrl+G` / `Cmd+G` or `F3`
+__Find previous:__          `Shift+Ctrl+G` / `Shift+Cmd+G` or `Shift+F3`
+__Select next occurrence:__ `Ctrl+D` / `Cmd+D`
+__Jump to line:__           `Ctrl+Alt+G` / `Cmd+Opt+G`
+
+= What happened to highlighting in the Theme & Plugin editors? =
+
+Since version 3.0 the Theme & Plugin file editors use WordPress's own code editor, which has syntax highlighting and checks your code for errors. Switch it on or off with _Syntax Highlighting_ in your profile.
 
 
 = Why are p and br tags are being removed? =
@@ -107,20 +112,26 @@ __To Disable Full-height Editor:__ Go to _'Screen Options'_ (in the top right of
 
 = How do I use Fullscreen? =
 
-The fullscreen button on the top right of the editor will do one of two things depending on the _'Enable full-height editor and distraction-free functionality'_ setting in your _'Screen Options'_ (in the top right of the editor page):
-* __Full-height Editor _Enabled_:__ Toggles the _'distraction free mode'_.
-* __Full-height Editor _Disabled_:__ Toggles the _'fullscreen mode'_.
+In the Classic editor's Text tab, the fullscreen button at the right of the toolbar, or `F11`, makes the editor fill the window. `Esc` closes it (with Vim key bindings, use the button or `F11`).
 
-__Keybindings:__ `F11` will toggle fullscreen on and off, and `esc` will close fullscreen.
+With _'Enable full-height editor and distraction-free functionality'_ on (in _'Screen Options'_ at the top right of the editor page), use WordPress's own distraction-free button instead.
 
+= Which browsers does it work with? =
 
-= Does it work with Internet Explorer? =
-
-__Not really...__ It is partially supported in IE 11. Known bugs are tracked [here](https://github.com/mukhortov/HESH-WordPress-Plugin/issues/41), but won't be fixed. Anything less that IE 10 isn't even supported by Microsoft anymore. If you are using Internet Explorer you should get a [better browser](https://www.mozilla.org/en-US/firefox/new/).
-
+Current versions of Chrome, Edge, Firefox and Safari. Internet Explorer is not supported.
 
 
 == Changelog ==
+
+= 3.0.0 =
+_In development._
+* Rewritten in TypeScript on CodeMirror 6. Shortcodes, HTML, CSS and JavaScript are highlighted by proper parsers.
+* The Theme & Plugin file editors now use WordPress's own code editor, with error checking.
+* 13 themes, including the WordPress theme. Settings that used a removed theme switch to a similar light or dark one.
+* VS Code key bindings replace the Sublime Text ones. Themes and key bindings load only when used.
+* Closing shortcodes without an opening tag are marked.
+* New settings panel. Settings are saved in your user profile through the REST API, and existing settings carry over.
+* The block editor's _Code Editor_ keeps its own undo history and saves every change as you type.
 
 = 2.5.0 =
 * Tested with WordPress 7.1. Now requires WordPress 6.5 or later and PHP 7.4 or later.

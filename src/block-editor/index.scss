@@ -1,0 +1,49 @@
+// The block editor's Code Editor. WordPress 6.5 uses .edit-post-text-editor,
+// 6.6 and later .editor-text-editor (moved into @wordpress/editor).
+
+.hesh-hidden {
+	display: none !important;
+}
+
+// use the full width for code, like 2.x
+body.wp-admin {
+
+	.edit-post-text-editor__body,
+	.editor-text-editor__body {
+		max-width: none;
+	}
+}
+
+.hesh-block-editor {
+	position: relative;
+
+	.cm-editor {
+		border: 1px solid #949494;
+		border-radius: 2px;
+
+		&.cm-focused {
+			outline: 1.5px solid var(--wp-admin-theme-color, #3858e9);
+			outline-offset: -1px;
+		}
+	}
+
+	// grow with the content, the page scrolls
+	.cm-content,
+	.cm-gutter {
+		min-height: 300px;
+	}
+}
+
+.hesh-toolbar-settings {
+	display: flex;
+	align-items: center;
+	margin-left: auto;
+	margin-right: 8px;
+}
+
+.hesh-floating-settings {
+	position: absolute;
+	top: 4px;
+	right: 4px;
+	z-index: 1;
+}

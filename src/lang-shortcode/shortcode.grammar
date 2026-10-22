@@ -1,0 +1,55 @@
+// WordPress shortcodes and More tags. Everything else is Text, which
+// index.ts hands to the HTML parser as one overlay (the technique
+// @codemirror/lang-php uses for PHP inside HTML).
+//
+// Shortcodes can be standalone or enclosing, and only the shortcode's
+// own registration knows which, so tags are not paired up in the tree.
+
+@top Document { node* }
+
+node {
+	Text |
+	EscapedShortcode |
+	WordPressComment |
+	OpenTag |
+	SelfClosingTag |
+	CloseTag
+}
+
+@skip { space } {
+	OpenTag { StartTag tagBody EndTag }
+	SelfClosingTag { StartTag tagBody SelfCloseEndTag }
+	CloseTag { StartCloseTag tagName EndTag }
+
+	tagBody { tagName attribute* }
+
+	attribute { Attribute | QuotedValue | InvalidValue }
+
+	Attribute { (AttributeName | InvalidAttribute) (Is attributeValue)? }
+}
+
+tagName { TagName | InvalidTagName }
+
+attributeValue { QuotedValue | UnquotedValue | InvalidValue }
+
+// Text stops only where a complete shortcode starts, see tokens.ts
+@external tokens content from "./tokens" { Text, EscapedShortcode, WordPressComment }
+
+@external tokens tagWords from "./tokens" {
+	TagName,
+	InvalidTagName,
+	AttributeName,
+	InvalidAttribute,
+	UnquotedValue,
+	QuotedValue,
+	InvalidValue
+}
+
+@tokens {
+	space { $[ \t\n\r\u{a0}]+ }
+	StartTag { "[" }
+	StartCloseTag { "[/" }
+	EndTag { "]" }
+	SelfCloseEndTag { "/]" }
+	Is { "=" }
+}
