@@ -1,0 +1,66 @@
+# Releases the plugin to GitHub and WordPress.org when the version is bumped on master.
+#
+# Every push to master runs scripts/release.sh, which does nothing unless the version in the plugin
+# header has not been released yet. Bump the version (plugin header, HESH_VERSION, readme Stable tag,
+# package.json) and add changelog entries in the same commit or PR.
+#
+# Needs two repository secrets for WordPress.org (Settings > Secrets and variables > Actions):
+#   SVN_USERNAME  your WordPress.org username
+#   SVN_PASSWORD  your WordPress.org SVN password (Profile > Account & Security > SVN credentials)
+#
+# Run it by hand from the Actions tab to release only one target, or to do a dry run.
+
+name: Release
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+    inputs:
+      target:
+        description: Where to release
+        type: choice
+        options: [all, github, wordpress]
+        default: all
+      dry_run:
+        description: Build and show what would be published, without publishing
+        type: boolean
+        default: true
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install Subversion
+        run: command -v svn >/dev/null || (sudo apt-get update -q && sudo apt-get install -y -q subversion)
+
+      - name: Set the git identity for the release branch commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
+          SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+          TARGET: ${{ inputs.target || 'all' }}
+          DRY_RUN: ${{ inputs.dry_run && '--dry-run' || '' }}
+        # --assets also uploads changed banners, icons and screenshots from assets/ to WordPress.org
+        run: scripts/release.sh "$TARGET" --yes --assets $DRY_RUN
