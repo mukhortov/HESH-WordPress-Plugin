@@ -27,10 +27,6 @@ There was a v3 in the works that uses the Monaco code editor rather than CodeMir
 
 If you are not a developer, please use the [HTML Editor Syntax Highlighter plugin page](http://wordpress.org/plugins/html-editor-syntax-highlighter/) on WordPress.org to download and install it. You can also download the latest release from [here](https://github.com/mukhortov/HESH-WordPress-Plugin/releases).
 
-## Please Provide Your Feedback
-If you're a regular user of this plugin, please consider taking a short [User Experience Survey](https://goo.gl/forms/xvaHgd7sZEbBbFAL2) to provide feedback that will help shape the new version 3.0.
-
-
 ## Contributing
 
 Please report any issues or suggestions.
@@ -40,7 +36,7 @@ Please report any issues or suggestions.
 2. Install [node.js](https://nodejs.org/) if you haven't already.
 3. Install the [gulp](http://gulpjs.com/) CLI globally if you haven't already with `npm install -g gulp-cli`.
 4. Run `npm install` on the project folder.
-5. Run `gulp build` to build the project.
+5. Run `gulp build` to build the project. It writes to `../HESH-WordPress-Plugin-dist` by default; set `HESH_DIST=/some/path` to build somewhere else.
 
 Running `gulp` will build the project and run it in a watch state. Making any changes to files will automatically rebuild the project. Install the [LiveReload](https://chrome.google.com/webstore/detail/livereload/jnihajbhpnppcggbcgedagnkighmdlei) chrome browser extension and the page will reload when the project rebuilds.
 

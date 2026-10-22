@@ -47,10 +47,13 @@
 		},
 
 		// GUTENBERG
-		isGutenberg: (wp.data && wp.data.select('core/edit-post')) != null, // How good is this, still?
+		// WP adds this body class on every block editor screen, other plugins may load wp.data on classic screens too
+		isGutenberg: document.body.classList.contains('block-editor-page') && !!(window.wp && window.wp.data),
 		isGutenbergVisualActive: function () {
+			// getEditorMode moved from core/edit-post to core/editor in WP 6.6
+			var editorStore = wp.data.select('core/editor');
+			if (editorStore && editorStore.getEditorMode) return editorStore.getEditorMode() === 'visual';
 			return wp.data.select('core/edit-post').getEditorMode() === 'visual';
-			// TODO: issue #81 is cause by above line?
 		},
 
 		isFullHeight: function () {
@@ -99,10 +102,10 @@
 				toggleFullscreen(true);
 			},
 			'Ctrl-S': function () {
-				savePostOrDraft();
+				return savePostOrDraft();
 			},
 			'Cmd-S': function () {
-				savePostOrDraft();
+				return savePostOrDraft();
 			},
 		},
 	};
@@ -117,7 +120,6 @@
 		options.matchBrackets = !!heshOptions.matchBrackets;
 		options.autoCloseTags = !!heshOptions.autoCloseTags;
 		options.autoCloseBrackets = !!heshOptions.autoCloseBrackets;
-		options.surveyNoticeDismissedB = !!heshOptions.surveyNoticeDismissedB;
 		options.highlightSelectionMatches = !!heshOptions.highlightSelectionMatches;
 		options.matchTags = !!heshOptions.matchTags ? { bothTags: true } : false;
 		options.scrollbarStyle = !!heshOptions.scrollbarStyle ? 'overlay' : null;
@@ -131,8 +133,8 @@
 	function savePostOrDraft() {
 
 		if (state.isGutenberg) {
-			persistGutenbergChanges();
-			wp.data.dispatch('core/editor').savePost();
+			// the content is already in the store, let the block editor's own save shortcut handle it
+			return CodeMirror.Pass;
 
 		} else {
 			var publishButton =
@@ -326,17 +328,6 @@
 		}
 	}
 
-	// Attach noticeDismissButton dismiss listener
-	function attachNoticeDismiss() {
-		var noticeDismissButton = document.querySelector('.notice-hesh .notice-dismiss');
-		if (!noticeDismissButton) return;
-		noticeDismissButton.addEventListener('click', function () {
-			var surveyNoticeDismissedB = theForm.elements['surveyNoticeDismissedB']
-			if (surveyNoticeDismissedB) surveyNoticeDismissedB.value = true;
-			submitForm();
-		});
-	}
-
 	// toggle classes for settingsPanel state
 	function toggleSettings(event) {
 		if (event.target.id.match(/advanced/ig)) {
@@ -375,12 +366,13 @@
 
 	// set a codemirror option from an input.onchange event callback
 	function updateOption(event) {
+		var name = event.target.name; // the option name, radio buttons each have their own id
 		var value = +event.target.value;
 		value = isNaN(value) ? event.target.value : value;
 		if (event.target.type === 'checkbox')
 			value = event.target.checked;
 
-		switch (event.target.id) {
+		switch (name) {
 			case 'fontSize':
 				heshOptions.fontSize = value;
 				scrollPanel.style.fontSize = value + 'px';
@@ -413,12 +405,12 @@
 			// break; // fallthrough expected here
 
 			default:
-				heshOptions[event.target.id] = value;
-				editor.setOption(event.target.id, value);
+				heshOptions[name] = value;
+				editor.setOption(name, value);
 				break;
 		}
 
-		switch (event.target.id) { // clean up lap
+		switch (name) { // clean up lap
 			case 'lineNumbers':
 				if (value && !!heshOptions.foldGutter)
 					editor.setOption('gutters', ['CodeMirror-linenumbers', 'CodeMirror-foldgutter']);
@@ -717,17 +709,68 @@
 		window.send_to_editor = whichSendToEditor;
 	}
 
-	function persistGutenbergChanges() {
-		editor.save();
-		recordSelectionState();
-		wp.data.dispatch('core/editor').resetBlocks(
-			wp.blocks.parse(editor.getTextArea().value
-			));
-		editor.setValue(
-			wp.data.select('core/editor').getEditedPostContent()
-		);
-		restoreSelectionState();
+	//#region GUTENBERG CODE EDITOR SYNC //
+
+	function getGutenbergPostEntity() {
+		var editorStore = wp.data.select('core/editor');
+		return { type: editorStore.getCurrentPostType(), id: editorStore.getCurrentPostId() };
 	}
+
+	// write every change to the post the same way core's code editor textarea does,
+	// the block editor re-parses the blocks from the content when it needs them
+	function pushGutenbergChanges(cm, changes) {
+		var isOwnUpdate = true;
+		for (var i = 0; i < changes.length; i++) {
+			if (changes[i].origin !== 'setValue') isOwnUpdate = false;
+		}
+		if (isOwnUpdate) return; // came from pullGutenbergChanges()
+
+		var post = getGutenbergPostEntity();
+		wp.data.dispatch('core').editEntityRecord('postType', post.type, post.id, {
+			content: editor.getValue(),
+			blocks: undefined,
+			selection: undefined
+		});
+	}
+
+	// codemirror keeps its own undo history, so stop the block editor's undo/redo shortcuts from also reverting the post
+	function keepUndoInCodeMirror(cm, event) {
+		var isZorY = event.keyCode === 90 || event.keyCode === 89;
+		if (isZorY && (event.ctrlKey || event.metaKey)) event.stopPropagation();
+	}
+
+	// bring in content changed outside of codemirror, e.g. the toolbar undo button or saving
+	var lastGutenbergEdits;
+	function pullGutenbergChanges() {
+		if (!state.isActive() || editor.hasFocus()) return;
+		var post = getGutenbergPostEntity();
+		var edits = wp.data.select('core').getEntityRecordEdits('postType', post.type, post.id);
+		if (edits === lastGutenbergEdits) return; // cheap check before serializing the post
+		lastGutenbergEdits = edits;
+
+		var content = wp.data.select('core/editor').getEditedPostContent();
+		if (content === editor.getValue()) return;
+		var cursor = editor.getCursor();
+		var scrollPosition = editor.getScrollInfo();
+		editor.setValue(content);
+		editor.setCursor(cursor, null, { scroll: false });
+		editor.scrollTo(scrollPosition.left, scrollPosition.top);
+	}
+
+	// the code editor textarea is rendered by React after the mode switch, so wait for it
+	function startGutenbergEditorWhenReady(attempt) {
+		attempt = attempt || 0;
+		if (state.isActive() || state.isGutenbergVisualActive()) return;
+		if (document.getElementsByClassName('editor-post-text-editor')[0]) {
+			startEditor();
+		} else if (attempt < 200) { // ~10 seconds, a timer keeps running in background tabs unlike requestAnimationFrame
+			window.setTimeout(function () {
+				startGutenbergEditorWhenReady(attempt + 1);
+			}, 50);
+		}
+	}
+
+	//#endregion
 
 	function startEditor() {
 		if (state.isActive()) return;
@@ -746,10 +789,12 @@
 		target.classList.add('CodeMirror-mirrored');
 
 		// Save save all changes to the textarea.value
-		if (state.isGutenberg)
-			editor.on('blur', persistGutenbergChanges);
-		else
+		if (state.isGutenberg) {
+			editor.on('changes', pushGutenbergChanges);
+			editor.on('keydown', keepUndoInCodeMirror);
+		} else {
 			editor.on('change', function () { editor.save(); });
+		}
 
 		restoreSelectionState();
 		editor.on('cursorActivity', throttledRecordSelectionState);
@@ -784,30 +829,32 @@
 
 
 	function initialize() {
-		attachNoticeDismiss();
 
 		if (state.isThemeOrPlugin) {
 			startEditor();
 
 		} else if (state.isGutenberg) {
 
-			var gutenbergVisualActive = state.isGutenbergVisualActive()
+			var gutenbergVisualActive = state.isGutenbergVisualActive();
 			wp.data.subscribe(function () {
 				// https://github.com/WordPress/gutenberg/issues/4674#issuecomment-404587928
-				if (state.isGutenbergVisualActive() === gutenbergVisualActive) return;
+				if (state.isGutenbergVisualActive() === gutenbergVisualActive) {
+					pullGutenbergChanges();
+					return;
+				}
 
-				gutenbergVisualActive = state.isGutenbergVisualActive()
+				gutenbergVisualActive = state.isGutenbergVisualActive();
 
 				if (gutenbergVisualActive) {
 					stopEditor();
 				} else {
-					window.setTimeout(startEditor, 0);
+					startGutenbergEditorWhenReady();
 				}
 
 			});
 
 			if (!gutenbergVisualActive)
-				startEditor();
+				startGutenbergEditorWhenReady();
 
 		} else if (state.isVisualEnabled) {
 

@@ -1,10 +1,11 @@
 === HTML Editor Syntax Highlighter ===
 Contributors: nixdns, arniebradfo, rraub, collinprice
 Donate link: https://www.paypal.me/mukhortov/5
-Tags: syntax highlighter, codemirror, text editor, code highlighter, code coloring, editor, html editor, gutenberg, code editor, theme editor, plugin editor, syntax, highlighting, highlighter, syntax highlighting, codemirror.js, code, 
-Requires at least: 4.0
-Tested up to: 6.1.1
-Stable tag: 2.4.4
+Tags: syntax highlighter, codemirror, text editor, code highlighter, code coloring
+Requires at least: 6.5
+Tested up to: 7.1
+Requires PHP: 7.4
+Stable tag: 2.5.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -26,8 +27,6 @@ Add syntax highlighting in the Classic Post & Page HTML text editor, Gutenberg C
 * Fullscreen mode: toggle with `F11`/`Esc` hotkeys
 
 If you would like to contribute to this plugin, view the [github repo](https://github.com/mukhortov/HESH-WordPress-Plugin).
-
-If you're a regular user of this plugin, please consider taking a short [User Experience Survey](https://goo.gl/forms/xvaHgd7sZEbBbFAL2) to provide feedback that will help shape the new version 3.0.
 
 
 == Frequently Asked Questions ==
@@ -122,6 +121,20 @@ __Not really...__ It is partially supported in IE 11. Known bugs are tracked [he
 
 
 == Changelog ==
+
+= 2.5.0 =
+* Tested with WordPress 7.1. Now requires WordPress 6.5 or later and PHP 7.4 or later.
+* Fixed: in the Gutenberg _Code Editor_, changes were lost when switching back to the _Visual Editor_ with the keyboard shortcut. Changes are now saved as you type.
+* Fixed: the highlighter did not start when a post opened directly in the Gutenberg _Code Editor_.
+* Fixed: undoing with the Gutenberg toolbar, or content changed by saving, now shows up in the _Code Editor_.
+* Fixed: Gutenberg _Code Editor_ layout styles for WordPress 6.6 and later.
+* Fixed: turning off Line Wrap or Numbering did not stay off after reloading the page.
+* Fixed: the editor failed to start the first time a user opened it.
+* Fixed: JavaScript error in the Theme & Plugin editors. The built-in WordPress code editor is now switched off the supported way.
+* Fixed: duplicate element IDs in the Key Bindings options.
+* Security: settings are validated before they are saved, and all output is escaped.
+* The settings panel can now be translated.
+* Removed the old UX survey code.
 
 = 2.4.4 =
 * Added about 15 new themes
