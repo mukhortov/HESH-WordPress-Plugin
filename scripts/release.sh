@@ -17,7 +17,8 @@
 #   -h, --help      show this help
 #
 # The version is read from the plugin header. It must match HESH_VERSION, the readme Stable tag and
-# package.json, have a "= X.Y.Z =" entry in src/readme.txt, and be newer than the latest release.
+# package.json, have a "= X.Y.Z =" entry in readme.txt, and be newer than the latest release.
+# A development version like 3.0.0-dev is never released.
 # A target that already has this version is skipped, so after a failure the script can simply be re-run.
 #
 # WordPress.org asks for your username and then your SVN password (generate it on your
@@ -29,8 +30,8 @@
 set -euo pipefail
 
 SLUG=html-editor-syntax-highlighter
-MAIN_FILE=src/html-editor-syntax-highlighter.php
-README_FILE=src/readme.txt
+MAIN_FILE=html-editor-syntax-highlighter.php
+README_FILE=readme.txt
 CHANGELOG_FILE=ChangeLog.md
 MAIN_BRANCH=master
 RELEASE_BRANCH=release
@@ -47,7 +48,7 @@ title=""
 die() { printf '\nError: %s\n' "$*" >&2; exit 1; }
 step() { printf '\n==> %s\n' "$*"; }
 info() { printf '    %s\n' "$*"; }
-usage() { sed -n '3,28p' "$0" | sed 's/^# \{0,1\}//'; }
+usage() { sed -n '3,29p' "$0" | sed 's/^# \{0,1\}//'; }
 
 while [ $# -gt 0 ]; do
 	case "$1" in
@@ -107,6 +108,11 @@ const_version=$(sed -n "s/.*define( *'HESH_VERSION', *'\([^']*\)'.*/\1/p" "$MAIN
 stable_tag=$(sed -n 's/^Stable tag:[[:space:]]*\([^[:space:]]*\).*/\1/p' "$README_FILE" | head -1)
 package_version=$(node -p 'require("./package.json").version')
 
+# master carries a development version (X.Y.Z-dev) between releases
+if printf '%s' "$version" | grep -Eq '^[0-9]+\.[0-9]+\.[0-9]+-'; then
+	step "Nothing to release: $version is a development version"
+	exit 0
+fi
 printf '%s' "$version" | grep -Eq '^[0-9]+\.[0-9]+\.[0-9]+$' || die "Version '$version' in $MAIN_FILE is not X.Y.Z"
 [ "$const_version" = "$version" ] || die "HESH_VERSION is '$const_version' but the plugin header says $version"
 [ "$stable_tag" = "$version" ] || die "Stable tag in $README_FILE is '$stable_tag' but the plugin header says $version"
