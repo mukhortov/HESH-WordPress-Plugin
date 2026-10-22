@@ -1,9 +1,9 @@
 /**
  * @name     HTML Editor Syntax Highlighter
+ * @author   Peter Mukhortov
+ * @link     https://mukhortov.com/
  * @author   James Bradford
  * @link     http://bradford.digital/
- * @author   Petr Mukhortov
- * @link     http://mukhortov.com/
 */
 
 // console.log(window.heshOptions); // from wordpress php

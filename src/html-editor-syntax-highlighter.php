@@ -3,7 +3,7 @@
  * Plugin Name:        HTML Editor Syntax Highlighter !DEV!
  * Plugin URI:         https://wordpress.org/plugins/html-editor-syntax-highlighter/
  * Description:        Add syntax highlighting to all WordPress code editors using CodeMirror.js
- * Author:             James Bradford, Petr Mukhortov
+ * Author:             Peter Mukhortov, James Bradford
  * Author URI:         https://github.com/mukhortov/HESH-WordPress-Plugin
  * Version:            2.5.0
  * Requires at least:  6.5
@@ -409,10 +409,10 @@ class Wp_Html_Editor_Syntax_Highlighter {
 							<small>
 								<?php
 								echo wp_kses( sprintf(
-									/* translators: 1: James Bradford's website URL, 2: Petr Mukhortov's website URL */
-									__( 'Created by <a href="%1$s" target="_blank">James Bradford</a> &amp; <a href="%2$s" target="_blank">Petr Mukhortov</a>.', 'html-editor-syntax-highlighter' ),
-									esc_url( 'http://www.bradford.digital' ),
-									esc_url( 'http://www.mukhortov.com/' )
+									/* translators: 1: Peter Mukhortov's website URL, 2: James Bradford's website URL */
+									__( 'Created by <a href="%1$s" target="_blank">Peter Mukhortov</a> &amp; <a href="%2$s" target="_blank">James Bradford</a>.', 'html-editor-syntax-highlighter' ),
+									esc_url( 'https://mukhortov.com/' ),
+									esc_url( 'http://www.bradford.digital' )
 								), $links );
 								?>
 							</small>

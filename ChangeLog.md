@@ -54,7 +54,7 @@ This name-change of `html-editor-syntax-highlighter.php` to `hesh.php` caused th
 
 ## 2.3.1
 * Fixing JS error in issue #81 _(Hopefully?)_
-* Updating authorship so James can get a job. Will revert to Petr Later...
+* Updating authorship so James can get a job. Will revert to Peter Later...
 
 ## 2.3.0
 * Support for Gutenberg Code Editor!
