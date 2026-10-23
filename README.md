@@ -76,6 +76,9 @@ WordPress packages (`@wordpress/element`, `@wordpress/components`, ...) are not 
 
 The end-to-end tests start [WordPress Playground](https://wordpress.org/playground/) sites with `tests/e2e/server.mjs`, which needs only Node.js: no PHP or Docker. `tests/e2e/mu-plugins/hesh-e2e.php` logs the admin in, switches pages to the Classic editor and adds a few test-only REST routes.
 
+### Screenshots
+`npm run screenshots` retakes the WordPress.org screenshots, `assets/screenshot-N.png`, from the packaged plugin (run `npm run package` first, and again afterwards to put them in `dist/`). It uses the latest WordPress in Playground and the promotional sample at the end of this README, and compresses the images for the web with [pngquant](https://pngquant.org/) and [oxipng](https://github.com/shssoichiro/oxipng) when they're installed (`brew install pngquant oxipng`). Each image has a caption in `readme.txt` under `== Screenshots ==`, in the same order. The release script uploads them to WordPress.org with `--assets`, and deletes screenshots that are no longer in `assets/`.
+
 ### Testing locally
 After `npm run package`, start a site with the plugin installed and activated, already logged in as admin:
 
@@ -190,22 +193,22 @@ ERRORS!
 ?>
 ```
 
-For promotional text:
+For promotional text, and the screenshots (`npm run screenshots` takes its text from here):
 
 ```HTML
 <h1>HTML Editor Syntax Highlighter</h1>
-	
+
 <p class="description">
-	Add syntax highlighting to the Classic Text Editor, Gutenberg Code Editor, and Theme &amp; Plugin Editors. It also highlights [[shortcodes]] like HTML!
+	Add syntax highlighting to the Classic Text Editor &amp; Gutenberg Code Editor. It also highlights [[shortcodes]] like HTML!
 	[shortcode attribute="value" standAloneAttribute bool=true int=42 /]
 </p>
 
 <div>
-	[shortcode ]
-		[oneliner html='<label class="name">Label</label>']
-		shortcode content 
+	[shortcode]
+		[one-liner html='<label class="name">Label</label>']
+		shortcode content
 		<a href="#">nested html</a>
-		[[escapedshortcode]]
+		[[escaped-shortcode]]
 	[/shortcode]
 </div>
 
@@ -225,9 +228,8 @@ For promotional text:
 	var obj = {
 		key: value,
 		number: 200,
-		array: ['valueone', 'valuetwo'] 
+		array: ['valueone', 'valuetwo']
 	};
 	document.getElementById('identifier').style.width = obj.number + 'px';
 </script>
-
 ```

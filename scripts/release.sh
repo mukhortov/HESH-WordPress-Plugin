@@ -11,7 +11,8 @@
 # Options:
 #   --dry-run       build and show what would be published, without publishing anything
 #   --yes           don't ask for confirmation before publishing
-#   --assets        also copy assets/ (banners, icons, screenshots) to the WordPress.org /assets folder
+#   --assets        also copy assets/ (banners, icons, screenshots) to the WordPress.org /assets folder,
+#                   deleting screenshots there that are no longer in assets/
 #   --title TEXT    GitHub release title (default: "Version X.Y.Z")
 #   --skip-install  build with the existing node_modules instead of running `npm ci`
 #   -h, --help      show this help
@@ -94,6 +95,16 @@ latest_version() {
 		const cmp = (a, b) => { a = a.split(".").map(Number); b = b.split(".").map(Number);
 			for (let i = 0; i < Math.max(a.length, b.length); i++) { const d = (a[i] || 0) - (b[i] || 0); if (d) return d; } return 0; };
 		if (versions.length) console.log(versions.sort(cmp).pop());'
+}
+
+# WordPress.org serves the images in /assets with their svn:mime-type
+set_mime_type() {
+	case "$1" in
+		*.png) svn propset --quiet svn:mime-type image/png "$1" ;;
+		*.jpg|*.jpeg) svn propset --quiet svn:mime-type image/jpeg "$1" ;;
+		*.gif) svn propset --quiet svn:mime-type image/gif "$1" ;;
+		*.svg) svn propset --quiet svn:mime-type image/svg+xml "$1" ;;
+	esac
 }
 
 # true if version $1 is newer than $2
@@ -261,6 +272,14 @@ if $do_wordpress; then
 	if $sync_assets && [ -d "$build/assets" ]; then
 		svn update --quiet --non-interactive --set-depth infinity "$svn_copy/assets"
 		rsync -a "$build/assets/" "$svn_copy/assets/"
+		# screenshots that are gone from assets/, localised ones (screenshot-1-de_DE.png) too;
+		# banners and icons are only ever added or replaced
+		for file in "$svn_copy/assets"/screenshot-[0-9]*; do
+			name=${file##*/}
+			case "$name" in
+				*.png|*.jpg|*.jpeg|*.gif) [ -f "$build/assets/$name" ] || rm -f "$file" ;;
+			esac
+		done
 	fi
 	(
 		cd "$svn_copy"
@@ -269,13 +288,10 @@ if $do_wordpress; then
 			case "$line" in
 				'?'*)
 					svn add --quiet "$path"
-					case "$path" in
-						*.png) svn propset --quiet svn:mime-type image/png "$path" ;;
-						*.jpg|*.jpeg) svn propset --quiet svn:mime-type image/jpeg "$path" ;;
-						*.gif) svn propset --quiet svn:mime-type image/gif "$path" ;;
-						*.svg) svn propset --quiet svn:mime-type image/svg+xml "$path" ;;
-					esac
+					set_mime_type "$path"
 					;;
+				# a replaced image keeps its old type, often application/octet-stream
+				'M'*) set_mime_type "$path" ;;
 				'!'*) svn delete --quiet "$path" ;;
 			esac
 		done

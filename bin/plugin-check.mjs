@@ -5,66 +5,23 @@
  * its WP-CLI command can't run in Playground. Run `npm run package` first.
  * Exits with 1 if Plugin Check reports errors.
  */
-import { spawn } from 'node:child_process';
-import { cpSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
-import { tmpdir } from 'node:os';
-import { dirname, join, resolve } from 'node:path';
-import { fileURLToPath } from 'node:url';
 import { chromium } from '@playwright/test';
+import { startPlayground } from './playground.mjs';
 
-const root = resolve( fileURLToPath( import.meta.url ), '../..' );
-const port = 9405;
-const base = `http://127.0.0.1:${ port }`;
-const plugin = join( root, 'dist/plugin-check/html-editor-syntax-highlighter' );
-
-rmSync( plugin, { recursive: true, force: true } );
-cpSync( join( root, 'dist/html-editor-syntax-highlighter' ), plugin, {
-	recursive: true,
-} );
-
-const blueprint = join(
-	mkdtempSync( join( tmpdir(), 'hesh-plugin-check-' ) ),
-	'blueprint.json'
-);
-writeFileSync(
-	blueprint,
-	JSON.stringify( {
-		steps: [
-			{
-				step: 'installPlugin',
-				pluginData: {
-					resource: 'url',
-					url: 'https://downloads.wordpress.org/plugin/plugin-check.zip',
-				},
+const site = await startPlayground( {
+	name: 'plugin-check',
+	port: 9405,
+	steps: [
+		{
+			step: 'installPlugin',
+			pluginData: {
+				resource: 'url',
+				url: 'https://downloads.wordpress.org/plugin/plugin-check.zip',
 			},
-		],
-	} )
-);
-
-const server = spawn(
-	'npx',
-	[
-		'wp-playground-cli',
-		'start',
-		`--path=${ plugin }`,
-		'--wp=latest',
-		'--php=8.3',
-		`--port=${ port }`,
-		`--blueprint=${ blueprint }`,
-		// logs the admin in
-		`--mount=${ join( root, 'tests/e2e/mu-plugins' ) }:/wordpress/wp-content/mu-plugins`,
-		'--reset',
-		'--skip-browser',
+		},
 	],
-	// Playground keeps one site per working directory
-	{ cwd: dirname( plugin ), stdio: [ 'ignore', 'pipe', 'inherit' ] }
-);
-await new Promise( ( ready, fail ) => {
-	server.stdout.on( 'data', ( data ) => /Ready!/.test( data ) && ready() );
-	server.on( 'exit', ( code ) =>
-		fail( new Error( `Playground exited with ${ code }` ) )
-	);
 } );
+const base = site.url;
 
 let errors = 0;
 const browser = await chromium.launch();
@@ -117,6 +74,6 @@ try {
 	);
 } finally {
 	await browser.close();
-	server.kill( 'SIGTERM' );
+	site.stop();
 }
 process.exit( errors ? 1 : 0 );

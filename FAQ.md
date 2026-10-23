@@ -9,7 +9,6 @@ It __does not__ work with blocks in the Gutenberg _Visual Editor_. This means it
 * The _Edit as HTML_ section of every block
 * The _Custom HTML_ block
 * The _Shortcode_ block
-See the last screenshot for a visual example.
 
 It may work with other code related parts of Gutenberg in the future. [Track the progress here.](https://github.com/mukhortov/HESH-WordPress-Plugin/issues/72)
 

@@ -41,7 +41,6 @@ It __does not__ work with blocks in the Gutenberg _Visual Editor_. This means it
 * The _Edit as HTML_ section of every block
 * The _Custom HTML_ block
 * The _Shortcode_ block
-See the last screenshot for a visual example.
 
 It may work with other code related parts of Gutenberg in the future. [Track the progress here.](https://github.com/mukhortov/HESH-WordPress-Plugin/issues/72)
 
@@ -375,8 +374,8 @@ Initial release.
 
 
 == Screenshots ==
-1. Syntax highlighting in the Classic Post/Page HTML editor.
-2. Quick Settings Panel.
-3. Advanced Settings Panel.
-4. Syntax highlighting in the Theme/Plugin editor.
-5. Example code highlighting.
+1. Syntax highlighting in the Classic editor's Code (Text) tab, with WordPress shortcodes highlighted like HTML.
+2. The settings panel: theme, key bindings, font and editor options, saved for each user.
+3. Syntax highlighting in the block editor's Code Editor, block comments included.
+4. Example code highlighting: shortcodes, More tags, inline CSS and JavaScript.
+5. In the block editor, open the Code Editor from the Options menu, or press Ctrl+Shift+Alt+M (Cmd+Shift+Option+M on a Mac). Blocks in the visual editor are not highlighted.

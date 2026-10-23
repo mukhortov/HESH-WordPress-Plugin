@@ -37,6 +37,7 @@
 		"test:unit": "wp-scripts test-unit-js",
 		"test:e2e": "playwright test",
 		"plugin-check": "node bin/plugin-check.mjs",
+		"screenshots": "node bin/screenshots.mjs",
 		"test": "npm run typecheck && npm run test:unit",
 		"playground": "wp-playground-cli start --path=dist/html-editor-syntax-highlighter --wp=6.5 --php=7.4 --reset"
 	},
