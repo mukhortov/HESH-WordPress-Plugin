@@ -342,6 +342,39 @@ test.describe( 'block editor Code Editor', () => {
 			.toMatchObject( { theme: 'nord' } );
 	} );
 
+	test( 'opens with the default theme and keys when their chunks fail to load', async ( {
+		page,
+	} ) => {
+		await saveSettings( page, { theme: 'dracula', keyMap: 'vim' } );
+		await page.route(
+			/\/build\/(theme-dracula|keymap-vim)\.js/,
+			( route ) => route.abort()
+		);
+		await openBlockEditor( page );
+		await setEditorMode( page, 'text' );
+
+		await expect( codeMirror( page, editor ) ).toBeVisible();
+		// the bundled WordPress theme
+		await expect
+			.poll( () =>
+				page
+					.locator( `${ editor } .cm-editor` )
+					.evaluate(
+						( element ) =>
+							getComputedStyle( element ).backgroundColor
+					)
+			)
+			.toBe( 'rgb(42, 48, 54)' );
+		// default keys, in Vim's normal mode x, y and z would not insert text
+		await codeMirror( page, editor ).click();
+		await page.keyboard.type( 'xyz' );
+		await expect.poll( () => editedContent( page ) ).toBe( 'xyz' );
+		// the settings are there to pick something else
+		await expect(
+			page.getByRole( 'button', { name: 'Code editor settings' } )
+		).toBeVisible();
+	} );
+
 	test( 'moves 2.x settings into hesh_settings', async ( { page } ) => {
 		await page.evaluate( () =>
 			wp.apiFetch( {

@@ -138,10 +138,30 @@ const partsForSetting: Record< keyof Settings, Part > = {
 	highlightSelectionMatches: 'selectionMatches',
 };
 
+function warn( message: string, error: unknown ): void {
+	// eslint-disable-next-line no-console
+	console.warn( `HTML Editor Syntax Highlighter: ${ message }`, error );
+}
+
+// A theme or keymap chunk that can't load (a blocked request, a cached page
+// after an update) falls back to the bundled theme or the default keys, so the
+// editor and its settings still open and another choice can be made there.
 async function load( settings: Settings ): Promise< Loaded > {
 	const [ theme, keyMap ] = await Promise.all( [
-		themes[ settings.theme ].load(),
-		loadKeyMap( settings.keyMap ),
+		themes[ settings.theme ].load().catch( ( error: unknown ) => {
+			warn(
+				`the ${ settings.theme } theme could not load, using WordPress`,
+				error
+			);
+			return themes.wordpress.load();
+		} ),
+		loadKeyMap( settings.keyMap ).catch( ( error: unknown ) => {
+			warn(
+				`the ${ settings.keyMap } key bindings could not load, using the default ones`,
+				error
+			);
+			return loadKeyMap( 'default' );
+		} ),
 	] );
 	return { theme, keyMap };
 }
@@ -220,6 +240,7 @@ export async function createEditor(
 	let pending = 0;
 	return {
 		view,
+		// never rejects, the settings store calls it without waiting
 		async applySettings( next ) {
 			const changed = (
 				Object.keys( next ) as ( keyof Settings )[]
@@ -228,23 +249,30 @@ export async function createEditor(
 				return;
 			}
 			const request = ++pending;
-			const nextLoaded =
-				next.theme !== settings.theme || next.keyMap !== settings.keyMap
-					? await load( next )
-					: loaded;
-			// a newer call already applied its settings while this one was loading
-			if ( request !== pending || view.dom.parentNode === null ) {
-				return;
+			try {
+				const nextLoaded =
+					next.theme !== settings.theme ||
+					next.keyMap !== settings.keyMap
+						? await load( next )
+						: loaded;
+				// a newer call already applied its settings while this one was loading
+				if ( request !== pending || view.dom.parentNode === null ) {
+					return;
+				}
+				const nextParts = parts( next, nextLoaded );
+				const effects: StateEffect< unknown >[] = [
+					...new Set(
+						changed.map( ( key ) => partsForSetting[ key ] )
+					),
+				].map( ( part ) =>
+					compartments[ part ].reconfigure( nextParts[ part ] )
+				);
+				settings = next;
+				loaded = nextLoaded;
+				view.dispatch( { effects } );
+			} catch ( error ) {
+				warn( 'the settings could not be applied', error );
 			}
-			const nextParts = parts( next, nextLoaded );
-			const effects: StateEffect< unknown >[] = [
-				...new Set( changed.map( ( key ) => partsForSetting[ key ] ) ),
-			].map( ( part ) =>
-				compartments[ part ].reconfigure( nextParts[ part ] )
-			);
-			settings = next;
-			loaded = nextLoaded;
-			view.dispatch( { effects } );
 		},
 		destroy() {
 			pending++;
