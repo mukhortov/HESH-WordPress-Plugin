@@ -65,17 +65,30 @@ function editorMode(): string {
 	 ).getEditorMode();
 }
 
-function currentPost(): { type: string; id: number | string } | null {
+interface Entity {
+	type: string;
+	id: number | string;
+}
+
+function currentPost(): Entity | null {
 	const store = editorStore();
 	const type = store.getCurrentPostType();
 	const id = store.getCurrentPostId();
 	return type && id ? { type, id } : null;
 }
 
+const isSameEntity = ( a: Entity | null, b: Entity | null ) =>
+	!! a && !! b && a.type === b.type && a.id === b.id;
+
 /** Marks transactions that bring in content changed outside CodeMirror. */
 const fromStore = Annotation.define< boolean >();
 
 interface Session {
+	/**
+	 * The post or template CodeMirror holds. The block editor can switch to
+	 * another one in the same textarea (going back from a template to the post).
+	 */
+	entity: Entity;
 	textarea: HTMLTextAreaElement;
 	editor: Editor;
 	container: HTMLElement;
@@ -94,15 +107,15 @@ const failed = new WeakSet< HTMLTextAreaElement >();
 // Write every change to the post the way core's code editor textarea does.
 // The block editor parses the blocks from the content again when it needs them.
 function push( content: string ): void {
-	const post = currentPost();
-	if ( ! session || ! post ) {
+	if ( ! session ) {
 		return;
 	}
+	const { entity } = session;
 	session.synced = content;
 	( dispatch( 'core' ) as unknown as CoreActions ).editEntityRecord(
 		'postType',
-		post.type,
-		post.id,
+		entity.type,
+		entity.id,
 		{
 			content,
 			blocks: undefined,
@@ -114,13 +127,18 @@ function push( content: string ): void {
 // Bring in changes made outside CodeMirror: the toolbar undo button,
 // content filtered by the server on save, another plugin editing the post.
 function pull(): void {
-	const post = currentPost();
-	if ( ! session || ! post ) {
+	if ( ! session ) {
+		return;
+	}
+	const { entity } = session;
+	// getEditedPostContent() is the current entity's, start again for the new one
+	if ( ! isSameEntity( entity, currentPost() ) ) {
+		reconcile();
 		return;
 	}
 	const edits = (
 		select( 'core' ) as unknown as CoreSelectors
-	 ).getEntityRecordEdits( 'postType', post.type, post.id );
+	 ).getEntityRecordEdits( 'postType', entity.type, entity.id );
 	if ( edits === session.edits ) {
 		return;
 	}
@@ -238,9 +256,15 @@ async function start( textarea: HTMLTextAreaElement ): Promise< void > {
 			starting = null;
 		}
 	}
-	// the user may have left code view while the theme or keymap loaded
-	if ( ! textarea.isConnected || editorMode() !== 'text' ) {
+	// the user may have left code view, or opened another entity, while the
+	// theme or keymap loaded
+	if (
+		! textarea.isConnected ||
+		editorMode() !== 'text' ||
+		! isSameEntity( post, currentPost() )
+	) {
 		editor.destroy();
+		queueMicrotask( reconcile );
 		return;
 	}
 	let unmountSettings = () => {};
@@ -260,6 +284,7 @@ async function start( textarea: HTMLTextAreaElement ): Promise< void > {
 		editor.applySettings( state.settings );
 	} );
 	session = {
+		entity: post,
 		textarea,
 		editor,
 		container,
@@ -293,7 +318,11 @@ function reconcile(): void {
 		currentPost() && editorMode() === 'text'
 			? document.querySelector< HTMLTextAreaElement >( textareaSelector )
 			: null;
-	if ( session && session.textarea !== textarea ) {
+	if (
+		session &&
+		( session.textarea !== textarea ||
+			! isSameEntity( session.entity, currentPost() ) )
+	) {
 		stop();
 	}
 	if (
@@ -345,7 +374,10 @@ domReady( () => {
 			return;
 		}
 		const nextMode = editorMode();
-		if ( nextMode !== mode ) {
+		if (
+			nextMode !== mode ||
+			( session && ! isSameEntity( session.entity, currentPost() ) )
+		) {
 			mode = nextMode;
 			reconcile();
 		} else {

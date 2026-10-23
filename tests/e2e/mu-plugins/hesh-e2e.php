@@ -35,7 +35,7 @@ add_action(
 	1
 );
 
-// No block editor welcome guide: it opens over the editor on a new site.
+// No block editor welcome guides (post and template): they open over the editor on a new site.
 add_action(
 	'init',
 	function () {
@@ -45,9 +45,11 @@ add_action(
 		$changed     = false;
 		// the post editor's scope, and the shared one newer versions use
 		foreach ( array( 'core/edit-post', 'core' ) as $scope ) {
-			if ( ! isset( $preferences[ $scope ]['welcomeGuide'] ) || false !== $preferences[ $scope ]['welcomeGuide'] ) {
-				$preferences[ $scope ]['welcomeGuide'] = false;
-				$changed                               = true;
+			foreach ( array( 'welcomeGuide', 'welcomeGuideTemplate' ) as $guide ) {
+				if ( ! isset( $preferences[ $scope ][ $guide ] ) || false !== $preferences[ $scope ][ $guide ] ) {
+					$preferences[ $scope ][ $guide ] = false;
+					$changed                         = true;
+				}
 			}
 		}
 		if ( $changed ) {

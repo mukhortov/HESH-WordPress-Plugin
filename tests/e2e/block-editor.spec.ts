@@ -199,6 +199,73 @@ test.describe( 'block editor Code Editor', () => {
 		expect( await editedContent( page ) ).toBe( 'typed while loading' );
 	} );
 
+	test( 'keeps the post and its template apart', async ( { page } ) => {
+		// an unedited post, so neither it nor its template has edits
+		const postId = await page.evaluate(
+			async () =>
+				(
+					await wp.apiFetch< { id: number } >( {
+						path: '/wp/v2/posts',
+						method: 'POST',
+						data: {
+							title: 'Post and template',
+							content: '<p>Post content</p>',
+							status: 'draft',
+						},
+					} )
+				).id
+		);
+		await openBlockEditor(
+			page,
+			`/wp-admin/post.php?post=${ postId }&action=edit`
+		);
+		await setEditorMode( page, 'text' );
+		await expect( codeMirror( page, editor ) ).toHaveText(
+			'<p>Post content</p>'
+		);
+
+		// Edit template and come back without leaving code view. WordPress 7
+		// keeps the same textarea for the post and its template.
+		await page.evaluate( () =>
+			wp.data
+				.dispatch( 'core/edit-post' )
+				.openGeneralSidebar( 'edit-post/document' )
+		);
+		await page.getByRole( 'button', { name: 'Template options' } ).click();
+		await page.getByRole( 'menuitem', { name: 'Edit template' } ).click();
+		await expect
+			.poll( () =>
+				page.evaluate( () =>
+					wp.data.select( 'core/editor' ).getCurrentPostType()
+				)
+			)
+			.toBe( 'wp_template' );
+		await expect( codeMirror( page, editor ) ).toContainText(
+			'wp:template-part'
+		);
+		await page
+			.getByRole( 'button', { name: /^(Back|Go back)/ } )
+			.first()
+			.click();
+		await expect
+			.poll( () =>
+				page.evaluate( () =>
+					wp.data.select( 'core/editor' ).getCurrentPostType()
+				)
+			)
+			.toBe( 'post' );
+
+		await expect( codeMirror( page, editor ) ).toHaveText(
+			'<p>Post content</p>'
+		);
+		await codeMirror( page, editor ).click();
+		await page.keyboard.press( 'ControlOrMeta+End' );
+		await page.keyboard.type( '!' );
+		await expect
+			.poll( () => editedContent( page ) )
+			.toBe( '<p>Post content</p>!' );
+	} );
+
 	test( 'starts when a post opens in code view, and saves with Ctrl+S', async ( {
 		page,
 	} ) => {
