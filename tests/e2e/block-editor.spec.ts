@@ -324,6 +324,24 @@ test.describe( 'block editor Code Editor', () => {
 			.toMatchObject( { theme: 'dracula', lineNumbers: false } );
 	} );
 
+	test( 'saves a setting changed just before leaving the page', async ( {
+		page,
+	} ) => {
+		await setEditorMode( page, 'text' );
+		await expect( codeMirror( page, editor ) ).toBeVisible();
+		await page
+			.getByRole( 'button', { name: 'Code editor settings' } )
+			.click();
+		await page.getByLabel( 'Theme' ).selectOption( 'nord' );
+		// gone well before the 500ms the settings wait for more changes
+		await page.goto( 'about:blank' );
+
+		await openBlockEditor( page );
+		await expect
+			.poll( async () => ( await getState( page ) ).meta.hesh_settings )
+			.toMatchObject( { theme: 'nord' } );
+	} );
+
 	test( 'moves 2.x settings into hesh_settings', async ( { page } ) => {
 		await page.evaluate( () =>
 			wp.apiFetch( {
