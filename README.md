@@ -65,7 +65,7 @@ Report bugs and suggestions in [GitHub issues](https://github.com/mukhortov/HESH
 3. Run `npm install` in the project folder.
 4. Run `npm run build` to compile `src/` into `build/`.
 
-`npm start` rebuilds on every change. `npm run package` builds and copies only the files the plugin ships with into `dist/html-editor-syntax-highlighter`, plus the WordPress.org banners, icons and screenshots in `assets/` (the release script keeps those out of SVN `trunk`). Set `HESH_DIST=/some/path` to package somewhere else. Hidden files in the target folder, like a `.git` folder, are kept.
+`npm start` rebuilds on every change. `npm run package` builds and copies only the files the plugin ships with into `dist/html-editor-syntax-highlighter`, plus the WordPress.org banners, icons and screenshots in `assets/` (the release script keeps those out of SVN `trunk`). Set `HESH_DIST=/some/path` to package somewhere else: an empty folder, or an earlier package, which is emptied first (other folders are refused). Hidden files in it, like a `.git` folder, are kept.
 
 WordPress packages (`@wordpress/element`, `@wordpress/components`, ...) are not bundled: the build lists them in `build/*.asset.php`, and the plugin loads them from WordPress.
 

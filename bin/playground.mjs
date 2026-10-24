@@ -1,10 +1,10 @@
 /**
  * Starts a WordPress Playground site with a copy of the packaged plugin, for
- * the scripts in bin/. Run `npm run package` first.
+ * the scripts in bin/ and the end-to-end tests. Run `npm run package` first.
  *
  * The site uses the end-to-end test mu-plugin (tests/e2e/mu-plugins): the
  * admin is logged in, pages use the Classic editor, core doesn't update itself
- * and the block editor's welcome guide is off.
+ * and the block editor's welcome guides are off.
  */
 import { spawn } from 'node:child_process';
 import { cpSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
@@ -21,7 +21,8 @@ const root = resolve( fileURLToPath( import.meta.url ), '../..' );
  * @param {Array}  [options.steps] Blueprint steps to run first.
  * @param {string} [options.wp]    WordPress version.
  * @param {string} [options.php]   PHP version.
- * @return {Promise<{url: string, stop: () => void}>} The site's address, and a function that stops it.
+ * @return {Promise<{url: string, stop: () => void, exited: Promise<number|null>}>}
+ * The site's address, a function that stops it, and its exit code once it stops.
  */
 export async function startPlayground( {
 	name,
@@ -36,11 +37,19 @@ export async function startPlayground( {
 		recursive: true,
 	} );
 
-	const blueprint = join(
-		mkdtempSync( join( tmpdir(), `hesh-${ name }-` ) ),
-		'blueprint.json'
+	// Playground reads the blueprint while it starts, the folder goes after that
+	const blueprintDir = mkdtempSync(
+		join( tmpdir(), `hesh-${ name.replace( /[^\w.-]+/g, '-' ) }-` )
 	);
-	writeFileSync( blueprint, JSON.stringify( { steps } ) );
+	const removeBlueprint = () =>
+		rmSync( blueprintDir, { recursive: true, force: true } );
+	process.on( 'exit', removeBlueprint );
+	const blueprint = join( blueprintDir, 'blueprint.json' );
+	// with a blueprint, Playground takes the versions from it, not from --wp and --php
+	writeFileSync(
+		blueprint,
+		JSON.stringify( { preferredVersions: { wp, php }, steps } )
+	);
 
 	// Starting fails with "fetch failed" when Playground can't reach
 	// api.wordpress.org to look up the WordPress version, which happens in
@@ -66,18 +75,20 @@ export async function startPlayground( {
 			// Playground keeps one site per working directory
 			{ cwd: dirname( plugin ), stdio: [ 'ignore', 'pipe', 'inherit' ] }
 		);
+		const exited = new Promise( ( done ) => server.on( 'exit', done ) );
 		try {
 			await new Promise( ( ready, fail ) => {
 				server.stdout.on(
 					'data',
 					( data ) => /Ready!/.test( data ) && ready()
 				);
-				server.on( 'exit', ( code ) =>
+				exited.then( ( code ) =>
 					fail( new Error( `Playground exited with ${ code }` ) )
 				);
 			} );
 		} catch ( error ) {
 			if ( attempt === 4 ) {
+				removeBlueprint();
 				throw error;
 			}
 			const seconds = attempt * 5;
@@ -88,9 +99,11 @@ export async function startPlayground( {
 			await new Promise( ( wait ) => setTimeout( wait, seconds * 1000 ) );
 			continue;
 		}
+		removeBlueprint();
 		return {
 			url: `http://127.0.0.1:${ port }`,
 			stop: () => server.kill( 'SIGTERM' ),
+			exited,
 		};
 	}
 }

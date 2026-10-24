@@ -3,49 +3,24 @@
  * end-to-end tests: `node tests/e2e/server.mjs <wp version> <php version> <port>`.
  * Needs `npm run package` first.
  *
- * Uses `wp-playground-cli start`, which honours --wp and --php (the lower-level
- * `server` command ran the latest WordPress whatever version was asked for).
- * Playground keeps one site per working directory, so each WordPress version
- * runs in its own folder, with its own copy of the plugin.
+ * Uses bin/playground.mjs: `wp-playground-cli start`, which honours --wp and
+ * --php, run from a folder of its own for each WordPress version (Playground
+ * keeps one site per working directory), and started again if Playground
+ * can't reach api.wordpress.org.
  */
-import { spawn } from 'node:child_process';
-import { cpSync, rmSync } from 'node:fs';
-import { dirname, join, resolve } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { startPlayground } from '../../bin/playground.mjs';
 
 const [ wp = 'latest', php = '8.3', port = '9400' ] = process.argv.slice( 2 );
-const root = resolve( fileURLToPath( import.meta.url ), '../../..' );
-const plugin = join(
-	root,
-	'dist/e2e',
-	`wp-${ wp }`,
-	'html-editor-syntax-highlighter'
-);
 
-rmSync( plugin, { recursive: true, force: true } );
-cpSync( join( root, 'dist/html-editor-syntax-highlighter' ), plugin, {
-	recursive: true,
+const site = await startPlayground( {
+	name: `e2e/wp-${ wp }`,
+	port: Number( port ),
+	wp,
+	php,
 } );
+// eslint-disable-next-line no-console
+console.log( `Ready! WordPress ${ wp } is running on ${ site.url }` );
 
-const server = spawn(
-	'npx',
-	[
-		'wp-playground-cli',
-		'start',
-		`--path=${ plugin }`,
-		`--wp=${ wp }`,
-		`--php=${ php }`,
-		`--port=${ port }`,
-		`--mount=${ join( root, 'tests/e2e/mu-plugins' ) }:/wordpress/wp-content/mu-plugins`,
-		'--define-bool',
-		'AUTOMATIC_UPDATER_DISABLED',
-		'true',
-		'--reset',
-		'--skip-browser',
-	],
-	{ cwd: dirname( plugin ), stdio: 'inherit' }
-);
-const stop = () => server.kill( 'SIGTERM' );
-process.on( 'SIGINT', stop );
-process.on( 'SIGTERM', stop );
-server.on( 'exit', ( code ) => process.exit( code ?? 0 ) );
+process.on( 'SIGINT', site.stop );
+process.on( 'SIGTERM', site.stop );
+site.exited.then( ( code ) => process.exit( code ?? 0 ) );

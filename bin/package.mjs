@@ -4,7 +4,9 @@
  * dist/html-editor-syntax-highlighter by default, or $HESH_DIST.
  * Run `npm run package`, which builds first.
  *
- * Hidden files in the target folder (like the .git of a release checkout) are kept.
+ * The target folder must be empty or an earlier package (it is emptied first),
+ * so a mistyped HESH_DIST can't wipe something else, like wp-content/plugins.
+ * Hidden files in it (like the .git of a release checkout) are kept.
  *
  * WordPress.org's banners, icons and screenshots go in assets/: scripts/release.sh
  * keeps them out of SVN trunk and copies them to the top-level /assets folder.
@@ -38,11 +40,24 @@ if ( target === root ) {
 	process.exit( 1 );
 }
 
+const previous = existsSync( target )
+	? ( await readdir( target ) ).filter(
+			( entry ) => ! entry.startsWith( '.' )
+		)
+	: [];
+if (
+	previous.length &&
+	! previous.includes( 'html-editor-syntax-highlighter.php' )
+) {
+	console.error(
+		`${ target } has other files in it, and no html-editor-syntax-highlighter.php from an earlier package. Set HESH_DIST to an empty folder, or to the plugin's own folder.`
+	);
+	process.exit( 1 );
+}
+
 await mkdir( target, { recursive: true } );
-for ( const entry of await readdir( target ) ) {
-	if ( ! entry.startsWith( '.' ) ) {
-		await rm( join( target, entry ), { recursive: true, force: true } );
-	}
+for ( const entry of previous ) {
+	await rm( join( target, entry ), { recursive: true, force: true } );
 }
 
 for ( const file of files ) {
