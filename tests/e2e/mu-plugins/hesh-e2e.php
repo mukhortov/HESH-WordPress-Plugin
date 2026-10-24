@@ -76,19 +76,41 @@ add_action(
 			return current_user_can( 'edit_posts' );
 		};
 
-		// Replaces the user's settings with 2.x settings, to test the migration.
+		// the user a request is about: ?user=<id>, or the current user
+		$user = function ( WP_REST_Request $request ) {
+			return $request['user'] ? (int) $request['user'] : get_current_user_id();
+		};
+
+		// Replaces the user's settings with 2.x settings (any hesh_<key> meta), to test the migration.
 		register_rest_route(
 			'hesh-e2e/v1',
 			'/legacy-settings',
 			array(
 				'methods'             => 'POST',
 				'permission_callback' => $can,
-				'callback'            => function ( WP_REST_Request $request ) {
-					$user_id = get_current_user_id();
+				'callback'            => function ( WP_REST_Request $request ) use ( $user ) {
+					$user_id = $user( $request );
 					delete_user_meta( $user_id, 'hesh_settings' );
 					foreach ( $request->get_json_params() as $key => $value ) {
 						update_user_meta( $user_id, 'hesh_' . $key, $value );
 					}
+					return array( 'ok' => true );
+				},
+			)
+		);
+
+		// Runs the plugin's uninstall.php the way WordPress does when the plugin is deleted.
+		register_rest_route(
+			'hesh-e2e/v1',
+			'/uninstall',
+			array(
+				'methods'             => 'POST',
+				'permission_callback' => function () {
+					return current_user_can( 'delete_plugins' );
+				},
+				'callback'            => function () {
+					define( 'WP_UNINSTALL_PLUGIN', 'html-editor-syntax-highlighter/html-editor-syntax-highlighter.php' );
+					include WP_PLUGIN_DIR . '/html-editor-syntax-highlighter/uninstall.php';
 					return array( 'ok' => true );
 				},
 			)
@@ -101,9 +123,9 @@ add_action(
 			array(
 				'methods'             => 'GET',
 				'permission_callback' => $can,
-				'callback'            => function () {
+				'callback'            => function ( WP_REST_Request $request ) use ( $user ) {
 					$meta = array();
-					foreach ( get_user_meta( get_current_user_id() ) as $key => $values ) {
+					foreach ( get_user_meta( $user( $request ) ) as $key => $values ) {
 						if ( 0 === strpos( $key, 'hesh_' ) ) {
 							$meta[ $key ] = maybe_unserialize( $values[0] );
 						}

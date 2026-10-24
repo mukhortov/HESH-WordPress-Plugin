@@ -7,9 +7,11 @@
 
 defined( 'WP_UNINSTALL_PLUGIN' ) || exit;
 
-delete_metadata( 'user', 0, 'hesh_settings', '', true );
+require_once __DIR__ . '/includes/class-hesh-settings.php';
+
+delete_metadata( 'user', 0, HESH_Settings::META_KEY, '', true );
 
 // 2.x settings, and the 2.x survey notice state, of users who never opened the editor after updating
-foreach ( array( 'theme', 'tabSize', 'lineWrapping', 'lineNumbers', 'fontSize', 'lineHeight', 'matchBrackets', 'matchTags', 'highlightSelectionMatches', 'autoCloseTags', 'autoCloseBrackets', 'foldGutter', 'scrollbarStyle', 'keyMap', 'surveyNoticeDismissedB' ) as $hesh_key ) {
+foreach ( array_merge( HESH_Settings::LEGACY_KEYS, HESH_Settings::OBSOLETE_KEYS ) as $hesh_key ) {
 	delete_metadata( 'user', 0, 'hesh_' . $hesh_key, '', true );
 }

@@ -110,9 +110,16 @@ class HESH_Settings {
 	}
 
 	/**
-	 * Registers the user meta, on `init`.
+	 * Registers the user meta, on `rest_api_init` and `admin_init`: only REST
+	 * requests and admin screens use it, so the front end skips reading the schema.
+	 * Both can run in one request (the block editor preloads REST data).
 	 */
 	public static function register() {
+		static $registered = false;
+		if ( $registered ) {
+			return;
+		}
+		$registered = true;
 		register_meta(
 			'user',
 			self::META_KEY,
@@ -185,8 +192,11 @@ class HESH_Settings {
 	 * @param int $user_id User ID.
 	 */
 	public static function migrate( $user_id ) {
+		// metadata_exists() reads the user meta cache, delete_user_meta() always queries
 		foreach ( self::OBSOLETE_KEYS as $key ) {
-			delete_user_meta( $user_id, 'hesh_' . $key );
+			if ( metadata_exists( 'user', $user_id, 'hesh_' . $key ) ) {
+				delete_user_meta( $user_id, 'hesh_' . $key );
+			}
 		}
 
 		$legacy = array();
