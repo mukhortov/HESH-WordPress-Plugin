@@ -1,0 +1,101 @@
+// The Classic editor's Text tab. CodeMirror is positioned over #content,
+// which keeps its place in the layout but is not shown.
+
+.hesh-classic-active {
+
+	#wp-content-editor-container {
+		position: relative;
+	}
+
+	#content.hesh-textarea {
+		visibility: hidden;
+	}
+}
+
+.hesh-classic-editor {
+	position: absolute;
+	z-index: 1;
+	display: flex;
+	flex-direction: column;
+	box-sizing: border-box;
+
+	.cm-editor {
+		flex: 1 1 auto;
+		min-height: 0;
+		height: 100%;
+
+		&.cm-focused {
+			outline: none;
+			box-shadow: inset 0 0 0 1px var(--wp-admin-theme-color, #2271b1);
+		}
+	}
+}
+
+// the Visual tab is open
+.tmce-active .hesh-classic-editor {
+	display: none;
+}
+
+.hesh-toolbar {
+	float: right;
+	display: inline-flex;
+	align-items: center;
+	gap: 2px;
+
+	.hesh-settings-menu__toggle.components-button {
+		height: 26px;
+		min-width: 26px;
+		padding: 0 4px;
+	}
+}
+
+.quicktags-toolbar .hesh-fullscreen-toggle.ed_button {
+	margin: 2px 0;
+	padding: 0 4px;
+	min-width: 26px;
+
+	&::before {
+		content: "\f211";
+		font: 400 20px/1 dashicons, sans-serif;
+		vertical-align: middle;
+	}
+}
+
+#postdivrich.wp-editor-expand .hesh-fullscreen-toggle {
+	display: none;
+}
+
+// F11: the editor fills the window
+#wp-content-editor-container.hesh-fullscreen {
+	position: fixed;
+	inset: 0;
+	z-index: 100000;
+	display: flex;
+	flex-direction: column;
+	margin: 0;
+	background: #fff;
+
+	.quicktags-toolbar {
+		position: static !important;
+		width: auto !important;
+		flex: 0 0 auto;
+	}
+
+	#content {
+		display: none;
+	}
+
+	.hesh-classic-editor {
+		position: static;
+		flex: 1 1 auto;
+		min-height: 0;
+	}
+
+	.hesh-fullscreen-toggle::before {
+		content: "\f506";
+	}
+}
+
+body.hesh-has-fullscreen {
+	overflow: hidden;
+}

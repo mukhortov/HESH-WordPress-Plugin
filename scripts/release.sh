@@ -11,13 +11,15 @@
 # Options:
 #   --dry-run       build and show what would be published, without publishing anything
 #   --yes           don't ask for confirmation before publishing
-#   --assets        also copy assets/ (banners, icons, screenshots) to the WordPress.org /assets folder
+#   --assets        also copy assets/ (banners, icons, screenshots) to the WordPress.org /assets folder,
+#                   deleting screenshots there that are no longer in assets/
 #   --title TEXT    GitHub release title (default: "Version X.Y.Z")
 #   --skip-install  build with the existing node_modules instead of running `npm ci`
 #   -h, --help      show this help
 #
 # The version is read from the plugin header. It must match HESH_VERSION, the readme Stable tag and
-# package.json, have a "= X.Y.Z =" entry in src/readme.txt, and be newer than the latest release.
+# package.json, have a "= X.Y.Z =" entry in readme.txt, and be newer than the latest release.
+# A pre-release version like 3.0.0-dev or 3.0.0-beta.1 is never released.
 # A target that already has this version is skipped, so after a failure the script can simply be re-run.
 #
 # WordPress.org asks for your username and then your SVN password (generate it on your
@@ -29,8 +31,8 @@
 set -euo pipefail
 
 SLUG=html-editor-syntax-highlighter
-MAIN_FILE=src/html-editor-syntax-highlighter.php
-README_FILE=src/readme.txt
+MAIN_FILE=html-editor-syntax-highlighter.php
+README_FILE=readme.txt
 CHANGELOG_FILE=ChangeLog.md
 MAIN_BRANCH=master
 RELEASE_BRANCH=release
@@ -47,7 +49,7 @@ title=""
 die() { printf '\nError: %s\n' "$*" >&2; exit 1; }
 step() { printf '\n==> %s\n' "$*"; }
 info() { printf '    %s\n' "$*"; }
-usage() { sed -n '3,28p' "$0" | sed 's/^# \{0,1\}//'; }
+usage() { sed -n '3,29p' "$0" | sed 's/^# \{0,1\}//'; }
 
 while [ $# -gt 0 ]; do
 	case "$1" in
@@ -95,6 +97,16 @@ latest_version() {
 		if (versions.length) console.log(versions.sort(cmp).pop());'
 }
 
+# WordPress.org serves the images in /assets with their svn:mime-type
+set_mime_type() {
+	case "$1" in
+		*.png) svn propset --quiet svn:mime-type image/png "$1" ;;
+		*.jpg|*.jpeg) svn propset --quiet svn:mime-type image/jpeg "$1" ;;
+		*.gif) svn propset --quiet svn:mime-type image/gif "$1" ;;
+		*.svg) svn propset --quiet svn:mime-type image/svg+xml "$1" ;;
+	esac
+}
+
 # true if version $1 is newer than $2
 version_gt() { [ "$1" != "$2" ] && [ "$(printf '%s\n%s\n' "$1" "$2" | latest_version)" = "$1" ]; }
 
@@ -107,6 +119,11 @@ const_version=$(sed -n "s/.*define( *'HESH_VERSION', *'\([^']*\)'.*/\1/p" "$MAIN
 stable_tag=$(sed -n 's/^Stable tag:[[:space:]]*\([^[:space:]]*\).*/\1/p' "$README_FILE" | head -1)
 package_version=$(node -p 'require("./package.json").version')
 
+# master carries a pre-release version (X.Y.Z-dev) between releases
+if printf '%s' "$version" | grep -Eq '^[0-9]+\.[0-9]+\.[0-9]+-'; then
+	step "Pre-release version $version, nothing to release"
+	exit 0
+fi
 printf '%s' "$version" | grep -Eq '^[0-9]+\.[0-9]+\.[0-9]+$' || die "Version '$version' in $MAIN_FILE is not X.Y.Z"
 [ "$const_version" = "$version" ] || die "HESH_VERSION is '$const_version' but the plugin header says $version"
 [ "$stable_tag" = "$version" ] || die "Stable tag in $README_FILE is '$stable_tag' but the plugin header says $version"
@@ -255,6 +272,14 @@ if $do_wordpress; then
 	if $sync_assets && [ -d "$build/assets" ]; then
 		svn update --quiet --non-interactive --set-depth infinity "$svn_copy/assets"
 		rsync -a "$build/assets/" "$svn_copy/assets/"
+		# screenshots that are gone from assets/, localised ones (screenshot-1-de_DE.png) too;
+		# banners and icons are only ever added or replaced
+		for file in "$svn_copy/assets"/screenshot-[0-9]*; do
+			name=${file##*/}
+			case "$name" in
+				*.png|*.jpg|*.jpeg|*.gif) [ -f "$build/assets/$name" ] || rm -f "$file" ;;
+			esac
+		done
 	fi
 	(
 		cd "$svn_copy"
@@ -263,13 +288,10 @@ if $do_wordpress; then
 			case "$line" in
 				'?'*)
 					svn add --quiet "$path"
-					case "$path" in
-						*.png) svn propset --quiet svn:mime-type image/png "$path" ;;
-						*.jpg|*.jpeg) svn propset --quiet svn:mime-type image/jpeg "$path" ;;
-						*.gif) svn propset --quiet svn:mime-type image/gif "$path" ;;
-						*.svg) svn propset --quiet svn:mime-type image/svg+xml "$path" ;;
-					esac
+					set_mime_type "$path"
 					;;
+				# a replaced image keeps its old type, often application/octet-stream
+				'M'*) set_mime_type "$path" ;;
 				'!'*) svn delete --quiet "$path" ;;
 			esac
 		done

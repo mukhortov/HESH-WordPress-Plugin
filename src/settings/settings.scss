@@ -1,0 +1,32 @@
+.hesh-settings-menu__content .components-popover__content {
+	width: 320px;
+	max-width: calc(100vw - 32px);
+}
+
+.hesh-settings {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	padding: 4px;
+
+	&__row {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 8px;
+	}
+
+	&__status:empty {
+		display: none;
+	}
+
+	&__status {
+		margin: 0;
+		color: #cc1818;
+	}
+
+	&__footer {
+		margin: 0;
+		font-size: 12px;
+		color: #757575;
+	}
+}

@@ -9,7 +9,6 @@ It __does not__ work with blocks in the Gutenberg _Visual Editor_. This means it
 * The _Edit as HTML_ section of every block
 * The _Custom HTML_ block
 * The _Shortcode_ block
-See the last screenshot for a visual example.
 
 It may work with other code related parts of Gutenberg in the future. [Track the progress here.](https://github.com/mukhortov/HESH-WordPress-Plugin/issues/72)
 
@@ -19,16 +18,21 @@ It may work with other code related parts of Gutenberg in the future. [Track the
 Since WordPress version 5.0, Gutenberg is the default editor. If you want this plugin to work the way it used to, you'll have to download the [Classic Editor plugin](https://wordpress.org/plugins/classic-editor/).
 
 
-## Can I search and replace? 
+## Can I search and replace?
+
+Yes. `Ctrl+F` / `Cmd+F` opens the search panel, which also replaces.
 
 __Function: WINDOWS / MAC__
-__Start searching:__   `Ctrl-F` / `Cmd-F`
-__Find next:__         `Ctrl-G` / `Cmd-G`
-__Find previous:__     `Shift-Ctrl-G` / `Shift-Cmd-G`
-__Replace:__           `Shift-Ctrl-F` / `Cmd-Opt-F`
-__Replace all:__       `Shift-Ctrl-R` / `Shift-Cmd-Opt-F`
-__Persistent search:__ `Alt-F` (dialog doesn't auto-close, `Enter` to find next, `Shift-Enter` to find previous)
-__Jump to line:__      `Alt-G` 
+__Search and replace:__     `Ctrl+F` / `Cmd+F`
+__Find next:__              `Ctrl+G` / `Cmd+G` or `F3`
+__Find previous:__          `Shift+Ctrl+G` / `Shift+Cmd+G` or `Shift+F3`
+__Select next occurrence:__ `Ctrl+D` / `Cmd+D`
+__Jump to line:__           `Ctrl+Alt+G` / `Cmd+Opt+G`
+
+
+## What happened to highlighting in the Theme & Plugin editors?
+
+Since version 3.0 the Theme & Plugin file editors use WordPress's own code editor, which has syntax highlighting and checks your code for errors. Switch it on or off with _Syntax Highlighting_ in your profile.
 
 
 ## Why are p and br tags are being removed?
@@ -74,16 +78,13 @@ You may have the _'Enable full-height editor and distraction-free functionality'
 __To Disable Full-height Editor:__ Go to _'Screen Options'_ (in the top right of the editor page), then uncheck _'Enable full-height editor and distraction-free functionality'_ in the _Additional Settings_ section.
 
 
-## How do I use Fullscreen? 
+## How do I use Fullscreen?
 
-The fullscreen button on the top right of the editor will do one of two things depending on the _'Enable full-height editor and distraction-free functionality'_ setting in your _'Screen Options'_ (in the top right of the editor page):
-* __Full-height Editor _Enabled_:__ Toggles the _'distraction free mode'_.
-* __Full-height Editor _Disabled_:__ Toggles the _'fullscreen mode'_.
+In the Classic editor's Text tab, the fullscreen button at the right of the toolbar, or `F11`, makes the editor fill the window. `Esc` closes it (with Vim key bindings, use the button or `F11`).
 
-__Keybindings:__ `F11` will toggle fullscreen on and off, and `esc` will close fullscreen.
+With _'Enable full-height editor and distraction-free functionality'_ on (in _'Screen Options'_ at the top right of the editor page), use WordPress's own distraction-free button instead.
 
 
-## Does it work with Internet Explorer? 
+## Which browsers does it work with?
 
-__Not really...__ It is partially supported in IE 11. Known bugs are tracked [here](https://github.com/mukhortov/HESH-WordPress-Plugin/issues/41), but won't be fixed. Anything less that IE 10 isn't even supported by Microsoft anymore. If you are using Internet Explorer you should get a [better browser](https://www.mozilla.org/en-US/firefox/new/).
-
+Current versions of Chrome, Edge, Firefox and Safari. Internet Explorer is not supported.
