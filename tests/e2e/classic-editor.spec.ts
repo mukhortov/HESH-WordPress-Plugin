@@ -126,6 +126,37 @@ test.describe( 'Classic editor Text tab', () => {
 		expect( await textareaValue( page ) ).toBe( 'some bold text' );
 	} );
 
+	test( 'setRangeText() edits CodeMirror like typing', async ( { page } ) => {
+		await openClassicEditor( page );
+		await codeMirror( page, editor ).click();
+		await page.keyboard.type( '<p>Hello</p>' );
+		await page.evaluate( () =>
+			(
+				document.getElementById( 'content' ) as HTMLTextAreaElement
+			 ).setRangeText( ' world', 8, 8, 'end' )
+		);
+		expect( await textareaValue( page ) ).toBe( '<p>Hello world</p>' );
+		expect( await submittedValue( page ) ).toBe( '<p>Hello world</p>' );
+		expect( await codeMirrorText( page, editor ) ).toBe(
+			'<p>Hello world</p>'
+		);
+		expect(
+			await page.evaluate(
+				() =>
+					(
+						document.getElementById(
+							'content'
+						) as HTMLTextAreaElement
+					 ).selectionStart
+			)
+		).toBe( 14 );
+
+		// and it can be undone
+		await codeMirror( page, editor ).click();
+		await page.keyboard.press( 'ControlOrMeta+z' );
+		expect( await textareaValue( page ) ).toBe( '<p>Hello</p>' );
+	} );
+
 	test( 'the link dialog inserts at the cursor', async ( { page } ) => {
 		await openClassicEditor( page );
 		await codeMirror( page, editor ).click();

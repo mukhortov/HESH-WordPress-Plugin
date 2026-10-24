@@ -1,4 +1,9 @@
-import { EditorSelection, Transaction } from '@codemirror/state';
+import {
+	EditorSelection,
+	Transaction,
+	type ChangeSpec,
+	type Text,
+} from '@codemirror/state';
 import type { EditorView } from '@codemirror/view';
 import { minimalChange } from '../editor/diff';
 
@@ -8,7 +13,9 @@ import { minimalChange } from '../editor/diff';
  * working: Quicktags buttons, the link dialog, media inserts, the Visual tab,
  * autosave, word count.
  *
- * The real textarea value is kept in step for form submission.
+ * The real textarea value is kept in step on every change: forms are also
+ * submitted in ways that fire no submit event (jQuery's .submit(), form.submit()),
+ * and those must send the current content.
  */
 
 const textareaProto = HTMLTextAreaElement.prototype;
@@ -20,6 +27,7 @@ const overridden = [
 	'selectionEnd',
 	'selectionDirection',
 	'setSelectionRange',
+	'setRangeText',
 	'select',
 	'focus',
 	'scrollHeight',
@@ -54,27 +62,44 @@ export function attachTextareaFacade(
 
 	const main = () => view.state.selection.main;
 
-	const sync = () =>
-		nativeValue.set!.call( textarea, view.state.doc.toString() );
+	// the document as a string, made once per change for sync() and the getter
+	let cachedDoc: Text | null = null;
+	let cachedValue = '';
+	const docString = () => {
+		if ( view.state.doc !== cachedDoc ) {
+			cachedDoc = view.state.doc;
+			cachedValue = cachedDoc.toString();
+		}
+		return cachedValue;
+	};
+
+	const sync = () => nativeValue.set!.call( textarea, docString() );
+
+	// a textarea turns \r\n into \n, so does CodeMirror
+	const normalize = ( text: unknown ) =>
+		String( text ?? '' ).replace( /\r\n?/g, '\n' );
+
+	// changes written to the textarea, like the ones typed into it
+	const write = ( changes: ChangeSpec, selection?: EditorSelection ) =>
+		view.dispatch( {
+			changes,
+			selection,
+			annotations: [
+				Transaction.addToHistory.of( options.addToHistory() ),
+				Transaction.userEvent.of( 'input.textarea' ),
+			],
+		} );
 
 	Object.defineProperties( textarea, {
 		value: {
 			configurable: true,
-			get: () => view.state.doc.toString(),
+			get: docString,
 			set( value: unknown ) {
-				const current = view.state.doc.toString();
-				// a textarea turns \r\n into \n, so does CodeMirror
-				const next = String( value ?? '' ).replace( /\r\n?/g, '\n' );
-				if ( next === current ) {
-					return;
+				const current = docString();
+				const next = normalize( value );
+				if ( next !== current ) {
+					write( minimalChange( current, next ) );
 				}
-				view.dispatch( {
-					changes: minimalChange( current, next ),
-					annotations: [
-						Transaction.addToHistory.of( options.addToHistory() ),
-						Transaction.userEvent.of( 'input.textarea' ),
-					],
-				} );
 			},
 		},
 		selectionStart: {
@@ -110,6 +135,49 @@ export function attachTextareaFacade(
 				} else {
 					setSelection( from, to );
 				}
+			},
+		},
+		// the selection afterwards follows the HTML spec's selectMode
+		setRangeText: {
+			configurable: true,
+			value(
+				replacement: string,
+				start?: number,
+				end?: number,
+				selectMode: SelectionMode = 'preserve'
+			) {
+				const selection = main();
+				const from =
+					start === undefined ? selection.from : clamp( start );
+				const to =
+					end === undefined
+						? selection.to
+						: Math.max( from, clamp( end ) );
+				const insert = normalize( replacement );
+				const insertEnd = from + insert.length;
+				const delta = insert.length - ( to - from );
+				let anchor: number;
+				let head: number;
+				if ( selectMode === 'select' ) {
+					[ anchor, head ] = [ from, insertEnd ];
+				} else if ( selectMode === 'start' ) {
+					anchor = head = from;
+				} else if ( selectMode === 'end' ) {
+					anchor = head = insertEnd;
+				} else {
+					const keep = ( pos: number, inside: number ) => {
+						if ( pos > to ) {
+							return pos + delta;
+						}
+						return pos > from ? inside : pos;
+					};
+					anchor = keep( selection.from, from );
+					head = keep( selection.to, insertEnd );
+				}
+				write(
+					{ from, to, insert },
+					EditorSelection.single( anchor, head )
+				);
 			},
 		},
 		select: {
