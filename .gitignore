@@ -3,3 +3,13 @@ node_modules
 .DS_Store
 .trash
 resources
+
+# build output
+/build
+/dist
+/src/lang-shortcode/parser.ts
+/src/lang-shortcode/parser.terms.ts
+
+# test output
+/test-results
+/playwright-report
