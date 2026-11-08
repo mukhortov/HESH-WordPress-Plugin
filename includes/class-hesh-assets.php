@@ -41,6 +41,13 @@ class HESH_Assets {
 		wp_enqueue_style( $handle, "{$url}.css", array( 'wp-components' ), $asset['version'] );
 		wp_style_add_data( $handle, 'rtl', 'replace' );
 
+		if ( 'classic-editor' === $entry ) {
+			// WordPress's emoji script swaps emoji for images in any new DOM, CodeMirror's
+			// included, and CodeMirror reads that as the emoji being deleted. Core turns
+			// it off for the block editor the same way (wp-admin/edit-form-blocks.php).
+			remove_action( 'admin_print_scripts', 'print_emoji_detection_script' );
+		}
+
 		$post   = get_post();
 		$config = array(
 			'settings' => HESH_Settings::get( get_current_user_id() ),

@@ -7,6 +7,7 @@ interface WordPressGlobal {
 		dispatch: (
 			store: string
 		) => Record< string, ( ...args: unknown[] ) => any >;
+		subscribe: ( listener: () => void ) => () => void;
 	};
 	apiFetch: < T = unknown >( options: {
 		path: string;
@@ -19,4 +20,17 @@ declare const wp: WordPressGlobal;
 
 interface Window {
 	send_to_editor: ( html: string ) => void;
+	QTags: {
+		addButton: (
+			id: string,
+			display: string,
+			tagStart: string,
+			tagEnd?: string
+		) => void;
+	};
+	_wpemojiSettings?: unknown;
+	heshSaveStarted?: boolean;
+	switchEditors: { go: ( id: string, mode: 'tmce' | 'html' ) => void };
+	setUserSetting: ( name: string, value: string ) => void;
+	getUserSetting: ( name: string ) => string | undefined;
 }

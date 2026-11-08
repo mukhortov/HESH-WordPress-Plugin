@@ -35,6 +35,7 @@ import {
 	indentLess,
 	insertNewlineKeepIndent,
 	insertTab,
+	redo,
 } from '@codemirror/commands';
 import {
 	highlightSelectionMatches,
@@ -54,12 +55,20 @@ export interface EditorOptions {
 	settings: Settings;
 	/** Surface-specific extensions: change listeners, extra key bindings. */
 	extensions?: Extension[];
+	/**
+	 * How far down the WordPress bars that stick over the area the editor
+	 * scrolls in reach, from the top of that area. The search panel sticks
+	 * below them, and the cursor is kept from scrolling under them or the panel.
+	 */
+	stickyTop?: () => number;
 }
 
 export interface Editor {
 	view: EditorView;
 	/** Reconfigures the editor, loading the theme and keymap first if needed. */
 	applySettings: ( settings: Settings ) => Promise< void >;
+	/** Empties the undo history. */
+	clearHistory: () => void;
 	destroy: () => void;
 }
 
@@ -178,13 +187,106 @@ const closeBracketsKeys: KeyBinding[] = closeBracketsKeymap.map(
 	} )
 );
 
+const isWindows =
+	typeof navigator !== 'undefined' && /Win/.test( navigator.platform );
+
+// Whether a binding takes a character typed with AltGr on Windows, which
+// reports AltGr as Ctrl+Alt: Ctrl-Alt-[ (fold all) would take the [ of German
+// and other keyboard layouts, Ctrl-Alt-\ (indent) their \.
+function takesAltGrCharacter( key: string | undefined ): boolean {
+	if ( ! key ) {
+		return false;
+	}
+	const modifiers = key.split( /-(?!$)/ );
+	const name = modifiers.pop()!;
+	return (
+		name.length === 1 &&
+		! /[a-z0-9]/i.test( name ) &&
+		modifiers.some( ( part ) => /^(c|ctrl|control|mod)$/i.test( part ) ) &&
+		modifiers.some( ( part ) => /^(a|alt)$/i.test( part ) )
+	);
+}
+
+/**
+ * Leaves out, on Windows, the bindings that would take a character typed with
+ * AltGr instead of letting it be typed.
+ * @param bindings Key bindings.
+ */
+export function withoutAltGrKeys(
+	bindings: readonly KeyBinding[]
+): KeyBinding[] {
+	return isWindows
+		? bindings.filter(
+				( binding ) =>
+					! takesAltGrCharacter( binding.win ?? binding.key )
+			)
+		: [ ...bindings ];
+}
+
 const baseTheme = EditorView.baseTheme( {
 	'.cm-scroller': {
 		fontFamily:
 			'Menlo, Consolas, Monaco, "Liberation Mono", "Lucida Console", monospace',
 	},
 	'.cm-gutters': { userSelect: 'none' },
+	// below the bars that stickyTop() measures, see stickyBars()
+	'& .cm-panels.cm-panels-top': { top: 'var(--hesh-sticky-top, 0px)' },
 } );
+
+// The history lives in a compartment, so it can be emptied by taking it out
+// and putting it back.
+const historyCompartment = new Compartment();
+
+// Keeps the search panel and the cursor clear of bars stuck over the top of the
+// scrolling area, which CodeMirror doesn't know about.
+function stickyBars( stickyTop: () => number ): Extension {
+	const measure = {
+		key: stickyTop,
+		read: stickyTop,
+		write: ( top: number, view: EditorView ) =>
+			view.dom.style.setProperty( '--hesh-sticky-top', `${ top }px` ),
+	};
+	return [
+		EditorView.scrollMargins.of( ( view ) => {
+			// the search panel sticks below the bars, over the code
+			const panel =
+				view.dom.querySelector< HTMLElement >( '.cm-panels-top' );
+			const covered = stickyTop() + ( panel?.offsetHeight ?? 0 );
+			const { scrollDOM } = view;
+			if ( scrollDOM.scrollHeight <= scrollDOM.clientHeight ) {
+				return { top: covered };
+			}
+			// CodeMirror scrolls the code itself (the Classic editor without full
+			// height, where the bars are fixed to the window): only what they and
+			// the panel cover of its scroller counts.
+			const top = scrollDOM.getBoundingClientRect().top;
+			return { top: Math.min( covered, Math.max( 0, covered - top ) ) };
+		} ),
+		ViewPlugin.define( ( view ) => {
+			const remeasure = () => view.requestMeasure( measure );
+			remeasure();
+			// WordPress pins and unpins its bars as the page scrolls
+			document.addEventListener( 'scroll', remeasure, {
+				capture: true,
+				passive: true,
+			} );
+			window.addEventListener( 'resize', remeasure );
+			return {
+				update( update: ViewUpdate ) {
+					if ( update.geometryChanged ) {
+						remeasure();
+					}
+				},
+				destroy() {
+					document.removeEventListener( 'scroll', remeasure, {
+						capture: true,
+					} );
+					window.removeEventListener( 'resize', remeasure );
+				},
+			};
+		} ),
+	];
+}
 
 export async function createEditor(
 	options: EditorOptions
@@ -200,23 +302,33 @@ export async function createEditor(
 			extensions: [
 				// optional keymaps take precedence over everything below
 				compartments.keyMap.of( initialParts.keyMap ),
-				history(),
+				historyCompartment.of( history() ),
 				drawSelection(),
 				dropCursor(),
 				EditorState.allowMultipleSelections.of( true ),
 				highlightActiveLine(),
 				highlightSpecialChars(),
 				search( { top: true } ),
-				keymap.of( [
-					// keep the previous line's indentation, 2.x had smart indent switched off
-					{ key: 'Enter', run: insertNewlineKeepIndent },
-					{ key: 'Tab', run: insertTab, shift: indentLess },
-					...closeBracketsKeys,
-					...defaultKeymap,
-					...searchKeymap,
-					...historyKeymap,
-					...foldKeymap,
-				] ),
+				keymap.of(
+					withoutAltGrKeys( [
+						// keep the previous line's indentation, 2.x had smart indent switched off
+						{ key: 'Enter', run: insertNewlineKeepIndent },
+						{ key: 'Tab', run: insertTab, shift: indentLess },
+						...closeBracketsKeys,
+						...defaultKeymap,
+						...searchKeymap,
+						// historyKeymap redoes with Ctrl+Shift+Z on Linux and Mac only, 2.x did on Windows too
+						{
+							win: 'Ctrl-Shift-z',
+							run: redo,
+							preventDefault: true,
+						},
+						...historyKeymap,
+						...foldKeymap,
+					] )
+				),
+				// code reads left to right in right-to-left admin languages too
+				EditorView.editorAttributes.of( { dir: 'ltr' } ),
 				EditorView.contentAttributes.of( {
 					'aria-label': __(
 						'Code editor',
@@ -232,6 +344,7 @@ export async function createEditor(
 					.map( ( part ) =>
 						compartments[ part ].of( initialParts[ part ] )
 					),
+				options.stickyTop ? stickyBars( options.stickyTop ) : [],
 				...( options.extensions ?? [] ),
 			],
 		} ),
@@ -273,6 +386,13 @@ export async function createEditor(
 			} catch ( error ) {
 				warn( 'the settings could not be applied', error );
 			}
+		},
+		clearHistory() {
+			// a history field that is removed and added again starts empty
+			view.dispatch( { effects: historyCompartment.reconfigure( [] ) } );
+			view.dispatch( {
+				effects: historyCompartment.reconfigure( history() ),
+			} );
 		},
 		destroy() {
 			pending++;

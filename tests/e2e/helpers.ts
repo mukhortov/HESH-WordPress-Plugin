@@ -45,8 +45,13 @@ export async function saveSettings(
 }
 
 // accept "leave page?" prompts, the tests leave posts unsaved
+const accepting = new WeakSet< Page >();
 export function acceptDialogs( page: Page ) {
-	page.on( 'dialog', ( dialog ) => dialog.accept() );
+	// a dialog can be accepted once
+	if ( ! accepting.has( page ) ) {
+		accepting.add( page );
+		page.on( 'dialog', ( dialog ) => dialog.accept() );
+	}
 }
 
 // Opens a block editor post, without the welcome guide.
