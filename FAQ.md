@@ -32,7 +32,7 @@ __Jump to line:__           `Ctrl+Alt+G` / `Cmd+Opt+G`
 
 ## What happened to highlighting in the Theme & Plugin editors?
 
-Since version 3.0 the Theme & Plugin file editors use WordPress's own code editor, which has syntax highlighting and checks your code for errors. Switch it on or off with _Syntax Highlighting_ in your profile.
+Since version 3.0 the Theme & Plugin file editors use WordPress's own code editor, which highlights your code and checks HTML, JavaScript and JSON files for errors. Switch it on or off with _Syntax Highlighting_ in your profile.
 
 
 ## Why are p and br tags are being removed?

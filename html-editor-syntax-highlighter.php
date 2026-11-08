@@ -5,7 +5,7 @@
  * Description:        Syntax highlighting for the Classic editor's Text tab and the block editor's Code Editor, using CodeMirror.
  * Author:             Peter Mukhortov, James Bradford
  * Author URI:         https://github.com/mukhortov/HESH-WordPress-Plugin
- * Version:            3.0.0-dev
+ * Version:            3.0.0
  * Requires at least:  6.5
  * Requires PHP:       7.4
  * License:            GPLv2 or later
@@ -17,7 +17,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'HESH_VERSION', '3.0.0-dev' );
+define( 'HESH_VERSION', '3.0.0' );
 define( 'HESH_FILE', __FILE__ );
 define( 'HESH_DIR', plugin_dir_path( __FILE__ ) );
 

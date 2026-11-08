@@ -8,13 +8,13 @@ Adds syntax highlighting to the WordPress code editors using [CodeMirror 6](http
 
 ## Status
 
-Maintained by [Peter Mukhortov](https://github.com/mukhortov). Version 2.5.0, the current release, supports WordPress 6.5 to 7.1 and PHP 7.4 or later. The `master` branch is version 3.0, in development.
+Maintained by [Peter Mukhortov](https://github.com/mukhortov). Version 3.0.0, the current release, supports WordPress 6.5 to 7.1 and PHP 7.4 or later.
 
 The plugin was created by Peter Mukhortov and James Bradford ([@arniebradfo](https://github.com/arniebradfo)). James no longer works on the plugin, so please send questions, bug reports and pull requests to [this repository](https://github.com/mukhortov/HESH-WordPress-Plugin/issues) rather than to him.
 
 ### Roadmap
-- **2.5.x**: compatibility and security fixes for current WordPress, on the CodeMirror 5 code in the `release` branch.
-- **3.0** (`master`): a rewrite in TypeScript on CodeMirror 6, built with `@wordpress/scripts` and covered by automated tests.
+- **2.5**: compatibility and security fixes for current WordPress, on the CodeMirror 5 code (released as `v2.5.0`; its source is in `master` before the 3.0 merge).
+- **3.0**: a rewrite in TypeScript on CodeMirror 6, built with `@wordpress/scripts` and covered by automated tests.
 - **3.1**: TODO: a fullscreen mode for the block editor's _Code Editor_, like the Classic editor's F11.
 - **3.x**: the _Custom HTML_ and _Shortcode_ blocks, the site editor, autocompletion.
 
@@ -22,11 +22,11 @@ An earlier v3 experiment based on the Monaco editor ([WPcode](https://github.com
 
 ### What changes in 3.0
 - CodeMirror 6 replaces CodeMirror 5. Shortcodes are parsed by a small [Lezer](https://lezer.codemirror.net/) grammar, with HTML, CSS and JavaScript parsed around them.
-- The Theme & Plugin file editors keep WordPress's built-in code editor, which has linting and follows the profile's syntax highlighting option. 2.x replaced it.
-- 13 themes instead of 60. Settings that used a removed theme move to `wordpress` (dark themes) or `default` (light themes).
+- The Theme & Plugin file editors keep WordPress's built-in code editor, which follows the profile's syntax highlighting option and checks HTML, JavaScript and JSON for errors. 2.x replaced it.
+- 13 themes instead of 69. Settings that used a removed theme move to its closest match, or to `wordpress` (dark themes) or `default` (light themes).
 - _VS Code_ key bindings replace _Sublime Text_. _Vim_ and _Emacs_ are still there. Themes and key bindings load only when used.
 - _Match brackets_ also highlights matching HTML tags, so _Match tags_ is gone. CodeMirror 6 uses the browser's scrollbars, so _Show scrollbars_ is gone.
-- Settings are stored in one `hesh_settings` user meta, saved through the REST API. The 2.x `hesh_*` user meta moves into it the first time each user opens the editor.
+- Settings are stored in one `hesh_settings` user meta, saved through the REST API. The 2.x `hesh_*` user meta moves into it the first time each user opens a post for editing.
 
 ---
 
