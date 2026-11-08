@@ -30,6 +30,7 @@ interface Window {
 	};
 	_wpemojiSettings?: unknown;
 	heshSaveStarted?: boolean;
+	heshKeyTaken?: boolean;
 	switchEditors: { go: ( id: string, mode: 'tmce' | 'html' ) => void };
 	setUserSetting: ( name: string, value: string ) => void;
 	getUserSetting: ( name: string ) => string | undefined;

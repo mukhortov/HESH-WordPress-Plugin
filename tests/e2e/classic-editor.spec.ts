@@ -857,17 +857,30 @@ test.describe( 'Classic editor Text tab', () => {
 			} );
 		} );
 		await openClassicEditor( page );
+		// code that folds, which AltGr+[ (Ctrl+Alt+[, fold all) would do
+		await page.evaluate( () => {
+			(
+				document.getElementById( 'content' ) as HTMLTextAreaElement
+			 ).value = '<div>\n\t<p>a</p>\n</div>';
+		} );
 		await codeMirror( page, editor ).click();
-		await page.keyboard.type( '<p>a</p>' );
-		// Windows reports AltGr as Ctrl+Alt; the keys of a German keyboard
+		await page.keyboard.press( 'ControlOrMeta+End' );
+		// Windows reports AltGr as Ctrl+Alt; the keys of a German keyboard. The
+		// key goes in without its text, which Chromium types for a key with Ctrl
+		// held on some systems and not on others: the test types it, as the
+		// browser would, unless CodeMirror took the key.
+		await page.evaluate( () => {
+			window.addEventListener( 'keydown', ( event ) => {
+				window.heshKeyTaken = event.defaultPrevented;
+			} );
+		} );
 		const cdp = await page.context().newCDPSession( page );
 		const send = (
-			type: 'rawKeyDown' | 'keyDown' | 'keyUp',
+			type: 'rawKeyDown' | 'keyUp',
 			key: string,
 			code: string,
 			vk: number,
-			modifiers: number,
-			text?: string
+			modifiers: number
 		) =>
 			cdp.send( 'Input.dispatchKeyEvent', {
 				type,
@@ -875,7 +888,6 @@ test.describe( 'Classic editor Text tab', () => {
 				code,
 				windowsVirtualKeyCode: vk,
 				modifiers,
-				...( text ? { text, unmodifiedText: text } : {} ),
 			} );
 		for ( const [ key, code, vk ] of [
 			[ '[', 'Digit8', 56 ],
@@ -884,12 +896,17 @@ test.describe( 'Classic editor Text tab', () => {
 		] as const ) {
 			await send( 'rawKeyDown', 'Control', 'ControlLeft', 17, 2 );
 			await send( 'rawKeyDown', 'AltGraph', 'AltRight', 18, 3 );
-			await send( 'keyDown', key, code, vk, 3, key );
+			await send( 'rawKeyDown', key, code, vk, 3 );
+			if ( ! ( await page.evaluate( () => window.heshKeyTaken ) ) ) {
+				await cdp.send( 'Input.insertText', { text: key } );
+			}
 			await send( 'keyUp', key, code, vk, 3 );
 			await send( 'keyUp', 'AltGraph', 'AltRight', 18, 2 );
 			await send( 'keyUp', 'Control', 'ControlLeft', 17, 0 );
 		}
-		await expect.poll( () => textareaValue( page ) ).toBe( '<p>a</p>[\\]' );
+		await expect
+			.poll( () => textareaValue( page ) )
+			.toBe( '<div>\n\t<p>a</p>\n</div>[\\]' );
 		await expect(
 			page.locator( `${ editor } .cm-foldPlaceholder` )
 		).toHaveCount( 0 );
