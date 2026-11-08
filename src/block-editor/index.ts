@@ -186,25 +186,60 @@ const pushChanges = EditorView.updateListener.of( ( update ) => {
 } );
 
 // CodeMirror keeps its own undo history, so the block editor's undo and redo
-// shortcuts must not also revert the post. The listener is on the whole editor,
-// panels included (search, Vim's command line), and outside CodeMirror's own
-// handlers, which stop once its keymap has handled a key.
+// shortcuts must not also revert the post. Nor does a key CodeMirror has
+// handled run a block editor shortcut as well: with Emacs keys, Ctrl+S
+// searches and must not also save the post. The listener is on the whole
+// editor, panels included (search, Vim's command line), and outside
+// CodeMirror's own handlers, which stop once its keymap has handled a key.
 function isUndoOrRedo( event: KeyboardEvent ): boolean {
 	const key = event.key.toLowerCase();
 	return ( event.ctrlKey || event.metaKey ) && ( key === 'z' || key === 'y' );
 }
 
-const keepUndoInCodeMirror = ViewPlugin.define( ( view ) => {
-	const stopUndo = ( event: KeyboardEvent ) => {
-		if ( isUndoOrRedo( event ) ) {
+// Block editor shortcuts that CodeMirror's default keys handle only some of
+// the time, so they would work or not depending on where the cursor is:
+// Ctrl/Cmd+Shift+\ (distraction free; CodeMirror jumps to the matching
+// bracket when there is one) and, on Macs, Ctrl+Option+H (keyboard shortcuts;
+// CodeMirror deletes the word before the cursor). Both get them, as before.
+function isSharedShortcut( event: KeyboardEvent ): boolean {
+	return (
+		( event.code === 'Backslash' &&
+			event.shiftKey &&
+			! event.altKey &&
+			( event.ctrlKey || event.metaKey ) ) ||
+		( event.code === 'KeyH' &&
+			event.ctrlKey &&
+			event.altKey &&
+			! event.metaKey &&
+			! event.shiftKey &&
+			/Mac/.test( navigator.platform ) )
+	);
+}
+
+const keepKeysInCodeMirror = ViewPlugin.define( ( view ) => {
+	const onKeyDown = ( event: KeyboardEvent ) => {
+		if (
+			( event.defaultPrevented && ! isSharedShortcut( event ) ) ||
+			isUndoOrRedo( event )
+		) {
 			event.stopPropagation();
 		}
 	};
-	view.dom.addEventListener( 'keydown', stopUndo );
+	view.dom.addEventListener( 'keydown', onKeyDown );
 	return {
-		destroy: () => view.dom.removeEventListener( 'keydown', stopUndo ),
+		destroy: () => view.dom.removeEventListener( 'keydown', onKeyDown ),
 	};
 } );
+
+// core's "Editing code" bar sticks over the top of the scrolling area
+function stickyToolbarHeight( textarea: HTMLTextAreaElement ): number {
+	const toolbar = textarea
+		.closest( '.editor-text-editor, .edit-post-text-editor' )
+		?.querySelector< HTMLElement >( toolbarSelector );
+	return toolbar && getComputedStyle( toolbar ).position === 'sticky'
+		? toolbar.offsetHeight
+		: 0;
+}
 
 function mountSettings(
 	textarea: HTMLTextAreaElement,
@@ -245,9 +280,10 @@ async function start( textarea: HTMLTextAreaElement ): Promise< void > {
 			parent: container,
 			doc: content,
 			settings: getSettings(),
+			stickyTop: () => stickyToolbarHeight( textarea ),
 			extensions: [
 				pushChanges,
-				keepUndoInCodeMirror,
+				keepKeysInCodeMirror,
 				rememberSelection( postId ),
 			],
 		} );
@@ -267,15 +303,26 @@ async function start( textarea: HTMLTextAreaElement ): Promise< void > {
 		queueMicrotask( reconcile );
 		return;
 	}
+	// React writes each change into core's hidden textarea. With dir="auto" the
+	// browser works out the direction of the whole post on every write, which
+	// takes seconds in a large post, so it goes while the textarea is hidden.
+	const dir = textarea.getAttribute( 'dir' );
+	const restoreDir = () => {
+		if ( dir !== null ) {
+			textarea.setAttribute( 'dir', dir );
+		}
+	};
 	let unmountSettings = () => {};
 	try {
 		textarea.after( container );
 		textarea.classList.add( 'hesh-hidden' );
+		textarea.removeAttribute( 'dir' );
 		unmountSettings = mountSettings( textarea, container );
 	} catch ( error ) {
 		// leave core's textarea as it was
 		unmountSettings();
 		container.remove();
+		restoreDir();
 		textarea.classList.remove( 'hesh-hidden' );
 		editor.destroy();
 		throw error;
@@ -293,6 +340,7 @@ async function start( textarea: HTMLTextAreaElement ): Promise< void > {
 		cleanup() {
 			unsubscribeSettings();
 			unmountSettings();
+			restoreDir();
 			textarea.classList.remove( 'hesh-hidden' );
 		},
 	};

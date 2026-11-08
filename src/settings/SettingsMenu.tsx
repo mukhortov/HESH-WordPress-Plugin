@@ -237,7 +237,8 @@ export function SettingsMenu() {
 		<Dropdown
 			className="hesh-settings-menu"
 			contentClassName="hesh-settings-menu__content"
-			popoverProps={ { placement: 'bottom-end' } }
+			// shift keeps the panel on screen when the cog is near the left edge (phones)
+			popoverProps={ { placement: 'bottom-end', shift: true } }
 			renderToggle={ ( { isOpen, onToggle } ) => (
 				<Button
 					className="hesh-settings-menu__toggle"

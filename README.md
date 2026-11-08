@@ -15,6 +15,7 @@ The plugin was created by Peter Mukhortov and James Bradford ([@arniebradfo](htt
 ### Roadmap
 - **2.5.x**: compatibility and security fixes for current WordPress, on the CodeMirror 5 code in the `release` branch.
 - **3.0** (`master`): a rewrite in TypeScript on CodeMirror 6, built with `@wordpress/scripts` and covered by automated tests.
+- **3.1**: TODO: a fullscreen mode for the block editor's _Code Editor_, like the Classic editor's F11.
 - **3.x**: the _Custom HTML_ and _Shortcode_ blocks, the site editor, autocompletion.
 
 An earlier v3 experiment based on the Monaco editor ([WPcode](https://github.com/arniebradfo/wp-code)) is no longer being developed.

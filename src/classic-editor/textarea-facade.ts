@@ -188,10 +188,20 @@ export function attachTextareaFacade(
 			configurable: true,
 			value: () => view.focus(),
 		},
-		// editor-expand.js sizes the textarea by its scrollHeight in full-height mode
+		// editor-expand.js sizes the textarea by its scrollHeight in full-height
+		// mode. Open panels (search, Vim's command line) count too, or the code
+		// would scroll inside the editor as well as with the page.
 		scrollHeight: {
 			configurable: true,
-			get: () => Math.ceil( view.contentHeight ) + 2,
+			get: () => {
+				let panels = 0;
+				view.dom
+					.querySelectorAll< HTMLElement >( '.cm-panels' )
+					.forEach(
+						( element ) => ( panels += element.offsetHeight )
+					);
+				return Math.ceil( view.contentHeight + panels ) + 2;
+			},
 		},
 	} );
 

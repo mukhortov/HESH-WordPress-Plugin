@@ -3,7 +3,7 @@
  * textarea, which stays in the page so WordPress can size, read and write it.
  */
 import { __ } from '@wordpress/i18n';
-import { keymap, EditorView } from '@codemirror/view';
+import { keymap, showPanel, EditorView } from '@codemirror/view';
 import { EditorSelection, Prec } from '@codemirror/state';
 import { searchPanelOpen } from '@codemirror/search';
 import { createEditor, type Editor } from '../editor/editor';
@@ -22,10 +22,11 @@ import { attachTextareaFacade, type Facade } from './textarea-facade';
 import './index.scss';
 import '../settings/settings.scss';
 
-// the part of jQuery used to hear WordPress's autosave events
+// the part of jQuery used to hear WordPress's autosave events and to tell the full-height editor to adjust
 interface JQueryEvents {
 	one: ( events: string, handler: () => void ) => void;
 	off: ( events: string, handler: () => void ) => void;
+	trigger: ( event: string ) => void;
 }
 
 declare global {
@@ -102,6 +103,14 @@ function addToolbarButtons(
 	tools.append( fullscreenButton, settingsSlot );
 	toolbar.appendChild( tools );
 	mountSettingsMenu( settingsSlot );
+	// Quicktags rebuilds the toolbar with innerHTML when it starts after this
+	// (jQuery's ready callbacks can run after the load event) and whenever a
+	// button is added, which removes these buttons: put them back each time.
+	new MutationObserver( () => {
+		if ( ! toolbar.contains( tools ) ) {
+			toolbar.appendChild( tools );
+		}
+	} ).observe( toolbar, { childList: true } );
 }
 
 async function start(): Promise< void > {
@@ -127,15 +136,67 @@ async function start(): Promise< void > {
 		document
 			.getElementById( 'postdivrich' )
 			?.classList.contains( 'wp-editor-expand' ) ?? false;
+	// Where the bars fixed to the top of the window end: the admin bar (not on
+	// phones) and the editor tabs and toolbar that the full-height editor
+	// (editor-expand.js) pins below it as the page scrolls, once the textarea
+	// is taller than its 300px least height and padding. Those count as pinned
+	// all the time: WordPress may pin them after CodeMirror has measured for a
+	// scroll, past the end of the editor it parks them over the last lines,
+	// from where they come down as the page scrolls back, and where they rest
+	// above the code they don't reach further down than when pinned.
+	const adminBar = document.getElementById( 'wpadminbar' );
+	const editorBars = [
+		document.getElementById( 'wp-content-editor-tools' ),
+		toolbar,
+	].filter( ( bar ): bar is HTMLElement => bar !== null );
+	const fixedBarsBottom = () => {
+		if ( isFullscreen() ) {
+			return 0;
+		}
+		const adminBarBottom =
+			adminBar && getComputedStyle( adminBar ).position === 'fixed'
+				? adminBar.getBoundingClientRect().bottom
+				: 0;
+		const pinnable =
+			isFullHeight() &&
+			( textarea.offsetHeight > 325 ||
+				editorBars.some(
+					( bar ) => getComputedStyle( bar ).position === 'fixed'
+				) );
+		return pinnable
+			? editorBars.reduce(
+					( bottom, bar ) => bottom + bar.offsetHeight,
+					adminBarBottom
+				)
+			: adminBarBottom;
+	};
 
 	const container = document.createElement( 'div' );
 	container.className = 'hesh-classic-editor';
+
+	// The full-height editor (editor-expand.js) grows the textarea to fit the
+	// code, but shrinks it only when the text gets shorter. Shrink it when the
+	// code takes less room too: a panel closed, or CodeMirror measured lines it
+	// had first guessed taller (long wrapped lines).
+	const shrinkToFit = () => {
+		if ( ! isFullHeight() || ! isTextMode() || isFullscreen() ) {
+			return;
+		}
+		// editor-expand.js's smallest height
+		const height = Math.max( 300, textarea.scrollHeight );
+		if ( parseInt( textarea.style.height, 10 ) > height ) {
+			textarea.style.height = `${ height }px`;
+			// move the bars and the status bar to the new end
+			window.jQuery?.( document ).trigger( 'editor-classchange' );
+		}
+	};
 
 	// tell WordPress about changes: word count, autosave and the full-height editor listen for input
 	let notifyTimer: ReturnType< typeof setTimeout > | undefined;
 	const notify = () => {
 		clearTimeout( notifyTimer );
 		notifyTimer = setTimeout( () => {
+			shrinkToFit();
 			textarea.dispatchEvent( new Event( 'input', { bubbles: true } ) );
 		}, 0 );
 	};
@@ -157,6 +218,7 @@ async function start(): Promise< void > {
 		parent: container,
 		doc,
 		settings: getSettings(),
+		stickyTop: fixedBarsBottom,
 		extensions: [
 			Prec.high(
 				keymap.of( [
@@ -180,7 +242,12 @@ async function start(): Promise< void > {
 				if ( update.docChanged ) {
 					facade?.sync();
 					notify();
-				} else if ( update.heightChanged ) {
+				} else if (
+					update.heightChanged ||
+					// a panel (search, Vim's command line) opened or closed
+					update.state.facet( showPanel ) !==
+						update.startState.facet( showPanel )
+				) {
 					notify();
 				}
 			} ),
@@ -233,6 +300,25 @@ async function start(): Promise< void > {
 		throw error;
 	}
 
+	// Undo doesn't reach back across a visit to the Visual tab, as in core's
+	// textarea: switching tabs rewrites the content, with TinyMCE's bookmark
+	// markup in between, while WordPress still counts the Text tab as open.
+	// The class's earlier values show a visit made and ended in one go too.
+	new MutationObserver( ( records ) => {
+		if (
+			isTextMode() &&
+			records.some( ( record ) =>
+				/\btmce-active\b/.test( record.oldValue ?? '' )
+			)
+		) {
+			editor?.clearHistory();
+		}
+	} ).observe( wrap, {
+		attributes: true,
+		attributeFilter: [ 'class' ],
+		attributeOldValue: true,
+	} );
+
 	// follow the textarea's position and size: WordPress resizes it (drag handle,
 	// full-height editor) and moves it (margin under a pinned toolbar)
 	function layout(): void {
@@ -269,6 +355,20 @@ async function start(): Promise< void > {
 	if ( hadFocus ) {
 		view.focus();
 		return;
+	}
+	// The full-height editor sizes the textarea by CodeMirror's height, known
+	// once it has measured its lines. Scroll to the saved place after that, or
+	// the page lands where the line was before the editor grew.
+	if ( isFullHeight() && isTextMode() ) {
+		await new Promise( ( resolve ) =>
+			view.requestMeasure( {
+				read() {},
+				write: () => setTimeout( resolve ),
+			} )
+		);
+		shrinkToFit();
+		textarea.dispatchEvent( new Event( 'input', { bubbles: true } ) );
+		layout();
 	}
 	restoreSelection( view, id );
 	// carry on typing straight away when coming back to a post, like 2.x

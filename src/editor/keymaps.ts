@@ -1,5 +1,6 @@
 import type { Extension } from '@codemirror/state';
 import { keymap } from '@codemirror/view';
+import { findNext, findPrevious } from '@codemirror/search';
 import type { KeyMapId } from '../settings/settings';
 
 /**
@@ -17,7 +18,15 @@ export function loadKeyMap( id: KeyMapId ): Promise< Extension > {
 		case 'emacs':
 			return import(
 				/* webpackChunkName: "keymap-emacs" */ '@replit/codemirror-emacs'
-			).then( ( m ) => m.emacs() );
+			).then( ( m ) => [
+				m.emacs(),
+				// Ctrl+S and Ctrl+R search on in the search field too, instead
+				// of saving the post or reloading the page
+				keymap.of( [
+					{ key: 'Ctrl-s', run: findNext, scope: 'search-panel' },
+					{ key: 'Ctrl-r', run: findPrevious, scope: 'search-panel' },
+				] ),
+			] );
 		case 'vscode':
 			return import(
 				/* webpackChunkName: "keymap-vscode" */ '@replit/codemirror-vscode-keymap'

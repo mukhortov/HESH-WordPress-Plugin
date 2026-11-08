@@ -10,6 +10,26 @@ export interface ThemeInfo {
 	load: () => Promise< Extension >;
 }
 
+/**
+ * A theme made with other settings is made once: each one made adds another
+ * copy of its styles to the page. A chunk that failed to load is tried again.
+ * @param make Makes the theme.
+ */
+export function once(
+	make: () => Promise< Extension >
+): () => Promise< Extension > {
+	let theme: Promise< Extension > | undefined;
+	return () => {
+		if ( ! theme ) {
+			theme = make().catch( ( error: unknown ) => {
+				theme = undefined;
+				throw error;
+			} );
+		}
+		return theme;
+	};
+}
+
 // The default themes are bundled, the rest load on demand as separate chunks.
 export const themes: Record< ThemeId, ThemeInfo > = {
 	wordpress: {
@@ -85,10 +105,14 @@ export const themes: Record< ThemeId, ThemeInfo > = {
 	'solarized-dark': {
 		label: 'Solarized Dark',
 		dark: true,
-		load: () =>
+		// the package's red caret is hard to see on the dark blue (2.7:1)
+		load: once( () =>
 			import(
 				/* webpackChunkName: "theme-solarized" */ '@uiw/codemirror-theme-solarized'
-			).then( ( m ) => m.solarizedDark ),
+			).then( ( m ) =>
+				m.solarizedDarkInit( { settings: { caret: '#93a1a1' } } )
+			)
+		),
 	},
 	'gruvbox-dark': {
 		label: 'Gruvbox Dark',
@@ -101,9 +125,13 @@ export const themes: Record< ThemeId, ThemeInfo > = {
 	eclipse: {
 		label: 'Eclipse',
 		dark: false,
-		load: () =>
+		// the package's caret is white, on a white background
+		load: once( () =>
 			import(
 				/* webpackChunkName: "theme-eclipse" */ '@uiw/codemirror-theme-eclipse'
-			).then( ( m ) => m.eclipse ),
+			).then( ( m ) =>
+				m.eclipseInit( { settings: { caret: '#000000' } } )
+			)
+		),
 	},
 };
