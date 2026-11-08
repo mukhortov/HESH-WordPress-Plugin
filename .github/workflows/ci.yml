@@ -20,9 +20,10 @@ jobs:
   # pull request that requires them can be merged; a workflow left out with
   # paths-ignore would keep them pending.
   #
-  # A pull request run records the tree it tested: GitHub's merge of the pull
-  # request into master at the time. A push to master skips the checks when a
-  # passing run of one of its pull requests tested exactly the same tree.
+  # A pull request run that runs the checks records the tree it tested:
+  # GitHub's merge of the pull request into master at the time. A push to
+  # master skips the checks when a passing run of one of its pull requests
+  # tested exactly the same tree.
   changes:
     name: Code changed
     runs-on: ubuntu-latest
@@ -48,12 +49,11 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           code=true
-          if [ "$EVENT" = pull_request ]; then
-            echo "::notice title=Tested tree::$(git rev-parse "$GITHUB_SHA^{tree}")"
-          fi
           if [ "$EVENT" = push ]; then
             tree=$(git rev-parse "$HEAD^{tree}")
-            for pr in $(gh api "repos/$REPO/commits/$HEAD/pulls" --jq '.[].number' || true); do
+            prs=$(gh api "repos/$REPO/commits/$HEAD/pulls" --jq '.[].number') || prs=
+            for pr in $prs; do
+              [[ $pr =~ ^[0-9]+$ ]] || continue
               head=$(gh api "repos/$REPO/pulls/$pr" --jq .head.sha) || continue
               runs=$(gh api "repos/$REPO/actions/runs?head_sha=$head&event=pull_request&status=success" \
                 --jq '.workflow_runs[] | select(.path == ".github/workflows/ci.yml") | .id') || continue
@@ -77,6 +77,9 @@ jobs:
             if [ -n "$files" ] && ! grep -qvE '(\.md$|^mockups/|^assets/_old/)' <<< "$files"; then
               code=false
             fi
+          fi
+          if [ "$EVENT" = pull_request ] && [ "$code" = true ]; then
+            echo "::notice title=Tested tree::$(git rev-parse "$GITHUB_SHA^{tree}")"
           fi
           echo "code=$code" >> "$GITHUB_OUTPUT"
           echo "Code changed: $code"
