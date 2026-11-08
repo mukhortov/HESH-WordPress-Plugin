@@ -1,0 +1,58 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema#",
+	"title": "HTML Editor Syntax Highlighter settings",
+	"type": "object",
+	"additionalProperties": false,
+	"properties": {
+		"theme": {
+			"type": "string",
+			"enum": [
+				"wordpress",
+				"default",
+				"one-dark",
+				"github-light",
+				"github-dark",
+				"dracula",
+				"monokai",
+				"material-dark",
+				"nord",
+				"solarized-light",
+				"solarized-dark",
+				"gruvbox-dark",
+				"eclipse"
+			],
+			"default": "wordpress"
+		},
+		"keyMap": {
+			"type": "string",
+			"enum": [ "default", "vscode", "vim", "emacs" ],
+			"default": "default"
+		},
+		"tabSize": {
+			"type": "integer",
+			"minimum": 1,
+			"maximum": 6,
+			"default": 4
+		},
+		"fontSize": {
+			"type": "integer",
+			"minimum": 8,
+			"maximum": 20,
+			"default": 13
+		},
+		"lineHeight": {
+			"type": "number",
+			"minimum": 1,
+			"maximum": 2,
+			"multipleOf": 0.25,
+			"default": 1.5
+		},
+		"lineWrapping": { "type": "boolean", "default": true },
+		"lineNumbers": { "type": "boolean", "default": true },
+		"foldGutter": { "type": "boolean", "default": false },
+		"matchBrackets": { "type": "boolean", "default": false },
+		"highlightSelectionMatches": { "type": "boolean", "default": false },
+		"autoCloseTags": { "type": "boolean", "default": false },
+		"autoCloseBrackets": { "type": "boolean", "default": false }
+	}
+}
