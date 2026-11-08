@@ -1,14 +1,23 @@
 # Changelog
 
-## 3.0.0 (in development)
+## 3.0.0
+
+**Upgrading from 2.x.** 3.0 is a rewrite on CodeMirror 6. Each user's settings carry over the first time they open a post or page for editing, with these changes:
+* _Sublime Text_ key bindings become _VS Code_ ones. _Vim_ and _Emacs_ stay.
+* 13 themes instead of 69. Dracula, Monokai, Nord, Eclipse, Gruvbox Dark, GitHub, Solarized and the Material themes switch to their 3.0 version, any other theme to _Default_ (light themes) or _WordPress_ (dark themes).
+* _Match tags_ is part of _Match brackets_, and _Show scrollbars_ is gone.
+* The Theme & Plugin file editors go back to WordPress's own code editor, which is on when _Syntax Highlighting_ is on in the user's profile. The HESH settings don't apply there. It checks HTML, JavaScript and JSON files for errors, but not PHP or CSS.
+* Like 2.5.0, it needs WordPress 6.5 or later and PHP 7.4 or later.
+* The 2.x settings are moved, not copied: a user who has opened a post in 3.0 starts from the default settings if the site goes back to 2.x.
+
+**Changes**
 * Rewritten in TypeScript on CodeMirror 6, built with `@wordpress/scripts`. HTML, CSS and JavaScript come from `@codemirror/lang-html`; shortcodes from a small Lezer grammar mixed into HTML with `parseMixed`.
 * Block editor _Code Editor_: every change is written to the post with `editEntityRecord` as you type, changes made outside the editor (toolbar undo, saving) are brought in, and undo stays inside CodeMirror. Works with the WordPress 6.5 (`.edit-post-text-editor`) and 6.6+ (`.editor-text-editor`) markup.
 * Classic editor Text tab: CodeMirror reads and writes the post textarea, so Quicktags buttons, the link dialog, Add Media, the Visual tab, autosave and word count keep working. `Ctrl+S`/`Cmd+S` saves, waiting for an autosave in progress to finish (2.x did nothing then), and `F11` toggles fullscreen.
-* The Theme & Plugin file editors keep WordPress's own code editor (CodeMirror 5 with linting) instead of being replaced.
-* 13 themes, including the custom WordPress theme. Removed themes map to `wordpress` (dark) or `default` (light).
-* VS Code key bindings replace Sublime Text. Vim, Emacs and the themes other than the default ones load on demand.
+* The Theme & Plugin file editors are left to WordPress's own code editor (CodeMirror 5).
+* 13 themes, including the custom WordPress theme. The key bindings, and the themes other than Default and WordPress, load on demand.
 * Closing shortcodes without an opening tag are marked, like in 2.x.
-* Settings: one `hesh_settings` user meta registered with a JSON schema and saved with `apiFetch` to `/wp/v2/users/me`, a settings panel built with `@wordpress/components`, and a one-time move of the 2.x `hesh_*` user meta. _Match tags_ is part of _Match brackets_, _Show scrollbars_ is gone. Deleting the plugin removes the settings.
+* Settings: one `hesh_settings` user meta registered with a JSON schema and saved with `apiFetch` to `/wp/v2/users/me`, a settings panel built with `@wordpress/components`, and a one-time move of the 2.x `hesh_*` user meta. Deleting the plugin removes the settings.
 * Tests: Vitest unit tests (shortcode parser on the README sample text, settings), Playwright end-to-end tests on WordPress 6.5 and the latest version in WordPress Playground, and Plugin Check.
 
 ## 2.5.0

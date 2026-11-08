@@ -5,7 +5,7 @@ Tags: syntax highlighter, codemirror, text editor, code highlighter, code colori
 Requires at least: 6.5
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 3.0.0-dev
+Stable tag: 3.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -63,7 +63,7 @@ __Jump to line:__           `Ctrl+Alt+G` / `Cmd+Opt+G`
 
 = What happened to highlighting in the Theme & Plugin editors? =
 
-Since version 3.0 the Theme & Plugin file editors use WordPress's own code editor, which has syntax highlighting and checks your code for errors. Switch it on or off with _Syntax Highlighting_ in your profile.
+Since version 3.0 the Theme & Plugin file editors use WordPress's own code editor, which highlights your code and checks HTML, JavaScript and JSON files for errors. Switch it on or off with _Syntax Highlighting_ in your profile.
 
 
 = Why are p and br tags are being removed? =
@@ -123,14 +123,15 @@ Current versions of Chrome, Edge, Firefox and Safari. Internet Explorer is not s
 == Changelog ==
 
 = 3.0.0 =
-_In development._
 * Rewritten in TypeScript on CodeMirror 6. Shortcodes, HTML, CSS and JavaScript are highlighted by proper parsers.
-* The Theme & Plugin file editors now use WordPress's own code editor, with error checking.
+* The Theme & Plugin file editors use WordPress's own code editor again. It checks HTML, JavaScript and JSON files for errors.
 * 13 themes, including the WordPress theme. Settings that used a removed theme switch to a similar light or dark one.
 * VS Code key bindings replace the Sublime Text ones. Themes and key bindings load only when used.
 * Closing shortcodes without an opening tag are marked.
 * New settings panel. Settings are saved in your user profile through the REST API, and existing settings carry over.
-* The block editor's _Code Editor_ keeps its own undo history and saves every change as you type.
+* The block editor's _Code Editor_ keeps its own undo history and passes every change to the post as you type.
+* _Match tags_ is now part of _Match brackets_, and _Show scrollbars_ is gone.
+* Your 2.x settings are moved, not copied: going back to 2.x after opening a post in 3.0 starts from the default settings.
 
 = 2.5.0 =
 * Tested with WordPress 7.1. Now requires WordPress 6.5 or later and PHP 7.4 or later.
@@ -379,3 +380,8 @@ Initial release.
 3. Syntax highlighting in the block editor's Code Editor, block comments included.
 4. Example code highlighting: shortcodes, More tags, inline CSS and JavaScript.
 5. In the block editor, open the Code Editor from the Options menu, or press Ctrl+Shift+Alt+M (Cmd+Shift+Option+M on a Mac). Blocks in the visual editor are not highlighted.
+
+== Upgrade Notice ==
+
+= 3.0.0 =
+A rewrite on CodeMirror 6. Your settings carry over, but Sublime Text key bindings become VS Code ones, removed themes switch to a similar light or dark one, and the Theme & Plugin file editors use WordPress's own code editor again. Going back to 2.x afterwards resets your settings.

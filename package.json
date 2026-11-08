@@ -1,6 +1,6 @@
 {
 	"name": "html-editor-syntax-highlighter",
-	"version": "3.0.0-dev",
+	"version": "3.0.0",
 	"private": true,
 	"description": "Syntax Highlighting in WordPress HTML Editor",
 	"license": "GPL-2.0-or-later",
