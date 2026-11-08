@@ -8,14 +8,30 @@ on:
 permissions:
   contents: read
 
+# A new push to a pull request cancels the run for its previous commit.
+# Pushes to master each get their own group, so none is cancelled.
+concurrency:
+  group: ci-${{ github.event.pull_request.number || github.sha }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 jobs:
   # Changes to documentation and design files alone (Markdown, mockups/,
   # assets/_old/) skip the checks below. They still report, as skipped, so a
   # pull request that requires them can be merged; a workflow left out with
   # paths-ignore would keep them pending.
+  #
+  # A pull request run that runs the checks records the tree it tested:
+  # GitHub's merge of the pull request into master at the time. A push to
+  # master skips the checks when a passing run of one of its pull requests
+  # tested exactly the same tree.
   changes:
     name: Code changed
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
+      actions: read
+      checks: read
     outputs:
       code: ${{ steps.diff.outputs.code }}
     steps:
@@ -28,14 +44,42 @@ jobs:
           # can't show passing checks over code that failed them
           BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
           HEAD: ${{ github.event.pull_request.head.sha || github.sha }}
+          EVENT: ${{ github.event_name }}
+          REPO: ${{ github.repository }}
+          GH_TOKEN: ${{ github.token }}
         run: |
           code=true
+          if [ "$EVENT" = push ]; then
+            tree=$(git rev-parse "$HEAD^{tree}")
+            prs=$(gh api "repos/$REPO/commits/$HEAD/pulls" --jq '.[].number') || prs=
+            for pr in $prs; do
+              [[ $pr =~ ^[0-9]+$ ]] || continue
+              head=$(gh api "repos/$REPO/pulls/$pr" --jq .head.sha) || continue
+              runs=$(gh api "repos/$REPO/actions/runs?head_sha=$head&event=pull_request&status=success" \
+                --jq '.workflow_runs[] | select(.path == ".github/workflows/ci.yml") | .id') || continue
+              for run in $runs; do
+                job=$(gh api "repos/$REPO/actions/runs/$run/jobs" \
+                  --jq '.jobs[] | select(.name == "Code changed") | .id') || continue
+                [ -n "$job" ] || continue
+                tested=$(gh api "repos/$REPO/check-runs/$job/annotations" \
+                  --jq '.[] | select(.title == "Tested tree") | .message') || continue
+                if [ "$tested" = "$tree" ]; then
+                  echo "Pull request #$pr passed CI on exactly these files (run $run)"
+                  echo "code=false" >> "$GITHUB_OUTPUT"
+                  exit 0
+                fi
+              done
+            done
+          fi
           if [ -n "$BASE" ] && git cat-file -e "$BASE^{commit}" 2>/dev/null; then
             # both paths of a moved file: moving code into mockups/ removes code
             files=$(git diff --no-renames --name-only "$BASE...$HEAD")
             if [ -n "$files" ] && ! grep -qvE '(\.md$|^mockups/|^assets/_old/)' <<< "$files"; then
               code=false
             fi
+          fi
+          if [ "$EVENT" = pull_request ] && [ "$code" = true ]; then
+            echo "::notice title=Tested tree::$(git rev-parse "$GITHUB_SHA^{tree}")"
           fi
           echo "code=$code" >> "$GITHUB_OUTPUT"
           echo "Code changed: $code"
