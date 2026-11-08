@@ -9,8 +9,41 @@ permissions:
   contents: read
 
 jobs:
+  # Changes to documentation and design files alone (Markdown, mockups/,
+  # assets/_old/) skip the checks below. They still report, as skipped, so a
+  # pull request that requires them can be merged; a workflow left out with
+  # paths-ignore would keep them pending.
+  changes:
+    name: Code changed
+    runs-on: ubuntu-latest
+    outputs:
+      code: ${{ steps.diff.outputs.code }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - id: diff
+        env:
+          # the whole pull request, so that a later change to the docs alone
+          # can't show passing checks over code that failed them
+          BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
+          HEAD: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          code=true
+          if [ -n "$BASE" ] && git cat-file -e "$BASE^{commit}" 2>/dev/null; then
+            # both paths of a moved file: moving code into mockups/ removes code
+            files=$(git diff --no-renames --name-only "$BASE...$HEAD")
+            if [ -n "$files" ] && ! grep -qvE '(\.md$|^mockups/|^assets/_old/)' <<< "$files"; then
+              code=false
+            fi
+          fi
+          echo "code=$code" >> "$GITHUB_OUTPUT"
+          echo "Code changed: $code"
+
   checks:
     name: Lint, types and unit tests
+    needs: changes
+    if: needs.changes.outputs.code == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
@@ -29,6 +62,8 @@ jobs:
 
   e2e:
     name: End-to-end tests (WordPress Playground)
+    needs: changes
+    if: needs.changes.outputs.code == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
@@ -48,6 +83,8 @@ jobs:
 
   plugin-check:
     name: Plugin Check
+    needs: changes
+    if: needs.changes.outputs.code == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
